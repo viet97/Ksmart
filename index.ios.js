@@ -1,1 +1,1 @@
-import './app.json'
+import './app'

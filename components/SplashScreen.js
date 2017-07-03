@@ -1,4 +1,3 @@
-
 import React from 'react';
 import {
     AppRegistry,
@@ -6,7 +5,7 @@ import {
     View,
     Button, ListView, Image, StyleSheet, StatusBar
 } from 'react-native';
-import { NavigationActions} from "react-navigation";
+import {NavigationActions} from "react-navigation";
 
 
 export default class SplashScreen extends React.Component {
@@ -24,10 +23,11 @@ export default class SplashScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <View style={{flex: 1}}>
-                    <Text> 123</Text>
-                </View>
-                <Text style={styles.title}>1231232</Text>
+                <Image source={require('../images/bg.png')}
+                       style={{flex: 1}}/>
+                <Image source={require('../images/logoksmart.png') }
+                       style={{alignSelf: 'center', position: 'absolute'}}/>
+
             </View>
         );
     }
@@ -43,21 +43,22 @@ export default class SplashScreen extends React.Component {
         const {navigate} = this.props.navigation;
 
         this.props
-                .navigation
-                .dispatch(NavigationActions.reset(
-                    {
-                        index: 0,
-                        actions: [
-                            NavigationActions.navigate({ routeName: 'Home'})
-                        ]
-                    }));
+            .navigation
+            .dispatch(NavigationActions.reset(
+                {
+                    index: 0,
+                    actions: [
+                        NavigationActions.navigate({routeName: 'Home'})
+                    ]
+                }));
     }
 
 }
 let styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center'
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     title: {
         position: 'absolute',
