@@ -7,13 +7,21 @@ import {
     Text,
     View,
     Button, ListView, Image, StyleSheet, StatusBar,
-    TouchableOpacity,
+    TouchableOpacity
 } from 'react-native';
+import NewFeedScreen from "./NewFeedScreen";
+import MenuScreen from "./MenuScreen";
+import Header from "./Header";
 export default class HomeScreen extends React.Component {
+    static navigationOptions = {
+        headerLeft: <Header />
+    };
+
     constructor(props) {
         super(props)
         this.state = ({
-            selectedTab: 'NewFeed'
+            selectedTab: 'NewFeed',
+            headerTitleStyle: {alignSelf: 'center'},
         })
     }
 
@@ -27,7 +35,7 @@ export default class HomeScreen extends React.Component {
     MainView() {
         return (
 
-            <TabNavigator>
+            <TabNavigator >
                 <TabNavigator.Item
                     selected={this.state.selectedTab === 'NewFeed'}
                     title="NewFeed"
@@ -35,9 +43,7 @@ export default class HomeScreen extends React.Component {
                     renderSelectedIcon={() => <Icon size={24} color="green" name="list"/>}
                     badgeText="1"
                     onPress={() => this.setState({selectedTab: 'NewFeed'})}>
-                    <Button title="SideMenu" onPress={() => {
-                        this.openControlPanel()
-                    }}/>
+                    <NewFeedScreen/>
 
                 </TabNavigator.Item>
                 <TabNavigator.Item
@@ -46,7 +52,9 @@ export default class HomeScreen extends React.Component {
                     renderIcon={() => <Icon size={24} color="gray" name="menu"/>}
                     renderSelectedIcon={() => <Icon size={24} color="green" name="menu"/>}
                     onPress={() => this.setState({selectedTab: 'Menu'})}>
+                    <MenuScreen />
                 </TabNavigator.Item>
+
             </TabNavigator>
 
         )
@@ -54,6 +62,7 @@ export default class HomeScreen extends React.Component {
 
     render() {
         return (
+
             <Drawer
                 ref={(ref) => this._drawer = ref}
                 tapToClose={true}
@@ -61,6 +70,8 @@ export default class HomeScreen extends React.Component {
                 content={<Text style={{fontSize: 20}}>MENU</Text>}>
                 {this.MainView()}
             </Drawer>
+
         );
     }
+
 }
