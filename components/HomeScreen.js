@@ -7,14 +7,23 @@ import {
     Text,
     View,
     Button, ListView, Image, StyleSheet, StatusBar,
-    TouchableOpacity
+    TouchableOpacity,
+    Dimensions
 } from 'react-native';
 import NewFeedScreen from "./NewFeedScreen";
 import MenuScreen from "./MenuScreen";
 import Header from "./Header";
+var {height} = Dimensions.get('window');
 export default class HomeScreen extends React.Component {
     static navigationOptions = {
-        headerLeft: <Header />
+        header: null
+    };
+
+    closeControlPanel = () => {
+        this._drawer.close()
+    };
+    openControlPanel = () => {
+        this._drawer.open()
     };
 
     constructor(props) {
@@ -25,12 +34,37 @@ export default class HomeScreen extends React.Component {
         })
     }
 
-    closeControlPanel = () => {
-        this._drawer.close()
-    };
-    openControlPanel = () => {
-        this._drawer.open()
-    };
+    newFeedScreen() {
+        return (
+            <View >
+                <View style={styles.titleStyle}>
+                    <Image source={require('../images/MenuBar.png')}
+                           style={{ width: 35, height: 35}}/>
+                    <Text style={{fontSize: 20}}>NewFeed</Text>
+                    <View style={{backgroundColor:'white',width:35,height:35}}></View>
+                </View>
+
+                <TouchableOpacity onPress={() => this.openControlPanel()}
+                                  style={{width: 35, height: 35, position: 'absolute'}}/>
+            </View>
+        )
+    }
+
+    menuScreen() {
+        return (
+            <View >
+                <View style={styles.titleStyle}>
+                    <Image source={require('../images/MenuBar.png')}
+                           style={{ width: 35, height: 35}}/>
+                    <Text style={{fontSize: 20}}>Menu</Text>
+                    <View style={{backgroundColor:'white',width:35,height:35}}></View>
+                </View>
+
+                <TouchableOpacity onPress={() => this.openControlPanel()}
+                                  style={{width: 35, height: 35, position: 'absolute'}}/>
+            </View>
+        )
+    }
 
     MainView() {
         return (
@@ -43,7 +77,7 @@ export default class HomeScreen extends React.Component {
                     renderSelectedIcon={() => <Icon size={24} color="green" name="list"/>}
                     badgeText="1"
                     onPress={() => this.setState({selectedTab: 'NewFeed'})}>
-                    <NewFeedScreen/>
+                    {this.newFeedScreen()}
 
                 </TabNavigator.Item>
                 <TabNavigator.Item
@@ -52,7 +86,7 @@ export default class HomeScreen extends React.Component {
                     renderIcon={() => <Icon size={24} color="gray" name="menu"/>}
                     renderSelectedIcon={() => <Icon size={24} color="green" name="menu"/>}
                     onPress={() => this.setState({selectedTab: 'Menu'})}>
-                    <MenuScreen />
+                    {this.menuScreen()}
                 </TabNavigator.Item>
 
             </TabNavigator>
@@ -75,3 +109,14 @@ export default class HomeScreen extends React.Component {
     }
 
 }
+const styles = StyleSheet.create({
+    titleStyle: {
+        elevation:15,
+        justifyContent: 'space-between',
+        flexDirection:'row',
+        backgroundColor: 'white',
+    },
+    headerStyle:{
+        elevation: 15,height:this.height/8
+    }
+})
