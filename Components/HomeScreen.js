@@ -33,7 +33,7 @@ export default class HomeScreen extends React.Component {
                 renderSelectedIcon={() =><Icon size={24} color="green" name="list" />}
                 badgeText="1"
                 onPress={() => this.setState({ selectedTab: 'NewFeed' })}>
-             <Button title="SideMenu"  onPress={()=>{this.openControlPanel()}}/>
+             
 
             </TabNavigator.Item>
             <TabNavigator.Item
