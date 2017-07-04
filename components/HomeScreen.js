@@ -218,7 +218,7 @@ export default class HomeScreen extends React.Component {
                 url:'https://scontent.fhan2-1.fna.fbcdn.net/v/t1.0-9/17799998_1949714765273125_6206086656656546584_n.jpg?oh=91e183590a290e6613918272f8c4ea4c&oe=59D9778D',
                 action:'Vừa Đăng nhập 10 phút trước'}]
         this.setState({
-            dataSource:this
+            dataSource:this.state.dataSource.cloneWithRows(arr),
         })
 
     }
