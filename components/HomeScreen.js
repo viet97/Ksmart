@@ -54,13 +54,7 @@ export default class HomeScreen extends React.Component {
         })
     }
 
-    isToogleVisible() {
-        if (this.state.status) {
-            return (
-                <Icon style={styles.iconStyle} size={24} color="white" name="menu"/>
-            )
-        }
-    }
+
 
     showToogle() {
         this.setState({
@@ -75,13 +69,25 @@ export default class HomeScreen extends React.Component {
 
             <View style={{flex: 1}}>
                 <View style={styles.titleStyle}>
-                    {this.isToogleVisible()}
+                    <TouchableOpacity onPress={() => this.openControlPanel()}
+                                      style={{
+                                          width: 35,
+                                          height: 35,
+                                          alignSelf: 'center',
+                                          paddingLeft: 8,
+                                          paddingRight: 16,
+                                          paddingBottom: 8,
+                                          paddingTop: 8
+                                      }}>
+
+                        <Icon style={styles.iconStyle} size={24} color="white" name="menu"/>
+
+                    </TouchableOpacity>
                     <Text style={{fontSize: 20, color: 'white',alignSelf:'center'}}>NewFeed</Text>
                     <View style={{backgroundColor: Color.backgroundNewFeed, width: 35, height: 35}}></View>
                 </View>
 
-                <TouchableOpacity onPress={() => this.openControlPanel()}
-                                  style={{width: 35, height: 35, position: 'absolute'}}/>
+
                 <View style={{backgroundColor: Color.backgroundNewFeed, flex: 9}}>
                     <ListView
                         style={{backgroundColor: Color.itemListViewColor}}
