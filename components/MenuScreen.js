@@ -9,9 +9,9 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import React from 'react';
 export default class MenuScreen extends React.Component{
     static navigationOptions = {
-        title:'Menu',
-        headerTitleStyle: {alignSelf: 'center'},
+        header:null
     };
+
     render(){
 
         return(
