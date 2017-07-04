@@ -208,8 +208,10 @@ export default class HomeScreen extends React.Component {
                 <TabNavigator.Item
                     selected={this.state.selectedTab === 'NewFeed'}
                     title="NewFeed"
-                    renderIcon={() => <Icon size={24} color="white" name="list"/>}
-                    renderSelectedIcon={() => <Icon size={24} color="green" name="list"/>}
+                    titleStyle={{color:'white'}}
+                    selectedTitleStyle={{color:Color.renderIconColor}}
+                    renderIcon={() => <Icon size={24} color="white" name="payment"/>}
+                    renderSelectedIcon={() => <Icon size={24} color={Color.renderIconColor} name="payment"/>}
                     badgeText="1"
                     onPress={() => this.setState({selectedTab: 'NewFeed'})}>
                     {this.newFeedScreen()}
@@ -218,8 +220,10 @@ export default class HomeScreen extends React.Component {
                 <TabNavigator.Item
                     selected={this.state.selectedTab === 'Menu'}
                     title="Menu"
+                    titleStyle={{color:'white'}}
+                    selectedTitleStyle={{color:Color.renderIconColor}}
                     renderIcon={() => <Icon size={24} color="white" name="menu"/>}
-                    renderSelectedIcon={() => <Icon size={24} color="green" name="menu"/>}
+                    renderSelectedIcon={() => <Icon size={24} color={Color.renderIconColor} name="menu"/>}
                     onPress={() => this.setState({selectedTab: 'Menu'})}>
                     {this.menuScreen()}
                 </TabNavigator.Item>
