@@ -34,7 +34,7 @@ export default class HomeScreen extends React.Component {
             width: 0,
             height: 0
         })
-        console.log("12312321")
+
     };
 
     constructor(props) {
@@ -103,13 +103,13 @@ export default class HomeScreen extends React.Component {
 
     sideMenuView() {
         return (
-            <View >
+            <View>
                 <View style={{justifyContent: 'center', height: 50, backgroundColor: '#570A60', elevation: 15}}>
                     <Image source={require('../images/bg.png')} style={{flex:1}}/>
                     <Image source={require('../images/logoksmart.png')} style={{alignSelf:'center',position:'absolute'}}/>
                 </View>
-                <View style={{marginTop: 15,flexDirection:'row'}}>
-
+                <View style={{paddingTop: 15,flexDirection:'column'}}>
+                    <Image style={{position:'absolute'}} source={require('../images/bg.png')}/>
                     <View style={styles.itemSideMenuStyle}>
                         <Icon1 size={24} color="black" name="ios-people-outline"/>
                         <Text style={{marginLeft: 10}}>Quản lý nhân viên</Text>
@@ -206,7 +206,10 @@ const styles = StyleSheet.create({
         elevation: 15, height: this.height / 7
     },
     itemSideMenuStyle: {
+        borderBottomWidth:0.5,
+        borderBottomColor:'white',
         flexDirection: 'row',
-        margin: 10
+        margin: 10,
+        paddingBottom:8
     }
 })
