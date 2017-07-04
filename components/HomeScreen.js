@@ -9,6 +9,7 @@ import {
     AppRegistry,
     Text,
     View,
+    Platform,
     Button, ListView, Image, StyleSheet, StatusBar,
     TouchableOpacity,
     Dimensions
@@ -68,11 +69,11 @@ export default class HomeScreen extends React.Component {
     newFeedScreen() {
         return (
 
-            <View >
+            <View style={{marginTop: (Platform.OS === 'ios') ? 16 : 0,}}>
                 <View style={styles.titleStyle}>
                     {this.isToogleVisible()}
                     <Text style={{fontSize: 20}}>NewFeed</Text>
-                    <View style={{backgroundColor: 'white', width: 35, height: 35}}></View>
+                    <View style={{backgroundColor: 'transparent', width: 35, height: 35}}></View>
                 </View>
 
                 <TouchableOpacity onPress={() => this.openControlPanel()}
@@ -103,10 +104,14 @@ export default class HomeScreen extends React.Component {
 
     sideMenuView() {
         return (
-            <View>
-                <View style={{justifyContent: 'center', height: 50, backgroundColor: '#570A60', elevation: 15}}>
-                    <Image source={require('../images/bg.png')} style={{flex:1}}/>
-                    <Image source={require('../images/logoksmart.png')} style={{alignSelf:'center',position:'absolute'}}/>
+            <View style={{marginTop: (Platform.OS === 'ios') ? 16 : 0,}}>
+                <View style={{
+                    justifyContent: 'center',
+                    height: 50,
+                    backgroundColor: '#570A60',
+                    elevation: (Platform.OS === 'ios') ? 0 : 15,
+                }}>
+                    <Image source={require('../images/bg.png')}/>
                 </View>
                 <View style={{paddingTop: 15,flexDirection:'column'}}>
                     <Image style={{position:'absolute'}} source={require('../images/bg.png')}/>
@@ -206,7 +211,7 @@ export default class HomeScreen extends React.Component {
 }
 const styles = StyleSheet.create({
     titleStyle: {
-        elevation: 15,
+        elevation: (Platform.OS === 'ios') ? 0 : 15,
         justifyContent: 'space-between',
         flexDirection: 'row',
         backgroundColor: 'white',
