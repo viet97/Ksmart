@@ -17,9 +17,6 @@ import {
     Platform
 } from 'react-native';
 
-import NewFeedScreen from "./NewFeedScreen";
-import MenuScreen from "./MenuScreen";
-import Header from "./Header";
 var {height} = Dimensions.get('window');
 export default class HomeScreen extends React.Component {
     static navigationOptions = {
@@ -76,7 +73,7 @@ export default class HomeScreen extends React.Component {
             <View style={{flex: 1}}>
                 <View style={styles.titleStyle}>
                     {this.isToogleVisible()}
-                    <Text style={{fontSize: 20, color: 'white',alignSelf:'center'}}>NewFeed</Text>
+                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>NewFeed</Text>
                     <View style={{backgroundColor: Color.backgroundNewFeed, width: 35, height: 35}}></View>
                 </View>
 
@@ -88,7 +85,7 @@ export default class HomeScreen extends React.Component {
                         dataSource={this.state.dataSource}
                         renderRow={(rowData) =>
                             <View style={{flexDirection: 'row', height: height / 6, flex: 1}}>
-                                <View style={{justifyContent:'center'}}>
+                                <View style={{justifyContent: 'center'}}>
                                     <Image source={{uri: rowData.url}}
                                            style={{margin: 8, width: 60, height: 60, borderRadius: 30}}/>
                                 </View>
@@ -208,8 +205,8 @@ export default class HomeScreen extends React.Component {
                 <TabNavigator.Item
                     selected={this.state.selectedTab === 'NewFeed'}
                     title="NewFeed"
-                    titleStyle={{color:'white'}}
-                    selectedTitleStyle={{color:Color.renderIconColor}}
+                    titleStyle={{color: 'white'}}
+                    selectedTitleStyle={{color: Color.renderIconColor}}
                     renderIcon={() => <Icon size={24} color="white" name="payment"/>}
                     renderSelectedIcon={() => <Icon size={24} color={Color.renderIconColor} name="payment"/>}
                     badgeText="1"
@@ -220,8 +217,8 @@ export default class HomeScreen extends React.Component {
                 <TabNavigator.Item
                     selected={this.state.selectedTab === 'Menu'}
                     title="Menu"
-                    titleStyle={{color:'white'}}
-                    selectedTitleStyle={{color:Color.renderIconColor}}
+                    titleStyle={{color: 'white'}}
+                    selectedTitleStyle={{color: Color.renderIconColor}}
                     renderIcon={() => <Icon size={24} color="white" name="menu"/>}
                     renderSelectedIcon={() => <Icon size={24} color={Color.renderIconColor} name="menu"/>}
                     onPress={() => this.setState({selectedTab: 'Menu'})}>
@@ -300,15 +297,15 @@ const styles = StyleSheet.create({
         margin: 8,
         paddingBottom: 8
     }, iconStyle: {
-        alignSelf:'center',
+        alignSelf: 'center',
         width: 24,
         height: 24,
         backgroundColor: "transparent",
         marginLeft: 8
     },
     textStyle: {
-        fontSize:18,
-        color:'white',
+        fontSize: 18,
+        color: 'white',
         backgroundColor: 'transparent'
     }
 })

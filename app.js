@@ -5,11 +5,11 @@ import {
     Text,
     View
 } from 'react-native';
-import SplashScreen from './components/SplashScreen.js'
-import NewFeedScreen from './components/NewFeedScreen'
+import SplashScreen from './screens/SplashScreen.js'
+import NewFeedScreen from './screens/NewFeedScreen'
 import {StackNavigator} from 'react-navigation';
-import HomeScreen from "./components/HomeScreen";
-import MenuScreen from "./components/MenuScreen";
+import HomeScreen from "./screens/HomeScreen";
+import MenuScreen from "./screens/MenuScreen";
 
 const Ksmart = StackNavigator({
     Splash: {screen: SplashScreen},
