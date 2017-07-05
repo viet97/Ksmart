@@ -9,8 +9,6 @@ import {
     Button, ListView, Image, StyleSheet, StatusBar,
     TouchableOpacity
 } from 'react-native';
-import NewFeedScreen from "./NewFeedScreen";
-import MenuScreen from "./MenuScreen";
 export default class Header extends React.Component{
     render(){
         return(

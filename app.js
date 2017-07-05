@@ -10,9 +10,11 @@ import NewFeedScreen from './screens/NewFeedScreen'
 import {StackNavigator} from 'react-navigation';
 import HomeScreen from "./screens/HomeScreen";
 import MenuScreen from "./screens/MenuScreen";
+import LoginScreen from "./screens/LoginScreen";
 
 const Ksmart = StackNavigator({
     Splash: {screen: SplashScreen},
+    Login: {screen: LoginScreen},
     Home: {screen: HomeScreen},
     NewFeed:{screen:NewFeedScreen},
     Menu:{screen:MenuScreen}
