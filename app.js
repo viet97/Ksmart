@@ -15,7 +15,7 @@ import LoginScreen from "./screens/LoginScreen";
 const Ksmart = StackNavigator({
     Splash: {screen: SplashScreen},
     Login: {screen: LoginScreen},
-    Home: {screen: HomeScreecdn},
+    Home: {screen: HomeScreen},
     Menu:{screen:MenuScreen}
 });
 AppRegistry.registerComponent('Ksmart', () => Ksmart);

@@ -6,7 +6,7 @@ import Icon3 from 'react-native-vector-icons/FontAwesome'
 import React from 'react';
 import Drawer from 'react-native-drawer';
 import Color from '../configs/color'
-
+import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import {
     AppRegistry,
     Text,
@@ -14,11 +14,12 @@ import {
     Button, ListView, Image, StyleSheet, StatusBar,
     TouchableOpacity,
     Dimensions,
-    Platform
+    Platform,
+    ScrollView
 } from 'react-native';
 import NewFeedScreen from "./NewFeedScreen";
 
-var {height} = Dimensions.get('window');
+var {height} = Dimensions.get('window').height;
 export default class HomeScreen extends React.Component {
     static navigationOptions = {
         header: null
@@ -39,6 +40,8 @@ export default class HomeScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = ({
+            myText: 'I\'m ready to get swiped!',
+            gestureName: 'none',
             width: 35,
             height: 35,
             selectedTab: 'NewFeed',
@@ -57,6 +60,13 @@ export default class HomeScreen extends React.Component {
 
     }
 
+    onSwipeRight(gestureState) {
+        console.log("onSwipeRight")
+        this.setState({myText: 'You swiped right!'});
+        this.openControlPanel()
+    }
+
+
     // itemListView(data) {
     //     return (
     //         <View style={{flexDirection: 'row', height: height / 6, flex: 1}}>
@@ -73,142 +83,151 @@ export default class HomeScreen extends React.Component {
             case "Menu":
                 return this.menuScreen();
             case "NewFeed":
-                return <NewFeedScreen click={() => this.openControlPanel()}/>
+                return <NewFeedScreen clickMenu={() => this.openControlPanel()} backToHome={() => {
+                    this.setState({screenName: 'Menu'})
+                } }/>
         }
     }
 
     menuScreen() {
         return (
-            <View style={{flex: 1}}>
-                <Image
-                    source={{uri: 'https://s-media-cache-ak0.pinimg.com/originals/b2/a9/23/b2a9231806f6cd4b3da559eedc249880.jpg'}}
-                    style={{position: 'absolute', left: 0, right: 0, top: 0, bottom: 0}}/>
-                <View style={styles.titleStyle}>
+            <GestureRecognizer
+                onSwipeRight={(state) => this.onSwipeRight(state)}
+                style={{flex: 1}}
+            >
+                <View style={{flex: 1}}>
                     <Image
-                        source={require('../images/MenuBar.png')}
-                        style={{width: 35, height: 35, alignSelf: 'center', marginLeft: 16}}/>
-                    <Text style={{fontSize: 20, alignSelf: 'center'}}>Menu</Text>
-                    <View style={{width: 35, height: 35}}></View>
+                        source={{uri: 'https://s-media-cache-ak0.pinimg.com/originals/b2/a9/23/b2a9231806f6cd4b3da559eedc249880.jpg'}}
+                        style={{position: 'absolute', left: 0, right: 0, top: 0, bottom: 0}}/>
+                    <View style={styles.titleStyle}>
+                        <Image
+                            source={require('../images/MenuBar.png')}
+                            style={{width: 35, height: 35, alignSelf: 'center', marginLeft: 16}}/>
+                        <Text style={{fontSize: 20, alignSelf: 'center'}}>Menu</Text>
+                        <View style={{width: 35, height: 35}}></View>
+                    </View>
+                    <TouchableOpacity onPress={() => this.openControlPanel()}
+                                      style={{marginLeft: 16, width: 35, height: 35, position: 'absolute'}}/>
+                    <View style={{flex: 9}}>
+                        <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 16}}>
+                            <View>
+                                <View style={{
+                                    backgroundColor: Color.iconMenuColor,
+                                    borderRadius: 15,
+                                    width: 80,
+                                    height: 80,
+                                    justifyContent: 'center'
+                                }}>
+                                    <Icon style={{alignSelf: 'center'}} size={60} color="white" name="payment"/>
+                                </View>
+                                <Text style={styles.titleIconsMenu}> Hoat Dong</Text>
+                            </View>
+                            <View>
+                                <View style={{
+                                    backgroundColor: Color.iconMenuColor,
+                                    borderRadius: 15,
+                                    width: 80,
+                                    height: 80,
+                                    justifyContent: 'center'
+                                }}>
+                                    <Icon1 style={{alignSelf: 'center'}} size={60} color="white"
+                                           name="ios-people-outline"/>
+                                </View>
+                                <Text style={styles.titleIconsMenu}>nhân viên</Text>
+                            </View>
+                            <View>
+                                <View style={{
+                                    backgroundColor: Color.iconMenuColor,
+                                    borderRadius: 15,
+                                    width: 80,
+                                    height: 80,
+                                    justifyContent: 'center'
+                                }}>
+                                    <Icon2 style={{alignSelf: 'center'}} size={60} color="white" name="archive"/>
+                                </View>
+                                <Text style={styles.titleIconsMenu}>Đơn hàng</Text>
+                            </View>
+                        </View>
+                        <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 16}}>
+                            <View>
+                                <View style={{
+                                    backgroundColor: Color.iconMenuColor,
+                                    borderRadius: 15,
+                                    width: 80,
+                                    height: 80,
+                                    justifyContent: 'center'
+                                }}>
+                                    <Icon2 style={{alignSelf: 'center'}} size={60} color="white" name="user"/>
+                                </View>
+                                <Text style={styles.titleIconsMenu}> Khách hàng</Text>
+                            </View>
+                            <View>
+                                <View style={{
+                                    backgroundColor: Color.iconMenuColor,
+                                    borderRadius: 15,
+                                    width: 80,
+                                    height: 80,
+                                    justifyContent: 'center'
+                                }}>
+                                    <Icon2 style={{alignSelf: 'center'}} size={60} color="white"
+                                           name="aircraft-take-off"/>
+                                </View>
+                                <Text style={styles.titleIconsMenu}>Viếng thăm</Text>
+                            </View>
+                            <View>
+                                <View style={{
+                                    backgroundColor: Color.iconMenuColor,
+                                    borderRadius: 15,
+                                    width: 80,
+                                    height: 80,
+                                    justifyContent: 'center'
+                                }}>
+                                    <Icon3 style={{alignSelf: 'center'}} size={60} color="white" name="bar-chart"/>
+                                </View>
+                                <Text style={styles.titleIconsMenu}>Biểu đồ</Text>
+                            </View>
+                        </View>
+                        <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 16}}>
+                            <View>
+                                <View style={{
+                                    backgroundColor: Color.iconMenuColor,
+                                    borderRadius: 15,
+                                    width: 80,
+                                    height: 80,
+                                    justifyContent: 'center'
+                                }}>
+                                    <Icon3 style={{alignSelf: 'center'}} size={60} color="white" name="file-text-o"/>
+                                </View>
+                                <Text style={styles.titleIconsMenu}>Báo cáo</Text>
+                            </View>
+                            <View>
+                                <View style={{
+                                    backgroundColor: Color.iconMenuColor,
+                                    borderRadius: 15,
+                                    width: 80,
+                                    height: 80,
+                                    justifyContent: 'center'
+                                }}>
+                                    <Icon2 style={{alignSelf: 'center'}} size={60} color="white" name="laptop"/>
+                                </View>
+                                <Text style={styles.titleIconsMenu}>Kế hoạch</Text>
+                            </View>
+                            <View>
+                                <View style={{
+                                    backgroundColor: Color.iconMenuColor,
+                                    borderRadius: 15,
+                                    width: 80,
+                                    height: 80,
+                                    justifyContent: 'center'
+                                }}>
+                                    <Icon2 style={{alignSelf: 'center'}} size={60} color="white" name="mail"/>
+                                </View>
+                                <Text style={styles.titleIconsMenu}>Tin nhắn</Text>
+                            </View>
+                        </View>
+                    </View>
                 </View>
-                <TouchableOpacity onPress={() => this.openControlPanel()}
-                                  style={{marginLeft: 16, width: 35, height: 35, position: 'absolute'}}/>
-                <View style={{flex: 9}}>
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 16}}>
-                        <View>
-                            <View style={{
-                                backgroundColor: Color.iconMenuColor,
-                                borderRadius: 15,
-                                width: 80,
-                                height: 80,
-                                justifyContent: 'center'
-                            }}>
-                                <Icon style={{alignSelf: 'center'}} size={60} color="white" name="payment"/>
-                            </View>
-                            <Text style={styles.titleIconsMenu}> Hoat Dong</Text>
-                        </View>
-                        <View>
-                            <View style={{
-                                backgroundColor: Color.iconMenuColor,
-                                borderRadius: 15,
-                                width: 80,
-                                height: 80,
-                                justifyContent: 'center'
-                            }}>
-                                <Icon1 style={{alignSelf: 'center'}} size={60} color="white" name="ios-people-outline"/>
-                            </View>
-                            <Text style={styles.titleIconsMenu}>nhân viên</Text>
-                        </View>
-                        <View>
-                            <View style={{
-                                backgroundColor: Color.iconMenuColor,
-                                borderRadius: 15,
-                                width: 80,
-                                height: 80,
-                                justifyContent: 'center'
-                            }}>
-                                <Icon2 style={{alignSelf: 'center'}} size={60} color="white" name="archive"/>
-                            </View>
-                            <Text style={styles.titleIconsMenu}>Đơn hàng</Text>
-                        </View>
-                    </View>
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 16}}>
-                        <View>
-                            <View style={{
-                                backgroundColor: Color.iconMenuColor,
-                                borderRadius: 15,
-                                width: 80,
-                                height: 80,
-                                justifyContent: 'center'
-                            }}>
-                                <Icon2 style={{alignSelf: 'center'}} size={60} color="white" name="user"/>
-                            </View>
-                            <Text style={styles.titleIconsMenu}> Khách hàng</Text>
-                        </View>
-                        <View>
-                            <View style={{
-                                backgroundColor: Color.iconMenuColor,
-                                borderRadius: 15,
-                                width: 80,
-                                height: 80,
-                                justifyContent: 'center'
-                            }}>
-                                <Icon2 style={{alignSelf: 'center'}} size={60} color="white" name="aircraft-take-off"/>
-                            </View>
-                            <Text style={styles.titleIconsMenu}>Viếng thăm</Text>
-                        </View>
-                        <View>
-                            <View style={{
-                                backgroundColor: Color.iconMenuColor,
-                                borderRadius: 15,
-                                width: 80,
-                                height: 80,
-                                justifyContent: 'center'
-                            }}>
-                                <Icon3 style={{alignSelf: 'center'}} size={60} color="white" name="bar-chart"/>
-                            </View>
-                            <Text style={styles.titleIconsMenu}>Biểu đồ</Text>
-                        </View>
-                    </View>
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 16}}>
-                        <View>
-                            <View style={{
-                                backgroundColor: Color.iconMenuColor,
-                                borderRadius: 15,
-                                width: 80,
-                                height: 80,
-                                justifyContent: 'center'
-                            }}>
-                                <Icon3 style={{alignSelf: 'center'}} size={60} color="white" name="file-text-o"/>
-                            </View>
-                            <Text style={styles.titleIconsMenu}>Báo cáo</Text>
-                        </View>
-                        <View>
-                            <View style={{
-                                backgroundColor: Color.iconMenuColor,
-                                borderRadius: 15,
-                                width: 80,
-                                height: 80,
-                                justifyContent: 'center'
-                            }}>
-                                <Icon2 style={{alignSelf: 'center'}} size={60} color="white" name="laptop"/>
-                            </View>
-                            <Text style={styles.titleIconsMenu}>Kế hoạch</Text>
-                        </View>
-                        <View>
-                            <View style={{
-                                backgroundColor: Color.iconMenuColor,
-                                borderRadius: 15,
-                                width: 80,
-                                height: 80,
-                                justifyContent: 'center'
-                            }}>
-                                <Icon2 style={{alignSelf: 'center'}} size={60} color="white" name="mail"/>
-                            </View>
-                            <Text style={styles.titleIconsMenu}>Tin nhắn</Text>
-                        </View>
-                    </View>
-                </View>
-            </View>
+            </GestureRecognizer>
         )
     }
 
@@ -228,8 +247,9 @@ export default class HomeScreen extends React.Component {
                     <Image style={{position: 'absolute'}} source={require('../images/bg.png')}/>
 
                     <View  >
-                        <TouchableOpacity style={styles.itemSideMenuStyle}
-                                          onPress={() => this.setState({screenName: "NewFeed"})}>
+                        <TouchableOpacity style={styles.itemSideMenuStyle} onPress={() => {
+                            this.setState({screenName: "NewFeed"}), this.closeControlPanel()
+                        }}>
                             <Icon size={24} style={styles.iconStyle} color="white" name="payment"/>
                             <Text style={styles.textStyle}>Hoat Dong</Text>
                             <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
