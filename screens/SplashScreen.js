@@ -16,7 +16,8 @@ export default class SplashScreen extends React.Component {
     constructor(props) {
         super(props);
         state = {
-            onDone: false
+            onDone: false,
+
         };
     }
 
@@ -33,9 +34,7 @@ export default class SplashScreen extends React.Component {
     }
 
     componentDidMount() {
-        let DeviceInfo = require('react-native-device-info');
 
-        console.log("Device Unique ID", DeviceInfo.getUniqueID());
         const timer = require('react-native-timer');
         timer.setTimeout(
             this, 'hideMsg', () => this._onDone(), 1000
@@ -51,7 +50,7 @@ export default class SplashScreen extends React.Component {
                 {
                     index: 0,
                     actions: [
-                        NavigationActions.navigate({routeName: 'Home'})
+                        NavigationActions.navigate({routeName: 'Login'})
                     ]
                 }));
     }

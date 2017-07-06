@@ -11,7 +11,8 @@ import {
 } from 'react-native';
 import {TextInputLayout} from 'rn-textinputlayout';
 import CheckBox from 'react-native-checkbox'
-
+import Toast from 'react-native-simple-toast';
+import URlConfig from "../configs/url";
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -25,11 +26,10 @@ export default class LoginScreen extends React.Component {
         super(props);
         this.state = {
             checkOfCheckBox: false,
+            idct: '',
+            username: '',
+            password: '',
         };
-    }
-
-    imageLoaded() {
-        this.setState({viewRef: findNodeHandle(this.backgroundImage)});
     }
 
 
@@ -52,8 +52,18 @@ export default class LoginScreen extends React.Component {
                                          hintColor='white' focusColor='white'>
                             <TextInput
                                 style={styles.textInput}
+                                placeholder={'Mã công ty'}
+                                secureTextEntry={false}
+                                onChangeText={(text)=>this.setState({idct:text})}
+
+                            />
+                        </TextInputLayout>
+                        <TextInputLayout style={styles.inputLayout} hintColor='white' focusColor='white'>
+                            <TextInput
+                                style={styles.textInput}
                                 placeholder={'Tên đăng nhập'}
                                 secureTextEntry={false}
+                                onChangeText={(text)=>this.setState({username:text})}
                             />
                         </TextInputLayout>
                         <TextInputLayout style={styles.inputLayout} hintColor='white' focusColor='white'>
@@ -61,6 +71,7 @@ export default class LoginScreen extends React.Component {
                                 style={styles.textInput}
                                 placeholder={'Mật khẩu'}
                                 secureTextEntry={true}
+                                onChangeText={(text) => this.setState({password:text})}
                             />
                         </TextInputLayout>
                     </View>
@@ -70,12 +81,12 @@ export default class LoginScreen extends React.Component {
                             uncheckedImage={require("../images/ic_crop_3_2_3x.png")}
                             labelStyle={{color: 'red'}}
                             underlayColor="transparent"
-                            label='Ghi nho dang nhap'
+                            label='Ghi nhớ đăng nhập'
                             checked={this.state.checkOfCheckBox}
                             onChange={(checked) => this.setState({checkOfCheckBox: !this.state.checkOfCheckBox})}
                         />
                         <TouchableOpacity
-                            style={{height: 48, backgroundColor: 'transparent', justifyContent: 'center'}}>
+                            style={{height: 48, backgroundColor: 'transparent', justifyContent: 'center'}} onPress={()=>this.startLogin()}>
                             <Text style={{fontSize: 16, alignSelf: 'center', color: 'blue'}}>Đăng nhập</Text>
                         </TouchableOpacity>
                     </View>
@@ -84,6 +95,40 @@ export default class LoginScreen extends React.Component {
 
             </View>
         );
+    }
+    startLogin(){
+        // Toast.show('hihi do ngok',Toast.LONG)
+        if(this.state.password.length===0||this.state.username===0||this.state.idct===0){
+            Toast.show('Vui lòng nhập đầy đủ thông tin đăng nhập!',Toast.LONG)
+        }else {
+
+            fetch(URlConfig.getRouterApp(this.state.idct))
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    if (!responseJson.status){
+                        Toast.show('Mã công ty không chính xác!');
+                    }else{
+                        URlConfig.BASE_URL_APP=responseJson.data;
+                        let urlLogin=URlConfig.getLoginRouter(this.state.username,this.state.password,this.state.idct);
+                        console.log(urlLogin)
+                        fetch(urlLogin)
+                            .then((response) => response.json())
+                            .then((responseJson) => {
+                                if (!responseJson.status){
+                                    Toast.show('Mã công ty không chính xác!');
+                                }else{
+                                    Toast.show('hihi dc r');
+                                }
+                            })
+                            .catch((error) => {
+                                console.error(error);
+                            });
+                    }
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        }
     }
 }
 const styles = StyleSheet.create({
