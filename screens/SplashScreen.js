@@ -33,6 +33,9 @@ export default class SplashScreen extends React.Component {
     }
 
     componentDidMount() {
+        let DeviceInfo = require('react-native-device-info');
+
+        console.log("Device Unique ID", DeviceInfo.getUniqueID());
         const timer = require('react-native-timer');
         timer.setTimeout(
             this, 'hideMsg', () => this._onDone(), 1000

@@ -120,7 +120,7 @@ export default class HomeScreen extends React.Component {
                                 }}>
                                     <Icon style={{alignSelf: 'center'}} size={60} color="white" name="payment"/>
                                 </View>
-                                <Text style={styles.titleIconsMenu}> Hoat Dong</Text>
+                                <Text style={styles.titleIconsMenu}>Hoạt động</Text>
                             </View>
                             <View>
                                 <View style={{
@@ -133,7 +133,7 @@ export default class HomeScreen extends React.Component {
                                     <Icon1 style={{alignSelf: 'center'}} size={60} color="white"
                                            name="ios-people-outline"/>
                                 </View>
-                                <Text style={styles.titleIconsMenu}>nhân viên</Text>
+                                <Text style={styles.titleIconsMenu}>hân viên</Text>
                             </View>
                             <View>
                                 <View style={{
@@ -251,7 +251,7 @@ export default class HomeScreen extends React.Component {
                             this.setState({screenName: "NewFeed"}), this.closeControlPanel()
                         }}>
                             <Icon size={24} style={styles.iconStyle} color="white" name="payment"/>
-                            <Text style={styles.textStyle}>Hoat Dong</Text>
+                            <Text style={styles.textStyle}>Hoạt động</Text>
                             <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
                         </TouchableOpacity>
                     </View>
@@ -427,6 +427,9 @@ const styles = StyleSheet.create({
     },
     titleIconsMenu: {
         textAlign: 'center',
-        color: 'white'
+        color: 'white',
+        fontSize:16,
+        backgroundColor:'transparent',
+        fontFamily: 'Al Nile'
     }
 })
