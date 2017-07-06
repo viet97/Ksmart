@@ -16,13 +16,12 @@ import {
     Dimensions,
     Platform
 } from 'react-native';
+import NewFeedScreen from "./NewFeedScreen";
 
 var {height} = Dimensions.get('window');
 export default class HomeScreen extends React.Component {
     static navigationOptions = {
-
         header: null
-
     };
 
     closeControlPanel = () => {
@@ -31,7 +30,6 @@ export default class HomeScreen extends React.Component {
     openControlPanel = () => {
         this._drawer.open()
         this.setState({
-            state: false,
             width: 0,
             height: 0
         })
@@ -41,23 +39,15 @@ export default class HomeScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = ({
-            gestureName: 'none',
             width: 35,
             height: 35,
-            status: true,
             selectedTab: 'NewFeed',
             headerTitleStyle: {alignSelf: 'center'},
-            dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
+            dataSourceIconMenu: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 != r2}),
+            screenName: 'Menu'
         })
     }
 
-    isToogleVisible() {
-        if (this.state.status) {
-            return (
-                <Icon style={styles.iconStyle} size={24} color="white" name="menu"/>
-            )
-        }
-    }
 
     showToogle() {
         this.setState({
@@ -67,75 +57,163 @@ export default class HomeScreen extends React.Component {
 
     }
 
-    newFeedScreen() {
-        return (
-
-            <View style={{flex: 1}}>
-                <View style={styles.titleStyle}>
-                    {this.isToogleVisible()}
-                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>NewFeed</Text>
-                    <View style={{backgroundColor: Color.backgroundNewFeed, width: 35, height: 35}}></View>
-                </View>
-
-                <TouchableOpacity onPress={() => this.openControlPanel()}
-                                  style={{width: 50, height: 50, position: 'absolute'}}/>
-                <View style={{backgroundColor: Color.backgroundNewFeed, flex: 9}}>
-                    <ListView
-                        style={{backgroundColor: Color.itemListViewColor}}
-                        dataSource={this.state.dataSource}
-                        renderRow={(rowData) =>
-                            <View style={{flexDirection: 'row', height: height / 6, flex: 1}}>
-                                <View style={{justifyContent: 'center'}}>
-                                    <Image source={{uri: rowData.url}}
-                                           style={{margin: 8, width: 60, height: 60, borderRadius: 30}}/>
-                                </View>
-                                <View style={{flex: 4, margin: 8, justifyContent: 'center'}}>
-                                    <Text
-                                        style={{fontSize: 20, color: Color.itemNameListViewColor}}>{rowData.name}</Text>
-                                    <Text style={{fontSize: 13, color: 'white'}}> {rowData.action}</Text>
-                                </View>
-                            </View>
-                        }
-                    />
-                </View>
-            </View>
-
-        )
-    }
-
-    itemListView(data) {
-        return (
-            <View style={{flexDirection: 'row', height: height / 6, flex: 1}}>
-                <Image source={{uri: data.url}} style={{flex: 1}}/>
-                <View style={{flex: 5}}>
-                    <Text style={{fontSize: 15, color: Color.itemNameListViewColor}}>{data.name}</Text>
-                    <Text style={{fontSize: 10, color: 'white'}}> {data.action}</Text>
-                </View>
-            </View>
-        )
+    // itemListView(data) {
+    //     return (
+    //         <View style={{flexDirection: 'row', height: height / 6, flex: 1}}>
+    //             <Image source={{uri: data.url}} style={{flex: 1}}/>
+    //             <View style={{flex: 5}}>
+    //                 <Text style={{fontSize: 15, color: Color.itemNameListViewColor}}>{data.name}</Text>
+    //                 <Text style={{fontSize: 10, color: 'white'}}> {data.action}</Text>
+    //             </View>
+    //         </View>
+    //     )
+    // }
+    renderSomething() {
+        switch (this.state.screenName) {
+            case "Menu":
+                return this.menuScreen();
+            case "NewFeed":
+                return <NewFeedScreen click={() => this.openControlPanel()}/>
+        }
     }
 
     menuScreen() {
         return (
-            <View >
+            <View style={{flex: 1}}>
+                <Image
+                    source={{uri: 'https://s-media-cache-ak0.pinimg.com/originals/b2/a9/23/b2a9231806f6cd4b3da559eedc249880.jpg'}}
+                    style={{position: 'absolute', left: 0, right: 0, top: 0, bottom: 0}}/>
                 <View style={styles.titleStyle}>
                     <Image
                         source={require('../images/MenuBar.png')}
-                        style={{width: 35, height: 35}}/>
-                    <Text style={{fontSize: 20}}>Menu</Text>
+                        style={{width: 35, height: 35, alignSelf: 'center', marginLeft: 16}}/>
+                    <Text style={{fontSize: 20, alignSelf: 'center'}}>Menu</Text>
                     <View style={{width: 35, height: 35}}></View>
                 </View>
                 <TouchableOpacity onPress={() => this.openControlPanel()}
-                                  style={{width: 35, height: 35, position: 'absolute'}}/>
-                <View style={{width: 100, height: 100, elevation: 20}}>
-                    <Icon2 style={{alignSelf: 'center', borderRadius: 20, fontSize: 100, backgroundColor: 'green'}}
-                           size={24} color="black" name="user"/>
+                                  style={{marginLeft: 16, width: 35, height: 35, position: 'absolute'}}/>
+                <View style={{flex: 9}}>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 16}}>
+                        <View>
+                            <View style={{
+                                backgroundColor: Color.iconMenuColor,
+                                borderRadius: 15,
+                                width: 80,
+                                height: 80,
+                                justifyContent: 'center'
+                            }}>
+                                <Icon style={{alignSelf: 'center'}} size={60} color="white" name="payment"/>
+                            </View>
+                            <Text style={styles.titleIconsMenu}> Hoat Dong</Text>
+                        </View>
+                        <View>
+                            <View style={{
+                                backgroundColor: Color.iconMenuColor,
+                                borderRadius: 15,
+                                width: 80,
+                                height: 80,
+                                justifyContent: 'center'
+                            }}>
+                                <Icon1 style={{alignSelf: 'center'}} size={60} color="white" name="ios-people-outline"/>
+                            </View>
+                            <Text style={styles.titleIconsMenu}>nhân viên</Text>
+                        </View>
+                        <View>
+                            <View style={{
+                                backgroundColor: Color.iconMenuColor,
+                                borderRadius: 15,
+                                width: 80,
+                                height: 80,
+                                justifyContent: 'center'
+                            }}>
+                                <Icon2 style={{alignSelf: 'center'}} size={60} color="white" name="archive"/>
+                            </View>
+                            <Text style={styles.titleIconsMenu}>Đơn hàng</Text>
+                        </View>
+                    </View>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 16}}>
+                        <View>
+                            <View style={{
+                                backgroundColor: Color.iconMenuColor,
+                                borderRadius: 15,
+                                width: 80,
+                                height: 80,
+                                justifyContent: 'center'
+                            }}>
+                                <Icon2 style={{alignSelf: 'center'}} size={60} color="white" name="user"/>
+                            </View>
+                            <Text style={styles.titleIconsMenu}> Khách hàng</Text>
+                        </View>
+                        <View>
+                            <View style={{
+                                backgroundColor: Color.iconMenuColor,
+                                borderRadius: 15,
+                                width: 80,
+                                height: 80,
+                                justifyContent: 'center'
+                            }}>
+                                <Icon2 style={{alignSelf: 'center'}} size={60} color="white" name="aircraft-take-off"/>
+                            </View>
+                            <Text style={styles.titleIconsMenu}>Viếng thăm</Text>
+                        </View>
+                        <View>
+                            <View style={{
+                                backgroundColor: Color.iconMenuColor,
+                                borderRadius: 15,
+                                width: 80,
+                                height: 80,
+                                justifyContent: 'center'
+                            }}>
+                                <Icon3 style={{alignSelf: 'center'}} size={60} color="white" name="bar-chart"/>
+                            </View>
+                            <Text style={styles.titleIconsMenu}>Biểu đồ</Text>
+                        </View>
+                    </View>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 16}}>
+                        <View>
+                            <View style={{
+                                backgroundColor: Color.iconMenuColor,
+                                borderRadius: 15,
+                                width: 80,
+                                height: 80,
+                                justifyContent: 'center'
+                            }}>
+                                <Icon3 style={{alignSelf: 'center'}} size={60} color="white" name="file-text-o"/>
+                            </View>
+                            <Text style={styles.titleIconsMenu}>Báo cáo</Text>
+                        </View>
+                        <View>
+                            <View style={{
+                                backgroundColor: Color.iconMenuColor,
+                                borderRadius: 15,
+                                width: 80,
+                                height: 80,
+                                justifyContent: 'center'
+                            }}>
+                                <Icon2 style={{alignSelf: 'center'}} size={60} color="white" name="laptop"/>
+                            </View>
+                            <Text style={styles.titleIconsMenu}>Kế hoạch</Text>
+                        </View>
+                        <View>
+                            <View style={{
+                                backgroundColor: Color.iconMenuColor,
+                                borderRadius: 15,
+                                width: 80,
+                                height: 80,
+                                justifyContent: 'center'
+                            }}>
+                                <Icon2 style={{alignSelf: 'center'}} size={60} color="white" name="mail"/>
+                            </View>
+                            <Text style={styles.titleIconsMenu}>Tin nhắn</Text>
+                        </View>
+                    </View>
                 </View>
             </View>
         )
     }
 
     sideMenuView() {
+        const {navigate} = this.props.navigation
         return (
             <View style={{marginTop: (Platform.OS === 'ios') ? 16 : 0,}}>
                 <View style={{
@@ -148,9 +226,18 @@ export default class HomeScreen extends React.Component {
                 </View>
                 <View style={{paddingTop: 15, flexDirection: 'column'}}>
                     <Image style={{position: 'absolute'}} source={require('../images/bg.png')}/>
+
+                    <View  >
+                        <TouchableOpacity style={styles.itemSideMenuStyle}
+                                          onPress={() => this.setState({screenName: "NewFeed"})}>
+                            <Icon size={24} style={styles.iconStyle} color="white" name="payment"/>
+                            <Text style={styles.textStyle}>Hoat Dong</Text>
+                            <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
+                        </TouchableOpacity>
+                    </View>
                     <View style={styles.itemSideMenuStyle}>
                         <Icon1 size={24} style={styles.iconStyle} color="white" name="ios-people-outline"/>
-                        <Text style={styles.textStyle}>Quản lý nhân viên</Text>
+                        <Text style={styles.textStyle}>Nhân viên</Text>
                         <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
                     </View>
                     <View style={styles.itemSideMenuStyle}>
@@ -188,80 +275,89 @@ export default class HomeScreen extends React.Component {
                         <Text style={styles.textStyle}>Tin nhắn</Text>
                         <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
                     </View>
-                    <View style={styles.itemSideMenuStyle}>
-                        <Icon1 size={24} style={styles.iconStyle} color="white" name="ios-settings"/>
-                        <Text style={styles.textStyle}>Cài đặt</Text>
-                        <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
-                    </View>
                 </View>
             </View>
         )
     }
 
-    MainView() {
-        return (
-
-            <TabNavigator tabBarStyle={{backgroundColor: Color.tabbarColor}}>
-                <TabNavigator.Item
-                    selected={this.state.selectedTab === 'NewFeed'}
-                    title="NewFeed"
-                    titleStyle={{color: 'white'}}
-                    selectedTitleStyle={{color: Color.renderIconColor}}
-                    renderIcon={() => <Icon size={24} color="white" name="payment"/>}
-                    renderSelectedIcon={() => <Icon size={24} color={Color.renderIconColor} name="payment"/>}
-                    badgeText="1"
-                    onPress={() => this.setState({selectedTab: 'NewFeed'})}>
-                    {this.newFeedScreen()}
-
-                </TabNavigator.Item>
-                <TabNavigator.Item
-                    selected={this.state.selectedTab === 'Menu'}
-                    title="Menu"
-                    titleStyle={{color: 'white'}}
-                    selectedTitleStyle={{color: Color.renderIconColor}}
-                    renderIcon={() => <Icon size={24} color="white" name="menu"/>}
-                    renderSelectedIcon={() => <Icon size={24} color={Color.renderIconColor} name="menu"/>}
-                    onPress={() => this.setState({selectedTab: 'Menu'})}>
-                    {this.menuScreen()}
-                </TabNavigator.Item>
-
-            </TabNavigator>
-
-        )
-    }
+    // MainView() {
+    //     return (
+    //
+    //         <View style={{flex: 1}}>
+    //             <View style={styles.titleStyle}>
+    //                 {this.isToogleVisible()}
+    //                 <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Menu</Text>
+    //                 <View style={{backgroundColor: Color.backgroundNewFeed, width: 35, height: 35}}></View>
+    //             </View>
+    //             <TouchableOpacity onPress={() => this.openControlPanel()}
+    //                               style={{width: 50, height: 50, position: 'absolute'}}/>
+    //             <View style={{flex: 9, backgroundColor: 'white'}}>
+    //                 <ListView
+    //                     dataSource={this.state.dataSourceIconMenu}
+    //                     renderRow={(r) =>
+    //                         <View>
+    //                             <View style={{backgroundColor:r.backGroundColor , borderRadius:10}}>
+    //                                 <Icon size={24} color='green' name ={r.iconName}/>
+    //                             </View>
+    //                             <Text> {r.titleIcon}</Text>
+    //                         </View>
+    //                       }
+    //                 />
+    //             </View>
+    //         </View>
+    //
+    //     )
+    // }
 
     componentDidMount() {
 
-        var arr = [
-            {
-                name: 'Đặng Quốc Việt',
-                url: 'https://scontent.fhan2-1.fna.fbcdn.net/v/t1.0-1/p160x160/1936235_1039707076102011_5958200926723814588_n.jpg?oh=95e45933baccb02bf6a965fe4ce4b2fe&oe=5A0728F5',
-                action: 'Vừa Đăng Nhập 10 phút trước'
+        var arrIcon =
+            [{
+                backGroundColor: Color.iconMenuColor,
+                titleIcon: 'Hoạt Động',
+                iconName: 'payment'
+            }, {
+                backGroundColor: Color.iconMenuColor,
+                titleIcon: 'Quản lý nhân viên',
+                iconName: 'ios-people-outline'
+            }, {
+                backGroundColor: Color.iconMenuColor,
+                title: 'Đơn hàng',
+                iconName: 'archive'
+            }, {
+                backGroundColor: Color.iconMenuColor,
+                titleIcon: 'Khách hàng',
+                iconName: 'user'
+            }, {
+                backGroundColor: Color.iconMenuColor,
+                titleIcon: 'Viếng thăm',
+                iconName: 'aircraft-take-off'
+            }, {
+                backGroundColor: Color.iconMenuColor,
+                titleIcon: 'Biểu đồ',
+                iconName: 'bar-chart'
+            }, {
+                backGroundColor: Color.iconMenuColor,
+                titleIcon: 'Báo cáo',
+                iconName: 'file-text-o'
+            }, {
+                backGroundColor: Color.iconMenuColor,
+                titleIcon: 'Kế hoạch',
+                iconName: 'laptop'
+            }, {
+                backGroundColor: Color.iconMenuColor,
+                titleIcon: 'Tin nhắn',
+                iconName: 'mail'
             },
-            {
-                name: 'Hoàng Trần Hảo',
-                url: 'https://scontent.fhan2-1.fna.fbcdn.net/v/t1.0-9/12369200_552344928266177_708527824307797917_n.jpg?oh=93ad512f12d70a1ed802fb8df6e03c85&oe=59CB9F2C',
-                action: 'Vừa Đăng Nhập 10 phút trước'
-            },
-            {
-                name: 'Nguyễn Đức Thắng',
-                url: 'https://scontent.fhan2-1.fna.fbcdn.net/v/t1.0-9/12369200_552344928266177_708527824307797917_n.jpg?oh=93ad512f12d70a1ed802fb8df6e03c85&oe=59CB9F2C',
-                action: 'Vừa Đăng Nhập 10 phút trước'
-            },
-            {
-                name: 'Trần Hán Hiếu',
-                url: 'https://scontent.fhan2-1.fna.fbcdn.net/v/t1.0-9/17799998_1949714765273125_6206086656656546584_n.jpg?oh=91e183590a290e6613918272f8c4ea4c&oe=59D9778D',
-                action: 'Vừa Đăng Nhập 10 phút trước'
-            }]
+            ]
         this.setState({
-            dataSource: this.state.dataSource.cloneWithRows(arr),
+            dataSourceIconMenu: this.state.dataSourceIconMenu.cloneWithRows(arrIcon),
         })
-        console.log(arr),
-            console.log(this.state.dataSource)
 
     }
 
     render() {
+        const {navigate} = this.props.navigation
         return (
 
             <Drawer
@@ -270,8 +366,9 @@ export default class HomeScreen extends React.Component {
                 openDrawerOffset={0.4}
                 negotiatePan={true}
                 onCloseStart={() => this.showToogle()}
+
                 content={this.sideMenuView()}>
-                {this.MainView()}
+                {this.renderSomething()}
             </Drawer>
 
         );
@@ -307,5 +404,9 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: 'white',
         backgroundColor: 'transparent'
+    },
+    titleIconsMenu: {
+        textAlign: 'center',
+        color: 'white'
     }
 })
