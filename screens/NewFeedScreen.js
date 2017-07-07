@@ -2,16 +2,19 @@ import {
     AppRegistry,
     Text,
     View,
-    Button, ListView, Image, StyleSheet, StatusBar,
+    Button, ListView, StyleSheet, StatusBar,
     TouchableOpacity,
     Dimensions
 } from 'react-native';
+import Image from 'react-native-image-progress';
+import ProgressBar from 'react-native-progress/Bar';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import Icon1 from 'react-native-vector-icons/Ionicons'
 import React from 'react';
 import Color from '../configs/color'
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 var {height} = Dimensions.get('window');
+var GiftedListView = require('react-native-gifted-listview');
 export default class NewFeedScreen extends React.Component {
     onSwipeRight(gestureState) {
         console.log("onSwipeRight")
@@ -22,12 +25,74 @@ export default class NewFeedScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = ({
+            arr:[],
+            index:0,
+            waiting:false,
             myText: 'I\'m ready to get swiped!',
             gestureName: 'none',
-            dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
         })
     }
+    _onFetch(page = 1, callback, options) {
+        var dem=0
+        if (page==1 ) this.setState({index:0})
+        setTimeout(() => {
+            var a=this.state.arr
+            var rows = []
+            while (dem<7){
+                dem++
+                console.log(a[this.state.index])
+                rows.push(a[this.state.index])
+                this.setState({index:this.state.index+1})
+            }
+            if (this.state.index==this.state.arr.length) {
+                callback(rows, {
+                    allLoaded: true, // the end of the list is reached
+                });
+            } else {
+                callback(rows);
+            }
+        }, 1000); // simulating network fetching
+    }
+    getImage(url){
+        if (url.length===0){
+            return(
 
+                <Image
+                    source={require('../images/bglogin.jpg')}
+                    indicator={ProgressBar.Pie}
+                    style={{margin: 8, width: 60, height: 60, borderRadius: 30}}/>
+            );
+        }else {
+            return(
+                <Image
+                    source={{uri: 'http://jav.ksmart.vn' + url}}
+                    indicator={ProgressBar.Pie}
+                    style={{margin: 8, width: 60, height: 60, borderRadius: 30}}/>
+            );
+        }
+    }
+    _renderRowView(rowData) {
+        return (
+            <View style={{ height: height / 8, flex: 1,
+                borderTopColor:'#227878',borderTopWidth:1
+            }}>
+                <Text style={{textAlign:'right',color:'white',fontSize:12}}> {rowData.thoigian_hienthi}</Text>
+                <View style={{flexDirection: 'row'}}>
+                    <View style={{justifyContent: 'center'}}>
+                        {this.getImage(rowData.anhdaidien)}
+                    </View>
+                    <View style={{flex: 4, margin: 8, justifyContent: 'center'}}>
+                        <Text
+                            style={{
+                                fontSize: 20,
+                                color: Color.itemNameListViewColor
+                            }}>{rowData.tennhanvien}</Text>
+                        <Text style={{fontSize: 13, color: 'white'}}> {rowData.tenloai}</Text>
+                    </View>
+                </View>
+            </View>
+        );
+    }
     render() {
         return (
             <GestureRecognizer
@@ -43,27 +108,51 @@ export default class NewFeedScreen extends React.Component {
 
                     <TouchableOpacity onPress={() => this.props.backToHome()}
                                       style={{width: 50, height: 50, position: 'absolute'}}/>
-                    <View style={{backgroundColor: Color.backgroundNewFeed, flex: 9}}>
-                        <ListView
-                            style={{backgroundColor: Color.itemListViewColor}}
-                            dataSource={this.state.dataSource}
-                            renderRow={(rowData) =>
-                                <View style={{flexDirection: 'row', height: height / 7, flex: 1}}>
-                                    <View style={{justifyContent: 'center'}}>
-                                        <Image
-                                            source={{uri: 'http://jav.ksmart.vn' + rowData.anhdaidien}}
-                                            style={{margin: 8, width: 60, height: 60, borderRadius: 30}}/>
-                                    </View>
-                                    <View style={{flex: 4, margin: 8, justifyContent: 'center'}}>
-                                        <Text
-                                            style={{
-                                                fontSize: 20,
-                                                color: Color.itemNameListViewColor
-                                            }}>{rowData.tennhanvien}</Text>
-                                        <Text style={{fontSize: 13, color: 'white'}}> {rowData.tenloai}</Text>
-                                    </View>
-                                </View>
-                            }
+                    <View style={{backgroundColor: Color.itemListViewColor, flex: 9}}>
+                        {/*<ListView*/}
+
+                        {/*style={{backgroundColor: Color.itemListViewColor}}*/}
+                        {/*initialListSize={4}*/}
+                        {/*onEndReached={()=>console.log('onEndReached')}*/}
+                        {/*dataSource={this.state.dataSource}*/}
+                        {/*renderRow={(rowData) =>*/}
+                        {/*<View style={{ height: height / 8, flex: 1,*/}
+                        {/*borderTopColor:'#227878',borderTopWidth:1*/}
+                        {/*}}>*/}
+                        {/*<Text style={{textAlign:'right',color:'white',fontSize:12}}> {rowData.thoigian_hienthi}</Text>*/}
+                        {/*<View style={{flexDirection: 'row'}}>*/}
+                        {/*<View style={{justifyContent: 'center'}}>*/}
+                        {/*<Image*/}
+                        {/*source={{uri: 'http://jav.ksmart.vn' + rowData.anhdaidien}}*/}
+                        {/*style={{margin: 8, width: 60, height: 60, borderRadius: 30}}/>*/}
+                        {/*</View>*/}
+                        {/*<View style={{flex: 4, margin: 8, justifyContent: 'center'}}>*/}
+                        {/*<Text*/}
+                        {/*style={{*/}
+                        {/*fontSize: 20,*/}
+                        {/*color: Color.itemNameListViewColor*/}
+                        {/*}}>{rowData.tennhanvien}</Text>*/}
+                        {/*<Text style={{fontSize: 13, color: 'white'}}> {rowData.tenloai}</Text>*/}
+                        {/*</View>*/}
+                        {/*</View>*/}
+                        {/*</View>*/}
+                        {/*}*/}
+                        {/*/>*/}
+                        <GiftedListView
+                            rowView={this._renderRowView.bind(this)}
+                            onFetch={this._onFetch.bind(this)}
+                            firstLoader={true} // display a loader for the first fetching
+                            pagination={true} // enable infinite scrolling using touch to load more
+                            refreshable={true} // enable pull-to-refresh for iOS and touch-to-refresh for Android
+                            withSections={false} // enable sections
+                            enableEmptySections ={true}
+                            customStyles={{
+                                paginationView: {
+                                    backgroundColor: Color.itemListViewColor,
+                                },
+                            }}
+
+                            refreshableTintColor="blue"
                         />
                     </View>
                 </View>
@@ -72,12 +161,12 @@ export default class NewFeedScreen extends React.Component {
         )
     }
 
-    componentWillMount() {
-        fetch('http://jav.ksmart.vn/AppNewFeed.aspx?token=6e22b116f5111220741848ccd290e9e9bd8757498aeff45f479463cec823a1dc&idquanly=47&idct=LACHONG').then((response) => (response.json())).then((responseJson) => {
-            console.log(responseJson),
-                this.setState({dataSource: this.state.dataSource.cloneWithRows(responseJson.data)}), console.log(this.state.dataSource)
-        })
-
+    componentDidMount() {
+        fetch('http://jav.ksmart.vn/AppNewFeed.aspx?token=6e22b116f5111220741848ccd290e9e9bd8757498aeff45f479463cec823a1dc&idquanly=47&idct=LACHONG')
+            .then((response) => (response.json()))
+            .then((responseJson) => {
+                this.setState({arr:responseJson.data}), console.log("1:"+responseJson.data[0] + "2:" + responseJson.data[1])
+            }).catch((e)=>{console.log("12312312321"+ e)})
 
     }
 }

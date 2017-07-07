@@ -46,7 +46,6 @@ export default class HomeScreen extends React.Component {
             height: 35,
             selectedTab: 'NewFeed',
             headerTitleStyle: {alignSelf: 'center'},
-            dataSourceIconMenu: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 != r2}),
             screenName: 'Menu'
         })
     }
@@ -65,6 +64,7 @@ export default class HomeScreen extends React.Component {
         this.setState({myText: 'You swiped right!'});
         this.openControlPanel()
     }
+
 
 
     // itemListView(data) {
@@ -100,14 +100,16 @@ export default class HomeScreen extends React.Component {
                         source={{uri: 'https://s-media-cache-ak0.pinimg.com/originals/b2/a9/23/b2a9231806f6cd4b3da559eedc249880.jpg'}}
                         style={{position: 'absolute', left: 0, right: 0, top: 0, bottom: 0}}/>
                     <View style={styles.titleStyle}>
+                        <TouchableOpacity onPress={() => this.openControlPanel()}
+                                          style={{marginLeft: 16, width: 40, height: 40,alignSelf:'center'}}>
                         <Image
                             source={require('../images/MenuBar.png')}
-                            style={{width: 35, height: 35, alignSelf: 'center', marginLeft: 16}}/>
+                            style={{width: 35, height: 35, alignSelf: 'center'}}/>
+                        </TouchableOpacity>
                         <Text style={{fontSize: 20, alignSelf: 'center'}}>Menu</Text>
-                        <View style={{width: 35, height: 35}}></View>
+                        <View style={{width: 50, height: 50}}></View>
                     </View>
-                    <TouchableOpacity onPress={() => this.openControlPanel()}
-                                      style={{marginLeft: 16, width: 35, height: 35, position: 'absolute'}}/>
+
                     <View style={{flex: 9}}>
                         <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 16}}>
                             <View>
@@ -329,52 +331,6 @@ export default class HomeScreen extends React.Component {
     //     )
     // }
 
-    componentDidMount() {
-
-        var arrIcon =
-            [{
-                backGroundColor: Color.iconMenuColor,
-                titleIcon: 'Hoạt Động',
-                iconName: 'payment'
-            }, {
-                backGroundColor: Color.iconMenuColor,
-                titleIcon: 'Quản lý nhân viên',
-                iconName: 'ios-people-outline'
-            }, {
-                backGroundColor: Color.iconMenuColor,
-                title: 'Đơn hàng',
-                iconName: 'archive'
-            }, {
-                backGroundColor: Color.iconMenuColor,
-                titleIcon: 'Khách hàng',
-                iconName: 'user'
-            }, {
-                backGroundColor: Color.iconMenuColor,
-                titleIcon: 'Viếng thăm',
-                iconName: 'aircraft-take-off'
-            }, {
-                backGroundColor: Color.iconMenuColor,
-                titleIcon: 'Biểu đồ',
-                iconName: 'bar-chart'
-            }, {
-                backGroundColor: Color.iconMenuColor,
-                titleIcon: 'Báo cáo',
-                iconName: 'file-text-o'
-            }, {
-                backGroundColor: Color.iconMenuColor,
-                titleIcon: 'Kế hoạch',
-                iconName: 'laptop'
-            }, {
-                backGroundColor: Color.iconMenuColor,
-                titleIcon: 'Tin nhắn',
-                iconName: 'mail'
-            },
-            ]
-        this.setState({
-            dataSourceIconMenu: this.state.dataSourceIconMenu.cloneWithRows(arrIcon),
-        })
-
-    }
 
     render() {
         const {navigate} = this.props.navigation
@@ -407,7 +363,7 @@ const styles = StyleSheet.create({
         elevation: 15, height: this.height / 7
     },
     itemSideMenuStyle: {
-        borderBottomWidth: 0.5,
+        borderBottomWidth: 1,
         borderBottomColor: 'white',
         flexDirection: 'row',
         justifyContent: 'space-between',
