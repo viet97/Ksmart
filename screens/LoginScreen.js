@@ -5,15 +5,15 @@
 import React from 'react';
 import {
     Text,
-    View, Platform, Switch,
-    Button, ListView, Image, StyleSheet, StatusBar,
+    View, Platform, Switch,Animated,
+    Button, ListView, Image, StyleSheet, StatusBar,TouchableHighlight,
     TouchableOpacity, findNodeHandle, TextInput, Dimensions
 } from 'react-native';
 import {TextInputLayout} from 'rn-textinputlayout';
 import CheckBox from 'react-native-checkbox'
 import Toast from 'react-native-simple-toast';
 import URlConfig from "../configs/url";
-
+import * as Animatable from 'react-native-animatable';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 export default class LoginScreen extends React.Component {
@@ -36,7 +36,7 @@ export default class LoginScreen extends React.Component {
     render() {
         return (
             <View style={{flex: 1, justifyContent: 'center', flexDirection: 'column'}}>
-                <Image
+                <Animatable.Image
                     source={require('../images/bg.png')}
                     style={styles.absolute}
                     resizeMode={Image.resizeMode.cover}
@@ -47,7 +47,7 @@ export default class LoginScreen extends React.Component {
                         <Image source={require('../images/logoksmart.png')}
                                style={{alignSelf: 'center',}}/>
                     </View>
-                    <View style={{alignSelf: 'center', width: windowWidth}}>
+                    <View style={{alignSelf: 'center', width: windowWidth}} >
                         <TextInputLayout style={styles.inputLayout}
                                          hintColor='white' focusColor='white'>
                             <TextInput
@@ -77,18 +77,21 @@ export default class LoginScreen extends React.Component {
                     </View>
                     <View style={{flexDirection: 'column', alignSelf: 'center', marginTop: 16, alignItems: 'center'}}>
                         <CheckBox
-                            checkedImage={require("../images/ic_done_3x.png")}
-                            uncheckedImage={require("../images/ic_crop_3_2_3x.png")}
+                            checkedImage={require("../images/checked.png")}
+                            uncheckedImage={require("../images/noncheck.png")}
                             labelStyle={{color: 'red'}}
                             underlayColor="transparent"
                             label='Ghi nhớ đăng nhập'
                             checked={this.state.checkOfCheckBox}
                             onChange={(checked) => this.setState({checkOfCheckBox: !this.state.checkOfCheckBox})}
                         />
-                        <TouchableOpacity
+                        <TouchableHighlight
+                            activeOpacity={1}
+                            underlayColor="white"
                             style={{height: 48, backgroundColor: 'transparent', justifyContent: 'center'}} onPress={()=>this.startLogin()}>
-                            <Text style={{fontSize: 16, alignSelf: 'center', color: 'blue'}}>Đăng nhập</Text>
-                        </TouchableOpacity>
+                            <Animatable.Text animation="fadeInDown">Đăng nhập</Animatable.Text>
+
+                        </TouchableHighlight>
                     </View>
                 </View>
 
@@ -106,7 +109,7 @@ export default class LoginScreen extends React.Component {
                 .then((response) => response.json())
                 .then((responseJson) => {
                     if (!responseJson.status){
-                        Toast.show('Mã công ty không chính xác!');
+                        Toast.show(responseJson.msg);
                     }else{
                         URlConfig.BASE_URL_APP=responseJson.data;
                         let urlLogin=URlConfig.getLoginRouter(this.state.username,this.state.password,this.state.idct);
@@ -115,7 +118,7 @@ export default class LoginScreen extends React.Component {
                             .then((response) => response.json())
                             .then((responseJson) => {
                                 if (!responseJson.status){
-                                    Toast.show('Mã công ty không chính xác!');
+                                    Toast.show(responseJson.msg);
                                 }else{
                                     Toast.show('hihi dc r');
                                 }
