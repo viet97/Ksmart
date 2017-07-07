@@ -16,6 +16,7 @@ import URlConfig from "../configs/url";
 import * as Animatable from 'react-native-animatable';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
+import * as Progress from 'react-native-progress';
 export default class LoginScreen extends React.Component {
 
     static navigationOptions = {
@@ -94,7 +95,7 @@ export default class LoginScreen extends React.Component {
                         </TouchableHighlight>
                     </View>
                 </View>
-
+                <Progress.Pie progress={0.3} width={200}/>
 
             </View>
         );
