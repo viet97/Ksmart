@@ -3,6 +3,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import Icon1 from 'react-native-vector-icons/Ionicons'
 import Icon2 from 'react-native-vector-icons/Entypo'
 import Icon3 from 'react-native-vector-icons/FontAwesome'
+import Icon4 from 'react-native-vector-icons/Foundation'
 import React from 'react';
 import Drawer from 'react-native-drawer';
 import Color from '../configs/color'
@@ -40,6 +41,7 @@ export default class HomeScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = ({
+            arr:[],
             myText: 'I\'m ready to get swiped!',
             gestureName: 'none',
             width: 35,
@@ -85,8 +87,13 @@ export default class HomeScreen extends React.Component {
             case "NewFeed":
                 return <NewFeedScreen clickMenu={() => this.openControlPanel()} backToHome={() => {
                     this.setState({screenName: 'Menu'})
-                } }/>
+                }}    data={this.state.arr} />
         }
+    }
+    componentDidMount(){
+        fetch('http://jav.ksmart.vn/AppNewFeed.aspx?token=6e22b116f5111220741848ccd290e9e9bd8757498aeff45f479463cec823a1dc&idquanly=47&idct=LACHONG')
+            .then((response)=>(response.json()))
+            .then((responseJson)=>{this.setState({arr:responseJson})})
     }
 
     menuScreen() {
@@ -135,7 +142,7 @@ export default class HomeScreen extends React.Component {
                                     <Icon1 style={{alignSelf: 'center'}} size={60} color="white"
                                            name="ios-people-outline"/>
                                 </View>
-                                <Text style={styles.titleIconsMenu}>hân viên</Text>
+                                <Text style={styles.titleIconsMenu}>Nhân viên</Text>
                             </View>
                             <View>
                                 <View style={{
@@ -295,6 +302,11 @@ export default class HomeScreen extends React.Component {
                     <View style={styles.itemSideMenuStyle}>
                         <Icon2 size={24} style={styles.iconStyle} color="white" name="mail"/>
                         <Text style={styles.textStyle}>Tin nhắn</Text>
+                        <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
+                    </View>
+                    <View style={styles.itemSideMenuStyle}>
+                        <Icon4 size={24} style={styles.iconStyle} color="white" name="power"/>
+                        <Text style={styles.textStyle}>Đăng xuất</Text>
                         <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
                     </View>
                 </View>
