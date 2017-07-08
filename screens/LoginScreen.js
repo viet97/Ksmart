@@ -73,7 +73,7 @@ export default class LoginScreen extends React.Component {
                 <View style={{flexDirection: 'column', flex: 1, width: windowWidth - 2, justifyContent: 'center'}}>
                     <View>
                         <Image source={require('../images/logoksmart.png')}
-                               style={{alignSelf: 'center',}}/>
+                               style={{alignSelf: 'center', width: 100, height: 100}}/>
                     </View>
                     <View style={{alignSelf: 'center', width: windowWidth}}>
                         <TextInputLayout style={styles.inputLayout}
@@ -175,7 +175,9 @@ export default class LoginScreen extends React.Component {
                                         })
 
                                     }
+                                    responseJson.data['idct'] = this.state.idct;
                                     URlConfig.OBJLOGIN = responseJson;
+                                    console.log(URlConfig.OBJLOGIN)
                                     const {navigate} = this.props.navigation;
 
                                     this.props
@@ -205,7 +207,7 @@ export default class LoginScreen extends React.Component {
 
 const styles = StyleSheet.create({
     absolute: {
-        top: 0, bottom: 0, left: 0, right: 0, position: 'absolute'
+        top: 0, bottom: 0, left: 0, right: 0, position: 'absolute',
     },
     container: {
         flex: 1,

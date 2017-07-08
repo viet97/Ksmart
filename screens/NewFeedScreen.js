@@ -35,24 +35,25 @@ export default class NewFeedScreen extends React.Component {
 
     _onFetch(page = 1, callback, options) {
 
-            var dem = 0
-            if (page == 1) this.setState({index: 0})
-            setTimeout(() => {
-                var a = this.state.arr
-                var rows = []
-                while (dem < 7) {
-                    dem++
-                    rows.push(a[this.state.index])
-                    this.setState({index: this.state.index + 1})
-                }
-                if (this.state.index == this.state.arr.length) {
-                    callback(rows, {
-                        allLoaded: true, // the end of the list is reached
-                    });
-                } else {
-                    callback(rows);
-                }
-            }, 1000); // simulating network fetching
+        var dem = 0
+        if (page == 1) this.setState({index: 0})
+
+        var a = this.state.arr
+        var rows = []
+        while (dem < 7) {
+            dem++;
+            if (a[this.state.index !== undefined]) {
+                rows.push(a[this.state.index])
+                this.setState({index: this.state.index + 1})
+            }
+        }
+        if (this.state.index === this.state.arr.length) {
+            callback(rows, {
+                allLoaded: true, // the end of the list is reached
+            });
+        } else {
+            callback(rows);
+        } // simulating network fetching
 
     }
 
@@ -77,28 +78,28 @@ export default class NewFeedScreen extends React.Component {
     }
 
     _renderRowView(rowData) {
-
-            return (
-                <View style={{
-                    height: height / 8, flex: 1,
-                    borderTopColor: '#227878', borderTopWidth: 1
-                }}>
-                    <Text style={{textAlign: 'right', color: 'white', fontSize: 12}}> {rowData.thoigian_hienthi}</Text>
-                    <View style={{flexDirection: 'row'}}>
-                        <View style={{justifyContent: 'center'}}>
-                            {this.getImage(rowData.anhdaidien)}
-                        </View>
-                        <View style={{flex: 4, margin: 8, justifyContent: 'center'}}>
-                            <Text
-                                style={{
-                                    fontSize: 20,
-                                    color: Color.itemNameListViewColor
-                                }}>{rowData.tennhanvien}</Text>
-                            <Text style={{fontSize: 13, color: 'white'}}> {rowData.tenloai}</Text>
-                        </View>
+        console.log('abcdef', rowData);
+        return (
+            <View style={{
+                height: height / 8, flex: 1,
+                borderTopColor: '#227878', borderTopWidth: 1
+            }}>
+                <Text style={{textAlign: 'right', color: 'white', fontSize: 12}}> {rowData.thoigian_hienthi}</Text>
+                <View style={{flexDirection: 'row'}}>
+                    <View style={{justifyContent: 'center'}}>
+                        {this.getImage(rowData.anhdaidien)}
+                    </View>
+                    <View style={{flex: 4, margin: 8, justifyContent: 'center'}}>
+                        <Text
+                            style={{
+                                fontSize: 20,
+                                color: Color.itemNameListViewColor
+                            }}>{rowData.tennhanvien}</Text>
+                        <Text style={{fontSize: 13, color: 'white'}}> {rowData.tenloai}</Text>
                     </View>
                 </View>
-            );
+            </View>
+        );
 
     }
 

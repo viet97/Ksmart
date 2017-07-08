@@ -20,9 +20,9 @@ export default class URlConfig {
         return URlConfig.BASE_URL_APP + '/AppDangNhapQT.aspx?token=' + md5.hex_md5(Date.now()) + '&trangthaigps=1&congty='
 
             + idct + '&taikhoan=' + username + '&matkhau=' + md5.hex_md5(password) + '&kinhdo=0&vido=0'
-            + '&isFakeGPS=1&device=' + DeviceInfo.getDeviceId() + '&idpush=' + DeviceInfo.getUniqueID() + '&os=' + os
+            + '&isFakeGPS=1&device=' + DeviceInfo.getSystemName() + '&idpush=' + DeviceInfo.getUniqueID() + '&os=' + os
             + '&ver='+DeviceInfo.getVersion()+'&accuracy=0&osversion=' + DeviceInfo.getSystemVersion() + '&dongmay=' + DeviceInfo.getModel() + '&doimay='
             + '&imei=124125125243&devicename='+DeviceInfo.getManufacturer()+'&isCheDoTietKiemPin=0'
-            + '&ngaycaidat=2017-07-04%2013:43:22'
+            + '&ngaycaidat='
     }
 }
