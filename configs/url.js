@@ -12,6 +12,7 @@ export default class URlConfig {
     }
 
     static BASE_URL_APP = '';
+    static OBJLOGIN = null;
 
     static getLoginRouter(username, password, idct) {
         let DeviceInfo = require('react-native-device-info');
@@ -23,6 +24,5 @@ export default class URlConfig {
             + '&ver='+DeviceInfo.getVersion()+'&accuracy=0&osversion=' + DeviceInfo.getSystemVersion() + '&dongmay=' + DeviceInfo.getModel() + '&doimay='
             + '&imei=124125125243&devicename='+DeviceInfo.getManufacturer()+'&isCheDoTietKiemPin=0'
             + '&ngaycaidat=2017-07-04%2013:43:22'
-
     }
 }
