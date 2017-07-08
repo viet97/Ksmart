@@ -9,6 +9,7 @@ import Drawer from 'react-native-drawer';
 import Color from '../configs/color'
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import {
+    BackHandler,
     AppRegistry,
     Text,
     View,
@@ -16,11 +17,12 @@ import {
     TouchableOpacity,
     Dimensions,
     Platform,
-    ScrollView
+    ScrollView,
+    Alert
 } from 'react-native';
 import NewFeedScreen from "./NewFeedScreen";
 import {NavigationActions} from "react-navigation";
-
+import Toast from 'react-native-simple-toast';
 var {height} = Dimensions.get('window').height;
 export default class HomeScreen extends React.Component {
     static navigationOptions = {
@@ -42,6 +44,7 @@ export default class HomeScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = ({
+            backCount: 0,
             arr: [],
             myText: 'I\'m ready to get swiped!',
             gestureName: 'none',
@@ -122,7 +125,7 @@ export default class HomeScreen extends React.Component {
 
                     <View style={{flex: 9}}>
                         <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 16}}>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={() => this.setState({screenName: "NewFeed"})}>
                                 <View style={{
                                     backgroundColor: Color.iconMenuColor,
                                     borderRadius: 15,
@@ -409,3 +412,12 @@ const styles = StyleSheet.create({
         fontFamily: 'Al Nile'
     }
 })
+var backcount = 0
+BackHandler.addEventListener('hardwareBackPress', function () {
+    backcount++
+    if (backcount < 2) {
+        Toast.show('Bấm thêm lần nữa để thoát')
+        return true
+    }
+    else  return false
+});
