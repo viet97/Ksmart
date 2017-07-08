@@ -19,6 +19,7 @@ import {
     ScrollView
 } from 'react-native';
 import NewFeedScreen from "./NewFeedScreen";
+import {NavigationActions} from "react-navigation";
 
 var {height} = Dimensions.get('window').height;
 export default class HomeScreen extends React.Component {
@@ -323,7 +324,9 @@ export default class HomeScreen extends React.Component {
                         </TouchableOpacity>
                     </View>
                     <View >
-                        <TouchableOpacity style={styles.itemSideMenuStyle}>
+                        <TouchableOpacity style={styles.itemSideMenuStyle} onPress={() => {
+                            this.logout()
+                        }}>
                             <Icon4 size={24} style={styles.iconStyle} color="white" name="power"/>
                             <Text style={styles.textStyle}>Đăng xuất</Text>
                             <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
@@ -334,34 +337,19 @@ export default class HomeScreen extends React.Component {
         )
     }
 
-    // MainView() {
-    //     return (
-    //
-    //         <View style={{flex: 1}}>
-    //             <View style={styles.titleStyle}>
-    //                 {this.isToogleVisible()}
-    //                 <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Menu</Text>
-    //                 <View style={{backgroundColor: Color.backgroundNewFeed, width: 35, height: 35}}></View>
-    //             </View>
-    //             <TouchableOpacity onPress={() => this.openControlPanel()}
-    //                               style={{width: 50, height: 50, position: 'absolute'}}/>
-    //             <View style={{flex: 9, backgroundColor: 'white'}}>
-    //                 <ListView
-    //                     dataSource={this.state.dataSourceIconMenu}
-    //                     renderRow={(r) =>
-    //                         <View>
-    //                             <View style={{backgroundColor:r.backGroundColor , borderRadius:10}}>
-    //                                 <Icon size={24} color='green' name ={r.iconName}/>
-    //                             </View>
-    //                             <Text> {r.titleIcon}</Text>
-    //                         </View>
-    //                       }
-    //                 />
-    //             </View>
-    //         </View>
-    //
-    //     )
-    // }
+    logout() {
+        const {navigate} = this.props.navigation;
+
+        this.props
+            .navigation
+            .dispatch(NavigationActions.reset(
+                {
+                    index: 0,
+                    actions: [
+                        NavigationActions.navigate({routeName: 'Login'})
+                    ]
+                }));
+    }
 
 
     render() {
