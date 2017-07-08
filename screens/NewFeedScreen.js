@@ -13,6 +13,7 @@ import Icon1 from 'react-native-vector-icons/Ionicons'
 import React from 'react';
 import Color from '../configs/color'
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
+import URlConfig from "../configs/url";
 var {height} = Dimensions.get('window');
 var GiftedListView = require('react-native-gifted-listview');
 export default class NewFeedScreen extends React.Component {
@@ -37,23 +38,24 @@ export default class NewFeedScreen extends React.Component {
 
         var dem = 0
         if (page == 1) this.setState({index: 0})
-
-        var a = this.state.arr
-        var rows = []
-        while (dem < 7) {
-            dem++;
-            if (a[this.state.index !== undefined]) {
-                rows.push(a[this.state.index])
-                this.setState({index: this.state.index + 1})
+        setTimeout(() => {
+            var a = this.state.arr
+            var rows = []
+            while (dem < 7) {
+                dem++;
+                if (a[this.state.index] !== undefined) {
+                    rows.push(a[this.state.index])
+                    this.setState({index: this.state.index + 1})
+                }
             }
-        }
-        if (this.state.index === this.state.arr.length) {
-            callback(rows, {
-                allLoaded: true, // the end of the list is reached
-            });
-        } else {
-            callback(rows);
-        } // simulating network fetching
+            if (this.state.index === this.state.arr.length) {
+                callback(rows, {
+                    allLoaded: true, // the end of the list is reached
+                });
+            } else {
+                callback(rows);
+            }
+        }, 1000);
 
     }
 
@@ -78,7 +80,6 @@ export default class NewFeedScreen extends React.Component {
     }
 
     _renderRowView(rowData) {
-        console.log('abcdef', rowData);
         return (
             <View style={{
                 height: height / 8, flex: 1,
@@ -119,35 +120,7 @@ export default class NewFeedScreen extends React.Component {
                     <TouchableOpacity onPress={() => this.props.backToHome()}
                                       style={{width: 50, height: 50, position: 'absolute'}}/>
                     <View style={{backgroundColor: Color.itemListViewColor, flex: 9}}>
-                        {/*<ListView*/}
 
-                        {/*style={{backgroundColor: Color.itemListViewColor}}*/}
-                        {/*initialListSize={4}*/}
-                        {/*onEndReached={()=>console.log('onEndReached')}*/}
-                        {/*dataSource={this.state.dataSource}*/}
-                        {/*renderRow={(rowData) =>*/}
-                        {/*<View style={{ height: height / 8, flex: 1,*/}
-                        {/*borderTopColor:'#227878',borderTopWidth:1*/}
-                        {/*}}>*/}
-                        {/*<Text style={{textAlign:'right',color:'white',fontSize:12}}> {rowData.thoigian_hienthi}</Text>*/}
-                        {/*<View style={{flexDirection: 'row'}}>*/}
-                        {/*<View style={{justifyContent: 'center'}}>*/}
-                        {/*<Image*/}
-                        {/*source={{uri: 'http://jav.ksmart.vn' + rowData.anhdaidien}}*/}
-                        {/*style={{margin: 8, width: 60, height: 60, borderRadius: 30}}/>*/}
-                        {/*</View>*/}
-                        {/*<View style={{flex: 4, margin: 8, justifyContent: 'center'}}>*/}
-                        {/*<Text*/}
-                        {/*style={{*/}
-                        {/*fontSize: 20,*/}
-                        {/*color: Color.itemNameListViewColor*/}
-                        {/*}}>{rowData.tennhanvien}</Text>*/}
-                        {/*<Text style={{fontSize: 13, color: 'white'}}> {rowData.tenloai}</Text>*/}
-                        {/*</View>*/}
-                        {/*</View>*/}
-                        {/*</View>*/}
-                        {/*}*/}
-                        {/*/>*/}
                         <GiftedListView
                             rowView={this._renderRowView.bind(this)}
                             onFetch={this._onFetch.bind(this)}
@@ -172,20 +145,16 @@ export default class NewFeedScreen extends React.Component {
     }
 
     componentDidMount() {
-        fetch('http://jav.ksmart.vn/AppNewFeed.aspx?token=6e22b116f5111220741848ccd290e9e9bd8757498aeff45f479463cec823a1dc&idquanly=47&idct=LACHONG')
+        fetch(URlConfig.getNewFeedLink())
             .then((response) => (response.json()))
             .then((responseJson) => {
-                this.setState({arr: responseJson.data}), console.log(this.state.arr)
+                console.log(URlConfig.getNewFeedLink())
+                this.setState({arr: responseJson.data});
+                console.log(this.state.arr)
             }).catch((e) => {
             console.log("12312312321" + e)
         })
-        // this.setState({arr:this.props.data})
-        // console.log(this.state.arr)
-        // console.log(this.state.arr)
-        // console.log(this.state.arr)
-        // console.log(this.state.arr)
-        // console.log(this.state.arr)
-        // console.log(this.state.arr)
+
     }
 }
 

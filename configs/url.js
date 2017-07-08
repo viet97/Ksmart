@@ -25,4 +25,9 @@ export default class URlConfig {
             + '&imei=124125125243&devicename='+DeviceInfo.getManufacturer()+'&isCheDoTietKiemPin=0'
             + '&ngaycaidat='
     }
+
+    static getNewFeedLink() {
+        var data = URlConfig.OBJLOGIN.data;
+        return data.urlserver + '/AppNewFeed.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idct=' + data.idct;
+    }
 }
