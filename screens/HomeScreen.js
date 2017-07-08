@@ -122,7 +122,7 @@ export default class HomeScreen extends React.Component {
 
                     <View style={{flex: 9}}>
                         <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 16}}>
-                            <View>
+                            <TouchableOpacity>
                                 <View style={{
                                     backgroundColor: Color.iconMenuColor,
                                     borderRadius: 15,
@@ -133,8 +133,8 @@ export default class HomeScreen extends React.Component {
                                     <Icon style={{alignSelf: 'center'}} size={60} color="white" name="payment"/>
                                 </View>
                                 <Text style={styles.titleIconsMenu}>Hoạt động</Text>
-                            </View>
-                            <View>
+                            </TouchableOpacity>
+                            <TouchableOpacity>
                                 <View style={{
                                     backgroundColor: Color.iconMenuColor,
                                     borderRadius: 15,
@@ -146,8 +146,8 @@ export default class HomeScreen extends React.Component {
                                            name="ios-people-outline"/>
                                 </View>
                                 <Text style={styles.titleIconsMenu}>Nhân viên</Text>
-                            </View>
-                            <View>
+                            </TouchableOpacity>
+                            <TouchableOpacity>
                                 <View style={{
                                     backgroundColor: Color.iconMenuColor,
                                     borderRadius: 15,
@@ -158,10 +158,10 @@ export default class HomeScreen extends React.Component {
                                     <Icon2 style={{alignSelf: 'center'}} size={60} color="white" name="archive"/>
                                 </View>
                                 <Text style={styles.titleIconsMenu}>Đơn hàng</Text>
-                            </View>
+                            </TouchableOpacity>
                         </View>
                         <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 16}}>
-                            <View>
+                            <TouchableOpacity>
                                 <View style={{
                                     backgroundColor: Color.iconMenuColor,
                                     borderRadius: 15,
@@ -172,8 +172,8 @@ export default class HomeScreen extends React.Component {
                                     <Icon2 style={{alignSelf: 'center'}} size={60} color="white" name="user"/>
                                 </View>
                                 <Text style={styles.titleIconsMenu}> Khách hàng</Text>
-                            </View>
-                            <View>
+                            </TouchableOpacity>
+                            <TouchableOpacity>
                                 <View style={{
                                     backgroundColor: Color.iconMenuColor,
                                     borderRadius: 15,
@@ -185,8 +185,8 @@ export default class HomeScreen extends React.Component {
                                            name="aircraft-take-off"/>
                                 </View>
                                 <Text style={styles.titleIconsMenu}>Viếng thăm</Text>
-                            </View>
-                            <View>
+                            </TouchableOpacity>
+                            <TouchableOpacity>
                                 <View style={{
                                     backgroundColor: Color.iconMenuColor,
                                     borderRadius: 15,
@@ -197,10 +197,10 @@ export default class HomeScreen extends React.Component {
                                     <Icon3 style={{alignSelf: 'center'}} size={60} color="white" name="bar-chart"/>
                                 </View>
                                 <Text style={styles.titleIconsMenu}>Biểu đồ</Text>
-                            </View>
+                            </TouchableOpacity>
                         </View>
                         <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 16}}>
-                            <View>
+                            <TouchableOpacity>
                                 <View style={{
                                     backgroundColor: Color.iconMenuColor,
                                     borderRadius: 15,
@@ -211,8 +211,8 @@ export default class HomeScreen extends React.Component {
                                     <Icon3 style={{alignSelf: 'center'}} size={60} color="white" name="file-text-o"/>
                                 </View>
                                 <Text style={styles.titleIconsMenu}>Báo cáo</Text>
-                            </View>
-                            <View>
+                            </TouchableOpacity>
+                            <TouchableOpacity>
                                 <View style={{
                                     backgroundColor: Color.iconMenuColor,
                                     borderRadius: 15,
@@ -223,8 +223,8 @@ export default class HomeScreen extends React.Component {
                                     <Icon2 style={{alignSelf: 'center'}} size={60} color="white" name="laptop"/>
                                 </View>
                                 <Text style={styles.titleIconsMenu}>Kế hoạch</Text>
-                            </View>
-                            <View>
+                            </TouchableOpacity>
+                            <TouchableOpacity>
                                 <View style={{
                                     backgroundColor: Color.iconMenuColor,
                                     borderRadius: 15,
@@ -235,7 +235,7 @@ export default class HomeScreen extends React.Component {
                                     <Icon2 style={{alignSelf: 'center'}} size={60} color="white" name="mail"/>
                                 </View>
                                 <Text style={styles.titleIconsMenu}>Tin nhắn</Text>
-                            </View>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </View>
