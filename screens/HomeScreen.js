@@ -41,7 +41,7 @@ export default class HomeScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = ({
-            arr:[],
+            arr: [],
             myText: 'I\'m ready to get swiped!',
             gestureName: 'none',
             width: 35,
@@ -68,7 +68,6 @@ export default class HomeScreen extends React.Component {
     }
 
 
-
     // itemListView(data) {
     //     return (
     //         <View style={{flexDirection: 'row', height: height / 6, flex: 1}}>
@@ -87,13 +86,16 @@ export default class HomeScreen extends React.Component {
             case "NewFeed":
                 return <NewFeedScreen clickMenu={() => this.openControlPanel()} backToHome={() => {
                     this.setState({screenName: 'Menu'})
-                }}    data={this.state.arr} />
+                }} data={this.state.arr}/>
         }
     }
-    componentDidMount(){
+
+    componentDidMount() {
         fetch('http://jav.ksmart.vn/AppNewFeed.aspx?token=6e22b116f5111220741848ccd290e9e9bd8757498aeff45f479463cec823a1dc&idquanly=47&idct=LACHONG')
-            .then((response)=>(response.json()))
-            .then((responseJson)=>{this.setState({arr:responseJson})})
+            .then((response) => (response.json()))
+            .then((responseJson) => {
+                this.setState({arr: responseJson})
+            })
     }
 
     menuScreen() {
@@ -108,10 +110,10 @@ export default class HomeScreen extends React.Component {
                         style={{position: 'absolute', left: 0, right: 0, top: 0, bottom: 0}}/>
                     <View style={styles.titleStyle}>
                         <TouchableOpacity onPress={() => this.openControlPanel()}
-                                          style={{marginLeft: 16, width: 40, height: 40,alignSelf:'center'}}>
-                        <Image
-                            source={require('../images/MenuBar.png')}
-                            style={{width: 35, height: 35, alignSelf: 'center'}}/>
+                                          style={{marginLeft: 16, width: 40, height: 40, alignSelf: 'center'}}>
+                            <Image
+                                source={require('../images/MenuBar.png')}
+                                style={{width: 35, height: 35, alignSelf: 'center'}}/>
                         </TouchableOpacity>
                         <Text style={{fontSize: 20, alignSelf: 'center'}}>Menu</Text>
                         <View style={{width: 50, height: 50}}></View>
@@ -264,50 +266,68 @@ export default class HomeScreen extends React.Component {
                             <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
                         </TouchableOpacity>
                     </View>
-                    <View style={styles.itemSideMenuStyle}>
-                        <Icon1 size={24} style={styles.iconStyle} color="white" name="ios-people-outline"/>
-                        <Text style={styles.textStyle}>Nhân viên</Text>
-                        <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
+                    <View >
+                        <TouchableOpacity style={styles.itemSideMenuStyle} >
+                            <Icon1 size={24} style={styles.iconStyle} color="white" name="ios-people-outline"/>
+                            <Text style={styles.textStyle}>Nhân viên</Text>
+                            <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
+                        </TouchableOpacity >
                     </View>
-                    <View style={styles.itemSideMenuStyle}>
-                        <Icon2 size={24} style={styles.iconStyle} color="white" name="archive"/>
-                        <Text style={styles.textStyle}>Đơn hàng</Text>
-                        <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
+                    <View >
+                        <TouchableOpacity style={styles.itemSideMenuStyle}>
+                            <Icon2 size={24} style={styles.iconStyle} color="white" name="archive"/>
+                            <Text style={styles.textStyle}>Đơn hàng</Text>
+                            <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
+                        </TouchableOpacity>
                     </View>
-                    <View style={styles.itemSideMenuStyle}>
-                        <Icon2 size={24} style={styles.iconStyle} color="white" name="user"/>
-                        <Text style={styles.textStyle}>Khách hàng</Text>
-                        <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
+                    <View>
+                        <TouchableOpacity style={styles.itemSideMenuStyle}>
+                            <Icon2 size={24} style={styles.iconStyle} color="white" name="user"/>
+                            <Text style={styles.textStyle}>Khách hàng</Text>
+                            <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
+                        </TouchableOpacity>
                     </View>
-                    <View style={styles.itemSideMenuStyle}>
-                        <Icon2 size={24} style={styles.iconStyle} color="white" name="aircraft-take-off"/>
-                        <Text style={styles.textStyle}>Viếng thăm</Text>
-                        <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
+                    <View >
+                        <TouchableOpacity style={styles.itemSideMenuStyle}>
+                            <Icon2 size={24} style={styles.iconStyle} color="white" name="aircraft-take-off"/>
+                            <Text style={styles.textStyle}>Viếng thăm</Text>
+                            <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
+                        </TouchableOpacity>
                     </View>
-                    <View style={styles.itemSideMenuStyle}>
-                        <Icon3 size={24} style={styles.iconStyle} color="white" name="bar-chart"/>
-                        <Text style={styles.textStyle}>Biểu đồ</Text>
-                        <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
+                    <View >
+                        <TouchableOpacity style={styles.itemSideMenuStyle}>
+                            <Icon3 size={24} style={styles.iconStyle} color="white" name="bar-chart"/>
+                            <Text style={styles.textStyle}>Biểu đồ</Text>
+                            <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
+                        </TouchableOpacity>
                     </View>
-                    <View style={styles.itemSideMenuStyle}>
-                        <Icon3 size={24} style={styles.iconStyle} color="white" name="file-text-o"/>
-                        <Text style={styles.textStyle}>Báo cáo</Text>
-                        <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
+                    <View >
+                        <TouchableOpacity style={styles.itemSideMenuStyle}>
+                            <Icon3 size={24} style={styles.iconStyle} color="white" name="file-text-o"/>
+                            <Text style={styles.textStyle}>Báo cáo</Text>
+                            <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
+                        </TouchableOpacity>
                     </View>
-                    <View style={styles.itemSideMenuStyle}>
-                        <Icon2 size={24} style={styles.iconStyle} color="white" name="laptop"/>
-                        <Text style={styles.textStyle}>Kế hoạch</Text>
-                        <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
+                    <View >
+                        <TouchableOpacity style={styles.itemSideMenuStyle}>
+                            <Icon2 size={24} style={styles.iconStyle} color="white" name="laptop"/>
+                            <Text style={styles.textStyle}>Kế hoạch</Text>
+                            <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
+                        </TouchableOpacity>
                     </View>
-                    <View style={styles.itemSideMenuStyle}>
-                        <Icon2 size={24} style={styles.iconStyle} color="white" name="mail"/>
-                        <Text style={styles.textStyle}>Tin nhắn</Text>
-                        <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
+                    <View >
+                        <TouchableOpacity style={styles.itemSideMenuStyle}>
+                            <Icon2 size={24} style={styles.iconStyle} color="white" name="mail"/>
+                            <Text style={styles.textStyle}>Tin nhắn</Text>
+                            <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
+                        </TouchableOpacity>
                     </View>
-                    <View style={styles.itemSideMenuStyle}>
-                        <Icon4 size={24} style={styles.iconStyle} color="white" name="power"/>
-                        <Text style={styles.textStyle}>Đăng xuất</Text>
-                        <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
+                    <View >
+                        <TouchableOpacity style={styles.itemSideMenuStyle}>
+                            <Icon4 size={24} style={styles.iconStyle} color="white" name="power"/>
+                            <Text style={styles.textStyle}>Đăng xuất</Text>
+                            <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </View>
@@ -396,8 +416,8 @@ const styles = StyleSheet.create({
     titleIconsMenu: {
         textAlign: 'center',
         color: 'white',
-        fontSize:16,
-        backgroundColor:'transparent',
+        fontSize: 16,
+        backgroundColor: 'transparent',
         fontFamily: 'Al Nile'
     }
 })
