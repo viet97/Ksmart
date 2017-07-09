@@ -104,15 +104,15 @@ android {
         }
     }
     signingConfigs {
-             release {
-                 if (project.hasProperty('MYAPP_RELEASE_STORE_FILE')) {
-                     storeFile file(MYAPP_RELEASE_STORE_FILE)
-                     storePassword MYAPP_RELEASE_STORE_PASSWORD
-                     keyAlias MYAPP_RELEASE_KEY_ALIAS
-                     keyPassword MYAPP_RELEASE_KEY_PASSWORD
-                 }
-             }
-         }
+        release {
+            if (project.hasProperty('MYAPP_RELEASE_STORE_FILE')) {
+                storeFile file(MYAPP_RELEASE_STORE_FILE)
+                storePassword MYAPP_RELEASE_STORE_PASSWORD
+                keyAlias MYAPP_RELEASE_KEY_ALIAS
+                keyPassword MYAPP_RELEASE_KEY_PASSWORD
+            }
+        }
+    }
     splits {
         abi {
             reset()
@@ -133,7 +133,7 @@ android {
         variant.outputs.each { output ->
             // For each separate APK per architecture, set a unique version code as described here:
             // http://tools.android.com/tech-docs/new-build-system/user-guide/apk-splits
-            def versionCodes = ["armeabi-v7a":1, "x86":2]
+            def versionCodes = ["armeabi-v7a": 1, "x86": 2]
             def abi = output.getFilter(OutputFile.ABI)
             if (abi != null) {  // null for the universal-debug, universal-release variants
                 output.versionCodeOverride =
@@ -144,6 +144,13 @@ android {
 }
 
 dependencies {
+    compile(project(':react-native-maps')) {
+        exclude group: 'com.google.android.gms', module: 'play-services-base'
+        exclude group: 'com.google.android.gms', module: 'play-services-maps'
+    }
+    compile 'com.google.android.gms:play-services-base:11.0.1'
+    compile 'com.google.android.gms:play-services-maps:11.0.1'
+
     compile project(':realm')
     compile project(':react-native-device-info')
     compile project(':react-native-vector-icons')

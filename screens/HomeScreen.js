@@ -9,10 +9,9 @@ import Drawer from 'react-native-drawer';
 import Color from '../configs/color'
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import {
-    BackHandler,
     AppRegistry,
     Text,
-    View,
+    View, BackHandler,
     Button, ListView, Image, StyleSheet, StatusBar,
     TouchableOpacity,
     Dimensions,
