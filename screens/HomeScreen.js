@@ -21,6 +21,8 @@ import {
     Alert
 } from 'react-native';
 import NewFeedScreen from "./NewFeedScreen";
+import ListNhanVienScreen from "./ListNhanVienScreen";
+import MapScreen from "./MapScreen";
 import {NavigationActions} from "react-navigation";
 import Toast from 'react-native-simple-toast';
 var {height} = Dimensions.get('window').height;
@@ -91,6 +93,14 @@ export default class HomeScreen extends React.Component {
                 return <NewFeedScreen clickMenu={() => this.openControlPanel()} backToHome={() => {
                     this.setState({screenName: 'Menu'})
                 }} data={this.state.arr}/>
+            case "ListNhanVien":
+                return <ListNhanVienScreen
+                    clickMenu={() => this.openControlPanel()}
+                    backToHome={() => {this.setState({screenName: 'Menu'})}}
+                    goToMapFromListNhanVien={()=>{this.setState({screenName:'Map'})}}
+                />
+            case "Map":
+                return <MapScreen/>
         }
     }
 
@@ -137,7 +147,7 @@ export default class HomeScreen extends React.Component {
                                 </View>
                                 <Text style={styles.titleIconsMenu}>Hoạt động</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={() => this.setState({screenName: "ListNhanVien"})}>
                                 <View style={{
                                     backgroundColor: Color.iconMenuColor,
                                     borderRadius: 15,
@@ -271,7 +281,9 @@ export default class HomeScreen extends React.Component {
                         </TouchableOpacity>
                     </View>
                     <View >
-                        <TouchableOpacity style={styles.itemSideMenuStyle} >
+                        <TouchableOpacity style={styles.itemSideMenuStyle} onPress={() => {
+                            this.setState({screenName:"ListNhanVien"}), this.closeControlPanel()
+                        }} >
                             <Icon1 size={24} style={styles.iconStyle} color="white" name="ios-people-outline"/>
                             <Text style={styles.textStyle}>Nhân viên</Text>
                             <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
