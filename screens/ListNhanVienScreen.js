@@ -30,6 +30,8 @@ export default class ListNhanVienScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = ({
+            kinhdo:0,
+            vido:0,
             arr: [],
             index: 0,
             waiting: false,

@@ -2,10 +2,8 @@ import React, {Component} from 'react';
 import {
     AppRegistry, Button,
     StyleSheet,
-    Text,
-    View, TabBarIOS, TouchableHighlight, Platform
-    Text, TouchableOpacity,
-    View
+    View, TabBarIOS, TouchableHighlight, Platform,
+    Text, TouchableOpacity
 } from 'react-native';
 import MapView from 'react-native-maps';
 import Icon1 from 'react-native-vector-icons/Ionicons'
@@ -31,7 +29,7 @@ export default class MapScreen extends Component {
                     latitudeDelta: 0.0922,
                     longitudeDelta: 0.0421,
                 },
-            selectedTab: 'blueTab'
+                selectedTab: 'blueTab'
             }
         )
 
@@ -84,41 +82,40 @@ export default class MapScreen extends Component {
             )
         } else {
             return (
-                <View>
-                    <Text>claque</Text>
+                <View style={{flex: 1}}>
+                    <View style={styles.titleStyle}>
+                        <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
+                        <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Địa chỉ nhân viên</Text>
+                        <View style={{backgroundColor: Color.backgroundNewFeed, width: 35, height: 35}}></View>
+                    </View>
+
+                    <TouchableOpacity onPress={() => this.props.backToListNhanVienFromMap()}
+                                      style={{width: 50, height: 50, position: 'absolute'}}/>
+                    <MapView
+                        style={{flex: 9}}
+                        initialRegion={{
+                            latitude: 21.0154269,
+                            longitude: 105.81321538,
+                            latitudeDelta: 0.0922,
+                            longitudeDelta: 0.0421,
+                        }}
+                    >
+                        <MapView.Marker.Animated
+                            coordinate={ {
+                                latitude: this.props.vido,
+                                longitude: this.props.kinhdo,
+                                latitudeDelta: 0.0922,
+                                longitudeDelta: 0.0421
+                            }}
+
+                        />
+                    </MapView>
+
                 </View>
             );
 
         }
-            <View style={{flex: 1}}>
-                <View style={styles.titleStyle}>
-                    <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
-                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Địa chỉ nhân viên</Text>
-                    <View style={{backgroundColor: Color.backgroundNewFeed, width: 35, height: 35}}></View>
-                </View>
 
-                <TouchableOpacity onPress={() => this.props.backToListNhanVienFromMap()}
-                                  style={{width: 50, height: 50, position: 'absolute'}}/>
-                <MapView
-                    style={{flex: 9}}
-                    initialRegion={{
-                        latitude: 21.0154269,
-                        longitude:105.81321538 ,
-                        latitudeDelta: 0.0922,
-                        longitudeDelta: 0.0421,
-                    }}
-                >
-                    <MapView.Marker.Animated
-                        coordinate={ {latitude: this.props.vido,
-                            longitude:this.props.kinhdo ,
-                            latitudeDelta: 0.0922,
-                            longitudeDelta: 0.0421}}
-
-                    />
-                </MapView>
-
-            </View>
-        )
     }
 }
 var styles = StyleSheet.create({
