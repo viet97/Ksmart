@@ -30,8 +30,6 @@ export default class ListNhanVienScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = ({
-            kinhdo:0,
-            vido:0,
             arr: [],
             index: 0,
             waiting: false,
@@ -86,22 +84,20 @@ export default class ListNhanVienScreen extends React.Component {
             );
         }
     }
-    log(){
-        console.log(this.state.kinhdo)
-    }
-    _renderRowView(rowData) {
 
+    _renderRowView(rowData) {
         return (
             <View style={{
                 height: height / 8, flex: 1,
                 borderTopColor: '#227878', borderTopWidth: 1
             }}>
-                <Text style={{textAlign: 'right', color: 'white', fontSize: 12}}> Cập nhật lúc {rowData.thoigiancapnhat}</Text>
+                <Text style={{textAlign: 'right', color: 'white', fontSize: 12}}> Cập nhật
+                    lúc {rowData.thoigiancapnhat}</Text>
                 <View style={{flexDirection: 'row'}}>
                     <View style={{justifyContent: 'center'}}>
-                        <Image   indicator={ProgressBar.Pie}
-                                 style={{margin: 8, width: 60, height: 60, borderRadius: 30}}
-                                 source={require('../images/bglogin.jpg')}/>
+                        <Image indicator={ProgressBar.Pie}
+                               style={{margin: 8, width: 60, height: 60, borderRadius: 30}}
+                               source={require('../images/bglogin.jpg')}/>
                     </View>
                     <View style={{flex: 4, margin: 8, justifyContent: 'center'}}>
                         <Text
@@ -127,7 +123,7 @@ export default class ListNhanVienScreen extends React.Component {
 
     }
 
-    render() {{
+    render() {
         return (
             <GestureRecognizer
                 onSwipeRight={(state) => this.onSwipeRight(state)}
@@ -137,7 +133,7 @@ export default class ListNhanVienScreen extends React.Component {
                     <View style={styles.titleStyle}>
                         <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
                         <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Danh sách nhân viên</Text>
-                        <View style={{backgroundColor: Color.backgroundNewFeed, width: 35, height: 35}}></View>
+                        <View style={{backgroundColor: Color.backgroundNewFeed, width: 35, height: 35}}/>
                     </View>
 
                     <TouchableOpacity onPress={() => this.props.backToHome()}
@@ -165,7 +161,7 @@ export default class ListNhanVienScreen extends React.Component {
             </GestureRecognizer>
 
         )
-    }}
+    }
 
     componentDidMount() {
         fetch(URlConfig.getListNhanVienLink())

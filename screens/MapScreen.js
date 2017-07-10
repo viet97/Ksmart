@@ -13,8 +13,8 @@ export default class MapScreen extends Component {
         super(props);
         this.state = {
             region: {
-                latitude: 37.78825,
-                longitude: -122.4324,
+                latitude: 21.007069,
+                longitude: 105.8206451,
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421,
             }
@@ -26,8 +26,8 @@ export default class MapScreen extends Component {
         console.log(this.props.vido+'131231')
         this.setState({
                 region: {
-                    latitude: 37.78825,
-                    longitude: -122.4324,
+                    latitude: 21.007069,
+                    longitude: 105.8206451,
                     latitudeDelta: 0.0922,
                     longitudeDelta: 0.0421,
                 }
