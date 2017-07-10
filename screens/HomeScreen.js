@@ -53,7 +53,9 @@ export default class HomeScreen extends React.Component {
             height: 35,
             selectedTab: 'NewFeed',
             headerTitleStyle: {alignSelf: 'center'},
-            screenName: 'Menu'
+            screenName: 'Menu',
+            longittude:0,
+            latitude:0,
         })
     }
 
@@ -73,18 +75,10 @@ export default class HomeScreen extends React.Component {
     }
 
 
-    // itemListView(data) {
-    //     return (
-    //         <View style={{flexDirection: 'row', height: height / 6, flex: 1}}>
-    //             <Image source={{uri: data.url}} style={{flex: 1}}/>
-    //             <View style={{flex: 5}}>
-    //                 <Text style={{fontSize: 15, color: Color.itemNameListViewColor}}>{data.name}</Text>
-    //                 <Text style={{fontSize: 10, color: 'white'}}> {data.action}</Text>
-    //             </View>
-    //         </View>
-    //     )
-    // }
+
+
     renderSomething() {
+        const {navigate} = this.props.navigation
         switch (this.state.screenName) {
             case "Menu":
                 return this.menuScreen();
@@ -94,12 +88,13 @@ export default class HomeScreen extends React.Component {
                 }} data={this.state.arr}/>
             case "ListNhanVien":
                 return <ListNhanVienScreen
+                    ref="ListNhanVien"
                     clickMenu={() => this.openControlPanel()}
                     backToHome={() => {this.setState({screenName: 'Menu'})}}
                     goToMapFromListNhanVien={()=>{this.setState({screenName:'Map'})}}
                 />
             case "Map":
-                return <MapScreen/>
+                return <MapScreen   backToListNhanVienFromMap={() => {this.setState({screenName: 'ListNhanVien'})}} kinhdo={this.refs.ListNhanVien.state.kinhdo}  vido={this.refs.ListNhanVien.state.vido}/>
         }
     }
 

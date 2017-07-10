@@ -30,6 +30,8 @@ export default class ListNhanVienScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = ({
+            kinhdo:0,
+            vido:0,
             arr: [],
             index: 0,
             waiting: false,
@@ -84,8 +86,11 @@ export default class ListNhanVienScreen extends React.Component {
             );
         }
     }
-
+    log(){
+        console.log(this.state.kinhdo)
+    }
     _renderRowView(rowData) {
+
         return (
             <View style={{
                 height: height / 8, flex: 1,
@@ -106,7 +111,14 @@ export default class ListNhanVienScreen extends React.Component {
                             }}>{rowData.tennhanvien}</Text>
                         <Text style={{fontSize: 13, color: 'white'}}> {rowData.dangtructuyen}</Text>
                     </View>
-                    <TouchableOpacity onPress={()=>{this.props.goToMapFromListNhanVien()}}>
+                    <TouchableOpacity onPress={()=>{this.setState({
+                        kinhdo:rowData.KinhDo,
+                        vido:rowData.ViDo
+                    }, function() {
+
+                       this.props.goToMapFromListNhanVien()
+
+                    }) }}>
                         <Icon2 size={30} color='white' name="location"/>
                     </TouchableOpacity>
                 </View>
@@ -115,7 +127,7 @@ export default class ListNhanVienScreen extends React.Component {
 
     }
 
-    render() {
+    render() {{
         return (
             <GestureRecognizer
                 onSwipeRight={(state) => this.onSwipeRight(state)}
@@ -153,7 +165,7 @@ export default class ListNhanVienScreen extends React.Component {
             </GestureRecognizer>
 
         )
-    }
+    }}
 
     componentDidMount() {
         fetch(URlConfig.getListNhanVienLink())

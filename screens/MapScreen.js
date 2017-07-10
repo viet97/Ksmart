@@ -2,10 +2,12 @@ import React, {Component} from 'react';
 import {
     AppRegistry,
     StyleSheet,
-    Text,
+    Text, TouchableOpacity,
     View
 } from 'react-native';
 import MapView from 'react-native-maps';
+import Icon1 from 'react-native-vector-icons/Ionicons'
+import Color from '../configs/color'
 export default class MapScreen extends Component {
     constructor(props) {
         super(props);
@@ -20,6 +22,8 @@ export default class MapScreen extends Component {
     }
 
     componentDidMount() {
+        console.log(this.props.kinhdo+'1312312')
+        console.log(this.props.vido+'131231')
         this.setState({
                 region: {
                     latitude: 37.78825,
@@ -36,14 +40,54 @@ export default class MapScreen extends Component {
     }
 
     render() {
+        var a = this.props.kinhdo
+        var b = this.props.vido
         return (
             <View style={{flex: 1}}>
+                <View style={styles.titleStyle}>
+                    <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
+                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Địa chỉ nhân viên</Text>
+                    <View style={{backgroundColor: Color.backgroundNewFeed, width: 35, height: 35}}></View>
+                </View>
+
+                <TouchableOpacity onPress={() => this.props.backToListNhanVienFromMap()}
+                                  style={{width: 50, height: 50, position: 'absolute'}}/>
                 <MapView
-                    style={{flex: 1}}
-                    region={this.state.region}
-                    onRegionChange={this.onRegionChange.bind(this)}
-                />
+                    style={{flex: 9}}
+                    initialRegion={{
+                        latitude: 21.0154269,
+                        longitude:105.81321538 ,
+                        latitudeDelta: 0.0922,
+                        longitudeDelta: 0.0421,
+                    }}
+                >
+                    <MapView.Marker.Animated
+                        coordinate={ {latitude: this.props.vido,
+                            longitude:this.props.kinhdo ,
+                            latitudeDelta: 0.0922,
+                            longitudeDelta: 0.0421}}
+
+                    />
+                </MapView>
+
             </View>
         )
     }
 }
+const styles = StyleSheet.create({
+    titleStyle: {
+        flex: 1,
+        elevation: 15,
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+        backgroundColor: Color.backgroundNewFeed,
+    },
+    iconStyle: {
+        alignSelf: 'center',
+        width: 24,
+        height: 24,
+        backgroundColor: "transparent",
+        marginLeft: 16
+    }
+
+})
