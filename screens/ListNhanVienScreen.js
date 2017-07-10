@@ -16,6 +16,7 @@ import React from 'react';
 import Color from '../configs/color'
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import TabNavigator from 'react-native-tab-navigator';
+import MapListScreen from "./MapListScreen";
 
 
 var {height} = Dimensions.get('window');
@@ -178,7 +179,7 @@ export default class ListNhanVienScreen extends React.Component {
                     renderIcon={() => <Icon2 size={24} color="black" name="location"/>}
                     renderSelectedIcon={() =><Icon2 size={24} color="green" name="location"/>}
                     onPress={() => this.setState({ selectedTab: 'MapForAllLocation' })}>
-                    <Text>12313212</Text>
+                    <MapListScreen/>
                 </TabNavigator.Item>
             </TabNavigator>
 
