@@ -17,7 +17,6 @@ import Color from '../configs/color'
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
 
-
 var {height} = Dimensions.get('window');
 var GiftedListView = require('react-native-gifted-listview');
 export default class ListNhanVienScreen extends React.Component {
@@ -91,12 +90,13 @@ export default class ListNhanVienScreen extends React.Component {
                 height: height / 8, flex: 1,
                 borderTopColor: '#227878', borderTopWidth: 1
             }}>
-                <Text style={{textAlign: 'right', color: 'white', fontSize: 12}}> Cập nhật lúc {rowData.thoigiancapnhat}</Text>
+                <Text style={{textAlign: 'right', color: 'white', fontSize: 12}}> Cập nhật
+                    lúc {rowData.thoigiancapnhat}</Text>
                 <View style={{flexDirection: 'row'}}>
                     <View style={{justifyContent: 'center'}}>
-                        <Image   indicator={ProgressBar.Pie}
-                                 style={{margin: 8, width: 60, height: 60, borderRadius: 30}}
-                                 source={require('../images/bglogin.jpg')}/>
+                        <Image indicator={ProgressBar.Pie}
+                               style={{margin: 8, width: 60, height: 60, borderRadius: 30}}
+                               source={require('../images/bglogin.jpg')}/>
                     </View>
                     <View style={{flex: 4, margin: 8, justifyContent: 'center'}}>
                         <Text
@@ -106,7 +106,9 @@ export default class ListNhanVienScreen extends React.Component {
                             }}>{rowData.tennhanvien}</Text>
                         <Text style={{fontSize: 13, color: 'white'}}> {rowData.dangtructuyen}</Text>
                     </View>
-                    <TouchableOpacity onPress={()=>{this.props.goToMapFromListNhanVien()}}>
+                    <TouchableOpacity onPress={() => {
+                        this.props.goToMapFromListNhanVien()
+                    }}>
                         <Icon2 size={30} color='white' name="location"/>
                     </TouchableOpacity>
                 </View>
@@ -125,7 +127,7 @@ export default class ListNhanVienScreen extends React.Component {
                     <View style={styles.titleStyle}>
                         <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
                         <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Danh sách nhân viên</Text>
-                        <View style={{backgroundColor: Color.backgroundNewFeed, width: 35, height: 35}}></View>
+                        <View style={{backgroundColor: Color.backgroundNewFeed, width: 35, height: 35}}/>
                     </View>
 
                     <TouchableOpacity onPress={() => this.props.backToHome()}
