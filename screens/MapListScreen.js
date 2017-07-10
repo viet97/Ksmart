@@ -5,7 +5,7 @@ import React, {Component} from 'react';
 import {
     AppRegistry, Button,
     StyleSheet,
-    Text,
+    Text, Image,
     View, TabBarIOS, TouchableHighlight, Platform
 } from 'react-native';
 import Toast from 'react-native-simple-toast'
@@ -50,8 +50,10 @@ export default class MapListScreen extends Component {
         return (
             <View style={{flex: 1}}>
                 <MapView
+
                     style={{flex: 1}}
                     region={this.state.region}
+                    initialRegion={this.state.region}
                     onRegionChange={this.onRegionChange.bind(this)}>
 
 
@@ -66,6 +68,9 @@ export default class MapListScreen extends Component {
                             title={marker.tennhanvien}
                             description={this.getTimeUpdate(marker.thoigiancapnhat)}>
                             {this.getIconUser(marker.dangtructuyen)}
+                            <MapView.Callout style={{width: 180}}>
+                                {this.getImageNV(marker)}
+                            </MapView.Callout>
                         </MapView.Marker>
                     ))}
                 </MapView>
@@ -75,6 +80,29 @@ export default class MapListScreen extends Component {
 
     getTimeUpdate(time) {
         return 'Thời gian cập nhật: ' + time;
+    }
+
+    getImageNV(v) {
+        var value = v.AnhDaiDien;
+        if (value === undefined || value === null || value.length === 0) {
+            return (
+                <View style={{flexDirection: 'column'}}>
+                    <Image source={require('../images/bglogin.jpg')}
+                           style={{width: 50, height: 50, borderRadius: 25, alignSelf: 'center'}}/>
+                    <Text style={{fontSize: 18}}>{v.tennhanvien}</Text>
+                    <Text style={{fontSize: 15}}>{this.getTimeUpdate(v.thoigiancapnhat)}</Text>
+                </View>
+            );
+        } else {
+            return (
+                <View style={{flexDirection: 'column', width: 120}}>
+                    <Image source={{uri: URlConfig.BASE_URL_APP + value}}
+                           style={{width: 50, height: 50, borderRadius: 25}}/>
+                    <Text style={{fontSize: 18}}>{v.tennhanvien}</Text>
+                    <Text style={{fontSize: 15}}>{this.getTimeUpdate(v.thoigiancapnhat)}</Text>
+                </View>
+            );
+        }
     }
 
     getIconUser(state) {

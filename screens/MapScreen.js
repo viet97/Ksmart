@@ -24,8 +24,8 @@ export default class MapScreen extends Component {
     componentDidMount() {
         this.setState({
                 region: {
-                    latitude: 21.007069,
-                    longitude: 105.8206451,
+                    latitude: this.props.vido,
+                    longitude: this.props.kinhdo,
                     latitudeDelta: 0.0922,
                     longitudeDelta: 0.0421,
                 },
@@ -62,13 +62,7 @@ export default class MapScreen extends Component {
                                       style={{width: 50, height: 50, position: 'absolute'}}/>
                     <MapView
                         style={{flex: 9}}
-                        initialRegion={{
-                            latitude: 21.0154269,
-                            longitude: 105.81321538,
-                            latitudeDelta: 0.0922,
-                            longitudeDelta: 0.0421,
-                        }}
-                    >
+                        initialRegion={this.state.region}>
                         <MapView.Marker.Animated
                             coordinate={ {
                                 latitude: this.props.vido,

@@ -4,7 +4,7 @@
 
 import React from 'react';
 import {
-    Text, Alert,
+    Text, Alert, ScrollView,
     View, Platform, Switch, Animated,
     Button, ListView, Image, StyleSheet, StatusBar, TouchableHighlight,
     TouchableOpacity, findNodeHandle, TextInput, Dimensions
@@ -16,8 +16,7 @@ import URlConfig from "../configs/url";
 import * as Animatable from 'react-native-animatable';
 
 import {NavigationActions} from "react-navigation";
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
+
 const Realm = require('realm');
 export default class LoginScreen extends React.Component {
 
@@ -62,6 +61,8 @@ export default class LoginScreen extends React.Component {
 
 
     render() {
+        var windowWidth = Dimensions.get('window').width;
+        var windowHeight = Dimensions.get('window').height;
         return (
             <View style={{flex: 1, justifyContent: 'center', flexDirection: 'column'}}>
                 <Animatable.Image
