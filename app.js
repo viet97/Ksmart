@@ -15,11 +15,13 @@ import MapScreen from "./screens/MapScreen";
 import ChartScreen from "./screens/ChartScreen";
 
 const Ksmart = StackNavigator({
-    Chart: {screen: ChartScreen},
+    Map: {screen: MapScreen},
     Splash: {screen: SplashScreen},
     Login: {screen: LoginScreen},
     Home: {screen: HomeScreen},
     Menu: {screen: MenuScreen},
-    Map: {screen: MapScreen},
+
+    Chart: {screen: ChartScreen},
+
 });
 AppRegistry.registerComponent('Ksmart', () => Ksmart);
