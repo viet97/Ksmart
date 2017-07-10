@@ -28,10 +28,10 @@ export default class URlConfig {
 
     static getNewFeedLink() {
         var data = URlConfig.OBJLOGIN.data;
-        return data.urlserver + '/AppNewFeed.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idct=' + data.idct;
+        return data.urlserver + '/AppNewFeed.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&macongty=' + data.idct;
     }
     static getListNhanVienLink(){
         var data= URlConfig.OBJLOGIN.data;
-        return data.urlserver + '/AppDanhSachNhanVien.aspx?token=' + '&idquanly=' + data.id + '&idct=' + data.idct;
+        return data.urlserver + '/AppDanhSachNhanVien.aspx?token=' + '&idquanly=' + data.id + '&macongty=' + data.idct;
     }
 }

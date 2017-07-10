@@ -15,7 +15,7 @@ import Icon2 from 'react-native-vector-icons/Entypo'
 import React from 'react';
 import Color from '../configs/color'
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
-
+import TabNavigator from 'react-native-tab-navigator';
 
 
 var {height} = Dimensions.get('window');
@@ -30,6 +30,7 @@ export default class ListNhanVienScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = ({
+            selectedTab:'ListNhanVien',
             kinhdo:0,
             vido:0,
             arr: [],
@@ -86,11 +87,17 @@ export default class ListNhanVienScreen extends React.Component {
             );
         }
     }
+    isOnline(dangtructuyen){
+        if (dangtructuyen==1)
+        return <Icon2 size={36} color="green" name="controller-record"/>
+        else if (dangtructuyen==2) return <Icon2 size={24} color="red" name="controller-record"/>
+        else if (dangtructuyen==0) return <Icon2 size={24} color="gray" name="controller-record"/>
 
+    }
     _renderRowView(rowData) {
         return (
             <View style={{
-                height: height / 8, flex: 1,
+                height: height / 7, flex: 1,
                 borderTopColor: '#227878', borderTopWidth: 1
             }}>
                 <Text style={{textAlign: 'right', color: 'white', fontSize: 12}}> Cập nhật
@@ -104,10 +111,10 @@ export default class ListNhanVienScreen extends React.Component {
                     <View style={{flex: 4, margin: 8, justifyContent: 'center'}}>
                         <Text
                             style={{
-                                fontSize: 20,
+                                fontSize: 18,
                                 color: Color.itemNameListViewColor
                             }}>{rowData.tennhanvien}</Text>
-                        <Text style={{fontSize: 13, color: 'white'}}> {rowData.dangtructuyen}</Text>
+                        {this.isOnline(rowData.dangtructuyen)}
                     </View>
                     <TouchableOpacity onPress={()=>{this.setState({
                         kinhdo:rowData.KinhDo,
@@ -125,42 +132,55 @@ export default class ListNhanVienScreen extends React.Component {
 
     }
 
+
     render() {
         return (
-            <GestureRecognizer
-                onSwipeRight={(state) => this.onSwipeRight(state)}
-                style={{flex: 1}}
-            >
-                <View style={{flex: 1}}>
-                    <View style={styles.titleStyle}>
-                        <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
-                        <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Danh sách nhân viên</Text>
-                        <View style={{backgroundColor: Color.backgroundNewFeed, width: 35, height: 35}}/>
+            <TabNavigator>
+                <TabNavigator.Item
+                    selected={this.state.selectedTab === 'ListNhanVien'}
+                    title="Nhân Viên"
+                    renderIcon={() =>  <Icon1 size={24} color="black" name="ios-people-outline"/>}
+                    renderSelectedIcon={() => <Icon1 size={24} color="green" name="ios-people-outline"/>}
+                    onPress={() => this.setState({ selectedTab: 'ListNhanVien' })}>
+                    <View style={{flex: 1}}>
+                        <View style={styles.titleStyle}>
+                            <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
+                            <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Danh sách nhân viên</Text>
+                            <View style={{backgroundColor: Color.backgroundNewFeed, width: 35, height: 35}}/>
+                        </View>
+
+                        <TouchableOpacity onPress={() => this.props.backToHome()}
+                                          style={{width: 50, height: 50, position: 'absolute'}}/>
+                        <View style={{backgroundColor: Color.itemListViewColor, flex: 9}}>
+
+                            <GiftedListView
+                                rowView={this._renderRowView.bind(this)}
+                                onFetch={this._onFetch.bind(this)}
+                                firstLoader={true} // display a loader for the first fetching
+                                pagination={true} // enable infinite scrolling using touch to load more
+                                refreshable={true} // enable pull-to-refresh for iOS and touch-to-refresh for Android
+                                withSections={false} // enable sections
+                                enableEmptySections={true}
+                                customStyles={{
+                                    paginationView: {
+                                        backgroundColor: Color.itemListViewColor,
+                                    },
+                                }}
+
+                                refreshableTintColor="blue"
+                            />
+                        </View>
                     </View>
-
-                    <TouchableOpacity onPress={() => this.props.backToHome()}
-                                      style={{width: 50, height: 50, position: 'absolute'}}/>
-                    <View style={{backgroundColor: Color.itemListViewColor, flex: 9}}>
-
-                        <GiftedListView
-                            rowView={this._renderRowView.bind(this)}
-                            onFetch={this._onFetch.bind(this)}
-                            firstLoader={true} // display a loader for the first fetching
-                            pagination={true} // enable infinite scrolling using touch to load more
-                            refreshable={true} // enable pull-to-refresh for iOS and touch-to-refresh for Android
-                            withSections={false} // enable sections
-                            enableEmptySections={true}
-                            customStyles={{
-                                paginationView: {
-                                    backgroundColor: Color.itemListViewColor,
-                                },
-                            }}
-
-                            refreshableTintColor="blue"
-                        />
-                    </View>
-                </View>
-            </GestureRecognizer>
+                </TabNavigator.Item>
+                <TabNavigator.Item
+                    selected={this.state.selectedTab === 'MapForAllLocation'}
+                    title="Map"
+                    renderIcon={() => <Icon2 size={24} color="black" name="location"/>}
+                    renderSelectedIcon={() =><Icon2 size={24} color="green" name="location"/>}
+                    onPress={() => this.setState({ selectedTab: 'MapForAllLocation' })}>
+                    <Text>12313212</Text>
+                </TabNavigator.Item>
+            </TabNavigator>
 
         )
     }
