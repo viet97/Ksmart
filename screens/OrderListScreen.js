@@ -42,8 +42,40 @@ export default class OrderListScreen extends Component {
     _onFetch(page = 1, callback, options) {
 
         var dem = 0;
-        if (page === 1) this.setState({index: 0})
-        {
+        if (page === 1) {
+            this.setState({index: 0})
+            fetch(URlConfig.getLinkOrderList(this.state.dateFrom, this.state.dateTo))
+                .then((response) => (response.json()))
+                .then((responseJson) => {
+                    if (responseJson.status) {
+                        this.setState({data: responseJson.data}, function () {
+                                setTimeout(() => {
+                                    var a = this.state.data;
+                                    var rows = [];
+                                    while (dem < 7) {
+                                        dem++;
+                                        if (a[this.state.index] !== undefined) {
+                                            rows.push(a[this.state.index]);
+                                            this.setState({index: this.state.index + 1});
+                                        }
+                                    }
+                                    if (this.state.index === this.state.data.length) {
+                                        callback(rows, {
+                                            allLoaded: true, // the end of the list is reached
+                                        });
+                                    } else {
+                                        callback(rows);
+                                    }
+                                }, 1000);
+                            }
+                        );
+
+                        console.log(responseJson.data)
+                    } else {
+                        Toast.show(responseJson.msg)
+                    }
+                })
+        } else {
             setTimeout(() => {
                 var a = this.state.data;
                 var rows = [];
@@ -63,6 +95,7 @@ export default class OrderListScreen extends Component {
                 }
             }, 1000);
         }
+
 
     }
     _renderRowView(rowData) {

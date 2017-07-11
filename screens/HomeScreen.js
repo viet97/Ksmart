@@ -98,7 +98,9 @@ export default class HomeScreen extends React.Component {
             case "Map":
                 return <MapScreen   backToListNhanVienFromMap={() => {this.setState({screenName: 'ListNhanVien'})}} kinhdo={this.refs.ListNhanVien.state.kinhdo}  vido={this.refs.ListNhanVien.state.vido}/>
             case "Order":
-                return <OrderListScreen />
+                return <OrderListScreen backToHome={() => {
+                    this.setState({screenName: 'Menu'})
+                }}/>
         }
     }
 

@@ -37,8 +37,37 @@ export default class NewFeedScreen extends React.Component {
            _onFetch(page = 1, callback, options) {
 
             var dem = 0;
-            if (page === 1) this.setState({index: 0})
+               if (page === 1)
             {
+                this.setState({index: 0})
+                fetch(URlConfig.getNewFeedLink())
+                    .then((response) => (response.json()))
+                    .then((responseJson) => {
+                        this.setState({arr: responseJson.data}, function () {
+                                setTimeout(() => {
+                                    var a = this.state.arr;
+                                    var rows = [];
+                                    while (dem < 7) {
+                                        dem++;
+                                        if (a[this.state.index] !== undefined) {
+                                            rows.push(a[this.state.index]);
+                                            this.setState({index: this.state.index + 1});
+                                        }
+                                    }
+                                    if (this.state.index === this.state.arr.length) {
+                                        callback(rows, {
+                                            allLoaded: true, // the end of the list is reached
+                                        });
+                                    } else {
+                                        callback(rows);
+                                    }
+                                }, 1000);
+                            }
+                        );
+                    }).catch((e) => {
+                    console.log("12312312321" + e)
+                })
+            } else {
                 setTimeout(() => {
                     var a = this.state.arr;
                     var rows = [];
@@ -84,7 +113,7 @@ export default class NewFeedScreen extends React.Component {
     _renderRowView(rowData) {
         return (
             <View style={{
-                height: height / 8, flex: 1,
+                height: height / 7, flex: 1,
                 borderTopColor: '#227878', borderTopWidth: 1
             }}>
                 <Text style={{textAlign: 'right', color: 'white', fontSize: 12}}> {rowData.thoigian_hienthi}</Text>
@@ -95,7 +124,7 @@ export default class NewFeedScreen extends React.Component {
                     <View style={{flex: 4, margin: 8, justifyContent: 'center'}}>
                         <Text
                             style={{
-                                fontSize: 20,
+                                fontSize: 18,
                                 color: Color.itemNameListViewColor
                             }}>{rowData.tennhanvien}</Text>
                         <Text style={{fontSize: 13, color: 'white'}}> {rowData.tenloai}</Text>
@@ -147,19 +176,6 @@ export default class NewFeedScreen extends React.Component {
         )
     }
 
-    componentDidMount() {
-        fetch(URlConfig.getNewFeedLink())
-            .then((response) => (response.json()))
-            .then((responseJson) => {
-                console.log(URlConfig.getNewFeedLink())
-                this.setState({arr: responseJson.data});
-                this.refs.listview._refresh()
-                console.log(this.state.arr)
-            }).catch((e) => {
-            console.log("12312312321" + e)
-        })
-
-    }
 }
 
 const styles = StyleSheet.create({

@@ -46,8 +46,37 @@ export default class ListNhanVienScreen extends React.Component {
     _onFetch(page = 1, callback, options) {
 
         var dem = 0;
-        if (page === 1) this.setState({index: 0})
-        {
+        if (page === 1) {
+            this.setState({index: 0})
+            fetch(URlConfig.getListNhanVienLink())
+                .then((response) => (response.json()))
+                .then((responseJson) => {
+                    this.setState({arr: responseJson.data}, function () {
+                            setTimeout(() => {
+                                var a = this.state.arr;
+                                var rows = [];
+                                while (dem < 7) {
+                                    dem++;
+                                    if (a[this.state.index] !== undefined) {
+                                        rows.push(a[this.state.index]);
+                                        this.setState({index: this.state.index + 1});
+                                    }
+                                }
+                                if (this.state.index === this.state.arr.length) {
+                                    callback(rows, {
+                                        allLoaded: true, // the end of the list is reached
+                                    });
+                                } else {
+                                    callback(rows);
+                                }
+                            }, 1000);
+                        }
+                    );
+                }).catch((e) => {
+                console.log("12312312321" + e)
+            })
+        }
+        else {
             setTimeout(() => {
                 var a = this.state.arr;
                 var rows = [];
@@ -187,18 +216,6 @@ export default class ListNhanVienScreen extends React.Component {
         )
     }
 
-    componentDidMount() {
-        fetch(URlConfig.getListNhanVienLink())
-            .then((response) => (response.json()))
-            .then((responseJson) => {
-                console.log(URlConfig.getNewFeedLink())
-                this.setState({arr: responseJson.dsNhanVien});
-                console.log(this.state.arr)
-            }).catch((e) => {
-            console.log("12312312321" + e)
-        })
-
-    }
 }
 
 const styles = StyleSheet.create({
