@@ -4,7 +4,9 @@ import {Text, View,StyleSheet,TouchableOpacity,Dimensions} from "react-native";
 import URlConfig from "../configs/url";
 import Color from '../configs/color'
 import Icon1 from 'react-native-vector-icons/Ionicons'
+import Icon from 'react-native-vector-icons/MaterialIcons'
 import Image from 'react-native-image-progress';
+import ProgressBar from 'react-native-progress/Bar';
 var {height} = Dimensions.get('window');
 var GiftedListView = require('react-native-gifted-listview');
 
@@ -66,22 +68,29 @@ export default class OrderListScreen extends Component {
     _renderRowView(rowData) {
         return (
             <View style={{
-                height: height / 8, flex: 1,
+                height: height / 6, flex: 1,
                 borderTopColor: '#227878', borderTopWidth: 1
             }}>
                 <Text style={{textAlign: 'right', color: 'white', fontSize: 12}}>Thời gian
-                    lập:{rowData.thoigianlapdon}</Text>
+                    lập: {rowData.thoigianlapdon}</Text>
                 <View style={{flexDirection: 'row'}}>
                     <View style={{justifyContent: 'center'}}>
-                        {this.getImage(rowData.anhdaidien)}
+                        <Image
+                            source={require('../images/bglogin.jpg')}
+                            indicator={ProgressBar.Pie}
+                            style={{margin: 8, width: 60, height: 60, borderRadius: 30}}/>
                     </View>
                     <View style={{flex: 4, margin: 8, justifyContent: 'center'}}>
                         <Text
                             style={{
                                 fontSize: 18,
                                 color: Color.itemNameListViewColor
-                            }}>{rowData.tenkhachhang}</Text>
-                        <Text style={{fontSize: 13, color: 'white'}}> {rowData.tenloai}</Text>
+                            }}>khách hàng: {rowData.tenkhachhang}</Text>
+                        <Text style={{fontSize: 13, color: 'white'}}>Mã đơn hàng: {rowData.iddonhang}</Text>
+                        <View style={{flexDirection: 'row'}}>
+                            <Icon size={24} color='green' name="attach-money"/>
+                            <Text style={{color: 'white'}}>: {rowData.tongtien}</Text>
+                        </View>
                     </View>
                 </View>
             </View>
