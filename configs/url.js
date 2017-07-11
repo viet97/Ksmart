@@ -27,11 +27,17 @@ export default class URlConfig {
     }
 
     static getNewFeedLink() {
-        var data = URlConfig.OBJLOGIN.data;
+        let data = URlConfig.OBJLOGIN.data;
         return data.urlserver + '/AppNewFeed.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&macongty=' + data.idct;
     }
     static getListNhanVienLink(){
-        var data= URlConfig.OBJLOGIN.data;
+        let data = URlConfig.OBJLOGIN.data;
         return data.urlserver + '/AppDanhSachNhanVien.aspx?token=' + '&idquanly=' + data.id + '&macongty=' + data.idct;
+    }
+
+    static getLinkOrderList(from, to) {
+        // return 'http://jav.ksmart.vn/AppDanhSachDonHang.aspx?6e22b116f5111220741848ccd290e9e9e60cd16030852326e0ebdcf522be1393&idquanly=6&idct=2&from=01-05-2017&to=10-07-2017&trangthaigps=0'
+        let data = URlConfig.OBJLOGIN.data;
+        return data.urlserver + '/AppDanhSachDonHang.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idct=' + data.idcongty + '&from=' + from + '&to=' + to + '&rangthaigps=0';
     }
 }

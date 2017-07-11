@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import Toast from 'react-native-simple-toast'
 import Icon from 'react-native-vector-icons/Entypo';
+import Icon2 from 'react-native-vector-icons/MaterialIcons';
 import MapView from 'react-native-maps';
 import URlConfig from "../configs/url";
 import Color from '../configs/color'
@@ -74,6 +75,19 @@ export default class MapListScreen extends Component {
                         </MapView.Marker>
                     ))}
                 </MapView>
+                <TouchableHighlight style={{backgroundColor: 'white'}} onPress={() => {
+                    this.setState({
+                        region: {
+                            latitude: 20.994953,
+                            longitude: 105.8307488,
+                            latitudeDelta: 0.0922,
+                            longitudeDelta: 0.0421,
+                        },
+                    })
+                }}>
+                    <Icon2 size={24} style={{position: 'absolute', right: 10, bottom: 10}} color="gray"
+                           name="my-location"/>
+                </TouchableHighlight>
             </View>
         );
     }

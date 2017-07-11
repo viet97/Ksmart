@@ -89,10 +89,10 @@ export default class ListNhanVienScreen extends React.Component {
         }
     }
     isOnline(dangtructuyen){
-        if (dangtructuyen==1)
+        if (dangtructuyen === 1)
         return <Icon2 size={36} color="green" name="controller-record"/>
-        else if (dangtructuyen==2) return <Icon2 size={24} color="red" name="controller-record"/>
-        else if (dangtructuyen==0) return <Icon2 size={24} color="gray" name="controller-record"/>
+        else if (dangtructuyen === 2) return <Icon2 size={24} color="red" name="controller-record"/>
+        else if (dangtructuyen === 0) return <Icon2 size={24} color="gray" name="controller-record"/>
 
     }
     _renderRowView(rowData) {

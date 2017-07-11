@@ -24,6 +24,7 @@ import ListNhanVienScreen from "./ListNhanVienScreen";
 import MapScreen from "./MapScreen";
 import {NavigationActions} from "react-navigation";
 import Toast from 'react-native-simple-toast';
+import OrderListScreen from "./OrderListScreen";
 var {height} = Dimensions.get('window').height;
 export default class HomeScreen extends React.Component {
     static navigationOptions = {
@@ -95,6 +96,8 @@ export default class HomeScreen extends React.Component {
                 />
             case "Map":
                 return <MapScreen   backToListNhanVienFromMap={() => {this.setState({screenName: 'ListNhanVien'})}} kinhdo={this.refs.ListNhanVien.state.kinhdo}  vido={this.refs.ListNhanVien.state.vido}/>
+            case "Order":
+                return <OrderListScreen />
         }
     }
 
@@ -124,7 +127,7 @@ export default class HomeScreen extends React.Component {
                                 style={{width: 35, height: 35, alignSelf: 'center'}}/>
                         </TouchableOpacity>
                         <Text style={{fontSize: 20, alignSelf: 'center'}}>Menu</Text>
-                        <View style={{width: 50, height: 50}}></View>
+                        <View style={{width: 50, height: 50, backgroundColor: 'transparent'}}></View>
                     </View>
 
                     <View style={{flex: 9}}>
@@ -154,7 +157,9 @@ export default class HomeScreen extends React.Component {
                                 </View>
                                 <Text style={styles.titleIconsMenu}>Nhân viên</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={() => {
+                                this.setState({screenName: 'Order'})
+                            }}>
                                 <View style={{
                                     backgroundColor: Color.iconMenuColor,
                                     borderRadius: 15,
@@ -251,7 +256,7 @@ export default class HomeScreen extends React.Component {
     }
 
     sideMenuView() {
-        const {navigate} = this.props.navigation
+        const {navigate} = this.props.navigation;
         return (
             <View style={{marginTop: (Platform.OS === 'ios') ? 16 : 0,}}>
                 <View style={{
@@ -267,7 +272,8 @@ export default class HomeScreen extends React.Component {
 
                     <View  >
                         <TouchableOpacity style={styles.itemSideMenuStyle} onPress={() => {
-                            this.setState({screenName: "NewFeed"}), this.closeControlPanel()
+                            this.setState({screenName: "NewFeed"});
+                            this.closeControlPanel()
                         }}>
                             <Icon size={24} style={styles.iconStyle} color="white" name="payment"/>
                             <Text style={styles.textStyle}>Hoạt động</Text>
@@ -276,7 +282,8 @@ export default class HomeScreen extends React.Component {
                     </View>
                     <View >
                         <TouchableOpacity style={styles.itemSideMenuStyle} onPress={() => {
-                            this.setState({screenName:"ListNhanVien"}), this.closeControlPanel()
+                            this.setState({screenName: "ListNhanVien"});
+                            this.closeControlPanel()
                         }} >
                             <Icon1 size={24} style={styles.iconStyle} color="white" name="ios-people-outline"/>
                             <Text style={styles.textStyle}>Nhân viên</Text>
@@ -284,7 +291,9 @@ export default class HomeScreen extends React.Component {
                         </TouchableOpacity >
                     </View>
                     <View >
-                        <TouchableOpacity style={styles.itemSideMenuStyle}>
+                        <TouchableOpacity style={styles.itemSideMenuStyle} onPress={() => {
+                            this.setState({screenName: 'Order'})
+                        }}>
                             <Icon2 size={24} style={styles.iconStyle} color="white" name="archive"/>
                             <Text style={styles.textStyle}>Đơn hàng</Text>
                             <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
