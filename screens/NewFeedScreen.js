@@ -34,30 +34,30 @@ export default class NewFeedScreen extends React.Component {
         })
     }
 
-    _onFetch(page = 1, callback, options) {
+           _onFetch(page = 1, callback, options) {
 
-        var dem = 0;
-        if (page === 1) this.setState({index: 0})
-        {
-            setTimeout(() => {
-                var a = this.state.arr;
-                var rows = [];
-                while (dem < 7) {
-                    dem++;
-                    if (a[this.state.index] !== undefined) {
-                        rows.push(a[this.state.index]);
-                        this.setState({index: this.state.index + 1});
+            var dem = 0;
+            if (page === 1) this.setState({index: 0})
+            {
+                setTimeout(() => {
+                    var a = this.state.arr;
+                    var rows = [];
+                    while (dem < 7) {
+                        dem++;
+                        if (a[this.state.index] !== undefined) {
+                            rows.push(a[this.state.index]);
+                            this.setState({index: this.state.index + 1});
+                        }
                     }
-                }
-                if (this.state.index === this.state.arr.length) {
-                    callback(rows, {
-                        allLoaded: true, // the end of the list is reached
-                    });
-                } else {
-                    callback(rows);
-                }
-            }, 1000);
-        }
+                    if (this.state.index === this.state.arr.length) {
+                        callback(rows, {
+                            allLoaded: true, // the end of the list is reached
+                        });
+                    } else {
+                        callback(rows);
+                    }
+                }, 1000);
+            }
 
     }
 
@@ -113,13 +113,7 @@ export default class NewFeedScreen extends React.Component {
                 style={{flex: 1}}
             >
                 <View style={{flex: 1}}>
-                    <View style={styles.titleStyle}>
-                        <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
-                        <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>NewFeed</Text>
-                        <View style={{backgroundColor: Color.backgroundNewFeed, width: 35, height: 35}}></View>
-                    </View>
-
-                    <TouchableOpacity onPress={() => this.props.backToHome()}
+                  oss={() => this.props.backToHome()}
                                       style={{width: 50, height: 50, position: 'absolute'}}/>
                     <View style={{backgroundColor: Color.itemListViewColor, flex: 9}}>
 

@@ -1,9 +1,18 @@
 import React, {Component} from 'react'
 import DatePicker from 'react-native-datepicker'
-import {Text, View} from "react-native";
+import {Text, View,StyleSheet,TouchableOpacity,Dimensions} from "react-native";
 import URlConfig from "../configs/url";
+import Color from '../configs/color'
+import Icon1 from 'react-native-vector-icons/Ionicons'
+import Image from 'react-native-image-progress';
+var {height} = Dimensions.get('window');
+var GiftedListView = require('react-native-gifted-listview');
 
 export default class OrderListScreen extends Component {
+    static navigationOptions = {
+        header: null,
+    }
+
     constructor(props) {
         super(props);
         var today = new Date();
@@ -21,16 +30,60 @@ export default class OrderListScreen extends Component {
 
         today = dd + '/' + mm + '/' + yyyy;
         this.state = {
+            index: 0,
+            waiting: false,
             dateFrom: today,
             dateTo: today,
             data: []
         }
     }
+    _onFetch(page = 1, callback, options) {
+
+        var dem = 0;
+        if (page === 1) this.setState({index: 0})
+        {
+            setTimeout(() => {
+                var a = this.state.data;
+                var rows = [];
+                while (dem < 7) {
+                    dem++;
+                    if (a[this.state.index] !== undefined) {
+                        rows.push(a[this.state.index]);
+                        this.setState({index: this.state.index + 1});
+                    }
+                }
+                if (this.state.index === this.state.data.length) {
+                    callback(rows, {
+                        allLoaded: true, // the end of the list is reached
+                    });
+                } else {
+                    callback(rows);
+                }
+            }, 1000);
+        }
+
+    }
+    _renderRowView(rowData) {
+        return (
+            <View>
+            <Text style={{color:'white',fontSize:20}}>{rowData.tenkhachhang}</Text>
+            </View>
+        );
+
+    }
 
     render() {
         return (
-            <View>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View style={{flex:1}}>
+                <View style={styles.titleStyle}>
+                    <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
+                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Danh sách đơn hàng</Text>
+                    <View style={{backgroundColor: Color.backgroundNewFeed, width: 35, height: 35}}></View>
+                </View>
+
+                <TouchableOpacity onPress={() => this.props.backToHome()}
+                                  style={{width: 50, height: 50, position: 'absolute'}}/>
+                <View style={{flexDirection: 'row', alignItems: 'center',flex:1}}>
                     <Text style={{marginLeft: 8, backgroundColor: 'transparent'}}>Từ ngày:</Text>
                     <DatePicker
                         date={this.state.dateFrom}
@@ -83,6 +136,26 @@ export default class OrderListScreen extends Component {
                             this.ondateChange(this.state.dateFrom, date);
                         }}/>
                 </View>
+                <View style={{backgroundColor: Color.itemListViewColor, flex: 9}}>
+
+                    <GiftedListView
+                        ref="listview"
+                        rowView={this._renderRowView.bind(this)}
+                        onFetch={this._onFetch.bind(this)}
+                        firstLoader={true} // display a loader for the first fetching
+                        pagination={true} // enable infinite scrolling using touch to load more
+                        refreshable={true} // enable pull-to-refresh for iOS and touch-to-refresh for Android
+                        withSections={false} // enable sections
+                        enableEmptySections={true}
+                        customStyles={{
+                            paginationView: {
+                                backgroundColor: Color.itemListViewColor,
+                            },
+                        }}
+
+                        refreshableTintColor="blue"
+                    />
+                </View>
             </View>
 
         )
@@ -99,7 +172,12 @@ export default class OrderListScreen extends Component {
             .then((response) => (response.json()))
             .then((responseJson) => {
                 if (responseJson.status) {
-                    this.setState({data: responseJson.data});
+                    this.setState({data: responseJson.data},function (){
+                        this.refs.listview._refresh();
+                        }
+
+                    );
+
                     console.log(responseJson.data)
                 } else {
                     Toast.show(responseJson.msg)
@@ -109,3 +187,41 @@ export default class OrderListScreen extends Component {
         })
     }
 }
+const styles = StyleSheet.create({
+    titleStyle: {
+        flex: 1,
+        elevation: 15,
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+        backgroundColor: Color.backgroundNewFeed,
+    },
+    headerStyle: {
+        elevation: 15, height: this.height / 7
+    },
+    itemSideMenuStyle: {
+        borderBottomWidth: 1,
+        borderBottomColor: 'white',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        margin: 8,
+        paddingBottom: 8
+    }, iconStyle: {
+        alignSelf: 'center',
+        width: 24,
+        height: 24,
+        backgroundColor: "transparent",
+        marginLeft: 8
+    },
+    textStyle: {
+        fontSize: 18,
+        color: 'white',
+        backgroundColor: 'transparent'
+    },
+    titleIconsMenu: {
+        textAlign: 'center',
+        color: 'white',
+        fontSize: 16,
+        backgroundColor: 'transparent',
+        fontFamily: 'Al Nile'
+    }
+})

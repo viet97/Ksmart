@@ -4,7 +4,8 @@ import {
     View,
     Button, ListView, StyleSheet, StatusBar,
     TouchableOpacity,
-    Dimensions
+    Dimensions,
+    BackHandler
 } from 'react-native';
 import Image from 'react-native-image-progress';
 import ProgressBar from 'react-native-progress/Bar';
