@@ -8,6 +8,8 @@ import React from 'react';
 import Drawer from 'react-native-drawer';
 import Color from '../configs/color'
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
+
+import * as Animatable from 'react-native-animatable';
 import {
     AppRegistry,
     Text,
@@ -117,8 +119,9 @@ export default class HomeScreen extends React.Component {
             >
                 <View style={{flex: 1}}>
                     <Image
-                        source={{uri: 'https://s-media-cache-ak0.pinimg.com/originals/b2/a9/23/b2a9231806f6cd4b3da559eedc249880.jpg'}}
-                        style={{position: 'absolute', left: 0, right: 0, top: 0, bottom: 0}}/>
+                        source={require('../images/bghome.jpg')}
+                        resizeMode={Image.resizeMode.contain}
+                        style={{position: 'absolute', left: 0, right: 0, top: 0, bottom: 0, alignSelf: 'stretch'}}/>
                     <View style={styles.titleStyle}>
                         <TouchableOpacity onPress={() => this.openControlPanel()}
                                           style={{marginLeft: 16, width: 40, height: 40, alignSelf: 'center'}}>
@@ -126,7 +129,8 @@ export default class HomeScreen extends React.Component {
                                 source={require('../images/MenuBar.png')}
                                 style={{width: 35, height: 35, alignSelf: 'center'}}/>
                         </TouchableOpacity>
-                        <Text style={{fontSize: 20, alignSelf: 'center'}}>Menu</Text>
+                        <Animatable.Text animation="fadeInDown"
+                                         style={{fontSize: 20, alignSelf: 'center'}}>Menu</Animatable.Text>
                         <View style={{width: 50, height: 50, backgroundColor: 'transparent'}}></View>
                     </View>
 
@@ -142,7 +146,8 @@ export default class HomeScreen extends React.Component {
                                 }}>
                                     <Icon style={{alignSelf: 'center'}} size={60} color="white" name="payment"/>
                                 </View>
-                                <Text style={styles.titleIconsMenu}>Hoạt động</Text>
+                                <Animatable.Text animation="slideInLeft" style={styles.titleIconsMenu}>Hoạt
+                                    động</Animatable.Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => this.setState({screenName: "ListNhanVien"})}>
                                 <View style={{
@@ -155,7 +160,8 @@ export default class HomeScreen extends React.Component {
                                     <Icon1 style={{alignSelf: 'center'}} size={60} color="white"
                                            name="ios-people-outline"/>
                                 </View>
-                                <Text style={styles.titleIconsMenu}>Nhân viên</Text>
+                                <Animatable.Text animation="zoomIn" style={styles.titleIconsMenu}>Nhân
+                                    viên</Animatable.Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => {
                                 this.setState({screenName: 'Order'})
@@ -169,7 +175,8 @@ export default class HomeScreen extends React.Component {
                                 }}>
                                     <Icon2 style={{alignSelf: 'center'}} size={60} color="white" name="archive"/>
                                 </View>
-                                <Text style={styles.titleIconsMenu}>Đơn hàng</Text>
+                                <Animatable.Text animation="slideInRight" style={styles.titleIconsMenu}>Đơn
+                                    hàng</Animatable.Text>
                             </TouchableOpacity>
                         </View>
                         <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 16}}>
@@ -183,7 +190,8 @@ export default class HomeScreen extends React.Component {
                                 }}>
                                     <Icon2 style={{alignSelf: 'center'}} size={60} color="white" name="user"/>
                                 </View>
-                                <Text style={styles.titleIconsMenu}> Khách hàng</Text>
+                                <Animatable.Text animation="slideInLeft" style={styles.titleIconsMenu}> Khách
+                                    hàng</Animatable.Text>
                             </TouchableOpacity>
                             <TouchableOpacity>
                                 <View style={{
@@ -196,7 +204,8 @@ export default class HomeScreen extends React.Component {
                                     <Icon2 style={{alignSelf: 'center'}} size={60} color="white"
                                            name="aircraft-take-off"/>
                                 </View>
-                                <Text style={styles.titleIconsMenu}>Viếng thăm</Text>
+                                <Animatable.Text animation="flipInY" style={styles.titleIconsMenu}>Viếng
+                                    thăm</Animatable.Text>
                             </TouchableOpacity>
                             <TouchableOpacity>
                                 <View style={{
@@ -208,7 +217,8 @@ export default class HomeScreen extends React.Component {
                                 }}>
                                     <Icon3 style={{alignSelf: 'center'}} size={60} color="white" name="bar-chart"/>
                                 </View>
-                                <Text style={styles.titleIconsMenu}>Biểu đồ</Text>
+                                <Animatable.Text animation="slideInRight" style={styles.titleIconsMenu}>Biểu
+                                    đồ</Animatable.Text>
                             </TouchableOpacity>
                         </View>
                         <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 16}}>
@@ -222,7 +232,8 @@ export default class HomeScreen extends React.Component {
                                 }}>
                                     <Icon3 style={{alignSelf: 'center'}} size={60} color="white" name="file-text-o"/>
                                 </View>
-                                <Text style={styles.titleIconsMenu}>Báo cáo</Text>
+                                <Animatable.Text animation="slideInLeft" style={styles.titleIconsMenu}>Báo
+                                    cáo</Animatable.Text>
                             </TouchableOpacity>
                             <TouchableOpacity>
                                 <View style={{
@@ -234,7 +245,8 @@ export default class HomeScreen extends React.Component {
                                 }}>
                                     <Icon2 style={{alignSelf: 'center'}} size={60} color="white" name="laptop"/>
                                 </View>
-                                <Text style={styles.titleIconsMenu}>Kế hoạch</Text>
+                                <Animatable.Text animation="bounceIn" style={styles.titleIconsMenu}>Kế
+                                    hoạch</Animatable.Text>
                             </TouchableOpacity>
                             <TouchableOpacity>
                                 <View style={{
@@ -246,7 +258,8 @@ export default class HomeScreen extends React.Component {
                                 }}>
                                     <Icon2 style={{alignSelf: 'center'}} size={60} color="white" name="mail"/>
                                 </View>
-                                <Text style={styles.titleIconsMenu}>Tin nhắn</Text>
+                                <Animatable.Text animation="slideInRight" style={styles.titleIconsMenu}>Tin
+                                    nhắn</Animatable.Text>
                             </TouchableOpacity>
                         </View>
                     </View>

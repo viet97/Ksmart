@@ -69,7 +69,7 @@ export default class LoginScreen extends React.Component {
                     source={require('../images/bg.png')}
                     style={styles.absolute}
                     resizeMode={Image.resizeMode.cover}
-                    blurRadius={(Platform.OS === 'ios') ? 1 : 1}
+                    blurRadius={1}
                 />
                 <View style={{flexDirection: 'column', flex: 1, width: windowWidth - 2, justifyContent: 'center'}}>
                     <View>
@@ -111,7 +111,7 @@ export default class LoginScreen extends React.Component {
                         <CheckBox
                             checkedImage={require("../images/checked.png")}
                             uncheckedImage={require("../images/noncheck.png")}
-                            labelStyle={{color: 'red'}}
+                            labelStyle={{color: '#00B232'}}
                             underlayColor="transparent"
                             label='Ghi nhớ đăng nhập'
                             checked={this.state.checkOfCheckBox}

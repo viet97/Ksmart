@@ -31,7 +31,7 @@ export default class OrderListScreen extends Component {
         return (
             <View>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                    <Text style={{marginLeft: 8}}>Từ ngày:</Text>
+                    <Text style={{marginLeft: 8, backgroundColor: 'transparent'}}>Từ ngày:</Text>
                     <DatePicker
                         date={this.state.dateFrom}
                         mode="date"
@@ -57,7 +57,7 @@ export default class OrderListScreen extends Component {
                             this.ondateChange(date, this.state.dateTo);
                         }}
                     />
-                    <Text>đến:</Text>
+                    <Text style={{backgroundColor: 'transparent'}}>đến:</Text>
                     <DatePicker
                         date={this.state.dateTo}
                         mode="date"
