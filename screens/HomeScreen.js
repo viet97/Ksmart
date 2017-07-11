@@ -49,7 +49,6 @@ export default class HomeScreen extends React.Component {
         super(props)
         this.state = ({
             backCount: 0,
-            arr: [],
             myText: 'I\'m ready to get swiped!',
             gestureName: 'none',
             width: 35,
@@ -88,7 +87,7 @@ export default class HomeScreen extends React.Component {
             case "NewFeed":
                 return <NewFeedScreen clickMenu={() => this.openControlPanel()} backToHome={() => {
                     this.setState({screenName: 'Menu'})
-                }} data={this.state.arr}/>
+                }}/>
             case "ListNhanVien":
                 return <ListNhanVienScreen
                     ref="ListNhanVien"
@@ -103,13 +102,6 @@ export default class HomeScreen extends React.Component {
         }
     }
 
-    componentDidMount() {
-        fetch('http://jav.ksmart.vn/AppNewFeed.aspx?token=6e22b116f5111220741848ccd290e9e9bd8757498aeff45f479463cec823a1dc&idquanly=47&idct=LACHONG')
-            .then((response) => (response.json()))
-            .then((responseJson) => {
-                this.setState({arr: responseJson})
-            })
-    }
 
     menuScreen() {
         return (

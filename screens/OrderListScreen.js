@@ -65,8 +65,25 @@ export default class OrderListScreen extends Component {
     }
     _renderRowView(rowData) {
         return (
-            <View>
-            <Text style={{color:'white',fontSize:20}}>{rowData.tenkhachhang}</Text>
+            <View style={{
+                height: height / 8, flex: 1,
+                borderTopColor: '#227878', borderTopWidth: 1
+            }}>
+                <Text style={{textAlign: 'right', color: 'white', fontSize: 12}}>Thời gian
+                    lập:{rowData.thoigianlapdon}</Text>
+                <View style={{flexDirection: 'row'}}>
+                    <View style={{justifyContent: 'center'}}>
+                        {this.getImage(rowData.anhdaidien)}
+                    </View>
+                    <View style={{flex: 4, margin: 8, justifyContent: 'center'}}>
+                        <Text
+                            style={{
+                                fontSize: 18,
+                                color: Color.itemNameListViewColor
+                            }}>{rowData.tenkhachhang}</Text>
+                        <Text style={{fontSize: 13, color: 'white'}}> {rowData.tenloai}</Text>
+                    </View>
+                </View>
             </View>
         );
 

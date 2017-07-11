@@ -113,11 +113,18 @@ export default class NewFeedScreen extends React.Component {
                 style={{flex: 1}}
             >
                 <View style={{flex: 1}}>
-                  oss={() => this.props.backToHome()}
+                    <View style={styles.titleStyle}>
+                        <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
+                        <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>NewFeed</Text>
+                        <View style={{backgroundColor: Color.backgroundNewFeed, width: 35, height: 35}}></View>
+                    </View>
+
+                    <TouchableOpacity onPress={() => this.props.backToHome()}
                                       style={{width: 50, height: 50, position: 'absolute'}}/>
                     <View style={{backgroundColor: Color.itemListViewColor, flex: 9}}>
 
                         <GiftedListView
+                            ref="listview"
                             rowView={this._renderRowView.bind(this)}
                             onFetch={this._onFetch.bind(this)}
                             firstLoader={true} // display a loader for the first fetching
@@ -146,6 +153,7 @@ export default class NewFeedScreen extends React.Component {
             .then((responseJson) => {
                 console.log(URlConfig.getNewFeedLink())
                 this.setState({arr: responseJson.data});
+                this.refs.listview._refresh()
                 console.log(this.state.arr)
             }).catch((e) => {
             console.log("12312312321" + e)
