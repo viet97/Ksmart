@@ -50,17 +50,50 @@ export default class Dialog extends React.Component {
             dateFrom: today,
             dateTo: today,
             language: 'js',
-            pickttdh: 'tttt',
-            orderStatus: URlConfig.OBJLOGIN.ttdh,
-            shipStatus: URlConfig.ttgh
+
+            orderStatus: [],
+            shipStatus: [],
+            payStatus: []
         }
     }
 
+    componentWillMount() {
+        var data = URlConfig.OBJLOGIN.ttdh;
+        var arr1 = [], arr2 = [], arr3 = [];
+        arr1.push('Tất cả')
+        arr2.push('Tất cả')
+        arr3.push('Tất cả')
+        for (let item in data) {
+            let value = data[item];
+            arr1.push(value)
+        }
+        data = URlConfig.OBJLOGIN.ttgh
+        for (let item in data) {
+            let value = data[item];
+            arr2.push(value)
+        }
+        data = URlConfig.OBJLOGIN.tttt
+        for (let item in data) {
+            let value = data[item];
+            arr3.push(value)
+        }
+        this.setState({
+            orderStatus: arr1,
+            shipStatus: arr2,
+            payStatus: arr3
+        })
+    }
+
     render() {
-        let serviceItems = this.state.services.map((s, i) => {
-            return <Picker.Item key={i} value={s} label={s}/>
+        let orderStatusItems = this.state.orderStatus.map((s, i) => {
+            return <Picker.Item key={i} value={i} label={s}/>
         });
-        var {width, height} = Dimensions.get('window');
+        let shipStatusItems = this.state.shipStatus.map((s, i) => {
+            return <Picker.Item key={i} value={i} label={s}/>
+        });
+        let payStatusItems = this.state.payStatus.map((s, i) => {
+            return <Picker.Item key={i} value={i} label={s}/>
+        });
         return (
             <DialogContent >
 
@@ -118,13 +151,27 @@ export default class Dialog extends React.Component {
                             onValueChange={(value) => {
                                 this.setState({pickttdh: value});
                             }} itemStyle={{color: 'red'}}>
-                            <Picker.Item label={URlConfig.OBJLOGIN.ttdh[1]} value={1}/>
-                            <Picker.Item label={URlConfig.OBJLOGIN.ttdh[2]} value={'id'}/>
-                            <Picker.Item label={URlConfig.OBJLOGIN.ttdh[3]} value={'tttt'}/>
-                            <Picker.Item label={URlConfig.OBJLOGIN.ttdh[4]} value={'mtc'}/>
-                            <Picker.Item label={URlConfig.OBJLOGIN.ttdh[5]} value={'mch'}/>
-                            <Picker.Item label={URlConfig.OBJLOGIN.ttdh[9]} value={'tkh'}/>
-                            <Picker.Item label={URlConfig.OBJLOGIN.ttdh[1]} value={'tt'}/>
+                            {orderStatusItems}
+                        </Picker>
+                    </View>
+                    <View style={{flexDirection: 'column'}}>
+                        <Text>Trạng thái giao hàng</Text>
+                        <Picker
+                            selectedValue={this.state.pickttgh}
+                            onValueChange={(value) => {
+                                this.setState({pickttgh: value});
+                            }} itemStyle={{color: 'red'}}>
+                            {shipStatusItems}
+                        </Picker>
+                    </View>
+                    <View style={{flexDirection: 'column'}}>
+                        <Text>Trạng thái thanh toán</Text>
+                        <Picker
+                            selectedValue={this.state.picktttt}
+                            onValueChange={(value) => {
+                                this.setState({picktttt: value});
+                            }} itemStyle={{color: 'red'}}>
+                            {payStatusItems}
                         </Picker>
                     </View>
                 </ScrollView>
