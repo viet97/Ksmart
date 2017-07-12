@@ -6,6 +6,7 @@ import {
     Button, ListView, Image, StyleSheet, StatusBar
 } from 'react-native';
 import {NavigationActions} from "react-navigation";
+import orderListData from '../dbcontext/orderListData'
 
 export default class SplashScreen extends React.Component {
     static navigationOptions = {
@@ -33,6 +34,23 @@ export default class SplashScreen extends React.Component {
     }
 
     componentDidMount() {
+                var today = new Date();
+                var dd = today.getDate();
+                var mm = today.getMonth() + 1; //January is 0!
+                var yyyy = today.getFullYear();
+
+                if (dd < 10) {
+                    dd = '0' + dd
+                }
+
+                if (mm < 10) {
+                    mm = '0' + mm
+                }
+
+                today = dd + '/' + mm + '/' + yyyy;
+
+        orderListData.dTo=today
+        orderListData.dFrom=today
         const timer = require('react-native-timer');
         timer.setTimeout(
             this, 'hideMsg', () => this._onDone(), 1000

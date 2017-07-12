@@ -1,15 +1,17 @@
 import React, {Component} from 'react'
 import DatePicker from 'react-native-datepicker'
-import {Text, View, StyleSheet, TouchableOpacity, Dimensions, Button, Picker} from "react-native";
+import {Text, View, StyleSheet, TouchableOpacity, Dimensions, Button, Picker, TouchableHighlight} from "react-native";
 import URlConfig from "../configs/url";
 import Color from '../configs/color'
 import Icon1 from 'react-native-vector-icons/Ionicons'
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import Icon2 from 'react-native-vector-icons/Entypo'
 import Image from 'react-native-image-progress';
 import ProgressBar from 'react-native-progress/Bar';
 import DialogManager, {ScaleAnimation, DialogContent} from 'react-native-dialog-component';
 import {DialogComponent, SlideAnimation} from 'react-native-dialog-component';
 import Dialog from '../components/Dialog'
+import orderListData from '../dbcontext/orderListData'
 
 var {height} = Dimensions.get('window');
 var GiftedListView = require('react-native-gifted-listview');
@@ -46,15 +48,35 @@ export default class OrderListScreen extends Component {
     }
 
     _onFetch(page = 1, callback, options) {
-
+        console.log(URlConfig.getLinkOrderList(orderListData.dFrom, orderListData.dTo))
         var dem = 0;
         if (page === 1) {
             this.setState({index: 0})
-            fetch(URlConfig.getLinkOrderList(this.state.dateFrom, this.state.dateTo))
+            fetch(URlConfig.getLinkOrderList(orderListData.dFrom, orderListData.dTo))
                 .then((response) => (response.json()))
                 .then((responseJson) => {
                     if (responseJson.status) {
-                        this.setState({data: responseJson.data}, function () {
+                        var arr = []
+                        for (var item in responseJson.data) {
+                            if (URlConfig.OBJLOGIN.ttdh[responseJson.data[item].trangthaidonhang] === orderListData.pickttdh || orderListData.pickttdh === 'Tất cả') {
+
+                                console.log(responseJson.data[item])
+                                console.log(responseJson.data[item].trangthaidonhang)
+                                console.log(orderListData.pickttdh)
+                                if (URlConfig.OBJLOGIN.ttgh[responseJson.data[item].trangthaigiaohang] === orderListData.pickttgh || orderListData.pickttgh === 'Tất cả') {
+                                    console.log(responseJson.data[item])
+                                    console.log(responseJson.data[item].trangthaigiaohang)
+                                    console.log(orderListData.pickttgh)
+                                    console.log(URlConfig.OBJLOGIN.tttt[responseJson.data[item].trangthaithanhtoan])
+                                    console.log(orderListData.picktttt)
+                                    if (URlConfig.OBJLOGIN.tttt[responseJson.data[item].trangthaithanhtoan] === orderListData.picktttt || orderListData.picktttt === 'Tất cả') {
+
+                                        arr.push(responseJson.data[item])
+                                    }
+                                }
+                            }
+                        }
+                        this.setState({data: arr}, function () {
                                 setTimeout(() => {
                                     var a = this.state.data;
                                     var rows = [];
@@ -76,7 +98,7 @@ export default class OrderListScreen extends Component {
                             }
                         );
 
-                        console.log(responseJson.data)
+                        console.log(this.state.data)
                     } else {
                         Toast.show(responseJson.msg)
                     }
@@ -104,110 +126,141 @@ export default class OrderListScreen extends Component {
 
     }
 
-    _renderRowView(rowData) {
+    getGiaoHangHoacThanhToan(rowData) {
+        var colorGH;
+        var colorTT;
+        switch (rowData.trangthaithanhtoan) {
+            case 1:
+                colorTT = 'red'
+                break
+            case 2:
+                colorTT = 'yellow'
+                break
+            case 3:
+                colorTT = 'darkyellow'
+                break
+            case 4:
+                colorTT = 'green'
+                break
+        }
+        switch (rowData.trangthaigiaohang) {
+            case 1:
+                colorGH = 'red'
+                break
+            case 2:
+                colorGH = 'yellow'
+                break
+            case 4:
+                colorGH = 'green'
+                break
+        }
         return (
-            <View style={{
-                height: height / 6, flex: 1,
-                borderTopColor: '#227878', borderTopWidth: 1
-            }}>
-                <Text style={{textAlign: 'right', color: 'white', fontSize: 12}}>Thời gian
-                    lập: {rowData.thoigianlapdon}</Text>
-                <View style={{flexDirection: 'row'}}>
-                    <View style={{justifyContent: 'center'}}>
-                        <Image
-                            source={require('../images/bglogin.jpg')}
-                            indicator={ProgressBar.Pie}
-                            style={{margin: 8, width: 60, height: 60, borderRadius: 30}}/>
-                    </View>
-                    <View style={{flex: 4, margin: 8, justifyContent: 'center'}}>
-                        <Text
-                            style={{
-                                fontSize: 18,
-                                color: Color.itemNameListViewColor
-                            }}>khách hàng: {rowData.tenkhachhang}</Text>
-                        <Text style={{fontSize: 13, color: 'white'}}>Mã đơn hàng: {rowData.iddonhang}</Text>
-                        <View style={{flexDirection: 'row'}}>
-                            <Icon size={24} color='green' name="attach-money"/>
-                            <Text style={{color: 'white'}}>: {rowData.tongtien}</Text>
-                        </View>
-                    </View>
-                </View>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', height: 60, flex: 1, margin: 8}}>
+                <TouchableOpacity style={{backgroundColor: 'white', flex: 1, marginRight: 4}}>
+                    <Icon2 size={12} color={colorGH} name="controller-record"/>
+                    <Text style={{
+                        fontSize: 18,
+                        fontWeight: "bold",
+                        backgroundColor: 'transparent',
+                        textAlign: 'center',
+                        color: colorGH
+                    }}>{URlConfig.OBJLOGIN.ttgh[rowData.trangthaigiaohang]}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={{backgroundColor: 'white', flex: 1, marginLeft: 4}}>
+                    <Icon2 size={12} color={colorTT} name="controller-record"/>
+                    <Text style={{
+                        fontSize: 18,
+                        fontWeight: "bold",
+                        backgroundColor: 'transparent',
+                        textAlign: 'center',
+                        color: colorTT
+                    }}>{URlConfig.OBJLOGIN.tttt[rowData.trangthaithanhtoan]}</Text>
+                </TouchableOpacity>
             </View>
         );
-
     }
 
+    getInfoKhachHang(rowData) {
+        var color;
+        switch (rowData.trangthaidonhang) {
+            case 1:
+                color = '#CE93D8'
+                break
+            case 2:
+                color = '#FF4081'
+                break
+            case 3:
+                color = '#9E9D24'
+                break
+            case 4:
+                color = '#D50000'
+                break
+            case 5:
+                color = '#64DD17'
+                break
+            case 9:
+                color = '#FF9800'
+                break
+            case 12:
+                color = '#76FF03'
+                break
+            case 13:
+                color = '#2E7D32'
+                break
+            case 24:
+                color = '#D500F9'
+                break
+
+        }
+        return (
+            <TouchableOpacity style={{backgroundColor: color, marginLeft: 4, flex: 1, justifyContent: 'center'}}>
+                <Text style={{textAlign: 'center'}}>{URlConfig.OBJLOGIN.ttdh[rowData.trangthaidonhang]}</Text>
+            </TouchableOpacity>
+        )
+    }
+
+    _renderRowView(rowData) {
+        return (
+            <View
+
+                style={{
+                    margin: 4,
+                    backgroundColor: '#E0E0E0',
+                    height: height / 4, flex: 1
+                }}>
+                <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 8}}>
+                    <Text style={{fontWeight: "bold", fontSize: 18}}>MĐH {rowData.mathamchieu} </Text>
+                    <Text style={{fontSize: 18}}>{rowData.tongtien} Đ </Text>
+                </View>
+                <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 8}}>
+                    <View style={{flex: 1, marginRight: 4}}>
+                        <Text style={{fontSize: 17}}>{rowData.tenkhachhang} </Text>
+                        <Text style={{fontSize: 10}}>{rowData.thoigianlapdon} </Text>
+                    </View>
+                    {this.getInfoKhachHang(rowData)}
+                </View>
+                {this.getGiaoHangHoacThanhToan(rowData)}
+
+            </View>
+        );
+    }
     render() {
         return (
             <View style={{flex: 1}}>
+
                 <View style={styles.titleStyle}>
-                    <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
+                    <TouchableOpacity onPress={() => this.props.backToHome()}
+                                      style={styles.iconStyle}>
+                        <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
+                    </TouchableOpacity>
                     <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Danh sách đơn hàng</Text>
                     <View style={{backgroundColor: Color.backgroundNewFeed, width: 35, height: 35}}></View>
                 </View>
 
-
-                <TouchableOpacity onPress={() => this.props.backToHome()}
-                                  style={{width: 50, height: 50, position: 'absolute'}}/>
-                <View style={{flexDirection: 'row', alignItems: 'center', flex: 1}}>
-                    <Text style={{marginLeft: 8, backgroundColor: 'transparent'}}>Từ ngày:</Text>
-                    <DatePicker
-                        date={this.state.dateFrom}
-                        mode="date"
-                        placeholder="select date"
-                        format="DD-MM-YYYY"
-
-                        confirmBtnText="Xác nhận"
-                        cancelBtnText="Huỷ bỏ"
-                        customStyles={{
-                            dateIcon: {
-                                position: 'absolute',
-                                left: 80,
-                                top: 4,
-                            },
-                            dateInput: {
-                                position: 'absolute',
-                                left: 4
-                            }
-                        }}
-
-                        onDateChange={(date) => {
-                            this.setState({dateFrom: date});
-                            this.ondateChange(date, this.state.dateTo);
-                        }}
-                    />
-                    <Text style={{backgroundColor: 'transparent'}}>đến:</Text>
-                    <DatePicker
-                        date={this.state.dateTo}
-                        mode="date"
-                        placeholder="select date"
-                        format="DD-MM-YYYY"
-
-                        confirmBtnText="Xác nhận"
-                        cancelBtnText="Huỷ bỏ"
-                        customStyles={{
-                            dateIcon: {
-                                position: 'absolute',
-                                right: 10
-
-                            },
-                            dateInput: {
-                                position: 'absolute',
-                                right: 44
-                            }
-                        }}
-
-                        onDateChange={(date) => {
-                            this.setState({dateTo: date});
-                            this.ondateChange(this.state.dateFrom, date);
-                        }}/>
-                </View>
                 <Button title='click' onPress={() => {
                     this.showDialog();
                 }}/>
-
-                <View style={{backgroundColor: Color.itemListViewColor, flex: 9}}>
-
+                <View style={{backgroundColor: '#C5CAE9', flex: 9}}>
                     <GiftedListView
                         ref="listview"
                         rowView={this._renderRowView.bind(this)}
@@ -217,13 +270,12 @@ export default class OrderListScreen extends Component {
                         refreshable={true} // enable pull-to-refresh for iOS and touch-to-refresh for Android
                         withSections={false} // enable sections
                         enableEmptySections={true}
+                        refreshableTintColor="blue"
                         customStyles={{
                             paginationView: {
-                                backgroundColor: Color.itemListViewColor,
+                                backgroundColor: '#C5CAE9',
                             },
                         }}
-
-                        refreshableTintColor="blue"
                     />
                 </View>
             </View>
@@ -239,7 +291,7 @@ export default class OrderListScreen extends Component {
             animationDuration: 200,
             ScaleAnimation: new ScaleAnimation(),
             children: (
-                <Dialog/>
+                <Dialog loadOrderListData={() => this.refs.listview._refresh()}/>
             ),
         }, () => {
             console.log('callback - show');
@@ -271,30 +323,6 @@ export default class OrderListScreen extends Component {
         });
     }
 
-    ondateChange(from, to) {
-        var dFrom = String(from);
-        var dTo = String(to);
-        dFrom.replace('/', '-');
-        dTo.replace('/', '-')
-        var url = URlConfig.getLinkOrderList(dFrom, dTo);
-        console.log(url);
-        fetch(url)
-            .then((response) => (response.json()))
-            .then((responseJson) => {
-                if (responseJson.status) {
-                    this.setState({data: responseJson.data}, function () {
-                        this.refs.listview._refresh();
-                        }
-                    );
-
-                    console.log(responseJson.data)
-                } else {
-                    Toast.show(responseJson.msg)
-                }
-            }).catch((e) => {
-            console.log('Có lỗi xảy ra, vui lòng kiểm tra kết nối internet');
-        })
-    }
 }
 const styles = StyleSheet.create({
     titleStyle: {

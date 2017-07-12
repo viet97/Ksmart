@@ -16,7 +16,7 @@ import ProgressBar from 'react-native-progress/Bar';
 import DialogManager, {ScaleAnimation, DialogContent} from 'react-native-dialog-component';
 import {DialogComponent, SlideAnimation} from 'react-native-dialog-component';
 import {TextInputLayout} from "rn-textinputlayout";
-
+import orderListData from '../dbcontext/orderListData'
 
 let jsonChoose = {
     ttgh: 'Trạng thái giao hàng',
@@ -44,13 +44,18 @@ export default class Dialog extends React.Component {
 
         today = dd + '/' + mm + '/' + yyyy;
         this.state = {
+            numberPicktttt: orderListData.numberPicktttt,
+            numberPickttgh: orderListData.numberPickttgh,
+            numberPickttdh: orderListData.numberPickttdh,
             pickerValue: 'ttgh',
             pickTtghValue: 'dg',
             idDhValue: '',
-            dateFrom: today,
-            dateTo: today,
+            dateFrom: orderListData.dFrom,
+            dateTo: orderListData.dTo,
             language: 'js',
-
+            picktttt: '',
+            pickttgh: '',
+            pickttdh: '',
             orderStatus: [],
             shipStatus: [],
             payStatus: []
@@ -95,9 +100,16 @@ export default class Dialog extends React.Component {
             return <Picker.Item key={i} value={i} label={s}/>
         });
         return (
-            <DialogContent >
-
-                <ScrollView style={{flexDirection: 'column'}}>
+            <DialogContent ref="dialog">
+                <TouchableOpacity style={{}}
+                                  onPress={() => {
+                                      this.props.loadOrderListData()
+                                  }}
+                >
+                    <Text style={{alignSelf: 'center', fontSize: 20}}>haha</Text>
+                </TouchableOpacity>
+                <ScrollView style={{flexDirection: 'column'}}
+                            keyboardShouldPersistTaps="always">
                     <View style={{flexDirection: 'column'}}>
                         <Text>Từ ngày </Text>
                         <DatePicker
@@ -114,7 +126,7 @@ export default class Dialog extends React.Component {
                                 }
                             }}
                             onDateChange={(date) => {
-                                this.setState({dateFrom: date});
+
                                 this.ondateChange(date, this.state.dateTo);
                             }}
                         />
@@ -139,17 +151,24 @@ export default class Dialog extends React.Component {
                                 },
                             }}
                             onDateChange={(date) => {
-                                this.setState({dateTo: date});
-                                this.ondateChange(date, this.state.dateTo);
+                                this.ondateChange(this.state.dateFrom, date);
                             }}
                         />
                     </View>
                     <View style={{flexDirection: 'column'}}>
                         <Text>Trạng thái đơn hàng</Text>
                         <Picker
-                            selectedValue={this.state.pickttdh}
+                            selectedValue={this.state.numberPickttdh}
                             onValueChange={(value) => {
-                                this.setState({pickttdh: value});
+                                if (value === 0) {
+                                    orderListData.pickttdh = 'Tất cả'
+                                }
+                                else {
+                                    orderListData.pickttdh = this.state.orderStatus[value]
+                                }
+                                orderListData.numberPickttdh = value
+                                this.setState({numberPickttdh: value})
+                                console.log(orderListData.numberPickttdh)
                             }} itemStyle={{color: 'red'}}>
                             {orderStatusItems}
                         </Picker>
@@ -157,9 +176,16 @@ export default class Dialog extends React.Component {
                     <View style={{flexDirection: 'column'}}>
                         <Text>Trạng thái giao hàng</Text>
                         <Picker
-                            selectedValue={this.state.pickttgh}
+                            selectedValue={this.state.numberPickttgh}
                             onValueChange={(value) => {
-                                this.setState({pickttgh: value});
+                                if (value === 0) {
+                                    orderListData.pickttgh = 'Tất cả'
+                                }
+                                else
+                                    orderListData.pickttgh = this.state.shipStatus[value]
+                                orderListData.numberPickttgh = value
+                                this.setState({numberPickttgh: value})
+                                console.log(orderListData.numberPickttgh)
                             }} itemStyle={{color: 'red'}}>
                             {shipStatusItems}
                         </Picker>
@@ -167,58 +193,44 @@ export default class Dialog extends React.Component {
                     <View style={{flexDirection: 'column'}}>
                         <Text>Trạng thái thanh toán</Text>
                         <Picker
-                            selectedValue={this.state.picktttt}
+                            selectedValue={this.state.numberPicktttt}
                             onValueChange={(value) => {
-                                this.setState({picktttt: value});
+
+                                console.log(value)
+                                if (value === 0) {
+                                    orderListData.picktttt = 'Tất cả'
+                                }
+                                else {
+                                    orderListData.picktttt = this.state.payStatus[value]
+                                }
+                                orderListData.numberPicktttt = value
+                                this.setState({numberPicktttt: value})
+                                console.log(orderListData.numberPicktttt)
                             }} itemStyle={{color: 'red'}}>
                             {payStatusItems}
                         </Picker>
+
                     </View>
+
                 </ScrollView>
 
-
-                <TouchableOpacity style={{
-                    position: 'absolute',
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexDirection: 'row'
-                }}>
-                    <Text style={{alignSelf: 'center'}}>haha</Text>
-                </TouchableOpacity>
 
             </DialogContent>
         );
     }
 
-
     ondateChange(from, to) {
+
         var dFrom = String(from);
         var dTo = String(to);
         dFrom.replace('/', '-');
-        dTo.replace('/', '-')
-        var url = URlConfig.getLinkOrderList(dFrom, dTo);
-        console.log(url);
-        fetch(url)
-            .then((response) => (response.json()))
-            .then((responseJson) => {
-                if (responseJson.status) {
-                    this.setState({data: responseJson.data}, function () {
-                            this.refs.listview._refresh();
-                        }
-                    );
+        dTo.replace('/', '-');
+        this.setState({dateFrom: dFrom})
+        this.setState({dateTo: dTo})
+        orderListData.dFrom = dFrom
+        orderListData.dTo = dTo
 
-                    console.log(responseJson.data)
-                } else {
-                    Toast.show(responseJson.msg)
-                }
-            }).catch((e) => {
-            console.log('Có lỗi xảy ra, vui lòng kiểm tra kết nối internet');
-        })
     }
-
 }
 const styles = StyleSheet.create({
     absolute: {
