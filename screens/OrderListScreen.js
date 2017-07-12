@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import DatePicker from 'react-native-datepicker'
-import {Text, View, StyleSheet, TouchableOpacity, Dimensions, Button, Picker, TouchableHighlight} from "react-native";
+import {Text, View, StyleSheet, TouchableOpacity, Dimensions, Button, Picker, TouchableHightLight} from "react-native";
 import URlConfig from "../configs/url";
 import Color from '../configs/color'
 import Icon1 from 'react-native-vector-icons/Ionicons'
@@ -12,7 +12,8 @@ import DialogManager, {ScaleAnimation, DialogContent} from 'react-native-dialog-
 import {DialogComponent, SlideAnimation} from 'react-native-dialog-component';
 import Dialog from '../components/Dialog'
 import orderListData from '../dbcontext/orderListData'
-
+import AtoZListView from 'react-native-atoz-listview';
+import Search from 'react-native-search-box';
 var {height} = Dimensions.get('window');
 var GiftedListView = require('react-native-gifted-listview');
 
@@ -244,6 +245,8 @@ export default class OrderListScreen extends Component {
             </View>
         );
     }
+
+
     render() {
         return (
             <View style={{flex: 1}}>
@@ -256,10 +259,16 @@ export default class OrderListScreen extends Component {
                     <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Danh sách đơn hàng</Text>
                     <View style={{backgroundColor: Color.backgroundNewFeed, width: 35, height: 35}}></View>
                 </View>
-
+                <View style={{flexDirection: 'row'}}>
+                    <View style={{width: 300}}>
+                        <Search
+                            ref="search_box"
+                        />
+                    </View>
                 <Button title='click' onPress={() => {
                     this.showDialog();
                 }}/>
+                </View>
                 <View style={{backgroundColor: '#C5CAE9', flex: 9}}>
                     <GiftedListView
                         ref="listview"
