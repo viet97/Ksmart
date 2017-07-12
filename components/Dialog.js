@@ -29,84 +29,147 @@ let jsonChoose = {
 export default class Dialog extends React.Component {
     constructor(props) {
         super(props);
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1; //January is 0!
+        var yyyy = today.getFullYear();
+
+        if (dd < 10) {
+            dd = '0' + dd
+        }
+
+        if (mm < 10) {
+            mm = '0' + mm
+        }
+
+        today = dd + '/' + mm + '/' + yyyy;
         this.state = {
             pickerValue: 'ttgh',
             pickTtghValue: 'dg',
-            idDhValue: ''
+            idDhValue: '',
+            dateFrom: today,
+            dateTo: today,
+            language: 'js',
+            pickttdh: 'tttt',
+            orderStatus: URlConfig.OBJLOGIN.ttdh,
+            shipStatus: URlConfig.ttgh
         }
     }
 
     render() {
+        let serviceItems = this.state.services.map((s, i) => {
+            return <Picker.Item key={i} value={s} label={s}/>
+        });
+        var {width, height} = Dimensions.get('window');
         return (
             <DialogContent >
 
-                <ScrollView >
-                    <Text>Tìm {jsonChoose[this.state.pickerValue]}</Text>
-                    <Picker
-                        selectedValue={this.state.pickerValue}
-                        onValueChange={(value) => {
-                            this.setState({pickerValue: value});
-                        }} itemStyle={{color: 'red'}}>
-                        <Picker.Item label={'Trạng thái giao hàng'} value={'ttgh'}/>
-                        <Picker.Item label={'ID đơn hàng'} value={'id'}/>
-                        <Picker.Item label={'Trạng thái thanh toán'} value={'tttt'}/>
-                        <Picker.Item label={'Mã tham chiếu'} value={'mtc'}/>
-                        <Picker.Item label={'Mã cửa hàng'} value={'mch'}/>
-                        <Picker.Item label={'Tên khách hàng'} value={'tkh'}/>
-                        <Picker.Item label={'Tổng tiền'} value={'tt'}/>
-                    </Picker>
-                    {this.getCenterView()}
+                <ScrollView style={{flexDirection: 'column'}}>
+                    <View style={{flexDirection: 'column'}}>
+                        <Text>Từ ngày </Text>
+                        <DatePicker
+                            date={this.state.dateFrom}
+                            mode="date"
+                            placeholder="select date"
+                            format="DD-MM-YYYY"
+                            confirmBtnText="Xác nhận"
+                            cancelBtnText="Huỷ bỏ"
+                            customStyles={{
+                                dateIcon: {},
+                                dateInput: {
+                                    borderColor: 'transparent'
+                                }
+                            }}
+                            onDateChange={(date) => {
+                                this.setState({dateFrom: date});
+                                this.ondateChange(date, this.state.dateTo);
+                            }}
+                        />
+                    </View>
+                    <View style={{flexDirection: 'column'}}>
+                        <Text>Đến ngày </Text>
+                        <DatePicker
+                            date={this.state.dateTo}
+                            mode="date"
+                            placeholder="select date"
+                            format="DD-MM-YYYY"
 
+                            confirmBtnText="Xác nhận"
+                            cancelBtnText="Huỷ bỏ"
+                            customStyles={{
+                                dateIcon: {},
+                                dateInput: {
+                                    backgroundColor: 'white',
+                                    borderWidth: 1,
+                                    borderColor: 'gray',
+                                    borderRadius: 4,
+                                },
+                            }}
+                            onDateChange={(date) => {
+                                this.setState({dateTo: date});
+                                this.ondateChange(date, this.state.dateTo);
+                            }}
+                        />
+                    </View>
+                    <View style={{flexDirection: 'column'}}>
+                        <Text>Trạng thái đơn hàng</Text>
+                        <Picker
+                            selectedValue={this.state.pickttdh}
+                            onValueChange={(value) => {
+                                this.setState({pickttdh: value});
+                            }} itemStyle={{color: 'red'}}>
+                            <Picker.Item label={URlConfig.OBJLOGIN.ttdh[1]} value={1}/>
+                            <Picker.Item label={URlConfig.OBJLOGIN.ttdh[2]} value={'id'}/>
+                            <Picker.Item label={URlConfig.OBJLOGIN.ttdh[3]} value={'tttt'}/>
+                            <Picker.Item label={URlConfig.OBJLOGIN.ttdh[4]} value={'mtc'}/>
+                            <Picker.Item label={URlConfig.OBJLOGIN.ttdh[5]} value={'mch'}/>
+                            <Picker.Item label={URlConfig.OBJLOGIN.ttdh[9]} value={'tkh'}/>
+                            <Picker.Item label={URlConfig.OBJLOGIN.ttdh[1]} value={'tt'}/>
+                        </Picker>
+                    </View>
                 </ScrollView>
 
-                <View style={{
+
+                <TouchableOpacity style={{
                     position: 'absolute',
                     bottom: 0,
                     left: 0,
                     right: 0,
-                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                     flexDirection: 'row'
                 }}>
-                    <TouchableOpacity>
-                        <Text>haha</Text>
-                    </TouchableOpacity>
-                    <View></View>
-                    <TouchableOpacity>
-                        <Text>hehe</Text>
-                    </TouchableOpacity>
-                </View>
+                    <Text style={{alignSelf: 'center'}}>haha</Text>
+                </TouchableOpacity>
+
             </DialogContent>
         );
     }
 
-    getCenterView() {
-        switch (this.state.pickerValue) {
-            case 'ttgh':
-                return (
 
-                    <Picker
-                        selectedValue={this.state.pickTtghValue}
-                        onValueChange={(value) => {
-                            this.setState({pickTtghValue: value});
-                        }} itemStyle={{color: 'green'}}>
-                        <Picker.Item label={'Đã giao'} value={'dg'}/>
-                        <Picker.Item label={'Chưa giao'} value={'cg'}/>
-                    </Picker>
-                );
-            case 'id':
-                return (
-                    <TextInputLayout style={styles.inputLayout} hintColor='white' focusColor='white'>
-                        <TextInput
-                            value={this.state.idDhValue}
-                            style={styles.textInput}
-                            placeholder='Nhập id đơn hàng'
-                            placeholderTextColor="red"
-                            secureTextEntry={false}
-                            onChangeText={(text) => this.setState({idDhValue: text})}
-                        />
-                    </TextInputLayout>
-                );
-        }
+    ondateChange(from, to) {
+        var dFrom = String(from);
+        var dTo = String(to);
+        dFrom.replace('/', '-');
+        dTo.replace('/', '-')
+        var url = URlConfig.getLinkOrderList(dFrom, dTo);
+        console.log(url);
+        fetch(url)
+            .then((response) => (response.json()))
+            .then((responseJson) => {
+                if (responseJson.status) {
+                    this.setState({data: responseJson.data}, function () {
+                            this.refs.listview._refresh();
+                        }
+                    );
+
+                    console.log(responseJson.data)
+                } else {
+                    Toast.show(responseJson.msg)
+                }
+            }).catch((e) => {
+            console.log('Có lỗi xảy ra, vui lòng kiểm tra kết nối internet');
+        })
     }
 
 }

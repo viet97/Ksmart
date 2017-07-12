@@ -207,9 +207,13 @@ export default class LoginScreen extends React.Component {
         let data = responseJson.data
         data['idct'] = this.state.idct;
 
-        let ttdh = {}, tttt = {}, ttgh = {}, tthtdh = {};
+        let ttdh = {}, tttt = {}, ttgh = {}, tthtdh = {}, color = {};
         for (let item of responseJson.dulieutrangthaidonhang) {
             ttdh[item.ID_TrangThaiDonHang] = item.TenTrangThai;
+
+        }
+        for (let item of responseJson.dulieutrangthaidonhang) {
+            color[item.ID_TrangThaiDonHang] = '#' + item.MauTrangThai;
         }
         for (let item of responseJson.dulieutrangthaithanhtoan) {
             tttt[item.ID_TrangThaiThanhToan] = item.TenTrangThaiThanhToan;
@@ -224,7 +228,8 @@ export default class LoginScreen extends React.Component {
         data['tttt'] = tttt;
         data['ttgh'] = ttgh;
         data['tthtdh'] = tthtdh;
-        URlConfig.OBJLOGIN = data
+        data['color'] = color;
+        URlConfig.OBJLOGIN = data;
         console.log(URlConfig.OBJLOGIN)
     }
 }
