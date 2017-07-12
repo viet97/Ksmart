@@ -177,9 +177,7 @@ export default class LoginScreen extends React.Component {
                                         })
 
                                     }
-                                    responseJson.data['idct'] = this.state.idct;
-                                    URlConfig.OBJLOGIN = responseJson;
-                                    console.log(URlConfig.OBJLOGIN)
+                                    this.handlDataLogin(responseJson)
                                     const {navigate} = this.props.navigation;
 
                                     this.props
@@ -203,6 +201,31 @@ export default class LoginScreen extends React.Component {
                     console.error(error);
                 });
         }
+    }
+
+    handlDataLogin(responseJson) {
+        let data = responseJson.data
+        data['idct'] = this.state.idct;
+
+        let ttdh = {}, tttt = {}, ttgh = {}, tthtdh = {};
+        for (let item of responseJson.dulieutrangthaidonhang) {
+            ttdh[item.ID_TrangThaiDonHang] = item.TenTrangThai;
+        }
+        for (let item of responseJson.dulieutrangthaithanhtoan) {
+            tttt[item.ID_TrangThaiThanhToan] = item.TenTrangThaiThanhToan;
+        }
+        for (let item of responseJson.dulieutrangthaigiaohang) {
+            ttgh[item.ID_TrangThaiGiaoHang] = item.TenTrangThaiGiaoHang;
+        }
+        for (let item of responseJson.dulieutrangthaihoantatdonhang) {
+            tthtdh[item.ID_TrangThaiHoanTatDonHang] = item.TenTrangThai;
+        }
+        data['ttdh'] = ttdh;
+        data['tttt'] = tttt;
+        data['ttgh'] = ttgh;
+        data['tthtdh'] = tthtdh;
+        URlConfig.OBJLOGIN = data
+        console.log(URlConfig.OBJLOGIN)
     }
 }
 

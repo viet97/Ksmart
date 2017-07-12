@@ -7,7 +7,6 @@ import {
 } from 'react-native';
 import {NavigationActions} from "react-navigation";
 
-
 export default class SplashScreen extends React.Component {
     static navigationOptions = {
         header: null
@@ -34,7 +33,6 @@ export default class SplashScreen extends React.Component {
     }
 
     componentDidMount() {
-
         const timer = require('react-native-timer');
         timer.setTimeout(
             this, 'hideMsg', () => this._onDone(), 1000
