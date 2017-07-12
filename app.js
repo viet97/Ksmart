@@ -24,7 +24,7 @@ const Ksmart = StackNavigator({
     Menu: {screen: MenuScreen},
     Map: {screen: MapScreen},
     Chart: {screen: ChartScreen},
-    Order: {screen: OrderListScreen},
+
 
 });
 AppRegistry.registerComponent('Ksmart', () => Ksmart);

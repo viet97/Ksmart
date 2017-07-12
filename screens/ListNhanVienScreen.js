@@ -51,7 +51,7 @@ export default class ListNhanVienScreen extends React.Component {
             fetch(URlConfig.getListNhanVienLink())
                 .then((response) => (response.json()))
                 .then((responseJson) => {
-                    this.setState({arr: responseJson.data}, function () {
+                    this.setState({arr: responseJson.dsNhanVien}, function () {
                             setTimeout(() => {
                                 var a = this.state.arr;
                                 var rows = [];

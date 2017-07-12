@@ -99,6 +99,7 @@ export default class LoginScreen extends React.Component {
                         </TextInputLayout>
                         <TextInputLayout style={styles.inputLayout} hintColor='white' focusColor='white'>
                             <TextInput
+
                                 value={this.state.password}
                                 style={styles.textInput}
                                 placeholder={'Mật khẩu'}

@@ -1,14 +1,19 @@
 import React, {Component} from 'react'
 import DatePicker from 'react-native-datepicker'
-import {Text, View,StyleSheet,TouchableOpacity,Dimensions} from "react-native";
+import {Text, View, StyleSheet, TouchableOpacity, Dimensions, Button, Picker} from "react-native";
 import URlConfig from "../configs/url";
 import Color from '../configs/color'
 import Icon1 from 'react-native-vector-icons/Ionicons'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import Image from 'react-native-image-progress';
 import ProgressBar from 'react-native-progress/Bar';
+import DialogManager, {ScaleAnimation, DialogContent} from 'react-native-dialog-component';
+import {DialogComponent, SlideAnimation} from 'react-native-dialog-component';
+import Dialog from '../components/Dialog'
+
 var {height} = Dimensions.get('window');
 var GiftedListView = require('react-native-gifted-listview');
+
 
 export default class OrderListScreen extends Component {
     static navigationOptions = {
@@ -36,9 +41,10 @@ export default class OrderListScreen extends Component {
             waiting: false,
             dateFrom: today,
             dateTo: today,
-            data: []
+            data: [],
         }
     }
+
     _onFetch(page = 1, callback, options) {
 
         var dem = 0;
@@ -96,8 +102,8 @@ export default class OrderListScreen extends Component {
             }, 1000);
         }
 
-
     }
+
     _renderRowView(rowData) {
         return (
             <View style={{
@@ -133,16 +139,17 @@ export default class OrderListScreen extends Component {
 
     render() {
         return (
-            <View style={{flex:1}}>
+            <View style={{flex: 1}}>
                 <View style={styles.titleStyle}>
                     <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
                     <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Danh sách đơn hàng</Text>
                     <View style={{backgroundColor: Color.backgroundNewFeed, width: 35, height: 35}}></View>
                 </View>
 
+
                 <TouchableOpacity onPress={() => this.props.backToHome()}
                                   style={{width: 50, height: 50, position: 'absolute'}}/>
-                <View style={{flexDirection: 'row', alignItems: 'center',flex:1}}>
+                <View style={{flexDirection: 'row', alignItems: 'center', flex: 1}}>
                     <Text style={{marginLeft: 8, backgroundColor: 'transparent'}}>Từ ngày:</Text>
                     <DatePicker
                         date={this.state.dateFrom}
@@ -195,6 +202,10 @@ export default class OrderListScreen extends Component {
                             this.ondateChange(this.state.dateFrom, date);
                         }}/>
                 </View>
+                <Button title='click' onPress={() => {
+                    this.showDialog();
+                }}/>
+
                 <View style={{backgroundColor: Color.itemListViewColor, flex: 9}}>
 
                     <GiftedListView
@@ -220,6 +231,46 @@ export default class OrderListScreen extends Component {
         )
     }
 
+    showDialog() {
+
+        DialogManager.show({
+            title: 'Dialog',
+            titleAlign: 'center',
+            animationDuration: 200,
+            ScaleAnimation: new ScaleAnimation(),
+            children: (
+                <Dialog/>
+            ),
+        }, () => {
+            console.log('callback - show');
+        });
+    }
+
+    updateDialog() {
+        DialogManager.update({
+            title: 'Dialog Updated',
+            titleAlign: 'center',
+            animationDuration: 200,
+            ScaleAnimation: new ScaleAnimation(),
+            children: (
+                <DialogContent>
+                    <View>
+                        <Picker
+                            selectedValue={this.state.language}
+                            onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue}, function () {
+                                this.updateDialog();
+                            })}>
+                            <Picker.Item label="Java" value="java"/>
+                            <Picker.Item label="JavaScript" value="js"/>
+                        </Picker>
+                    </View>
+                </DialogContent>
+            ),
+        }, () => {
+            console.log('callback - update dialog');
+        });
+    }
+
     ondateChange(from, to) {
         var dFrom = String(from);
         var dTo = String(to);
@@ -231,10 +282,9 @@ export default class OrderListScreen extends Component {
             .then((response) => (response.json()))
             .then((responseJson) => {
                 if (responseJson.status) {
-                    this.setState({data: responseJson.data},function (){
+                    this.setState({data: responseJson.data}, function () {
                         this.refs.listview._refresh();
                         }
-
                     );
 
                     console.log(responseJson.data)
