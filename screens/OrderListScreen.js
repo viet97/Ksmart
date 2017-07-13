@@ -17,7 +17,7 @@ import Search from 'react-native-search-box';
 var {height} = Dimensions.get('window');
 var GiftedListView = require('react-native-gifted-listview');
 
-
+let MAX_LENGHT_LIST = 10;
 export default class OrderListScreen extends Component {
     static navigationOptions = {
         header: null,
@@ -38,10 +38,17 @@ export default class OrderListScreen extends Component {
         }
         today = dd + '-' + mm + '-' + yyyy;
         this.state = {
-            index: 0,
+
             waiting: false,
             data: [],
-            filtDialog: {status: 'false'},
+            filtDialog: {
+                status: 'false',
+                numberPicktttt: 0,
+                numberPickttgh: 0,
+                numberPickttdh: 0,
+                dateFrom: today,
+                dateTo: today
+            },
             urlGetData: URlConfig.getLinkOrderList(today, today),
             orderListDataFull: [],
             orderListDataFilt: []
@@ -49,7 +56,35 @@ export default class OrderListScreen extends Component {
     }
 
     filtData(data) {
-        this.state.filtDialog.numberPicktttt;
+
+        var arr = []
+        var tttt = this.state.filtDialog.numberPicktttt
+        var ttdh = this.state.filtDialog.numberPickttdh
+        var ttgh = this.state.filtDialog.numberPickttgh
+        console.log(URlConfig.OBJLOGIN.ttdhid[ttdh])
+        for (var item in data)
+            if (URlConfig.OBJLOGIN.ttdhid[ttdh] === data[item].trangthaidonhang || ttdh === 0) {
+                if (URlConfig.OBJLOGIN.ttghid[ttgh] === data[item].trangthaigiaohang || ttgh === 0) {
+                    if (URlConfig.OBJLOGIN.ttttid[tttt] === data[item].trangthaithanhtoan || tttt === 0) {
+                        arr.push(data[item])
+                    }
+                }
+            }
+        this.setState({orderListDataFilt: arr}, function () {
+            if (this.state.filtDialog.status) {
+                this.listV._refresh()
+                this.setState({
+                    filtDialog: {
+                        status: 'false',
+                        numberPicktttt: tttt,
+                        numberPickttgh: ttgh,
+                        numberPickttdh: ttdh,
+                        dateFrom: this.state.filtDialog.dateFrom,
+                        dateTo: this.state.filtDialog.dateTo
+                    }
+                })
+            }
+        })
 
     }
 
@@ -62,8 +97,6 @@ export default class OrderListScreen extends Component {
                 }, function () {
                     this.filtData(responseJson.data)
                 });
-                console.log('list', responseJson.data)
-                console.log('link', URlConfig.getLinkOrderList(datef, datet))
             })
             .catch((error) => {
                 console.error(error);
@@ -71,74 +104,18 @@ export default class OrderListScreen extends Component {
     }
 
     _onFetch(page = 1, callback, options) {
-        console.log(URlConfig.getLinkOrderList(orderListData.dFrom, orderListData.dTo))
-        var dem = 0;
-        if (page === 1) {
-            this.setState({index: 0})
-            fetch(URlConfig.getLinkOrderList(orderListData.dFrom, orderListData.dTo))
-                .then((response) => (response.json()))
-                .then((responseJson) => {
-                    if (responseJson.status) {
-                        var arr = []
-                        for (var item in responseJson.data) {
-                            if (URlConfig.OBJLOGIN.ttdh[responseJson.data[item].trangthaidonhang] === orderListData.pickttdh || orderListData.pickttdh === 'Tất cả') {
-                                if (URlConfig.OBJLOGIN.ttgh[responseJson.data[item].trangthaigiaohang] === orderListData.pickttgh || orderListData.pickttgh === 'Tất cả') {
-
-                                    if (URlConfig.OBJLOGIN.tttt[responseJson.data[item].trangthaithanhtoan] === orderListData.picktttt || orderListData.picktttt === 'Tất cả') {
-
-                                        arr.push(responseJson.data[item])
-                                    }
-                                }
-                            }
-                        }
-                        this.setState({data: arr}, function () {
-                                setTimeout(() => {
-                                    var a = this.state.data;
-                                    var rows = [];
-                                    while (dem < 7) {
-                                        dem++;
-                                        if (a[this.state.index] !== undefined) {
-                                            rows.push(a[this.state.index]);
-                                            this.setState({index: this.state.index + 1});
-                                        }
-                                    }
-                                    if (this.state.index === this.state.data.length) {
-                                        callback(rows, {
-                                            allLoaded: true, // the end of the list is reached
-                                        });
-                                    } else {
-                                        callback(rows);
-                                    }
-                                }, 1000);
-                            }
-                        );
-
-                        console.log(this.state.data)
-                    } else {
-                        Toast.show(responseJson.msg)
-                    }
-                })
-        } else {
-            setTimeout(() => {
-                var a = this.state.data;
-                var rows = [];
-                while (dem < 7) {
-                    dem++;
-                    if (a[this.state.index] !== undefined) {
-                        rows.push(a[this.state.index]);
-                        this.setState({index: this.state.index + 1});
-                    }
-                }
-                if (this.state.index === this.state.data.length) {
-                    callback(rows, {
-                        allLoaded: true, // the end of the list is reached
-                    });
-                } else {
-                    callback(rows);
-                }
-            }, 1000);
-        }
-
+        if (!this.state.filtDialog.status) this.getOrderListFromServer(this.state.filtDialog.dateFrom, this.state.filtDialog.dateTo)
+        var length = (page - 1) * MAX_LENGHT_LIST
+        var rows = this.state.orderListDataFilt.slice(length, length + MAX_LENGHT_LIST - 1)
+        setTimeout(() => {
+            if (length + MAX_LENGHT_LIST - 1 > this.state.orderListDataFilt.length) {
+                callback(rows, {
+                    allLoaded: true, // the end of the list is reached
+                });
+            } else {
+                callback(rows);
+            }
+        }, 1000); // simulating network fetching
     }
 
     getGiaoHangHoacThanhToan(rowData) {
@@ -285,7 +262,9 @@ export default class OrderListScreen extends Component {
                 </View>
                 <View style={{backgroundColor: '#C5CAE9', flex: 9}}>
                     <GiftedListView
-                        ref="listview"
+                        ref={(listV) => {
+                            this.listV = listV
+                        }}
                         rowView={this._renderRowView.bind(this)}
                         onFetch={this._onFetch.bind(this)}
                         firstLoader={true} // display a loader for the first fetching
@@ -307,16 +286,15 @@ export default class OrderListScreen extends Component {
     }
 
     showDialog() {
-
         DialogManager.show({
             title: 'Dialog',
             titleAlign: 'center',
             animationDuration: 200,
             ScaleAnimation: new ScaleAnimation(),
             children: (
-                <Dialog callback={(data) => {
+                <Dialog deFaultData={this.state.filtDialog}
+                        callback={(data) => {
                     this.setState({filtDialog: data}, function () {
-                        console.log('tyty', this.state.filtDialog);
                         if (this.state.filtDialog.status) {
                             this.getOrderListFromServer(this.state.filtDialog.dateFrom, this.state.filtDialog.dateTo);
                         }

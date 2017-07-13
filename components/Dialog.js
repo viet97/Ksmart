@@ -44,15 +44,16 @@ export default class Dialog extends React.Component {
         }
 
         today = dd + '/' + mm + '/' + yyyy;
+        console.log('Ngay truyen sang la: ' + this.props.deFaultData.dateFrom)
         this.state = {
-            numberPicktttt: 0,
-            numberPickttgh: 0,
-            numberPickttdh: 0,
+            numberPicktttt: this.props.deFaultData.numberPicktttt,
+            numberPickttgh: this.props.deFaultData.numberPickttgh,
+            numberPickttdh: this.props.deFaultData.numberPickttdh,
             pickerValue: 'ttgh',
             pickTtghValue: 'dg',
             idDhValue: '',
-            dateFrom: today,
-            dateTo: today,
+            dateFrom: this.props.deFaultData.dateFrom,
+            dateTo: this.props.deFaultData.dateTo,
             language: 'js',
             picktttt: '',
             pickttgh: '',
@@ -221,7 +222,14 @@ export default class Dialog extends React.Component {
                 <TouchableOpacity style={{position: 'absolute', left: 16, bottom: 16, alignItems: 'center'}}
                                   onPress={() => {
                                       DialogManager.dismiss(() => {
-                                          this.props.callback({'status': false})
+                                          this.props.callback({
+                                              'status': false,
+                                              numberPicktttt: this.props.deFaultData.numberPicktttt,
+                                              numberPickttgh: this.props.deFaultData.numberPickttgh,
+                                              numberPickttdh: this.props.deFaultData.numberPickttdh,
+                                              dateFrom: this.props.deFaultData.dateFrom,
+                                              dateTo: this.props.deFaultData.dateTo
+                                          })
                                       });
                                   }}>
                     <Text style={{color: 'red', backgroundColor: 'yellow', padding: 16, fontSize: 16}}>Huỷ bỏ</Text>
