@@ -21,7 +21,7 @@ var GiftedListView = require('react-native-gifted-listview');
 export default class OrderListScreen extends Component {
     static navigationOptions = {
         header: null,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -29,7 +29,6 @@ export default class OrderListScreen extends Component {
         var dd = today.getDate();
         var mm = today.getMonth() + 1; //January is 0!
         var yyyy = today.getFullYear();
-
         if (dd < 10) {
             dd = '0' + dd
         }
@@ -37,15 +36,38 @@ export default class OrderListScreen extends Component {
         if (mm < 10) {
             mm = '0' + mm
         }
-
-        today = dd + '/' + mm + '/' + yyyy;
+        today = dd + '-' + mm + '-' + yyyy;
         this.state = {
             index: 0,
             waiting: false,
-            dateFrom: today,
-            dateTo: today,
             data: [],
+            filtDialog: {status: 'false'},
+            urlGetData: URlConfig.getLinkOrderList(today, today),
+            orderListDataFull: [],
+            orderListDataFilt: []
         }
+    }
+
+    filtData(data) {
+        this.state.filtDialog.numberPicktttt;
+
+    }
+
+    getOrderListFromServer(datef, datet) {
+        fetch(URlConfig.getLinkOrderList(datef, datet))
+            .then((response) => response.json())
+            .then((responseJson) => {
+                this.setState({
+                    orderListDataFull: responseJson.data
+                }, function () {
+                    this.filtData(responseJson.data)
+                });
+                console.log('list', responseJson.data)
+                console.log('link', URlConfig.getLinkOrderList(datef, datet))
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     }
 
     _onFetch(page = 1, callback, options) {
@@ -60,16 +82,8 @@ export default class OrderListScreen extends Component {
                         var arr = []
                         for (var item in responseJson.data) {
                             if (URlConfig.OBJLOGIN.ttdh[responseJson.data[item].trangthaidonhang] === orderListData.pickttdh || orderListData.pickttdh === 'Tất cả') {
-
-                                console.log(responseJson.data[item])
-                                console.log(responseJson.data[item].trangthaidonhang)
-                                console.log(orderListData.pickttdh)
                                 if (URlConfig.OBJLOGIN.ttgh[responseJson.data[item].trangthaigiaohang] === orderListData.pickttgh || orderListData.pickttgh === 'Tất cả') {
-                                    console.log(responseJson.data[item])
-                                    console.log(responseJson.data[item].trangthaigiaohang)
-                                    console.log(orderListData.pickttgh)
-                                    console.log(URlConfig.OBJLOGIN.tttt[responseJson.data[item].trangthaithanhtoan])
-                                    console.log(orderListData.picktttt)
+
                                     if (URlConfig.OBJLOGIN.tttt[responseJson.data[item].trangthaithanhtoan] === orderListData.picktttt || orderListData.picktttt === 'Tất cả') {
 
                                         arr.push(responseJson.data[item])
@@ -186,32 +200,31 @@ export default class OrderListScreen extends Component {
         switch (rowData.trangthaidonhang) {
             case 1:
                 color = '#CE93D8'
-                break
+                break;
             case 2:
                 color = '#FF4081'
-                break
+                break;
             case 3:
                 color = '#9E9D24'
-                break
+                break;
             case 4:
                 color = '#D50000'
-                break
+                break;
             case 5:
                 color = '#64DD17'
-                break
+                break;
             case 9:
                 color = '#FF9800'
-                break
+                break;
             case 12:
                 color = '#76FF03'
-                break
+                break;
             case 13:
                 color = '#2E7D32'
-                break
+                break;
             case 24:
                 color = '#D500F9'
-                break
-
+                break;
         }
         return (
             <TouchableOpacity style={{backgroundColor: color, marginLeft: 4, flex: 1, justifyContent: 'center'}}>
@@ -248,6 +261,7 @@ export default class OrderListScreen extends Component {
 
 
     render() {
+
         return (
             <View style={{flex: 1}}>
 
@@ -265,9 +279,9 @@ export default class OrderListScreen extends Component {
                             ref="search_box"
                         />
                     </View>
-                <Button title='click' onPress={() => {
-                    this.showDialog();
-                }}/>
+                    <Button title='click' onPress={() => {
+                        this.showDialog();
+                    }}/>
                 </View>
                 <View style={{backgroundColor: '#C5CAE9', flex: 9}}>
                     <GiftedListView
@@ -300,38 +314,19 @@ export default class OrderListScreen extends Component {
             animationDuration: 200,
             ScaleAnimation: new ScaleAnimation(),
             children: (
-                <Dialog loadOrderListData={() => this.refs.listview._refresh()}/>
+                <Dialog callback={(data) => {
+                    this.setState({filtDialog: data}, function () {
+                        console.log('tyty', this.state.filtDialog);
+                        if (this.state.filtDialog.status) {
+                            this.getOrderListFromServer(this.state.filtDialog.dateFrom, this.state.filtDialog.dateTo);
+                        }
+                    })
+                }}/>
             ),
         }, () => {
             console.log('callback - show');
         });
     }
-
-    updateDialog() {
-        DialogManager.update({
-            title: 'Dialog Updated',
-            titleAlign: 'center',
-            animationDuration: 200,
-            ScaleAnimation: new ScaleAnimation(),
-            children: (
-                <DialogContent>
-                    <View>
-                        <Picker
-                            selectedValue={this.state.language}
-                            onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue}, function () {
-                                this.updateDialog();
-                            })}>
-                            <Picker.Item label="Java" value="java"/>
-                            <Picker.Item label="JavaScript" value="js"/>
-                        </Picker>
-                    </View>
-                </DialogContent>
-            ),
-        }, () => {
-            console.log('callback - update dialog');
-        });
-    }
-
 }
 const styles = StyleSheet.create({
     titleStyle: {

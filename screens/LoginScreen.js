@@ -207,19 +207,31 @@ export default class LoginScreen extends React.Component {
         let data = responseJson.data
         data['idct'] = this.state.idct;
 
-        let ttdh = {}, tttt = {}, ttgh = {}, tthtdh = {}, color = {};
+        let ttdh = {}, tttt = {}, ttgh = {}, tthtdh = {}, color = {}, ttdhid = {}, ttttid = {}, ttghid = {};
+        var i = 1;
+        ttdhid[0] = -1;
+        ttttid[0] = -1;
+        ttghid[0] = -1;// vi dang de 0 la tat ca
         for (let item of responseJson.dulieutrangthaidonhang) {
             ttdh[item.ID_TrangThaiDonHang] = item.TenTrangThai;
-
+            ttdhid[i] = item.ID_TrangThaiDonHang;
+            i++;
         }
+
         for (let item of responseJson.dulieutrangthaidonhang) {
             color[item.ID_TrangThaiDonHang] = '#' + item.MauTrangThai;
         }
+        i = 1;
         for (let item of responseJson.dulieutrangthaithanhtoan) {
             tttt[item.ID_TrangThaiThanhToan] = item.TenTrangThaiThanhToan;
+            ttttid[i] = item.ID_TrangThaiThanhToan;
+            i++;
         }
+        i = 1;
         for (let item of responseJson.dulieutrangthaigiaohang) {
             ttgh[item.ID_TrangThaiGiaoHang] = item.TenTrangThaiGiaoHang;
+            ttghid[i] = item.ID_TrangThaiGiaoHang;
+            i++;
         }
         for (let item of responseJson.dulieutrangthaihoantatdonhang) {
             tthtdh[item.ID_TrangThaiHoanTatDonHang] = item.TenTrangThai;
@@ -229,6 +241,9 @@ export default class LoginScreen extends React.Component {
         data['ttgh'] = ttgh;
         data['tthtdh'] = tthtdh;
         data['color'] = color;
+        data['ttdhid'] = ttdhid;
+        data['ttttid'] = ttttid;
+        data['ttghid'] = ttghid;
         URlConfig.OBJLOGIN = data;
         console.log(URlConfig.OBJLOGIN)
     }
