@@ -18,6 +18,7 @@ var {height} = Dimensions.get('window');
 var GiftedListView = require('react-native-gifted-listview');
 
 let MAX_LENGHT_LIST = 10;
+var FIRST_LOADED = false;
 export default class OrderListScreen extends Component {
     static navigationOptions = {
         header: null,
@@ -39,6 +40,7 @@ export default class OrderListScreen extends Component {
         today = dd + '-' + mm + '-' + yyyy;
         this.state = {
 
+            rows: [],
             waiting: false,
             data: [],
             filtDialog: {
@@ -54,7 +56,6 @@ export default class OrderListScreen extends Component {
             orderListDataFilt: []
         }
     }
-
     filtData(data) {
 
         var arr = []
@@ -62,6 +63,10 @@ export default class OrderListScreen extends Component {
         var ttdh = this.state.filtDialog.numberPickttdh
         var ttgh = this.state.filtDialog.numberPickttgh
         console.log(URlConfig.OBJLOGIN.ttdhid[ttdh])
+        console.log(data)
+        console.log(ttdh)
+        console.log(ttgh)
+        console.log(tttt)
         for (var item in data)
             if (URlConfig.OBJLOGIN.ttdhid[ttdh] === data[item].trangthaidonhang || ttdh === 0) {
                 if (URlConfig.OBJLOGIN.ttghid[ttgh] === data[item].trangthaigiaohang || ttgh === 0) {
@@ -70,52 +75,63 @@ export default class OrderListScreen extends Component {
                     }
                 }
             }
-        this.setState({orderListDataFilt: arr}, function () {
-            if (this.state.filtDialog.status) {
-                this.listV._refresh()
-                this.setState({
-                    filtDialog: {
-                        status: 'false',
-                        numberPicktttt: tttt,
-                        numberPickttgh: ttgh,
-                        numberPickttdh: ttdh,
-                        dateFrom: this.state.filtDialog.dateFrom,
-                        dateTo: this.state.filtDialog.dateTo
-                    }
-                })
-            }
-        })
+        return arr
 
     }
 
-    getOrderListFromServer(datef, datet) {
-        fetch(URlConfig.getLinkOrderList(datef, datet))
+    _onFetch(page = 1, callback, options) {
+        var length = (page - 1) * MAX_LENGHT_LIST
+        var arr = []
+        var rows = []
+        if (page === 1) {
+            fetch(URlConfig.getLinkOrderList(this.state.filtDialog.dateFrom, this.state.filtDialog.dateTo))
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    arr = this.filtData(responseJson.data)
+                    this.setState({orderListDataFilt: arr}, function () {
+                        rows = arr.slice(length, length + MAX_LENGHT_LIST - 1)
+                        setTimeout(() => {
+                            if (length + MAX_LENGHT_LIST - 1 > this.state.orderListDataFilt.length) {
+                                callback(rows, {
+                                    allLoaded: true, // the end of the list is reached
+                                });
+                            } else {
+                                callback(rows);
+                            }
+                        }, 1000);
+                    })
+                })
+        }
+        else {
+            rows = this.state.orderListDataFilt.slice(length, length + MAX_LENGHT_LIST - 1)
+            setTimeout(() => {
+                if (length + MAX_LENGHT_LIST - 1 > this.state.orderListDataFilt.length) {
+                    callback(rows, {
+                        allLoaded: true, // the end of the list is reached
+                    });
+                } else {
+                    callback(rows);
+                }
+            }, 1000);
+        }
+
+
+        // simulating network fetching
+    }
+
+    componentDidMount() {
+        fetch(URlConfig.getLinkOrderList(this.state.filtDialog.dateFrom, this.state.filtDialog.dateTo))
             .then((response) => response.json())
             .then((responseJson) => {
                 this.setState({
-                    orderListDataFull: responseJson.data
+                    orderListDataFilt: responseJson.data,
                 }, function () {
-                    this.filtData(responseJson.data)
+                    FIRST_LOADED = true
                 });
             })
             .catch((error) => {
                 console.error(error);
             });
-    }
-
-    _onFetch(page = 1, callback, options) {
-        if (!this.state.filtDialog.status) this.getOrderListFromServer(this.state.filtDialog.dateFrom, this.state.filtDialog.dateTo)
-        var length = (page - 1) * MAX_LENGHT_LIST
-        var rows = this.state.orderListDataFilt.slice(length, length + MAX_LENGHT_LIST - 1)
-        setTimeout(() => {
-            if (length + MAX_LENGHT_LIST - 1 > this.state.orderListDataFilt.length) {
-                callback(rows, {
-                    allLoaded: true, // the end of the list is reached
-                });
-            } else {
-                callback(rows);
-            }
-        }, 1000); // simulating network fetching
     }
 
     getGiaoHangHoacThanhToan(rowData) {
@@ -275,7 +291,8 @@ export default class OrderListScreen extends Component {
                         refreshableTintColor="blue"
                         customStyles={{
                             paginationView: {
-                                backgroundColor: '#C5CAE9',
+
+                                backgroundColor: 'transparent',
                             },
                         }}
                     />
@@ -296,7 +313,7 @@ export default class OrderListScreen extends Component {
                         callback={(data) => {
                     this.setState({filtDialog: data}, function () {
                         if (this.state.filtDialog.status) {
-                            this.getOrderListFromServer(this.state.filtDialog.dateFrom, this.state.filtDialog.dateTo);
+                            this.listV._refresh()
                         }
                     })
                 }}/>
