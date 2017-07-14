@@ -9,7 +9,8 @@ import {
     Button,
     Picker,
     FlatList,
-    TouchableHightLight
+    TouchableHightLight,
+    ActivityIndicator
 } from "react-native";
 import URlConfig from "../configs/url";
 import Color from '../configs/color'
@@ -29,6 +30,7 @@ var GiftedListView = require('react-native-gifted-listview');
 
 var NUMBER_ROW_RENDER = 10
 var SEARCH_STRING = '';
+var ALL_LOADED = false
 export default class OrderListScreen extends Component {
     static navigationOptions = {
         header: null,
@@ -70,6 +72,7 @@ export default class OrderListScreen extends Component {
     }
 
     getOrderListFromServer(datef, datet) {
+        ALL_LOADED = false
         fetch(URlConfig.getLinkOrderList(datef, datet))
             .then((response) => response.json())
             .then((responseJson) => {
@@ -113,6 +116,10 @@ export default class OrderListScreen extends Component {
 
     componentDidMount() {
         this.getOrderListFromServer(this.state.filtDialog.dateFrom, this.state.filtDialog.dateTo)
+    }
+
+    componentWillMount() {
+        ALL_LOADED = false
     }
 
     getGiaoHangHoacThanhToan(rowData) {
@@ -173,31 +180,31 @@ export default class OrderListScreen extends Component {
         var color;
         switch (rowData.trangthaidonhang) {
             case 1:
-                color = '#CE93D8'
+                color = URlConfig.OBJLOGIN.color[1]
                 break;
             case 2:
-                color = '#FF4081'
+                color = URlConfig.OBJLOGIN.color[2]
                 break;
             case 3:
-                color = '#9E9D24'
+                color = URlConfig.OBJLOGIN.color[3]
                 break;
             case 4:
-                color = '#D50000'
+                color = URlConfig.OBJLOGIN.color[4]
                 break;
             case 5:
-                color = '#64DD17'
+                color = URlConfig.OBJLOGIN.color[5]
                 break;
             case 9:
-                color = '#FF9800'
+                color = URlConfig.OBJLOGIN.color[9]
                 break;
             case 12:
-                color = '#76FF03'
+                color = URlConfig.OBJLOGIN.color[12]
                 break;
             case 13:
-                color = '#2E7D32'
+                color = URlConfig.OBJLOGIN.color[13]
                 break;
             case 24:
-                color = '#D500F9'
+                color = URlConfig.OBJLOGIN.color[24]
                 break;
         }
         return (
@@ -208,6 +215,7 @@ export default class OrderListScreen extends Component {
     }
 
     loadMoreData() {
+
         if (!this.state.onEndReach) {
             console.log("LOADMORE")
             this.setState({onEndReach: true})
@@ -215,7 +223,9 @@ export default class OrderListScreen extends Component {
                 dataRender: this.state.orderListDataFilt.slice(0, NUMBER_ROW_RENDER + 10),
                 dataSearch: this.state.orderListDataFilt.slice(0, NUMBER_ROW_RENDER + 10)
             })
+
             NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
+            if (NUMBER_ROW_RENDER > this.state.dataRender.length - 10) ALL_LOADED = true
         }
     }
 
@@ -224,6 +234,20 @@ export default class OrderListScreen extends Component {
         this.getOrderListFromServer(this.state.filtDialog.dateFrom, this.state.filtDialog.dateTo)
     }
 
+    renderFooter = () => {
+        console.log("Footer")
+        if (ALL_LOADED || this.state.dataRender.length === 0) return null
+        return (
+            <View
+                style={{
+                    justifyContent: 'center',
+                    borderColor: "green"
+                }}
+            >
+                <ActivityIndicator animating={true} size="large"/>
+            </View>
+        );
+    };
     onChangeText(text) {
         return new Promise((resolve, reject) => {
             resolve();
@@ -273,6 +297,7 @@ export default class OrderListScreen extends Component {
                 </View>
                 <View style={{backgroundColor: '#C5CAE9', flex: 9}}>
                     <FlatList
+                        ListFooterComponent={this.renderFooter}
                         ref={(listV) => {
                             this.listV = listV
                         }}
@@ -280,7 +305,7 @@ export default class OrderListScreen extends Component {
                         onRefresh={() => {
                             this.refreshData()
                         }}
-                        onEndReachedThreshold={0.2}
+                        onEndReachedThreshold={0.5}
                         onEndReached={() => {
                             this.loadMoreData()
                         }}
