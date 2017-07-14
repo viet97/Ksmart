@@ -4,7 +4,8 @@ import {
     View,
     Button, ListView, StyleSheet, StatusBar,
     TouchableOpacity,
-    Dimensions
+    Dimensions,
+    FlatList
 } from 'react-native';
 import Image from 'react-native-image-progress';
 import ProgressBar from 'react-native-progress/Bar';
@@ -16,6 +17,7 @@ import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import URlConfig from "../configs/url";
 var {height} = Dimensions.get('window');
 var GiftedListView = require('react-native-gifted-listview');
+var NUMBER_ROW_RENDER = 10
 export default class NewFeedScreen extends React.Component {
     onSwipeRight(gestureState) {
         console.log("onSwipeRight")
@@ -26,69 +28,16 @@ export default class NewFeedScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = ({
-            arr: [],
-            index: 0,
+            refreshing: false,
+            dataFull: [],
+            dataRender: [],
+            onEndReach: true,
             waiting: false,
             myText: 'I\'m ready to get swiped!',
             gestureName: 'none',
         })
     }
 
-           _onFetch(page = 1, callback, options) {
-
-            var dem = 0;
-               if (page === 1)
-            {
-                this.setState({index: 0})
-                fetch(URlConfig.getNewFeedLink())
-                    .then((response) => (response.json()))
-                    .then((responseJson) => {
-                        this.setState({arr: responseJson.data}, function () {
-                                setTimeout(() => {
-                                    var a = this.state.arr;
-                                    var rows = [];
-                                    while (dem < 7) {
-                                        dem++;
-                                        if (a[this.state.index] !== undefined) {
-                                            rows.push(a[this.state.index]);
-                                            this.setState({index: this.state.index + 1});
-                                        }
-                                    }
-                                    if (this.state.index === this.state.arr.length) {
-                                        callback(rows, {
-                                            allLoaded: true, // the end of the list is reached
-                                        });
-                                    } else {
-                                        callback(rows);
-                                    }
-                                }, 1000);
-                            }
-                        );
-                    }).catch((e) => {
-                    console.log("12312312321" + e)
-                })
-            } else {
-                setTimeout(() => {
-                    var a = this.state.arr;
-                    var rows = [];
-                    while (dem < 7) {
-                        dem++;
-                        if (a[this.state.index] !== undefined) {
-                            rows.push(a[this.state.index]);
-                            this.setState({index: this.state.index + 1});
-                        }
-                    }
-                    if (this.state.index === this.state.arr.length) {
-                        callback(rows, {
-                            allLoaded: true, // the end of the list is reached
-                        });
-                    } else {
-                        callback(rows);
-                    }
-                }, 1000);
-            }
-
-    }
 
     getImage(url) {
         if (url.length === 0) {
@@ -110,7 +59,7 @@ export default class NewFeedScreen extends React.Component {
         }
     }
 
-    _renderRowView(rowData) {
+    renderRow(rowData) {
         return (
             <View style={{
                 height: height / 7, flex: 1,
@@ -135,6 +84,31 @@ export default class NewFeedScreen extends React.Component {
 
     }
 
+    loadMoreData() {
+        if (!this.state.onEndReach) {
+            this.setState({onEndReach: true})
+            this.setState({dataRender: this.state.dataFull.slice(NUMBER_ROW_RENDER, NUMBER_ROW_RENDER + 10)})
+            NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
+        }
+    }
+
+    refreshData() {
+        NUMBER_ROW_RENDER = 10
+        fetch(URlConfig.getNewFeedLink())
+            .then((response) => (response.json()))
+            .then((responseJson) => {
+                    console.log(responseJson)
+                    if (responseJson.status) {
+                        this.setState({dataFull: responseJson.data}, function () {
+                            console.log(this.state.dataFull)
+                            this.setState({dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER)})
+                            NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
+                        })
+                    }
+                }
+            )
+    }
+
     render() {
         return (
             <GestureRecognizer
@@ -152,22 +126,25 @@ export default class NewFeedScreen extends React.Component {
                                       style={{width: 50, height: 50, position: 'absolute'}}/>
                     <View style={{backgroundColor: Color.itemListViewColor, flex: 9}}>
 
-                        <GiftedListView
-                            ref="listview"
-                            rowView={this._renderRowView.bind(this)}
-                            onFetch={this._onFetch.bind(this)}
-                            firstLoader={true} // display a loader for the first fetching
-                            pagination={true} // enable infinite scrolling using touch to load more
-                            refreshable={true} // enable pull-to-refresh for iOS and touch-to-refresh for Android
-                            withSections={false} // enable sections
-                            enableEmptySections={true}
-                            customStyles={{
-                                paginationView: {
-                                    backgroundColor: Color.itemListViewColor,
-                                },
+                        <FlatList
+                            refreshing={this.state.refreshing}
+                            onRefresh={() => {
+                                this.refreshData()
                             }}
-
-                            refreshableTintColor="blue"
+                            ref="listview"
+                            onEndReachedThreshold={0.2}
+                            onEndReached={() => {
+                                this.loadMoreData()
+                            }}
+                            onMomentumScrollBegin={() => {
+                                this.setState({onEndReach: false})
+                            }}
+                            extraData={this.state.dataRender}
+                            data={this.state.dataRender}
+                            renderItem={({item}) => {
+                                this.renderRow(item)
+                            }
+                            }
                         />
                     </View>
                 </View>
@@ -176,8 +153,23 @@ export default class NewFeedScreen extends React.Component {
         )
     }
 
-}
+    componentDidMount() {
+        fetch(URlConfig.getNewFeedLink())
+            .then((response) => (response.json()))
+            .then((responseJson) => {
+                    console.log(responseJson)
+                    if (responseJson.status) {
+                        this.setState({dataFull: responseJson.data}, function () {
+                            console.log(this.state.dataFull)
+                            this.setState({dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER)})
+                            NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
+                        })
+                    }
+                }
+            )
+    }
 
+}
 const styles = StyleSheet.create({
     titleStyle: {
         flex: 1,

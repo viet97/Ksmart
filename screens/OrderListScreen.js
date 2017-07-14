@@ -1,6 +1,16 @@
 import React, {Component} from 'react'
 import DatePicker from 'react-native-datepicker'
-import {Text, View, StyleSheet, TouchableOpacity, Dimensions, Button, Picker, TouchableHightLight} from "react-native";
+import {
+    Text,
+    View,
+    StyleSheet,
+    TouchableOpacity,
+    Dimensions,
+    Button,
+    Picker,
+    FlatList,
+    TouchableHightLight
+} from "react-native";
 import URlConfig from "../configs/url";
 import Color from '../configs/color'
 import Icon1 from 'react-native-vector-icons/Ionicons'
@@ -17,7 +27,7 @@ import Search from 'react-native-search-box';
 var {height} = Dimensions.get('window');
 var GiftedListView = require('react-native-gifted-listview');
 
-let MAX_LENGHT_LIST = 10;
+var NUMBER_ROW_RENDER = 10
 var FIRST_LOADED = false;
 export default class OrderListScreen extends Component {
     static navigationOptions = {
@@ -39,7 +49,7 @@ export default class OrderListScreen extends Component {
         }
         today = dd + '-' + mm + '-' + yyyy;
         this.state = {
-
+            refreshing: false,
             rows: [],
             waiting: false,
             data: [],
@@ -52,10 +62,27 @@ export default class OrderListScreen extends Component {
                 dateTo: today
             },
             urlGetData: URlConfig.getLinkOrderList(today, today),
+            dataRender: [],
             orderListDataFull: [],
             orderListDataFilt: []
         }
     }
+
+    getOrderListFromServer(datef, datet) {
+        fetch(URlConfig.getLinkOrderList(datef, datet))
+            .then((response) => response.json())
+            .then((responseJson) => {
+                this.setState({
+                    orderListDataFull: responseJson.data
+                }, function () {
+                    this.filtData(responseJson.data)
+                });
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }
+
     filtData(data) {
 
         var arr = []
@@ -63,10 +90,6 @@ export default class OrderListScreen extends Component {
         var ttdh = this.state.filtDialog.numberPickttdh
         var ttgh = this.state.filtDialog.numberPickttgh
         console.log(URlConfig.OBJLOGIN.ttdhid[ttdh])
-        console.log(data)
-        console.log(ttdh)
-        console.log(ttgh)
-        console.log(tttt)
         for (var item in data)
             if (URlConfig.OBJLOGIN.ttdhid[ttdh] === data[item].trangthaidonhang || ttdh === 0) {
                 if (URlConfig.OBJLOGIN.ttghid[ttgh] === data[item].trangthaigiaohang || ttgh === 0) {
@@ -75,63 +98,16 @@ export default class OrderListScreen extends Component {
                     }
                 }
             }
-        return arr
+        this.setState({orderListDataFilt: arr}, function () {
+            this.setState({dataRender: this.state.orderListDataFilt.slice(0, NUMBER_ROW_RENDER)})
+            NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
+        })
 
     }
 
-    _onFetch(page = 1, callback, options) {
-        var length = (page - 1) * MAX_LENGHT_LIST
-        var arr = []
-        var rows = []
-        if (page === 1) {
-            fetch(URlConfig.getLinkOrderList(this.state.filtDialog.dateFrom, this.state.filtDialog.dateTo))
-                .then((response) => response.json())
-                .then((responseJson) => {
-                    arr = this.filtData(responseJson.data)
-                    this.setState({orderListDataFilt: arr}, function () {
-                        rows = arr.slice(length, length + MAX_LENGHT_LIST - 1)
-                        setTimeout(() => {
-                            if (length + MAX_LENGHT_LIST - 1 > this.state.orderListDataFilt.length) {
-                                callback(rows, {
-                                    allLoaded: true, // the end of the list is reached
-                                });
-                            } else {
-                                callback(rows);
-                            }
-                        }, 1000);
-                    })
-                })
-        }
-        else {
-            rows = this.state.orderListDataFilt.slice(length, length + MAX_LENGHT_LIST - 1)
-            setTimeout(() => {
-                if (length + MAX_LENGHT_LIST - 1 > this.state.orderListDataFilt.length) {
-                    callback(rows, {
-                        allLoaded: true, // the end of the list is reached
-                    });
-                } else {
-                    callback(rows);
-                }
-            }, 1000);
-        }
-
-
-        // simulating network fetching
-    }
 
     componentDidMount() {
-        fetch(URlConfig.getLinkOrderList(this.state.filtDialog.dateFrom, this.state.filtDialog.dateTo))
-            .then((response) => response.json())
-            .then((responseJson) => {
-                this.setState({
-                    orderListDataFilt: responseJson.data,
-                }, function () {
-                    FIRST_LOADED = true
-                });
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+        this.getOrderListFromServer(this.state.filtDialog.dateFrom, this.state.filtDialog.dateTo)
     }
 
     getGiaoHangHoacThanhToan(rowData) {
@@ -226,32 +202,19 @@ export default class OrderListScreen extends Component {
         )
     }
 
-    _renderRowView(rowData) {
-        return (
-            <View
-
-                style={{
-                    margin: 4,
-                    backgroundColor: '#E0E0E0',
-                    height: height / 4, flex: 1
-                }}>
-                <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 8}}>
-                    <Text style={{fontWeight: "bold", fontSize: 18}}>MĐH {rowData.mathamchieu} </Text>
-                    <Text style={{fontSize: 18}}>{rowData.tongtien} Đ </Text>
-                </View>
-                <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 8}}>
-                    <View style={{flex: 1, marginRight: 4}}>
-                        <Text style={{fontSize: 17}}>{rowData.tenkhachhang} </Text>
-                        <Text style={{fontSize: 10}}>{rowData.thoigianlapdon} </Text>
-                    </View>
-                    {this.getInfoKhachHang(rowData)}
-                </View>
-                {this.getGiaoHangHoacThanhToan(rowData)}
-
-            </View>
-        );
+    loadMoreData() {
+        if (!this.state.onEndReach) {
+            console.log("LOADMORE")
+            this.setState({onEndReach: true})
+            this.setState({dataRender: this.state.orderListDataFilt.slice(0, NUMBER_ROW_RENDER + 10)})
+            NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
+        }
     }
 
+    refreshData() {
+        NUMBER_ROW_RENDER = 10
+        this.getOrderListFromServer(this.state.filtDialog.dateFrom, this.state.filtDialog.dateTo)
+    }
 
     render() {
 
@@ -277,24 +240,46 @@ export default class OrderListScreen extends Component {
                     }}/>
                 </View>
                 <View style={{backgroundColor: '#C5CAE9', flex: 9}}>
-                    <GiftedListView
+                    <FlatList
                         ref={(listV) => {
                             this.listV = listV
                         }}
-                        rowView={this._renderRowView.bind(this)}
-                        onFetch={this._onFetch.bind(this)}
-                        firstLoader={true} // display a loader for the first fetching
-                        pagination={true} // enable infinite scrolling using touch to load more
-                        refreshable={true} // enable pull-to-refresh for iOS and touch-to-refresh for Android
-                        withSections={false} // enable sections
-                        enableEmptySections={true}
-                        refreshableTintColor="blue"
-                        customStyles={{
-                            paginationView: {
-
-                                backgroundColor: 'transparent',
-                            },
+                        refreshing={this.state.refreshing}
+                        onRefresh={() => {
+                            this.refreshData()
                         }}
+                        onEndReachedThreshold={0.2}
+                        onEndReached={() => {
+                            this.loadMoreData()
+                        }}
+                        onMomentumScrollBegin={() => {
+                            this.setState({onEndReach: false})
+                        }}
+                        extraData={this.state.dataRender}
+                        data={this.state.dataRender}
+                        renderItem={({item}) =>
+                            <View
+
+                                style={{
+                                    margin: 4,
+                                    backgroundColor: '#E0E0E0',
+                                    height: height / 4, flex: 1
+                                }}>
+                                <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 8}}>
+                                    <Text style={{fontWeight: "bold", fontSize: 18}}>MĐH {item.mathamchieu} </Text>
+                                    <Text style={{fontSize: 18}}>{item.tongtien} Đ </Text>
+                                </View>
+                                <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 8}}>
+                                    <View style={{flex: 1, marginRight: 4}}>
+                                        <Text style={{fontSize: 17}}>{item.tenkhachhang} </Text>
+                                        <Text style={{fontSize: 10}}>{item.thoigianlapdon} </Text>
+                                    </View>
+                                    {this.getInfoKhachHang(item)}
+                                </View>
+                                {this.getGiaoHangHoacThanhToan(item)}
+
+                            </View>
+                        }
                     />
                 </View>
             </View>
@@ -304,6 +289,7 @@ export default class OrderListScreen extends Component {
 
     showDialog() {
         DialogManager.show({
+
             title: 'Dialog',
             titleAlign: 'center',
             animationDuration: 200,
@@ -311,12 +297,12 @@ export default class OrderListScreen extends Component {
             children: (
                 <Dialog deFaultData={this.state.filtDialog}
                         callback={(data) => {
-                    this.setState({filtDialog: data}, function () {
-                        if (this.state.filtDialog.status) {
-                            this.listV._refresh()
-                        }
-                    })
-                }}/>
+                            this.setState({filtDialog: data}, function () {
+                                if (this.state.filtDialog.status) {
+                                    this.getOrderListFromServer(this.state.filtDialog.dateFrom, this.state.filtDialog.dateTo)
+                                }
+                            })
+                        }}/>
             ),
         }, () => {
             console.log('callback - show');
