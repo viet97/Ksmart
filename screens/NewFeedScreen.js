@@ -59,31 +59,6 @@ export default class NewFeedScreen extends React.Component {
         }
     }
 
-    renderRow(rowData) {
-        return (
-            <View style={{
-                height: height / 7, flex: 1,
-                borderTopColor: '#227878', borderTopWidth: 1
-            }}>
-                <Text style={{textAlign: 'right', color: 'white', fontSize: 12}}> {rowData.thoigian_hienthi}</Text>
-                <View style={{flexDirection: 'row'}}>
-                    <View style={{justifyContent: 'center'}}>
-                        {this.getImage(rowData.anhdaidien)}
-                    </View>
-                    <View style={{flex: 4, margin: 8, justifyContent: 'center'}}>
-                        <Text
-                            style={{
-                                fontSize: 18,
-                                color: Color.itemNameListViewColor
-                            }}>{rowData.tennhanvien}</Text>
-                        <Text style={{fontSize: 13, color: 'white'}}> {rowData.tenloai}</Text>
-                    </View>
-                </View>
-            </View>
-        );
-
-    }
-
     loadMoreData() {
         if (!this.state.onEndReach) {
             this.setState({onEndReach: true})
@@ -141,9 +116,30 @@ export default class NewFeedScreen extends React.Component {
                             }}
                             extraData={this.state.dataRender}
                             data={this.state.dataRender}
-                            renderItem={({item}) => {
-                                this.renderRow(item)
-                            }
+                            renderItem={({item}) =>
+                                <View style={{
+                                    height: height / 7, flex: 1,
+                                    borderTopColor: '#227878', borderTopWidth: 1
+                                }}>
+                                    <Text style={{
+                                        textAlign: 'right',
+                                        color: 'white',
+                                        fontSize: 12
+                                    }}> {item.thoigian_hienthi}</Text>
+                                    <View style={{flexDirection: 'row'}}>
+                                        <View style={{justifyContent: 'center'}}>
+                                            {this.getImage(item.anhdaidien)}
+                                        </View>
+                                        <View style={{flex: 4, margin: 8, justifyContent: 'center'}}>
+                                            <Text
+                                                style={{
+                                                    fontSize: 18,
+                                                    color: Color.itemNameListViewColor
+                                                }}>{item.tennhanvien}</Text>
+                                            <Text style={{fontSize: 13, color: 'white'}}> {item.tenloai}</Text>
+                                        </View>
+                                    </View>
+                                </View>
                             }
                         />
                     </View>
@@ -158,7 +154,7 @@ export default class NewFeedScreen extends React.Component {
             .then((response) => (response.json()))
             .then((responseJson) => {
                     console.log(responseJson)
-                    if (responseJson.status) {
+                if (!responseJson.status) {
                         this.setState({dataFull: responseJson.data}, function () {
                             console.log(this.state.dataFull)
                             this.setState({dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER)})

@@ -28,7 +28,7 @@ var {height} = Dimensions.get('window');
 var GiftedListView = require('react-native-gifted-listview');
 
 var NUMBER_ROW_RENDER = 10
-var FIRST_LOADED = false;
+var SEARCH_STRING = '';
 export default class OrderListScreen extends Component {
     static navigationOptions = {
         header: null,
@@ -53,6 +53,7 @@ export default class OrderListScreen extends Component {
             rows: [],
             waiting: false,
             data: [],
+            dataSearch: [],
             filtDialog: {
                 status: 'false',
                 numberPicktttt: 0,
@@ -72,6 +73,7 @@ export default class OrderListScreen extends Component {
         fetch(URlConfig.getLinkOrderList(datef, datet))
             .then((response) => response.json())
             .then((responseJson) => {
+                console.log(responseJson)
                 this.setState({
                     orderListDataFull: responseJson.data
                 }, function () {
@@ -99,7 +101,10 @@ export default class OrderListScreen extends Component {
                 }
             }
         this.setState({orderListDataFilt: arr}, function () {
-            this.setState({dataRender: this.state.orderListDataFilt.slice(0, NUMBER_ROW_RENDER)})
+            this.setState({
+                dataRender: this.state.orderListDataFilt.slice(0, NUMBER_ROW_RENDER),
+                dataSearch: this.state.orderListDataFilt.slice(0, NUMBER_ROW_RENDER)
+            })
             NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
         })
 
@@ -206,7 +211,10 @@ export default class OrderListScreen extends Component {
         if (!this.state.onEndReach) {
             console.log("LOADMORE")
             this.setState({onEndReach: true})
-            this.setState({dataRender: this.state.orderListDataFilt.slice(0, NUMBER_ROW_RENDER + 10)})
+            this.setState({
+                dataRender: this.state.orderListDataFilt.slice(0, NUMBER_ROW_RENDER + 10),
+                dataSearch: this.state.orderListDataFilt.slice(0, NUMBER_ROW_RENDER + 10)
+            })
             NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
         }
     }
@@ -214,6 +222,29 @@ export default class OrderListScreen extends Component {
     refreshData() {
         NUMBER_ROW_RENDER = 10
         this.getOrderListFromServer(this.state.filtDialog.dateFrom, this.state.filtDialog.dateTo)
+    }
+
+    onChangeText(text) {
+        return new Promise((resolve, reject) => {
+            resolve();
+            var arr = []
+            var a = text.toLowerCase()
+            SEARCH_STRING = a
+            console.log(a)
+            if (a.length === 0) this.setState({dataRender: this.state.dataSearch})
+            else
+                for (var item in this.state.dataSearch) {
+                    if (a !== SEARCH_STRING) return
+                    console.log(this.state.dataSearch[item])
+                    if (this.state.dataSearch[item].tenkhachhang.toLowerCase().search(a) !== -1) {
+                        console.log(this.state.dataSearch[item])
+                        console.log(this.state.dataSearch[item])
+                        arr.push(this.state.dataSearch[item])
+                        console.log(arr)
+                    }
+                }
+            if (a.length !== 0) this.setState({dataRender: arr})
+        });
     }
 
     render() {
@@ -233,6 +264,7 @@ export default class OrderListScreen extends Component {
                     <View style={{width: 300}}>
                         <Search
                             ref="search_box"
+                            onChangeText={(text) => this.onChangeText(text)}
                         />
                     </View>
                     <Button title='click' onPress={() => {
