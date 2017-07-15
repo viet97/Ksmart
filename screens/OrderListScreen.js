@@ -28,7 +28,7 @@ import Search from 'react-native-search-box';
 var {height} = Dimensions.get('window');
 var GiftedListView = require('react-native-gifted-listview');
 
-var NUMBER_ROW_RENDER = 7
+var NUMBER_ROW_RENDER = 0
 var SEARCH_STRING = '';
 var ALL_LOADED = false
 export default class OrderListScreen extends Component {
@@ -224,12 +224,12 @@ export default class OrderListScreen extends Component {
             })
 
             NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
-            if (NUMBER_ROW_RENDER > this.state.dataRender.length - 10) ALL_LOADED = true
+            if (NUMBER_ROW_RENDER > this.state.orderListDataFilt.length - 10) ALL_LOADED = true
         }
     }
 
     refreshData() {
-        NUMBER_ROW_RENDER = 10
+        NUMBER_ROW_RENDER = 0
         this.getOrderListFromServer(this.state.filtDialog.dateFrom, this.state.filtDialog.dateTo)
     }
 

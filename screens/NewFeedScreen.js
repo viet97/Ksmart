@@ -62,8 +62,9 @@ export default class NewFeedScreen extends React.Component {
     loadMoreData() {
         if (!this.state.onEndReach) {
             this.setState({onEndReach: true})
-            this.setState({dataRender: this.state.dataFull.slice(NUMBER_ROW_RENDER, NUMBER_ROW_RENDER + 10)})
+            this.setState({dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER + 10)})
             NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
+            if (NUMBER_ROW_RENDER > this.state.dataFull.length - 10) ALL_LOADED = true
         }
     }
 

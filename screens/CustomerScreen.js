@@ -61,10 +61,14 @@ export default class CustomerScreen extends Component {
         return (
             <View style={{flex: 1, backgroundColor: Color.backGroundFlatList}}>
                 <View style={styles.titleStyle}>
-                    <Icon2 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
+                    <TouchableOpacity onPress={() => this.props.backToHome()}>
+                        <Icon2 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
+                    </TouchableOpacity>
                     <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Thông tin khách hàng</Text>
                     <View style={{backgroundColor: Color.backgroundNewFeed, width: 35, height: 35}}/>
                 </View>
+
+
                 <View style={{
                     marginLeft: 8,
                     marginTop: 8,
@@ -235,8 +239,8 @@ const styles = StyleSheet.create({
         paddingBottom: 8
     }, iconStyle: {
         alignSelf: 'center',
-        width: 24,
-        height: 24,
+        width: 35,
+        height: 35,
         backgroundColor: "transparent",
         marginLeft: 16
     },

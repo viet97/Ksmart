@@ -28,6 +28,7 @@ import {NavigationActions} from "react-navigation";
 import Toast from 'react-native-simple-toast';
 import OrderListScreen from "./OrderListScreen";
 import CustomerScreen from "./CustomerScreen";
+import MessageScreen from "./MessageScreen";
 var {height} = Dimensions.get('window').height;
 export default class HomeScreen extends React.Component {
     static navigationOptions = {
@@ -104,7 +105,11 @@ export default class HomeScreen extends React.Component {
                 }}/>
             case "Customer":
                 return <CustomerScreen backToHome={() => {
-                    this.setState({screenName: 'Customer'})
+                    this.setState({screenName: 'Menu'})
+                }}/>
+            case "Message":
+                return <MessageScreen backToHome={() => {
+                    this.setState({screenName: 'Menu'})
                 }}/>
         }
     }
@@ -249,7 +254,7 @@ export default class HomeScreen extends React.Component {
                                 <Animatable.Text animation="bounceIn" style={styles.titleIconsMenu}>Kế
                                     hoạch</Animatable.Text>
                             </TouchableOpacity>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={() => this.setState({screenName: "Message"})}>
                                 <View style={{
                                     backgroundColor: Color.iconMenuColor,
                                     borderRadius: 15,

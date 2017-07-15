@@ -6,7 +6,8 @@ import {
     TouchableOpacity,
     Dimensions,
     BackHandler,
-    FlatList
+    FlatList,
+    ActivityIndicator
 } from 'react-native';
 import Image from 'react-native-image-progress';
 import ProgressBar from 'react-native-progress/Bar';
@@ -97,11 +98,12 @@ export default class ListNhanVienScreen extends React.Component {
             this.setState({onEndReach: true})
             this.setState({dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER + 10)})
             NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
-            if (NUMBER_ROW_RENDER > this.state.dataRender.length - 10) ALL_LOADED = true
+            if (NUMBER_ROW_RENDER > this.state.dataFull.length - 10) ALL_LOADED = true
         }
     }
 
     refreshData() {
+        ALL_LOADED = false
         NUMBER_ROW_RENDER = 10
         fetch(URlConfig.getListNhanVienLink())
             .then((response) => (response.json()))
