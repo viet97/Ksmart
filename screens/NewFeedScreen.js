@@ -30,7 +30,7 @@ export default class NewFeedScreen extends React.Component {
         this.state = ({
             refreshing: false,
             dataFull: [],
-            dataRender: [],
+            dataRender: null,
             onEndReach: true,
             waiting: false,
             myText: 'I\'m ready to get swiped!',
@@ -85,6 +85,64 @@ export default class NewFeedScreen extends React.Component {
             )
     }
 
+    flatListorIndicator() {
+
+        if (!this.state.dataRender) {
+            return (
+                <View style={{backgroundColor: Color.itemListViewColor, flex: 9}}>
+                    <ActivityIndicator
+                        animating={true}
+                        style={styles.indicator}
+                        size="large"/>
+                </View>)
+        }
+
+        return (
+            <View style={{backgroundColor: Color.itemListViewColor, flex: 9}}>
+
+                <FlatList
+                    refreshing={this.state.refreshing}
+                    onRefresh={() => {
+                        this.refreshData()
+                    }}
+                    ref="listview"
+                    onEndReachedThreshold={0.2}
+                    onEndReached={() => {
+                        this.loadMoreData()
+                    }}
+                    onMomentumScrollBegin={() => {
+                        this.setState({onEndReach: false})
+                    }}
+                    extraData={this.state.dataRender}
+                    data={this.state.dataRender}
+                    renderItem={({item}) =>
+                        <View style={{
+                            height: height / 7, flex: 1,
+                            borderTopColor: '#227878', borderTopWidth: 1
+                        }}>
+                            <Text style={{
+                                textAlign: 'right',
+                                color: 'white',
+                                fontSize: 12
+                            }}> {item.thoigian_hienthi}</Text>
+                            <View style={{flexDirection: 'row'}}>
+                                <View style={{justifyContent: 'center'}}>
+                                    {this.getImage(item.anhdaidien)}
+                                </View>
+                                <View style={{flex: 4, margin: 8, justifyContent: 'center'}}>
+                                    <Text
+                                        style={{
+                                            fontSize: 18,
+                                            color: Color.itemNameListViewColor
+                                        }}>{item.tennhanvien}</Text>
+                                    <Text style={{fontSize: 13, color: 'white'}}> {item.tenloai}</Text>
+                                </View>
+                            </View>
+                        </View>
+                    }
+                />
+            </View>)
+    }
     render() {
         return (
             <GestureRecognizer
@@ -100,50 +158,7 @@ export default class NewFeedScreen extends React.Component {
 
                     <TouchableOpacity onPress={() => this.props.backToHome()}
                                       style={{width: 50, height: 50, position: 'absolute'}}/>
-                    <View style={{backgroundColor: Color.itemListViewColor, flex: 9}}>
-
-                        <FlatList
-                            refreshing={this.state.refreshing}
-                            onRefresh={() => {
-                                this.refreshData()
-                            }}
-                            ref="listview"
-                            onEndReachedThreshold={0.2}
-                            onEndReached={() => {
-                                this.loadMoreData()
-                            }}
-                            onMomentumScrollBegin={() => {
-                                this.setState({onEndReach: false})
-                            }}
-                            extraData={this.state.dataRender}
-                            data={this.state.dataRender}
-                            renderItem={({item}) =>
-                                <View style={{
-                                    height: height / 7, flex: 1,
-                                    borderTopColor: '#227878', borderTopWidth: 1
-                                }}>
-                                    <Text style={{
-                                        textAlign: 'right',
-                                        color: 'white',
-                                        fontSize: 12
-                                    }}> {item.thoigian_hienthi}</Text>
-                                    <View style={{flexDirection: 'row'}}>
-                                        <View style={{justifyContent: 'center'}}>
-                                            {this.getImage(item.anhdaidien)}
-                                        </View>
-                                        <View style={{flex: 4, margin: 8, justifyContent: 'center'}}>
-                                            <Text
-                                                style={{
-                                                    fontSize: 18,
-                                                    color: Color.itemNameListViewColor
-                                                }}>{item.tennhanvien}</Text>
-                                            <Text style={{fontSize: 13, color: 'white'}}> {item.tenloai}</Text>
-                                        </View>
-                                    </View>
-                                </View>
-                            }
-                        />
-                    </View>
+                    {this.flatListorIndicator()}
                 </View>
             </GestureRecognizer>
 
@@ -200,5 +215,12 @@ const styles = StyleSheet.create({
     titleIconsMenu: {
         textAlign: 'center',
         color: 'white'
+    },
+    indicator: {
+        alignSelf: 'center',
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: 80
     }
 })

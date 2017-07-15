@@ -65,7 +65,7 @@ export default class OrderListScreen extends Component {
                 dateTo: today
             },
             urlGetData: URlConfig.getLinkOrderList(today, today),
-            dataRender: [],
+            dataRender: null,
             orderListDataFull: [],
             orderListDataFilt: []
         }
@@ -118,7 +118,6 @@ export default class OrderListScreen extends Component {
     componentDidMount() {
         this.getOrderListFromServer(this.state.filtDialog.dateFrom, this.state.filtDialog.dateTo)
     }
-
 
 
     getGiaoHangHoacThanhToan(rowData) {
@@ -247,6 +246,7 @@ export default class OrderListScreen extends Component {
             </View>
         );
     };
+
     onChangeText(text) {
         return new Promise((resolve, reject) => {
             resolve();
@@ -271,6 +271,64 @@ export default class OrderListScreen extends Component {
         });
     }
 
+    flatListorIndicator() {
+
+        if (!this.state.dataRender) {
+            return (
+                <View style={{backgroundColor: Color.backGroundFlatList, flex: 9}}>
+                    <ActivityIndicator
+                        animating={true}
+                        style={styles.indicator}
+                        size="large"/>
+                </View>)
+        }
+
+        return (
+            <View style={{backgroundColor: Color.backGroundFlatList, flex: 9}}>
+                <FlatList
+                    ListFooterComponent={this.renderFooter}
+                    ref={(listV) => {
+                        this.listV = listV
+                    }}
+                    refreshing={this.state.refreshing}
+                    onRefresh={() => {
+                        this.refreshData()
+                    }}
+                    onEndReachedThreshold={0.2}
+                    onEndReached={() => {
+                        this.loadMoreData()
+                    }}
+                    onMomentumScrollBegin={() => {
+                        this.setState({onEndReach: false})
+                    }}
+                    extraData={this.state.dataRender}
+                    data={this.state.dataRender}
+                    renderItem={({item}) =>
+                        <View
+
+                            style={{
+                                margin: 4,
+                                backgroundColor: Color.backGroundItemFlatList,
+                                height: height / 4, flex: 1
+                            }}>
+                            <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 8}}>
+                                <Text style={{fontWeight: "bold", fontSize: 18}}>MĐH {item.mathamchieu} </Text>
+                                <Text style={{fontSize: 18}}>{item.tongtien} Đ </Text>
+                            </View>
+                            <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 8}}>
+                                <View style={{flex: 1, marginRight: 4}}>
+                                    <Text style={{fontSize: 17}}>{item.tenkhachhang} </Text>
+                                    <Text style={{fontSize: 10}}>{item.thoigianlapdon} </Text>
+                                </View>
+                                {this.getInfoKhachHang(item)}
+                            </View>
+                            {this.getGiaoHangHoacThanhToan(item)}
+
+                        </View>
+                    }
+                />
+            </View>)
+    }
     render() {
 
         return (
@@ -295,50 +353,7 @@ export default class OrderListScreen extends Component {
                         this.showDialog();
                     }}/>
                 </View>
-                <View style={{backgroundColor: Color.backGroundFlatList, flex: 9}}>
-                    <FlatList
-                        ListFooterComponent={this.renderFooter}
-                        ref={(listV) => {
-                            this.listV = listV
-                        }}
-                        refreshing={this.state.refreshing}
-                        onRefresh={() => {
-                            this.refreshData()
-                        }}
-                        onEndReachedThreshold={0.5}
-                        onEndReached={() => {
-                            this.loadMoreData()
-                        }}
-                        onMomentumScrollBegin={() => {
-                            this.setState({onEndReach: false})
-                        }}
-                        extraData={this.state.dataRender}
-                        data={this.state.dataRender}
-                        renderItem={({item}) =>
-                            <View
-
-                                style={{
-                                    margin: 4,
-                                    backgroundColor: Color.backGroundItemFlatList,
-                                    height: height / 4, flex: 1
-                                }}>
-                                <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 8}}>
-                                    <Text style={{fontWeight: "bold", fontSize: 18}}>MĐH {item.mathamchieu} </Text>
-                                    <Text style={{fontSize: 18}}>{item.tongtien} Đ </Text>
-                                </View>
-                                <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 8}}>
-                                    <View style={{flex: 1, marginRight: 4}}>
-                                        <Text style={{fontSize: 17}}>{item.tenkhachhang} </Text>
-                                        <Text style={{fontSize: 10}}>{item.thoigianlapdon} </Text>
-                                    </View>
-                                    {this.getInfoKhachHang(item)}
-                                </View>
-                                {this.getGiaoHangHoacThanhToan(item)}
-
-                            </View>
-                        }
-                    />
-                </View>
+                {this.flatListorIndicator()}
             </View>
 
         )
@@ -356,6 +371,7 @@ export default class OrderListScreen extends Component {
                         callback={(data) => {
                             this.setState({filtDialog: data}, function () {
                                 if (this.state.filtDialog.status) {
+                                    this.setState({dataRender: null})
                                     this.getOrderListFromServer(this.state.filtDialog.dateFrom, this.state.filtDialog.dateTo)
                                     return (<View style={{width: 100, height: 100}}> <ActivityIndicator
                                         size="large"/></View>)
@@ -369,6 +385,13 @@ export default class OrderListScreen extends Component {
     }
 }
 const styles = StyleSheet.create({
+    indicator: {
+        alignSelf: 'center',
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: 80
+    },
     titleStyle: {
         flex: 1,
         elevation: 15,

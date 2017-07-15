@@ -252,5 +252,12 @@ const styles = StyleSheet.create({
     titleIconsMenu: {
         textAlign: 'center',
         color: 'white'
+    },
+    indicator: {
+        alignSelf: 'center',
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: 80
     }
 })

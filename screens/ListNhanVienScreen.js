@@ -39,7 +39,7 @@ export default class ListNhanVienScreen extends React.Component {
             vido: 0,
             refreshing: false,
             dataFull: [],
-            dataRender: [],
+            dataRender: null,
             onEndReach: true,
             waiting: false,
             myText: 'I\'m ready to get swiped!',
@@ -120,6 +120,76 @@ export default class ListNhanVienScreen extends React.Component {
             )
     }
 
+    flatListorIndicator() {
+
+        if (!this.state.dataRender) {
+            return (
+                <View style={{backgroundColor: Color.itemListViewColor, flex: 9}}>
+                    <ActivityIndicator
+                        animating={true}
+                        style={styles.indicator}
+                        size="large"/>
+                </View>)
+        }
+
+        return (
+            <View style={{backgroundColor: Color.itemListViewColor, flex: 9}}>
+
+                <FlatList
+                    refreshing={this.state.refreshing}
+                    onRefresh={() => {
+                        this.refreshData()
+                    }}
+                    ListFooterComponent={this.renderFooter}
+                    ref="listview"
+                    onEndReachedThreshold={0.2}
+                    onEndReached={() => {
+                        this.loadMoreData()
+                    }}
+                    onMomentumScrollBegin={() => {
+                        this.setState({onEndReach: false})
+                    }}
+                    extraData={this.state.dataRender}
+                    data={this.state.dataRender}
+                    renderItem={({item}) => <View style={{
+                        height: height / 7, flex: 1,
+                        borderTopColor: '#227878', borderTopWidth: 1
+                    }}>
+                        <Text style={{textAlign: 'right', color: 'white', fontSize: 12}}> Cập nhật
+                            lúc {item.thoigiancapnhat}</Text>
+                        <View style={{flexDirection: 'row'}}>
+                            <View style={{justifyContent: 'center'}}>
+                                <Image indicator={ProgressBar.Pie}
+                                       style={{margin: 8, width: 60, height: 60, borderRadius: 30}}
+                                       source={require('../images/bglogin.jpg')}/>
+                            </View>
+                            <View style={{flex: 4, margin: 8, justifyContent: 'center'}}>
+                                <Text
+                                    style={{
+                                        fontSize: 18,
+                                        color: Color.itemNameListViewColor
+                                    }}>{item.tennhanvien}</Text>
+                                {this.isOnline(item.dangtructuyen)}
+                            </View>
+                            <TouchableOpacity onPress={() => {
+                                this.setState({
+                                    kinhdo: item.KinhDo,
+                                    vido: item.ViDo
+                                }, function () {
+
+                                    this.props.goToMapFromListNhanVien()
+
+                                })
+                            }}>
+                                <Icon2 size={30} color='white' name="location"/>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    }
+                />
+            </View>)
+    }
+
     render() {
         return (
             <TabNavigator>
@@ -138,61 +208,7 @@ export default class ListNhanVienScreen extends React.Component {
 
                         <TouchableOpacity onPress={() => this.props.backToHome()}
                                           style={{width: 50, height: 50, position: 'absolute'}}/>
-                        <View style={{backgroundColor: Color.itemListViewColor, flex: 9}}>
-
-                            <FlatList
-                                refreshing={this.state.refreshing}
-                                onRefresh={() => {
-                                    this.refreshData()
-                                }}
-                                ListFooterComponent={this.renderFooter}
-                                ref="listview"
-                                onEndReachedThreshold={0.2}
-                                onEndReached={() => {
-                                    this.loadMoreData()
-                                }}
-                                onMomentumScrollBegin={() => {
-                                    this.setState({onEndReach: false})
-                                }}
-                                extraData={this.state.dataRender}
-                                data={this.state.dataRender}
-                                renderItem={({item}) => <View style={{
-                                    height: height / 7, flex: 1,
-                                    borderTopColor: '#227878', borderTopWidth: 1
-                                }}>
-                                    <Text style={{textAlign: 'right', color: 'white', fontSize: 12}}> Cập nhật
-                                        lúc {item.thoigiancapnhat}</Text>
-                                    <View style={{flexDirection: 'row'}}>
-                                        <View style={{justifyContent: 'center'}}>
-                                            <Image indicator={ProgressBar.Pie}
-                                                   style={{margin: 8, width: 60, height: 60, borderRadius: 30}}
-                                                   source={require('../images/bglogin.jpg')}/>
-                                        </View>
-                                        <View style={{flex: 4, margin: 8, justifyContent: 'center'}}>
-                                            <Text
-                                                style={{
-                                                    fontSize: 18,
-                                                    color: Color.itemNameListViewColor
-                                                }}>{item.tennhanvien}</Text>
-                                            {this.isOnline(item.dangtructuyen)}
-                                        </View>
-                                        <TouchableOpacity onPress={() => {
-                                            this.setState({
-                                                kinhdo: item.KinhDo,
-                                                vido: item.ViDo
-                                            }, function () {
-
-                                                this.props.goToMapFromListNhanVien()
-
-                                            })
-                                        }}>
-                                            <Icon2 size={30} color='white' name="location"/>
-                                        </TouchableOpacity>
-                                    </View>
-                                </View>
-                                }
-                            />
-                        </View>
+                        {this.flatListorIndicator()}
                     </View>
                 </TabNavigator.Item>
                 <TabNavigator.Item
@@ -259,5 +275,12 @@ const styles = StyleSheet.create({
     titleIconsMenu: {
         textAlign: 'center',
         color: 'white'
+    },
+    indicator: {
+        alignSelf: 'center',
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: 80
     }
 })
