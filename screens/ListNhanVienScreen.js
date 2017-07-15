@@ -21,8 +21,8 @@ import TabNavigator from 'react-native-tab-navigator';
 import MapListScreen from "./MapListScreen";
 
 var NUMBER_ROW_RENDER = 10
+ALL_LOADED = false
 var {height} = Dimensions.get('window');
-var GiftedListView = require('react-native-gifted-listview');
 export default class ListNhanVienScreen extends React.Component {
     onSwipeRight(gestureState) {
         console.log("onSwipeRight")
@@ -75,45 +75,21 @@ export default class ListNhanVienScreen extends React.Component {
 
     }
 
-    renderRow(rowData) {
+    renderFooter = () => {
+        console.log("Footer")
+        if (ALL_LOADED || this.state.dataRender.length === 0) return null
         return (
-            <View style={{
-                height: height / 7, flex: 1,
-                borderTopColor: '#227878', borderTopWidth: 1
-            }}>
-                <Text style={{textAlign: 'right', color: 'white', fontSize: 12}}> Cập nhật
-                    lúc {rowData.thoigiancapnhat}</Text>
-                <View style={{flexDirection: 'row'}}>
-                    <View style={{justifyContent: 'center'}}>
-                        <Image indicator={ProgressBar.Pie}
-                               style={{margin: 8, width: 60, height: 60, borderRadius: 30}}
-                               source={require('../images/bglogin.jpg')}/>
-                    </View>
-                    <View style={{flex: 4, margin: 8, justifyContent: 'center'}}>
-                        <Text
-                            style={{
-                                fontSize: 18,
-                                color: Color.itemNameListViewColor
-                            }}>{rowData.tennhanvien}</Text>
-                        {this.isOnline(rowData.dangtructuyen)}
-                    </View>
-                    <TouchableOpacity onPress={() => {
-                        this.setState({
-                            kinhdo: rowData.KinhDo,
-                            vido: rowData.ViDo
-                        }, function () {
-
-                            this.props.goToMapFromListNhanVien()
-
-                        })
-                    }}>
-                        <Icon2 size={30} color='white' name="location"/>
-                    </TouchableOpacity>
-                </View>
+            <View
+                style={{
+                    justifyContent: 'center',
+                    borderColor: "green"
+                }}
+            >
+                <ActivityIndicator animating={true} size="large"/>
             </View>
         );
+    };
 
-    }
 
     loadMoreData() {
         if (!this.state.onEndReach) {
@@ -121,6 +97,7 @@ export default class ListNhanVienScreen extends React.Component {
             this.setState({onEndReach: true})
             this.setState({dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER + 10)})
             NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
+            if (NUMBER_ROW_RENDER > this.state.dataRender.length - 10) ALL_LOADED = true
         }
     }
 
@@ -166,6 +143,7 @@ export default class ListNhanVienScreen extends React.Component {
                                 onRefresh={() => {
                                     this.refreshData()
                                 }}
+                                ListFooterComponent={this.renderFooter}
                                 ref="listview"
                                 onEndReachedThreshold={0.2}
                                 onEndReached={() => {

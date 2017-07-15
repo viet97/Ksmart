@@ -28,7 +28,7 @@ import Search from 'react-native-search-box';
 var {height} = Dimensions.get('window');
 var GiftedListView = require('react-native-gifted-listview');
 
-var NUMBER_ROW_RENDER = 10
+var NUMBER_ROW_RENDER = 7
 var SEARCH_STRING = '';
 var ALL_LOADED = false
 export default class OrderListScreen extends Component {
@@ -72,6 +72,7 @@ export default class OrderListScreen extends Component {
     }
 
     getOrderListFromServer(datef, datet) {
+
         ALL_LOADED = false
         fetch(URlConfig.getLinkOrderList(datef, datet))
             .then((response) => response.json())
@@ -118,9 +119,7 @@ export default class OrderListScreen extends Component {
         this.getOrderListFromServer(this.state.filtDialog.dateFrom, this.state.filtDialog.dateTo)
     }
 
-    componentWillMount() {
-        ALL_LOADED = false
-    }
+
 
     getGiaoHangHoacThanhToan(rowData) {
         var colorGH;
@@ -267,6 +266,7 @@ export default class OrderListScreen extends Component {
                         console.log(arr)
                     }
                 }
+
             if (a.length !== 0) this.setState({dataRender: arr})
         });
     }
@@ -295,7 +295,7 @@ export default class OrderListScreen extends Component {
                         this.showDialog();
                     }}/>
                 </View>
-                <View style={{backgroundColor: '#C5CAE9', flex: 9}}>
+                <View style={{backgroundColor: Color.backGroundFlatList, flex: 9}}>
                     <FlatList
                         ListFooterComponent={this.renderFooter}
                         ref={(listV) => {
@@ -319,7 +319,7 @@ export default class OrderListScreen extends Component {
 
                                 style={{
                                     margin: 4,
-                                    backgroundColor: '#E0E0E0',
+                                    backgroundColor: Color.backGroundItemFlatList,
                                     height: height / 4, flex: 1
                                 }}>
                                 <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 8}}>
@@ -357,6 +357,8 @@ export default class OrderListScreen extends Component {
                             this.setState({filtDialog: data}, function () {
                                 if (this.state.filtDialog.status) {
                                     this.getOrderListFromServer(this.state.filtDialog.dateFrom, this.state.filtDialog.dateTo)
+                                    return (<View style={{width: 100, height: 100}}> <ActivityIndicator
+                                        size="large"/></View>)
                                 }
                             })
                         }}/>

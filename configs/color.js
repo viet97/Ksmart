@@ -9,4 +9,6 @@ export  default class Color{
     static itemNameListViewColor='#6AC7F1'
     static renderIconColor='#EB7F00'
     static iconMenuColor = 'green'
+    static backGroundFlatList = '#C5CAE9'
+    static backGroundItemFlatList = '#E0E0E0'
 }
