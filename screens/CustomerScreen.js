@@ -82,14 +82,13 @@ export default class CustomerScreen extends Component {
                 dataSearch: this.state.dataFull.slice(0, NUMBER_ROW_RENDER + 10)
             })
             NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
-            if (NUMBER_ROW_RENDER > this.state.dataFull.length - 10) ALL_LOADED = true
+            if (NUMBER_ROW_RENDER > this.state.dataRender.length - 10) ALL_LOADED = true
         }
     }
 
     flatListorIndicator() {
 
         if (!this.state.dataRender) {
-            console.log("Indicator")
             return (
                 <View style={{backgroundColor: Color.itemListViewColor, flex: 9}}>
                     <ActivityIndicator
@@ -97,7 +96,7 @@ export default class CustomerScreen extends Component {
                         style={styles.indicator}
                         size="large"/>
                 </View>)
-        }
+        } else
             return (
                 <View style={{backgroundColor: Color.backGroundFlatList, flex: 9}}>
                     <FlatList
@@ -288,7 +287,6 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         flex: 1,
         alignItems: 'center',
-        backgroundColor: 'red',
         justifyContent: 'center',
         height: 80
     }

@@ -103,13 +103,7 @@ export default class Dialog extends React.Component {
         });
         return (
             <DialogContent >
-                <TouchableOpacity style={{}}
-                                  onPress={() => {
-                                      this.props.loadOrderListData()
-                                  }}
-                >
-                    <Text style={{alignSelf: 'center', fontSize: 20}}>haha</Text>
-                </TouchableOpacity>
+
                 <ScrollView style={{flexDirection: 'column'}}
                             keyboardShouldPersistTaps="always">
                     <View style={{flexDirection: 'column'}}>

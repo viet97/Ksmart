@@ -25,7 +25,7 @@ import Dialog from '../components/Dialog'
 import orderListData from '../dbcontext/orderListData'
 import AtoZListView from 'react-native-atoz-listview';
 import Search from 'react-native-search-box';
-var {height} = Dimensions.get('window');
+var {height, width} = Dimensions.get('window');
 var GiftedListView = require('react-native-gifted-listview');
 
 var NUMBER_ROW_RENDER = 0
@@ -149,7 +149,7 @@ export default class OrderListScreen extends Component {
                 break
         }
         return (
-            <View style={{flexDirection: 'row', justifyContent: 'space-between', height: 60, flex: 1, margin: 8}}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', flex: 1, margin: 8}}>
                 <TouchableOpacity style={{backgroundColor: 'white', flex: 1, marginRight: 4}}>
                     <Icon2 size={12} color={colorGH} name="controller-record"/>
                     <Text style={{
@@ -157,7 +157,8 @@ export default class OrderListScreen extends Component {
                         fontWeight: "bold",
                         backgroundColor: 'transparent',
                         textAlign: 'center',
-                        color: colorGH
+                        color: colorGH,
+                        paddingBottom: 12
                     }}>{URlConfig.OBJLOGIN.ttgh[rowData.trangthaigiaohang]}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={{backgroundColor: 'white', flex: 1, marginLeft: 4}}>
@@ -168,6 +169,8 @@ export default class OrderListScreen extends Component {
                         backgroundColor: 'transparent',
                         textAlign: 'center',
                         color: colorTT
+                        ,
+                        paddingBottom: 12
                     }}>{URlConfig.OBJLOGIN.tttt[rowData.trangthaithanhtoan]}</Text>
                 </TouchableOpacity>
             </View>
@@ -309,7 +312,7 @@ export default class OrderListScreen extends Component {
                             style={{
                                 margin: 4,
                                 backgroundColor: Color.backGroundItemFlatList,
-                                height: height / 4, flex: 1
+                                flex: 1
                             }}>
                             <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 8}}>
                                 <Text style={{fontWeight: "bold", fontSize: 18}}>MĐH {item.mathamchieu} </Text>
@@ -329,6 +332,7 @@ export default class OrderListScreen extends Component {
                 />
             </View>)
     }
+
     render() {
 
         return (
@@ -340,18 +344,17 @@ export default class OrderListScreen extends Component {
                         <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
                     </TouchableOpacity>
                     <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Danh sách đơn hàng</Text>
-                    <View style={{backgroundColor: Color.backgroundNewFeed, width: 35, height: 35}}></View>
-                </View>
-                <View style={{flexDirection: 'row'}}>
-                    <View style={{width: 300}}>
-                        <Search
-                            ref="search_box"
-                            onChangeText={(text) => this.onChangeText(text)}
-                        />
-                    </View>
-                    <Button title='click' onPress={() => {
+                    <TouchableOpacity style={{alignSelf: 'center'}} onPress={() => {
                         this.showDialog();
-                    }}/>
+                    }}>
+                        <Text style={{color: 'white', padding: 8}}>Bộ lọc</Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={{width: width}}>
+                    <Search
+                        ref="search_box"
+                        onChangeText={(text) => this.onChangeText(text)}
+                    />
                 </View>
                 {this.flatListorIndicator()}
             </View>
@@ -362,7 +365,7 @@ export default class OrderListScreen extends Component {
     showDialog() {
         DialogManager.show({
 
-            title: 'Dialog',
+            title: 'Bộ lọc',
             titleAlign: 'center',
             animationDuration: 200,
             ScaleAnimation: new ScaleAnimation(),
