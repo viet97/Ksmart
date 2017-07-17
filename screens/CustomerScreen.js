@@ -20,14 +20,18 @@ import URlConfig from "../configs/url";
 import Search from "react-native-search-box";
 var NUMBER_ROW_RENDER = 10
 ALL_LOADED = false
+var SEARCH_STRING = '';
 var {height} = Dimensions.get('window');
 export default class CustomerScreen extends Component {
     constructor(props) {
         super(props)
         this.state = {
             refreshing: false,
+            dataSearch: [],
+            dataFull: [],
+            dataRender: null,
             onEndReach: true,
-            dataRender: [],
+            dataRender: []
         }
 
     }
@@ -46,16 +50,140 @@ export default class CustomerScreen extends Component {
             </View>
         );
     };
-    //
-    // loadMoreData() {
-    //     if (!this.state.onEndReach) {
-    //         console.log("LOADMORE")
-    //         this.setState({onEndReach: true})
-    //         this.setState({dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER + 10)})
-    //         NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
-    //         if (NUMBER_ROW_RENDER > this.state.dataRender.length - 10) ALL_LOADED = true
-    //     }
-    // }
+
+    refreshData() {
+        ALL_LOADED = false
+        NUMBER_ROW_RENDER = 10
+        fetch(URlConfig.getCustomerLink())
+            .then((response) => (response.json()))
+            .then((responseJson) => {
+                    console.log(responseJson)
+                    if (responseJson.status) {
+                        this.setState({dataFull: responseJson.data}, function () {
+                            console.log(this.state.dataFull)
+                            this.setState({
+                                dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER),
+                                dataSearch: this.state.dataFull.slice(0, NUMBER_ROW_RENDER)
+                            })
+                            NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
+                        })
+                    }
+                }
+            )
+    }
+
+
+    loadMoreData() {
+        if (!this.state.onEndReach) {
+            console.log("LOADMORE")
+            this.setState({onEndReach: true})
+            this.setState({
+                dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER + 10),
+                dataSearch: this.state.dataFull.slice(0, NUMBER_ROW_RENDER + 10)
+            })
+            NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
+            if (NUMBER_ROW_RENDER > this.state.dataRender.length - 10) ALL_LOADED = true
+        }
+    }
+
+    flatListorIndicator() {
+
+        if (!this.state.dataRender) {
+            return (
+                <View style={{backgroundColor: Color.itemListViewColor, flex: 9}}>
+                    <ActivityIndicator
+                        animating={true}
+                        style={styles.indicator}
+                        size="large"/>
+                </View>)
+        } else
+            return (
+                <View style={{backgroundColor: Color.backGroundFlatList, flex: 9}}>
+                    <FlatList
+                        refreshing={this.state.refreshing}
+                        ListFooterComponent={this.renderFooter}
+                        ref="listview"
+                        onEndReachedThreshold={0.2}
+                        // onEndReached={() => {
+                        //     this.loadMoreData()
+                        // }}
+                        onMomentumScrollBegin={() => {
+                            this.setState({onEndReach: false})
+                        }}
+                        extraData={this.state.dataRender}
+                        data={this.state.dataRender}
+                        renderItem={({item}) =>
+                            <TouchableOpacity onPress={() => this.props.callback(item.KinhDo, item.ViDo, 'Customer')}>
+                                <View style={{
+                                    marginTop: 4, marginBottom: 4, marginLeft: 8, marginRight: 8,
+                                    backgroundColor: Color.backGroundItemFlatList,
+                                    borderTopColor: '#227878'
+                                }}>
+                                    <View style={{
+                                        flexDirection: 'row',
+                                        marginLeft: 8,
+                                        marginTop: 8,
+                                        marginRight: 8,
+                                        marginBottom: 4
+                                    }}>
+                                        <Icon size={24} color="red" name="home"/>
+                                        <Text style={{
+                                            marginLeft: 8,
+                                            fontSize: 18,
+                                            fontWeight: "bold"
+                                        }}>{item.TenCuaHang}</Text>
+                                    </View>
+                                    <View style={{
+                                        flexDirection: 'row',
+                                        marginLeft: 8,
+                                        marginTop: 4,
+                                        marginRight: 8,
+                                        marginBottom: 4
+                                    }}>
+                                        <Icon1 size={24} color="black" name="people-outline"/>
+                                        <Text style={{marginLeft: 8}}>{item.tennhomkhachhang}</Text>
+                                    </View>
+                                    <View style={{
+                                        flexDirection: 'row',
+                                        marginLeft: 8,
+                                        marginTop: 4,
+                                        marginRight: 8,
+                                        marginBottom: 4
+                                    }}>
+                                        <Icon size={24} color="white" name="location-pin"/>
+                                        <Text style={{marginLeft: 8}}>{item.DiaChi}</Text>
+                                    </View>
+                                </View>
+                            </TouchableOpacity>
+                        }
+                    />
+                </View>)
+
+    }
+
+    onChangeText(text) {
+        return new Promise((resolve, reject) => {
+            resolve();
+            var arr = []
+            var a = text.toLowerCase()
+            SEARCH_STRING = a
+            console.log(a)
+            if (a.length === 0) this.setState({dataRender: this.state.dataSearch})
+            else
+                for (var item in this.state.dataSearch) {
+                    if (a !== SEARCH_STRING) return
+                    console.log(this.state.dataSearch[item])
+                    if (this.state.dataSearch[item].tenkhachhang.toLowerCase().search(a) !== -1) {
+                        console.log(this.state.dataSearch[item])
+                        console.log(this.state.dataSearch[item])
+                        arr.push(this.state.dataSearch[item])
+                        console.log(arr)
+                    }
+                }
+
+            if (a.length !== 0) this.setState({dataRender: arr})
+        });
+    }
 
     render() {
         return (
@@ -77,7 +205,8 @@ export default class CustomerScreen extends Component {
                     marginRight: 4,
                     backgroundColor: Color.backgroundNewFeed
                 }}>
-                    <Text style={{fontSize: 18, color: 'white', textAlign: 'center'}}>Tổng số khách hàng : 21</Text>
+                    <Text style={{fontSize: 18, color: 'white', textAlign: 'center'}}>Tổng số khách hàng
+                        : {this.state.dataFull.length}</Text>
                 </View>
                 <View style={{
                     marginLeft: 8,
@@ -91,132 +220,30 @@ export default class CustomerScreen extends Component {
                 </View>
                 <TouchableOpacity onPress={() => this.props.backToHome()}
                                   style={{width: 50, height: 50, position: 'absolute'}}/>
-                <View style={{backgroundColor: Color.backGroundFlatList, flex: 9}}>
+                {this.flatListorIndicator()}
 
-                    <FlatList
-                        refreshing={this.state.refreshing}
-                        ListFooterComponent={this.renderFooter}
-                        ref="listview"
-                        onEndReachedThreshold={0.2}
-                        // onEndReached={() => {
-                        //     this.loadMoreData()
-                        // }}
-                        onMomentumScrollBegin={() => {
-                            this.setState({onEndReach: false})
-                        }}
-                        extraData={this.state.dataRender}
-                        data={this.state.dataRender}
-                        renderItem={({item}) =>
-                            <View style={{
-                                marginTop: 4, marginBottom: 4, marginLeft: 8, marginRight: 8,
-                                backgroundColor: Color.backGroundItemFlatList,
-                                borderTopColor: '#227878'
-                            }}>
-                                <View style={{
-                                    flexDirection: 'row',
-                                    marginLeft: 8,
-                                    marginTop: 8,
-                                    marginRight: 8,
-                                    marginBottom: 4
-                                }}>
-                                    <Icon size={24} color="red" name="home"/>
-                                    <Text style={{
-                                        marginLeft: 8,
-                                        fontSize: 18,
-                                        fontWeight: "bold"
-                                    }}>{item.tenkhachhang}</Text>
-                                </View>
-                                <View style={{
-                                    flexDirection: 'row',
-                                    marginLeft: 8,
-                                    marginTop: 4,
-                                    marginRight: 8,
-                                    marginBottom: 4
-                                }}>
-                                    <Icon size={24} color="white" name="location-pin"/>
-                                    <Text style={{marginLeft: 8}}>{item.diachi}</Text>
-                                </View>
-                                <View style={{
-                                    flexDirection: 'row',
-                                    marginLeft: 8,
-                                    marginTop: 4,
-                                    marginRight: 8,
-                                    marginBottom: 4
-                                }}>
-                                    <Icon1 size={24} color="black" name="local-phone"/>
-                                    <Text style={{marginLeft: 8}}>{item.sodienthoai}</Text>
-                                </View>
-                                <View style={{
-                                    flexDirection: 'row',
-                                    marginLeft: 8,
-                                    marginTop: 4,
-                                    marginRight: 8,
-                                    marginBottom: 4
-                                }}>
-                                    <Icon2 size={24} color="black" name="ios-person-add-outline"/>
-                                    <Text style={{marginLeft: 8}}>{item.ngaygio}</Text>
-                                </View>
-
-                            </View>
-                        }
-                    />
-                </View>
             </View>
         )
     }
 
     componentDidMount() {
-        var arr = [
-            {
-                tenkhachhang: 'Viet',
-                diachi: 'so 5 duong buoi ngoc khanh',
-                sodienthoai: '0967092691',
-                ngaygio: '/1403/2017'
-            },
-            {
-                tenkhachhang: 'Viet',
-                diachi: 'so 5 duong buoi ngoc khanh',
-                sodienthoai: '0967092691',
-                ngaygio: '/1403/2017'
-            },
-            {
-                tenkhachhang: 'Viet',
-                diachi: 'so 5 duong buoi ngoc khanh',
-                sodienthoai: '0967092691',
-                ngaygio: '/1403/2017'
-            },
-            {
-                tenkhachhang: 'Viet',
-                diachi: 'so 5 duong buoi ngoc khanh',
-                sodienthoai: '0967092691',
-                ngaygio: '/1403/2017'
-            },
-            {
-                tenkhachhang: 'Viet',
-                diachi: 'so 5 duong buoi ngoc khanh',
-                sodienthoai: '0967092691',
-                ngaygio: '/1403/2017'
-            },
-            {
-                tenkhachhang: 'Viet',
-                diachi: 'so 5 duong buoi ngoc khanh',
-                sodienthoai: '0967092691',
-                ngaygio: '/1403/2017'
-            },
-            {
-                tenkhachhang: 'Viet',
-                diachi: 'so 5 duong buoi ngoc khanh',
-                sodienthoai: '0967092691',
-                ngaygio: '/1403/2017'
-            },
-            {
-                tenkhachhang: 'Viet',
-                diachi: 'so 5 duong buoi ngoc khanh',
-                sodienthoai: '0967092691',
-                ngaygio: '/1403/2017'
-            },
-        ]
-        this.setState({dataRender: arr})
+
+        fetch(URlConfig.getCustomerLink())
+            .then((response) => (response.json()))
+            .then((responseJson) => {
+                    console.log(responseJson)
+                    if (responseJson.status) {
+                        this.setState({dataFull: responseJson.data}, function () {
+                            console.log(this.state.dataFull)
+                            this.setState({
+                                dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER),
+                                dataSearch: this.state.dataFull.slice(0, NUMBER_ROW_RENDER)
+                            })
+                            NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
+                        })
+                    }
+                }
+            )
     }
 }
 const styles = StyleSheet.create({

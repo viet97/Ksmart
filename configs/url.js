@@ -40,4 +40,9 @@ export default class URlConfig {
         let data = URlConfig.OBJLOGIN;
         return data.urlserver + '/AppDanhSachDonHang.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idct=' + data.idcongty + '&from=' + from + '&to=' + to + '&rangthaigps=0';
     }
+
+    static getCustomerLink() {
+        let data = URlConfig.OBJLOGIN;
+        return data.urlserver + '/AppDanhSachCuaHang_v2.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idct=' + data.idcongty;
+    }
 }

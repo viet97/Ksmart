@@ -22,6 +22,7 @@ export default class MapScreen extends Component {
     }
 
     componentDidMount() {
+        console.log(this.props.kinhdo, this.props.vido)
         this.setState({
                 region: {
                     latitude: this.props.vido,

@@ -50,6 +50,7 @@ export default class HomeScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = ({
+            previousScreen: '',
             backCount: 0,
             myText: 'I\'m ready to get swiped!',
             gestureName: 'none',
@@ -58,8 +59,8 @@ export default class HomeScreen extends React.Component {
             selectedTab: 'NewFeed',
             headerTitleStyle: {alignSelf: 'center'},
             screenName: 'Menu',
-            longittude:0,
-            latitude:0,
+            kinhdo: 0,
+            vido: 0,
         })
     }
 
@@ -79,8 +80,6 @@ export default class HomeScreen extends React.Component {
     }
 
 
-
-
     renderSomething() {
         const {navigate} = this.props.navigation
         switch (this.state.screenName) {
@@ -93,24 +92,45 @@ export default class HomeScreen extends React.Component {
             case "ListNhanVien":
                 return <ListNhanVienScreen
                     ref="ListNhanVien"
+                    callback={(kinhdo, vido, previousScreen) => {
+                        this.setState({kinhdo: kinhdo, vido: vido, previousScreen: previousScreen}, function () {
+                            this.setState({screenName: 'Map'})
+                        })
+                    }}
                     clickMenu={() => this.openControlPanel()}
-                    backToHome={() => {this.setState({screenName: 'Menu'})}}
-                    goToMapFromListNhanVien={()=>{this.setState({screenName:'Map'})}}
+                    backToHome={() => {
+                        this.setState({screenName: 'Menu'})
+                    }}
+                    goToMapFromListNhanVien={() => {
+                        this.setState({screenName: 'Map'})
+                    }}
                 />
             case "Map":
-                return <MapScreen   backToListNhanVienFromMap={() => {this.setState({screenName: 'ListNhanVien'})}} kinhdo={this.refs.ListNhanVien.state.kinhdo}  vido={this.refs.ListNhanVien.state.vido}/>
+                return <MapScreen backToListNhanVienFromMap={() => {
+                    this.setState({screenName: this.state.previousScreen})
+                }} kinhdo={this.state.kinhdo} vido={this.state.vido}/>
             case "Order":
                 return <OrderListScreen backToHome={() => {
                     this.setState({screenName: 'Menu'})
                 }}/>
             case "Customer":
-                return <CustomerScreen backToHome={() => {
-                    this.setState({screenName: 'Menu'})
-                }}/>
+                return <CustomerScreen
+                    callback={(kinhdo, vido, previousScreen) => {
+                        this.setState({kinhdo: kinhdo, vido: vido, previousScreen: previousScreen}, function () {
+                            this.setState({screenName: 'Map'})
+                        })
+                    }}
+                    backToHome={() => {
+                        this.setState({screenName: 'Menu'})
+                    }}/>
             case "Message":
                 return <MessageScreen backToHome={() => {
                     this.setState({screenName: 'Menu'})
-                }}/>
+                }}
+                                      goToMapFromCustomerScreen={() => {
+                                          this.setState({screenName: 'Map'})
+                                      }}
+                />
         }
     }
 
@@ -303,7 +323,7 @@ export default class HomeScreen extends React.Component {
                         <TouchableOpacity style={styles.itemSideMenuStyle} onPress={() => {
                             this.setState({screenName: "ListNhanVien"});
                             this.closeControlPanel()
-                        }} >
+                        }}>
                             <Icon1 size={24} style={styles.iconStyle} color="white" name="ios-people-outline"/>
                             <Text style={styles.textStyle}>Nhân viên</Text>
                             <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>

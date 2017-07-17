@@ -172,14 +172,7 @@ export default class ListNhanVienScreen extends React.Component {
                                 {this.isOnline(item.dangtructuyen)}
                             </View>
                             <TouchableOpacity onPress={() => {
-                                this.setState({
-                                    kinhdo: item.KinhDo,
-                                    vido: item.ViDo
-                                }, function () {
-
-                                    this.props.goToMapFromListNhanVien()
-
-                                })
+                                this.props.callback(item.KinhDo, item.ViDo, 'ListNhanVien')
                             }}>
                                 <Icon2 size={30} color='white' name="location"/>
                             </TouchableOpacity>
@@ -232,7 +225,10 @@ export default class ListNhanVienScreen extends React.Component {
                     if (responseJson.status) {
                         this.setState({dataFull: responseJson.dsNhanVien}, function () {
                             console.log(this.state.dataFull)
-                            this.setState({dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER)})
+                            this.setState({
+                                    dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER)
+                                }
+                            )
                             NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
                         })
                     }
