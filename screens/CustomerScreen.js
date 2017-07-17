@@ -101,6 +101,9 @@ export default class CustomerScreen extends Component {
                 <View style={{backgroundColor: Color.backGroundFlatList, flex: 9}}>
                     <FlatList
                         refreshing={this.state.refreshing}
+                        onRefresh={() => {
+                            this.refreshData()
+                        }}
                         ListFooterComponent={this.renderFooter}
                         ref="listview"
                         onEndReachedThreshold={0.2}
@@ -163,8 +166,10 @@ export default class CustomerScreen extends Component {
     }
 
     onChangeText(text) {
+        console.log("onChangeText")
         return new Promise((resolve, reject) => {
             resolve();
+            console.log("promise")
             var arr = []
             var a = text.toLowerCase()
             SEARCH_STRING = a
@@ -218,7 +223,7 @@ export default class CustomerScreen extends Component {
                 }}>
                     <Search
                         ref="search_box"
-                        onchangetext={(text) => this.onChangeText(text)}
+                        onChangeText={(text) => this.onChangeText(text)}
                     />
                 </View>
                 <TouchableOpacity onPress={() => this.props.backToHome()}

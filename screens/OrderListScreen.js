@@ -51,6 +51,7 @@ export default class OrderListScreen extends Component {
         }
         today = dd + '-' + mm + '-' + yyyy;
         this.state = {
+            isSearching: false,
             refreshing: false,
             rows: [],
             waiting: false,
@@ -234,10 +235,9 @@ export default class OrderListScreen extends Component {
         NUMBER_ROW_RENDER = 0
         this.getOrderListFromServer(this.state.filtDialog.dateFrom, this.state.filtDialog.dateTo)
     }
-
     renderFooter = () => {
         console.log("Footer")
-        if (ALL_LOADED || this.state.dataRender.length === 0) return null
+        if ((ALL_LOADED || this.state.dataRender.length === 0) || this.state.isSearching) return null
         return (
             <View
                 style={{
@@ -253,7 +253,9 @@ export default class OrderListScreen extends Component {
     onChangeText(text) {
         return new Promise((resolve, reject) => {
             resolve();
+            this.setState({isSearching: true})
             var arr = []
+            ALL_LOADED = true
             var a = text.toLowerCase()
             SEARCH_STRING = a
             console.log(a)
@@ -271,9 +273,17 @@ export default class OrderListScreen extends Component {
                 }
 
             if (a.length !== 0) this.setState({dataRender: arr})
+            else this.setState({isSearching: false})
         });
     }
 
+    onCancel() {
+        return new Promise((resolve, reject) => {
+            resolve();
+            SEARCH_STRING = ''
+            this.setState({dataRender: this.state.dataSearch, isSearching: false})
+        });
+    }
     flatListorIndicator() {
 
         if (!this.state.dataRender) {
@@ -302,6 +312,7 @@ export default class OrderListScreen extends Component {
                         this.loadMoreData()
                     }}
                     onMomentumScrollBegin={() => {
+                        if (SEARCH_STRING.length === 0)
                         this.setState({onEndReach: false})
                     }}
                     extraData={this.state.dataRender}
