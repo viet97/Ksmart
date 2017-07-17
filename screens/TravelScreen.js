@@ -16,13 +16,15 @@ import Color from '../configs/color'
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import URlConfig from "../configs/url";
 var {height} = Dimensions.get('window');
-var NUMBER_ROW_RENDER = 10
-export default class NewFeedScreen extends React.Component {
+var NUMBER_ROW_RENDER = 10;
+export default class TravelScreen extends React.Component {
     onSwipeRight(gestureState) {
         console.log("onSwipeRight")
         this.setState({myText: 'You swiped right!'});
         this.props.clickMenu()
     }
+
+    URL = URlConfig.getLinkTravel('13-06-2017');
 
     constructor(props) {
         super(props)
@@ -69,7 +71,7 @@ export default class NewFeedScreen extends React.Component {
 
     refreshData() {
         NUMBER_ROW_RENDER = 10
-        fetch(URlConfig.getNewFeedLink())
+        fetch(this.URL)
             .then((response) => (response.json()))
             .then((responseJson) => {
                     console.log(responseJson)
@@ -77,7 +79,8 @@ export default class NewFeedScreen extends React.Component {
                         this.setState({dataFull: responseJson.data}, function () {
                             console.log(this.state.dataFull)
                             this.setState({dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER)})
-                            NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
+                            NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10;
+
                         })
                     }
                 }
@@ -115,33 +118,72 @@ export default class NewFeedScreen extends React.Component {
                     extraData={this.state.dataRender}
                     data={this.state.dataRender}
                     renderItem={({item}) =>
-                        <View style={{
-                            height: height / 7, flex: 1,
-                            borderTopColor: '#227878', borderTopWidth: 1
-                        }}>
-                            <Text style={{
-                                textAlign: 'right',
-                                color: 'white',
-                                fontSize: 12
-                            }}> {item.thoigian_hienthi}</Text>
-                            <View style={{flexDirection: 'row'}}>
-                                <View style={{justifyContent: 'center'}}>
-                                    {this.getImage(item.anhdaidien)}
-                                </View>
-                                <View style={{flex: 4, margin: 8, justifyContent: 'center'}}>
-                                    <Text
-                                        style={{
-                                            fontSize: 18,
-                                            color: Color.itemNameListViewColor
-                                        }}>{item.tennhanvien}</Text>
-                                    <Text style={{fontSize: 13, color: 'white'}}> {item.tenloai}</Text>
-                                </View>
-                            </View>
-                        </View>
+                        this.renderItem(item)
                     }
                 />
             </View>)
     }
+
+    renderItem(item) {
+        var strVaoDiem = '';
+        var strRaDiem = '';
+        if (item.ThoiGianVaoDiemThucTe === '1900-01-01T00:00:00') {
+            strVaoDiem = "Chưa vào điểm!"
+        } else {
+            var diffMins = this.millisToMinutes(item.ThoiGianVaoDiemDuKien, item.ThoiGianVaoDiemThucTe)
+            strVaoDiem = diffMins > 0 ? ('Sớm ' + diffMins + ' phút') : 'Muộn ' + Math.abs(diffMins) + ' phút';
+            strVaoDiem = item.ThoiGianVaoDiemThucTe.replace('T', ' ') + ' ' + strVaoDiem;
+        }
+        if (item.ThoiGianRaDiemThucTe === '1900-01-01T00:00:00') {
+            strRaDiem = "Chưa ra điểm!"
+        } else {
+            diffMins = this.millisToMinutes(item.ThoiGianRaDiemDuKien, item.ThoiGianRaDiemThucTe)
+            strRaDiem = diffMins > 0 ? ('Sớm ' + diffMins + ' phút') : 'Muộn ' + Math.abs(diffMins) + ' phút';
+            strRaDiem = item.ThoiGianRaDiemThucTe.replace('T', ' ') + ' ' + strRaDiem;
+        }
+        return (
+            <TouchableOpacity onPress={() => this.props.callback(item.KinhDo, item.ViDo, 'Travel', 'Địa chỉ cửa hàng')}>
+                <View style={{
+                    borderTopColor: '#227878', borderTopWidth: 1
+                }}>
+                    <Text style={{
+                        textAlign: 'right',
+                        color: 'white',
+                        fontSize: 12,
+                        marginRight: 4
+                    }}>{strVaoDiem}</Text>
+                    <Text style={{
+                        textAlign: 'right',
+                        color: 'white',
+                        fontSize: 12,
+                        marginRight: 4
+                    }}>{strRaDiem}</Text>
+                    <View style={{flexDirection: 'row'}}>
+                        <View style={{justifyContent: 'center'}}>
+                            {this.getImage(item.anhdaidien === undefined ? '' : item.anhdaidien)}
+                        </View>
+                        <View style={{flex: 4, margin: 8, justifyContent: 'center'}}>
+                            <Text
+                                style={{
+                                    fontSize: 18,
+                                    color: Color.itemNameListViewColor,
+                                    margin: 4
+                                }}>{item.TenCuaHang}</Text>
+                            <Text
+                                style={{
+                                    fontSize: 12,
+                                    margin: 4,
+                                    color: Color.itemNameListViewColor
+                                }}>{item.TenNhanVien}</Text>
+                            <Text
+                                style={{fontSize: 13, margin: 4, color: item.text_color}}>{item.text_color_mota}</Text>
+                        </View>
+                    </View>
+                </View>
+            </TouchableOpacity>
+        );
+    }
+
     render() {
         return (
             <GestureRecognizer
@@ -151,7 +193,7 @@ export default class NewFeedScreen extends React.Component {
                 <View style={{flex: 1}}>
                     <View style={styles.titleStyle}>
                         <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
-                        <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>NewFeed</Text>
+                        <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Viếng thăm</Text>
                         <View style={{backgroundColor: Color.backgroundNewFeed, width: 35, height: 35}}></View>
                     </View>
 
@@ -165,19 +207,30 @@ export default class NewFeedScreen extends React.Component {
     }
 
     componentDidMount() {
-        fetch(URlConfig.getNewFeedLink())
+        console.log(this.URL)
+        fetch(this.URL)
             .then((response) => (response.json()))
             .then((responseJson) => {
-                    console.log(responseJson)
-                if (!responseJson.status) {
+                    if (responseJson.status) {
                         this.setState({dataFull: responseJson.data}, function () {
-                            console.log(this.state.dataFull)
-                            this.setState({dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER)})
-                            NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
+                            console.log('dataFull', this.state.dataFull)
+                            this.setState({dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER)}, function () {
+                                console.log('datarender', this.state.dataRender)
+
+                            })
+                            NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10;
                         })
                     }
                 }
             )
+    }
+
+    millisToMinutes(from, to) {
+        var dateFrom = new Date(from)
+        var dateTo = new Date(to)
+        var millis = dateFrom - dateTo;
+        var minutes = Math.floor(millis / 60000);
+        return minutes;
     }
 
 }

@@ -113,7 +113,8 @@ export default class CustomerScreen extends Component {
                         extraData={this.state.dataRender}
                         data={this.state.dataRender}
                         renderItem={({item}) =>
-                            <TouchableOpacity onPress={() => this.props.callback(item.KinhDo, item.ViDo, 'Customer')}>
+                            <TouchableOpacity
+                                onPress={() => this.props.callback(item.KinhDo, item.ViDo, 'Customer', 'Địa chỉ khách hàng')}>
                                 <View style={{
                                     marginTop: 4, marginBottom: 4, marginLeft: 8, marginRight: 8,
                                     backgroundColor: Color.backGroundItemFlatList,

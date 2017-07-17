@@ -29,6 +29,7 @@ import Toast from 'react-native-simple-toast';
 import OrderListScreen from "./OrderListScreen";
 import CustomerScreen from "./CustomerScreen";
 import MessageScreen from "./MessageScreen";
+import TravelScreen from "./TravelScreen";
 var {height} = Dimensions.get('window').height;
 export default class HomeScreen extends React.Component {
     static navigationOptions = {
@@ -51,6 +52,7 @@ export default class HomeScreen extends React.Component {
         super(props)
         this.state = ({
             previousScreen: '',
+            titleMap: '',
             backCount: 0,
             myText: 'I\'m ready to get swiped!',
             gestureName: 'none',
@@ -92,8 +94,13 @@ export default class HomeScreen extends React.Component {
             case "ListNhanVien":
                 return <ListNhanVienScreen
                     ref="ListNhanVien"
-                    callback={(kinhdo, vido, previousScreen) => {
-                        this.setState({kinhdo: kinhdo, vido: vido, previousScreen: previousScreen}, function () {
+                    callback={(kinhdo, vido, previousScreen, title) => {
+                        this.setState({
+                            kinhdo: kinhdo,
+                            vido: vido,
+                            previousScreen: previousScreen,
+                            titleMap: title
+                        }, function () {
                             this.setState({screenName: 'Map'})
                         })
                     }}
@@ -108,15 +115,20 @@ export default class HomeScreen extends React.Component {
             case "Map":
                 return <MapScreen backToListNhanVienFromMap={() => {
                     this.setState({screenName: this.state.previousScreen})
-                }} kinhdo={this.state.kinhdo} vido={this.state.vido}/>
+                }} kinhdo={this.state.kinhdo} vido={this.state.vido} titleMap={this.state.titleMap}/>
             case "Order":
                 return <OrderListScreen backToHome={() => {
                     this.setState({screenName: 'Menu'})
                 }}/>
             case "Customer":
                 return <CustomerScreen
-                    callback={(kinhdo, vido, previousScreen) => {
-                        this.setState({kinhdo: kinhdo, vido: vido, previousScreen: previousScreen}, function () {
+                    callback={(kinhdo, vido, previousScreen, title) => {
+                        this.setState({
+                            kinhdo: kinhdo,
+                            vido: vido,
+                            previousScreen: previousScreen,
+                            titleMap: title
+                        }, function () {
                             this.setState({screenName: 'Map'})
                         })
                     }}
@@ -126,10 +138,22 @@ export default class HomeScreen extends React.Component {
             case "Message":
                 return <MessageScreen backToHome={() => {
                     this.setState({screenName: 'Menu'})
-                }}
-                                      goToMapFromCustomerScreen={() => {
-                                          this.setState({screenName: 'Map'})
-                                      }}
+                }}/>
+            case "Travel":
+                return <TravelScreen
+                    backToHome={() => {
+                        this.setState({screenName: 'Menu'})
+                    }}
+                    callback={(kinhdo, vido, previousScreen, title) => {
+                        this.setState({
+                            kinhdo: kinhdo,
+                            vido: vido,
+                            previousScreen: previousScreen,
+                            titleMap: title
+                        }, function () {
+                            this.setState({screenName: 'Map'})
+                        })
+                    }}
                 />
         }
     }
@@ -219,7 +243,7 @@ export default class HomeScreen extends React.Component {
                                 <Animatable.Text animation="slideInLeft" style={styles.titleIconsMenu}> Khách
                                     hàng</Animatable.Text>
                             </TouchableOpacity>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={() => this.setState({screenName: 'Travel'})}>
                                 <View style={{
                                     backgroundColor: Color.iconMenuColor,
                                     borderRadius: 15,
@@ -261,7 +285,7 @@ export default class HomeScreen extends React.Component {
                                 <Animatable.Text animation="slideInLeft" style={styles.titleIconsMenu}>Báo
                                     cáo</Animatable.Text>
                             </TouchableOpacity>
-                            <TouchableOpacity>
+                            <TouchableOpacity >
                                 <View style={{
                                     backgroundColor: Color.iconMenuColor,
                                     borderRadius: 15,
@@ -346,7 +370,8 @@ export default class HomeScreen extends React.Component {
                         </TouchableOpacity>
                     </View>
                     <View >
-                        <TouchableOpacity style={styles.itemSideMenuStyle}>
+                        <TouchableOpacity style={styles.itemSideMenuStyle}
+                                          onPress={() => this.setState({screenName: 'Travel'})}>
                             <Icon2 size={24} style={styles.iconStyle} color="white" name="aircraft-take-off"/>
                             <Text style={styles.textStyle}>Viếng thăm</Text>
                             <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>

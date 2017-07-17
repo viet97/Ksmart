@@ -55,8 +55,8 @@ export default class MapScreen extends Component {
                 <View style={{flex: 1}}>
                     <View style={styles.titleStyle}>
                         <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
-                        <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Địa chỉ nhân viên</Text>
-                        <View style={{backgroundColor: Color.backgroundNewFeed, width: 35, height: 35}}></View>
+                        <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>{this.props.titleMap}</Text>
+                        <View style={{backgroundColor: Color.backgroundNewFeed, width: 35, height: 35}}/>
                     </View>
 
                     <TouchableOpacity onPress={() => this.props.backToListNhanVienFromMap()}
