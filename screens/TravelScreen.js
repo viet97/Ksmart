@@ -15,6 +15,7 @@ import React from 'react';
 import Color from '../configs/color'
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import URlConfig from "../configs/url";
+import DatePicker from 'react-native-datepicker'
 var {height} = Dimensions.get('window');
 var NUMBER_ROW_RENDER = 10;
 export default class TravelScreen extends React.Component {
@@ -22,20 +23,61 @@ export default class TravelScreen extends React.Component {
         console.log("onSwipeRight")
         this.setState({myText: 'You swiped right!'});
         this.props.clickMenu()
+
     }
 
-    URL = URlConfig.getLinkTravel('13-06-2017');
 
     constructor(props) {
-        super(props)
+        super(props);
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1; //January is 0!
+        var yyyy = today.getFullYear();
+
+        if (dd < 10) {
+            dd = '0' + dd
+        }
+
+        if (mm < 10) {
+            mm = '0' + mm
+        }
+
+        today = dd + '-' + mm + '-' + yyyy;
         this.state = ({
             refreshing: false,
             dataFull: [],
+            date: today,
             dataRender: null,
             onEndReach: true,
             waiting: false,
             myText: 'I\'m ready to get swiped!',
             gestureName: 'none',
+            URL: ''
+        })
+    }
+
+
+    componentWillMount() {
+        console.log(this.state.date)
+        this.setState({
+            URL: URlConfig.getLinkTravel(this.state.date)
+        }, function () {
+            console.log(this.state.URL)
+            fetch(this.state.URL)
+                .then((response) => (response.json()))
+                .then((responseJson) => {
+                        if (responseJson.status) {
+                            this.setState({dataFull: responseJson.data}, function () {
+                                console.log('dataFull', this.state.dataFull)
+                                this.setState({dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER)}, function () {
+                                    console.log('datarender', this.state.dataRender)
+
+                                })
+                                NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10;
+                            })
+                        }
+                    }
+                )
         })
     }
 
@@ -53,7 +95,7 @@ export default class TravelScreen extends React.Component {
             return (
                 <Image
 
-                    source={{uri: 'http://jav.ksmart.vn' + url}}
+                    source={{uri: URlConfig.OBJLOGIN.urlserver + '/' + url}}
                     indicator={ProgressBar.Pie}
                     style={{margin: 8, width: 60, height: 60, borderRadius: 30}}/>
             );
@@ -70,8 +112,9 @@ export default class TravelScreen extends React.Component {
     }
 
     refreshData() {
+        console.log('hihi', this.state.URL)
         NUMBER_ROW_RENDER = 10
-        fetch(this.URL)
+        fetch(this.state.URL)
             .then((response) => (response.json()))
             .then((responseJson) => {
                     console.log(responseJson)
@@ -80,7 +123,6 @@ export default class TravelScreen extends React.Component {
                             console.log(this.state.dataFull)
                             this.setState({dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER)})
                             NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10;
-
                         })
                     }
                 }
@@ -188,42 +230,62 @@ export default class TravelScreen extends React.Component {
         return (
             <GestureRecognizer
                 onSwipeRight={(state) => this.onSwipeRight(state)}
-                style={{flex: 1}}
-            >
+                style={{flex: 1}}>
                 <View style={{flex: 1}}>
                     <View style={styles.titleStyle}>
                         <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
                         <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Viếng thăm</Text>
-                        <View style={{backgroundColor: Color.backgroundNewFeed, width: 35, height: 35}}></View>
+                        <View style={{backgroundColor: Color.backgroundNewFeed, width: 35, height: 35}}/>
                     </View>
 
                     <TouchableOpacity onPress={() => this.props.backToHome()}
                                       style={{width: 50, height: 50, position: 'absolute'}}/>
+                    <View style={{width: window.width}}>
+                        <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+                            <Text style={{backgroundColor: 'transparent', alignSelf: 'center', marginLeft: 16}}>Từ
+                                ngày </Text>
+                            <DatePicker
+                                date={this.state.date}
+                                mode="date"
+                                placeholder="select date"
+                                format="DD-MM-YYYY"
+
+                                confirmBtnText="Xác nhận"
+                                cancelBtnText="Huỷ bỏ"
+                                customStyles={{
+                                    dateIcon: {},
+                                    dateInput: {
+                                        backgroundColor: 'white',
+                                        borderWidth: 1,
+                                        borderColor: 'gray',
+                                        borderRadius: 4,
+                                    },
+                                }}
+                                onDateChange={(date) => {
+                                    this.ondateChange(date);
+                                }}
+                            />
+                            <View></View>
+                        </View>
+                    </View>
                     {this.flatListorIndicator()}
                 </View>
             </GestureRecognizer>
-
         )
     }
 
-    componentDidMount() {
-        console.log(this.URL)
-        fetch(this.URL)
-            .then((response) => (response.json()))
-            .then((responseJson) => {
-                    if (responseJson.status) {
-                        this.setState({dataFull: responseJson.data}, function () {
-                            console.log('dataFull', this.state.dataFull)
-                            this.setState({dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER)}, function () {
-                                console.log('datarender', this.state.dataRender)
+    ondateChange(date) {
+        console.log('date', date)
+        this.setState({
+            date: date,
+            URL: URlConfig.getLinkTravel(date)
+        }, function () {
+            this.refreshData()
+        });
 
-                            })
-                            NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10;
-                        })
-                    }
-                }
-            )
     }
+
+
 
     millisToMinutes(from, to) {
         var dateFrom = new Date(from)
