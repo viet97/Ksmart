@@ -82,13 +82,14 @@ export default class CustomerScreen extends Component {
                 dataSearch: this.state.dataFull.slice(0, NUMBER_ROW_RENDER + 10)
             })
             NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
-            if (NUMBER_ROW_RENDER > this.state.dataRender.length - 10) ALL_LOADED = true
+            if (NUMBER_ROW_RENDER > this.state.dataFull.length - 10) ALL_LOADED = true
         }
     }
 
     flatListorIndicator() {
 
         if (!this.state.dataRender) {
+            console.log("Indicator")
             return (
                 <View style={{backgroundColor: Color.itemListViewColor, flex: 9}}>
                     <ActivityIndicator
@@ -96,7 +97,7 @@ export default class CustomerScreen extends Component {
                         style={styles.indicator}
                         size="large"/>
                 </View>)
-        } else
+        }
             return (
                 <View style={{backgroundColor: Color.backGroundFlatList, flex: 9}}>
                     <FlatList
@@ -104,9 +105,9 @@ export default class CustomerScreen extends Component {
                         ListFooterComponent={this.renderFooter}
                         ref="listview"
                         onEndReachedThreshold={0.2}
-                        // onEndReached={() => {
-                        //     this.loadMoreData()
-                        // }}
+                        onEndReached={() => {
+                            this.loadMoreData()
+                        }}
                         onMomentumScrollBegin={() => {
                             this.setState({onEndReach: false})
                         }}
@@ -174,7 +175,7 @@ export default class CustomerScreen extends Component {
                 for (var item in this.state.dataSearch) {
                     if (a !== SEARCH_STRING) return
                     console.log(this.state.dataSearch[item])
-                    if (this.state.dataSearch[item].tenkhachhang.toLowerCase().search(a) !== -1) {
+                    if (this.state.dataSearch[item].TenCuaHang.toLowerCase().search(a) !== -1) {
                         console.log(this.state.dataSearch[item])
                         console.log(this.state.dataSearch[item])
                         arr.push(this.state.dataSearch[item])
@@ -190,7 +191,7 @@ export default class CustomerScreen extends Component {
         return (
             <View style={{flex: 1, backgroundColor: Color.backGroundFlatList}}>
                 <View style={styles.titleStyle}>
-                    <TouchableOpacity onPress={() => this.props.backToHome()}>
+                    <TouchableOpacity style={styles.iconStyle} onPress={() => this.props.backToHome()}>
                         <Icon2 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
                     </TouchableOpacity>
                     <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Thông tin khách hàng</Text>
@@ -217,6 +218,8 @@ export default class CustomerScreen extends Component {
                     marginRight: 4
                 }}>
                     <Search
+                        ref="search_box"
+                        onchangetext={(text) => this.onChangeText(text)}
                     />
                 </View>
                 <TouchableOpacity onPress={() => this.props.backToHome()}
@@ -285,6 +288,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         flex: 1,
         alignItems: 'center',
+        backgroundColor: 'red',
         justifyContent: 'center',
         height: 80
     }

@@ -5,7 +5,7 @@ import {
     Button, ListView, StyleSheet, StatusBar,
     TouchableOpacity, ActivityIndicator,
     Dimensions,
-    FlatList
+    FlatList,
 } from 'react-native';
 import Image from 'react-native-image-progress';
 import ProgressBar from 'react-native-progress/Bar';

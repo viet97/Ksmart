@@ -363,7 +363,9 @@ export default class HomeScreen extends React.Component {
                         </TouchableOpacity>
                     </View>
                     <View>
-                        <TouchableOpacity style={styles.itemSideMenuStyle}>
+                        <TouchableOpacity style={styles.itemSideMenuStyle} onPress={() => {
+                            this.setState({screenName: 'Customer'}), this.closeControlPanel()
+                        }}>
                             <Icon2 size={24} style={styles.iconStyle} color="white" name="user"/>
                             <Text style={styles.textStyle}>Khách hàng</Text>
                             <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
