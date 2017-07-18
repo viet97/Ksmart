@@ -17,13 +17,13 @@ import MapListScreen from "./screens/MapListScreen";
 import OrderListScreen from "./screens/OrderListScreen";
 
 const Ksmart = StackNavigator({
+    Chart: {screen: ChartScreen},
 
     Splash: {screen: SplashScreen},
     Login: {screen: LoginScreen},
     Home: {screen: HomeScreen},
     Menu: {screen: MenuScreen},
     Map: {screen: MapScreen},
-    Chart: {screen: ChartScreen},
 
 
 });
