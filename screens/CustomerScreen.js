@@ -21,11 +21,13 @@ import Search from "react-native-search-box";
 var NUMBER_ROW_RENDER = 10
 ALL_LOADED = false
 var SEARCH_STRING = '';
+
 var {height} = Dimensions.get('window');
 export default class CustomerScreen extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            isSearching: false,
             refreshing: false,
             dataSearch: [],
             dataFull: [],
@@ -38,7 +40,7 @@ export default class CustomerScreen extends Component {
 
     renderFooter = () => {
         console.log("Footer")
-        if (ALL_LOADED || this.state.dataRender.length === 0) return null
+        if (ALL_LOADED || this.state.isSearching) return null
         return (
             <View
                 style={{
@@ -82,7 +84,7 @@ export default class CustomerScreen extends Component {
                 dataSearch: this.state.dataFull.slice(0, NUMBER_ROW_RENDER + 10)
             })
             NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
-            if (NUMBER_ROW_RENDER > this.state.dataRender.length - 10) ALL_LOADED = true
+            if (NUMBER_ROW_RENDER > this.state.orderListDataFilt.length - 10) ALL_LOADED = true
         }
     }
 
@@ -166,6 +168,7 @@ export default class CustomerScreen extends Component {
     }
 
     onChangeText(text) {
+        this.setState({isSearching: true})
         console.log("onChangeText")
         return new Promise((resolve, reject) => {
             resolve();
@@ -188,6 +191,7 @@ export default class CustomerScreen extends Component {
                 }
 
             if (a.length !== 0) this.setState({dataRender: arr})
+            else this.setState({isSearching: false})
         });
     }
 
@@ -224,6 +228,7 @@ export default class CustomerScreen extends Component {
                     <Search
                         ref="search_box"
                         onChangeText={(text) => this.onChangeText(text)}
+                        onCancel={() => this.onCancel()}
                     />
                 </View>
                 <TouchableOpacity onPress={() => this.props.backToHome()}
@@ -234,8 +239,17 @@ export default class CustomerScreen extends Component {
         )
     }
 
-    componentDidMount() {
+    onCancel() {
+        return new Promise((resolve, reject) => {
+            resolve();
+            console.log("onCancle")
+            SEARCH_STRING = ''
+            this.setState({dataRender: this.state.dataSearch, isSearching: false})
+        });
+    }
 
+    componentDidMount() {
+        ALL_LOADED = false
         fetch(URlConfig.getCustomerLink())
             .then((response) => (response.json()))
             .then((responseJson) => {

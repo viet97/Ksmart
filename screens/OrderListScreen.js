@@ -235,9 +235,10 @@ export default class OrderListScreen extends Component {
         NUMBER_ROW_RENDER = 0
         this.getOrderListFromServer(this.state.filtDialog.dateFrom, this.state.filtDialog.dateTo)
     }
+
     renderFooter = () => {
         console.log("Footer")
-        if ((ALL_LOADED || this.state.dataRender.length === 0) || this.state.isSearching) return null
+        if (ALL_LOADED || this.state.isSearching) return null
         return (
             <View
                 style={{
@@ -255,7 +256,6 @@ export default class OrderListScreen extends Component {
             resolve();
             this.setState({isSearching: true})
             var arr = []
-            ALL_LOADED = true
             var a = text.toLowerCase()
             SEARCH_STRING = a
             console.log(a)
@@ -280,10 +280,12 @@ export default class OrderListScreen extends Component {
     onCancel() {
         return new Promise((resolve, reject) => {
             resolve();
+            console.log("onCancle")
             SEARCH_STRING = ''
             this.setState({dataRender: this.state.dataSearch, isSearching: false})
         });
     }
+
     flatListorIndicator() {
 
         if (!this.state.dataRender) {
@@ -309,10 +311,11 @@ export default class OrderListScreen extends Component {
                     }}
                     onEndReachedThreshold={0.2}
                     onEndReached={() => {
+                        if (SEARCH_STRING.length === 0)
                         this.loadMoreData()
                     }}
                     onMomentumScrollBegin={() => {
-                        if (SEARCH_STRING.length === 0)
+
                         this.setState({onEndReach: false})
                     }}
                     extraData={this.state.dataRender}
@@ -365,6 +368,7 @@ export default class OrderListScreen extends Component {
                     <Search
                         ref="search_box"
                         onChangeText={(text) => this.onChangeText(text)}
+                        onCancel={() => this.onCancel()}
                     />
                 </View>
                 {this.flatListorIndicator()}
