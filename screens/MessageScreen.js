@@ -61,6 +61,9 @@ export default class OrderListScreen extends Component {
         }
     }
 
+    componentWillMount() {
+        ALL_LOADED = true
+    }
 
     componentDidMount() {
         this.getMessageListFromServer(this.state.dateFrom, this.state.dateTo)
@@ -68,7 +71,6 @@ export default class OrderListScreen extends Component {
 
     getMessageListFromServer(dateFrom, dateTo) {
         this.setState({dataRender: null})
-        ALL_LOADED = false
         console.log(URlConfig.getMessageList(dateFrom, dateTo))
         fetch(URlConfig.getMessageList(dateFrom, dateTo))
             .then((response) => response.json())
@@ -79,8 +81,10 @@ export default class OrderListScreen extends Component {
                         dataFull: responseJson.data
                     }, function () {
                         this.setState({dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER + 10)})
+                        if (this.state.dataFull.length === 0 || NUMBER_ROW_RENDER > this.state.dataFull.length - 10) ALL_LOADED = true
+                        else ALL_LOADED = false
                         NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
-                        if (NUMBER_ROW_RENDER > this.state.dataFull.length - 10) ALL_LOADED = true
+
                     })
                 } else {
                     this.setState({dataRender: []})
