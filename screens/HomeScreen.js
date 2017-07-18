@@ -8,7 +8,7 @@ import React from 'react';
 import Drawer from 'react-native-drawer';
 import Color from '../configs/color'
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
-
+import  DetailMessageScreen from './DetailMessageScreen'
 import * as Animatable from 'react-native-animatable';
 import {
     AppRegistry,
@@ -50,7 +50,24 @@ export default class HomeScreen extends React.Component {
 
     constructor(props) {
         super(props)
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1; //January is 0!
+        var yyyy = today.getFullYear();
+        if (dd < 10) {
+            dd = '0' + dd
+        }
+
+        if (mm < 10) {
+            mm = '0' + mm
+        }
+        today = dd + '-' + mm + '-' + yyyy;
         this.state = ({
+            messageContent: [],
+            dateSendMessage: '',
+            messageFrom: '',
+            dateFromForMessage: today,
+            dateToForMessage: today,
             previousScreen: '',
             titleMap: '',
             backCount: 0,
@@ -136,9 +153,30 @@ export default class HomeScreen extends React.Component {
                         this.setState({screenName: 'Menu'})
                     }}/>
             case "Message":
-                return <MessageScreen backToHome={() => {
-                    this.setState({screenName: 'Menu'})
-                }}/>
+                return <MessageScreen
+                    dateFrom={this.state.dateFromForMessage}
+                    dateTo={this.state.dateToForMessage}
+                    moveToDetailMessage={(dateFrom, dateTo, nguoigui, thoigian, noidung) => this.setState({
+                        dateFromForMessage: dateFrom,
+                        dateToForMessage: dateTo,
+                        messageFrom: nguoigui,
+                        dateSendMessage: thoigian,
+                        messageContent: noidung
+                    }, function () {
+                        this.setState({screenName: 'DetailMessage'})
+                    })}
+                    backToHome={() => {
+                        this.setState({screenName: 'Menu'})
+                    }}/>
+            case "DetailMessage":
+                return <DetailMessageScreen
+                    nguoigui={this.state.messageFrom}
+                    thoigian={this.state.dateSendMessage}
+                    noidung={this.state.messageContent}
+                    backToMessage={() => {
+                        this.setState({screenName: 'Message'})
+                    }}
+                />
             case "Travel":
                 return <TravelScreen
                     backToHome={() => {
