@@ -18,6 +18,7 @@ export default class ChartScreen extends React.Component {
         super(props);
         var now = new Date();
         this.state = {
+            isEmpty: true,
             data: [],
             arr: [],
             month: now.getMonth() + 1,
@@ -75,12 +76,34 @@ export default class ChartScreen extends React.Component {
                         item['name'] = date
 
                     }
+                var dem = 0;
+                for (var item in res) {
+                    if (res[item].TongTien !== 0) {
+                        dem = dem + 1;
+                        break;
+                    }
+                }
+                if (dem > 0) {
                     this.setState({
                         data: dt,
-                        arr: res
+                        arr: res,
+                        isEmpty: false
                     })
                 }
+                else this.setState({isEmpty: true})
+                }
             )
+    }
+
+    getChartorNull(options) {
+
+        if (!this.state.isEmpty) {
+            return (
+                <Bar data={this.state.data} options={options} accessorKey={this.state.keyChart}/>
+            )
+        }
+        return null
+
     }
 
     render() {
@@ -183,8 +206,9 @@ export default class ChartScreen extends React.Component {
                             <Picker.Item label="Sản lượng" value="DonHang"/>
                         </Picker>
                     </View>
-                    <Bar data={this.state.data} options={options} accessorKey={this.state.keyChart}/>
-                    <View></View>
+                    {this.getChartorNull(options)}
+
+
                 </View>
             </View>
         )
