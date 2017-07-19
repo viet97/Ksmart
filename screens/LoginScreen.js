@@ -204,7 +204,7 @@ export default class LoginScreen extends React.Component {
     }
 
     handlDataLogin(responseJson) {
-        let data = responseJson.data
+        let data = responseJson.data;
         data['idct'] = this.state.idct;
 
         let ttdh = {}, tttt = {}, ttgh = {}, tthtdh = {}, color = {}, ttdhid = {}, ttttid = {}, ttghid = {};
@@ -245,7 +245,7 @@ export default class LoginScreen extends React.Component {
         data['ttttid'] = ttttid;
         data['ttghid'] = ttghid;
         URlConfig.OBJLOGIN = data;
-        console.log(URlConfig.OBJLOGIN)
+        console.log('login complete', URlConfig.OBJLOGIN)
     }
 }
 

@@ -4,24 +4,57 @@
 
 import React, {Component} from 'react';
 import {
-    View, Dimensions
+    View, Dimensions, Text, Picker, StyleSheet, TouchableOpacity
 } from "react-native";
+import Icon1 from 'react-native-vector-icons/Ionicons'
 import Bar from "react-native-pathjs-charts/src/Bar";
 import Radar from "react-native-pathjs-charts/src/Radar";
 import StockLine from "react-native-pathjs-charts/src/StockLine";
+import DatePicker from "react-native-datepicker";
+import URlConfig from "../configs/url";
+import Color from "../configs/color";
 export default class ChartScreen extends React.Component {
     constructor(props) {
         super(props);
+        var now = new Date();
         this.state = {
             data: [],
-            arr: []
+            arr: [],
+            month: now.getMonth() + 1,
+            year: now.getFullYear(),
+            montArr: [],
+            yearArr: [],
+            keyChart: 'TongTien'
         }
     }
 
+    setMonthAndYear() {
+        let YEART_START = 2000;
+        let YEAR_END = 2100;
+        var monthList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+        var yearList = [];
+        for (var i = YEART_START; i < YEAR_END; i++) {
+            yearList.push(i)
+        }
+
+        this.setState({
+            montArr: monthList,
+            yearArr: yearList,
+        });
+    }
+
     componentWillMount() {
-        var url =
-            'http://jav.ksmart.vn/AppBieuDoDoanhThu.aspx?token=' +
-            '6e22b116f5111220741848ccd290e9e9bd8757498aeff45f479463cec823a1dc&idquanly=47&macongty=LACHONG&thang=06-2017'
+        this.setMonthAndYear();
+        this.getDataChart();
+    }
+
+    getDataChart() {
+        var month = this.state.month;
+        if (this.state.month < 10) {
+            month = '0' + month;
+        }
+        var url = URlConfig.getChartLink(month + '-' + this.state.year);
+        console.log('urlChart', url)
         fetch(url)
             .then((response) => (response.json()))
             .then((responseJson) => {
@@ -38,7 +71,7 @@ export default class ChartScreen extends React.Component {
 
                         arr.push(item)
                         dt.push(arr)
-                        var date = item['thoigian'].split('/')[0];
+                        date = item['thoigian'].split('/')[0];
                         item['name'] = date
 
                     }
@@ -51,6 +84,7 @@ export default class ChartScreen extends React.Component {
     }
 
     render() {
+        console.log('abcdef', this.state.month, this.state.year)
         var {height, width} = Dimensions.get('window');
         let options = {
             width: width - 40,
@@ -97,12 +131,61 @@ export default class ChartScreen extends React.Component {
                 }
             }
         }
+        let yearItems = this.state.yearArr.map((s, i) => {
+            return <Picker.Item key={s} value={s} label={s + ''}/>
+        });
+        let monthItems = this.state.montArr.map((s, i) => {
+            return <Picker.Item key={s} value={s} label={s + ''}/>
+        });
         return (
-
-            <View>
-
-                <Bar data={this.state.data} options={options} accessorKey='TongTien'/>
-
+            <View style={{flex: 1}}>
+                <View style={styles.titleStyle}>
+                    <TouchableOpacity onPress={() => this.props.backToHome()}
+                                      style={styles.iconStyle}>
+                        <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
+                    </TouchableOpacity>
+                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Danh sách đơn hàng</Text>
+                    <TouchableOpacity style={{alignSelf: 'center'}} onPress={() => {
+                        this.showDialog();
+                    }}>
+                        <View></View>
+                    </TouchableOpacity>
+                </View>
+                <View style={{flexDirection: 'column', flex: 9}}>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between', height: 60}}>
+                        <Text style={{alignSelf: 'center', backgroundColor: 'transparent', color: 'white'}}>Tháng</Text>
+                        <Picker
+                            style={{height: 88, width: 44}}
+                            itemStyle={{color: 'white', height: 60}}
+                            selectedValue={this.state.month}
+                            onValueChange={(itemValue) => this.setState({month: itemValue}, function () {
+                                this.getDataChart();
+                            })}>
+                            {monthItems}
+                        </Picker>
+                        <Text style={{alignSelf: 'center', backgroundColor: 'transparent', color: 'white'}}>Năm</Text>
+                        <Picker
+                            style={{height: 88, width: 60}}
+                            itemStyle={{color: 'white', height: 60}}
+                            selectedValue={this.state.year}
+                            onValueChange={(itemValue) => this.setState({year: itemValue}, function () {
+                                this.getDataChart();
+                            })}>
+                            {yearItems}
+                        </Picker>
+                        <Text style={{alignSelf: 'center', backgroundColor: 'transparent', color: 'white'}}>Theo</Text>
+                        <Picker
+                            style={{height: 88, width: 100}}
+                            itemStyle={{color: 'white', height: 60}}
+                            selectedValue={this.state.keyChart}
+                            onValueChange={(itemValue) => this.setState({keyChart: itemValue})}>
+                            <Picker.Item label="Doanh thu" value="TongTien"/>
+                            <Picker.Item label="Sản lượng" value="DonHang"/>
+                        </Picker>
+                    </View>
+                    <Bar data={this.state.data} options={options} accessorKey={this.state.keyChart}/>
+                    <View></View>
+                </View>
             </View>
         )
 
@@ -163,3 +246,48 @@ export default class ChartScreen extends React.Component {
         )
     }
 }
+const styles = StyleSheet.create({
+    indicator: {
+        alignSelf: 'center',
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: 80
+    },
+    titleStyle: {
+        flex: 1,
+        elevation: 15,
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+        backgroundColor: Color.backgroundNewFeed,
+    },
+    headerStyle: {
+        elevation: 15, height: this.height / 7
+    },
+    itemSideMenuStyle: {
+        borderBottomWidth: 1,
+        borderBottomColor: 'white',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        margin: 8,
+        paddingBottom: 8
+    }, iconStyle: {
+        alignSelf: 'center',
+        width: 24,
+        height: 24,
+        backgroundColor: "transparent",
+        marginLeft: 8
+    },
+    textStyle: {
+        fontSize: 18,
+        color: 'white',
+        backgroundColor: 'transparent'
+    },
+    titleIconsMenu: {
+        textAlign: 'center',
+        color: 'white',
+        fontSize: 16,
+        backgroundColor: 'transparent',
+        fontFamily: 'Al Nile'
+    }
+})

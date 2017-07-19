@@ -30,6 +30,7 @@ import OrderListScreen from "./OrderListScreen";
 import CustomerScreen from "./CustomerScreen";
 import MessageScreen from "./MessageScreen";
 import TravelScreen from "./TravelScreen";
+import ChartScreen from "./ChartScreen";
 var {height} = Dimensions.get('window').height;
 export default class HomeScreen extends React.Component {
     static navigationOptions = {
@@ -193,6 +194,10 @@ export default class HomeScreen extends React.Component {
                         })
                     }}
                 />
+            case "Chart":
+                return <ChartScreen backToHome={() => {
+                    this.setState({screenName: 'Menu'})
+                }}/>
         }
     }
 
@@ -216,7 +221,7 @@ export default class HomeScreen extends React.Component {
                                 style={{width: 35, height: 35, alignSelf: 'center'}}/>
                         </TouchableOpacity>
                         <Animatable.Text animation="fadeInDown"
-                                         style={{fontSize: 20, alignSelf: 'center'}}>Menu</Animatable.Text>
+                                         style={{fontSize: 20, alignSelf: 'center'}}>😘😘Menu😂😂</Animatable.Text>
                         <View style={{width: 50, height: 50, backgroundColor: 'transparent'}}></View>
                     </View>
 
@@ -295,7 +300,9 @@ export default class HomeScreen extends React.Component {
                                 <Animatable.Text animation="flipInY" style={styles.titleIconsMenu}>Viếng
                                     thăm</Animatable.Text>
                             </TouchableOpacity>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={() => {
+                                this.setState({screenName: 'Chart'})
+                            }}>
                                 <View style={{
                                     backgroundColor: Color.iconMenuColor,
                                     borderRadius: 15,
@@ -418,7 +425,9 @@ export default class HomeScreen extends React.Component {
                         </TouchableOpacity>
                     </View>
                     <View >
-                        <TouchableOpacity style={styles.itemSideMenuStyle}>
+                        <TouchableOpacity style={styles.itemSideMenuStyle} onPress={() => {
+                            this.setState({screenName: 'Chart'})
+                        }}>
                             <Icon3 size={24} style={styles.iconStyle} color="white" name="bar-chart"/>
                             <Text style={styles.textStyle}>Biểu đồ</Text>
                             <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
