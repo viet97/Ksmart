@@ -30,6 +30,7 @@ import OrderListScreen from "./OrderListScreen";
 import CustomerScreen from "./CustomerScreen";
 import MessageScreen from "./MessageScreen";
 import TravelScreen from "./TravelScreen";
+import ReportScreen from "./ReportScreen";
 import ChartScreen from "./ChartScreen";
 var {height} = Dimensions.get('window').height;
 export default class HomeScreen extends React.Component {
@@ -198,6 +199,10 @@ export default class HomeScreen extends React.Component {
                 return <ChartScreen backToHome={() => {
                     this.setState({screenName: 'Menu'})
                 }}/>
+            case "Report":
+                return <ReportScreen backToHome={() => {
+                    this.setState({screenName: 'Menu'})
+                }}/>
         }
     }
 
@@ -317,7 +322,7 @@ export default class HomeScreen extends React.Component {
                             </TouchableOpacity>
                         </View>
                         <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 16}}>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={() => this.setState({screenName: 'Report'})}>
                                 <View style={{
                                     backgroundColor: Color.iconMenuColor,
                                     borderRadius: 15,

@@ -31,7 +31,7 @@ var GiftedListView = require('react-native-gifted-listview');
 var NUMBER_ROW_RENDER = 0
 var SEARCH_STRING = '';
 var ALL_LOADED = false
-export default class OrderListScreen extends Component {
+export default class ReportScreen extends Component {
     static navigationOptions = {
         header: null,
     };
@@ -52,8 +52,8 @@ export default class OrderListScreen extends Component {
         today = dd + '-' + mm + '-' + yyyy;
         this.state = {
             ALL_LOADED: false,
-            dateFrom: this.props.dateFrom,
-            dateTo: this.props.dateTo,
+            dateFrom: today,
+            dateTo: today,
             refreshing: false,
             waiting: false,
             dataRender: null,
@@ -66,13 +66,13 @@ export default class OrderListScreen extends Component {
     }
 
     componentDidMount() {
-        this.getMessageListFromServer(this.state.dateFrom, this.state.dateTo)
+        this.getReportListFromServer(this.state.dateFrom, this.state.dateTo)
     }
 
-    getMessageListFromServer(dateFrom, dateTo) {
+    getReportListFromServer(dateFrom, dateTo) {
         this.setState({dataRender: null})
         console.log(URlConfig.getMessageList(dateFrom, dateTo))
-        fetch(URlConfig.getMessageList(dateFrom, dateTo))
+        fetch(URlConfig.getReportList(dateFrom, dateTo))
             .then((response) => response.json())
             .then((responseJson) => {
                 console.log(responseJson)
@@ -81,16 +81,8 @@ export default class OrderListScreen extends Component {
                         dataFull: responseJson.data
                     }, function () {
                         this.setState({dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER + 10)})
-                        if (this.state.dataFull.length === 0 || NUMBER_ROW_RENDER > this.state.dataFull.length) {
-                            console.log("da load het")
-                            console.log(this.state.dataFull.length)
-                            console.log(NUMBER_ROW_RENDER)
-                            ALL_LOADED = true
-                        }
-                        else {
-                            ALL_LOADED = false
-                            console.log("chua load het")
-                        }
+                        if (this.state.dataFull.length === 0 || NUMBER_ROW_RENDER > this.state.dataFull.length) ALL_LOADED = true
+                        else ALL_LOADED = false
                         NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
 
                     })
@@ -120,11 +112,11 @@ export default class OrderListScreen extends Component {
 
     refreshData() {
         NUMBER_ROW_RENDER = 0
-        this.getMessageListFromServer(this.state.dateFrom, this.state.dateTo)
+        this.getReportListFromServer(this.state.dateFrom, this.state.dateTo)
     }
 
     renderFooter = () => {
-        console.log(ALL_LOADED)
+        console.log("Footer")
         if (ALL_LOADED) return null
         return (
             <View
@@ -138,24 +130,6 @@ export default class OrderListScreen extends Component {
         );
     };
 
-    getTenNguoigui(item) {
-        if (item.TrangThai) {
-            return (<Text >{item.Ten_NGUOIGUI}</Text>)
-        } else return (<Text style={{fontWeight: "bold"}}>{item.Ten_NGUOIGUI}</Text>)
-    }
-
-    getNoiDungBenNgoai(item) {
-        var string = item.NoiDung.slice(0, 50)
-        if (item.NoiDung.length > 50)
-            string = string + '...'
-        return (<Text style={{marginTop: 4}}>{string}</Text>)
-    }
-
-    getIconMessage(item) {
-        if (item.Loai)
-            return (<Icon style={{alignSelf: 'center'}} size={36} color='yellow' name="message"/>)
-        else return (<Icon2 style={{alignSelf: 'center'}} size={36} color='blue' name="paper-plane"/>)
-    }
 
     flatListorIndicator() {
 
@@ -192,29 +166,57 @@ export default class OrderListScreen extends Component {
                     extraData={this.state.dataRender}
                     data={this.state.dataRender}
                     renderItem={({item}) =>
-                        <TouchableOpacity
-                            onPress={() => this.props.moveToDetailMessage(
-                                this.state.dateFrom,
-                                this.state.dateTo,
-                                item.Ten_NGUOIGUI,
-                                item.NgayGui,
-                                item.NoiDung)}>
-                            <View
-                                style={{
-                                    margin: 4,
-                                    backgroundColor: Color.backGroundItemFlatList,
-                                    flex: 1, flexDirection: 'row'
-                                }}>
-                                <View style={{flexDirection: 'column', flex: 6, margin: 4}}>
-                                    {this.getTenNguoigui(item)}
-                                    {this.getNoiDungBenNgoai(item)}
-                                    <Text style={{marginTop: 4}}>{item.NgayGui}</Text>
-                                </View>
-                                <View style={{flex: 1, justifyContent: 'center'}}>
-                                    {this.getIconMessage(item)}
-                                </View>
+                        <View style={{
+                            marginTop: 4, marginBottom: 4, marginLeft: 8, marginRight: 8,
+                            backgroundColor: Color.backGroundItemFlatList,
+                            borderTopColor: '#227878'
+                        }}>
+                            <View style={{
+                                flexDirection: 'row',
+                                marginLeft: 8,
+                                marginTop: 8,
+                                marginRight: 8,
+                                marginBottom: 4
+                            }}>
+                                <Icon1 size={24} color="black" name="ios-people-outline"/>
+                                <Text style={{
+                                    marginLeft: 8,
+                                    fontSize: 18,
+                                    fontWeight: "bold"
+                                }}>{item.tenkhachhang}</Text>
                             </View>
-                        </TouchableOpacity>
+                            <View style={{
+                                flexDirection: 'row',
+                                marginLeft: 8,
+                                marginTop: 4,
+                                marginRight: 8,
+                                marginBottom: 4
+                            }}>
+                                <Icon2 size={24} color="red" name="location-pin"/>
+                                <Text style={{marginLeft: 8}}>{item.diachikhachhang}</Text>
+
+                            </View>
+                            <View style={{
+                                flexDirection: 'row',
+                                marginLeft: 8,
+                                marginTop: 4,
+                                marginRight: 8,
+                                marginBottom: 4
+                            }}>
+                                <Icon2 size={24} color="black" name="news"/>
+                                <Text style={{marginLeft: 8}}>{item.sodonhang}</Text>
+                            </View>
+                            <View style={{
+                                flexDirection: 'row',
+                                marginLeft: 8,
+                                marginTop: 4,
+                                marginRight: 8,
+                                marginBottom: 4
+                            }}>
+                                <Icon size={24} color="green" name="attach-money"/>
+                                <Text style={{marginLeft: 8}}>{item.tongtien} Đ</Text>
+                            </View>
+                        </View>
                     }
                 />
             </View>)
@@ -230,7 +232,8 @@ export default class OrderListScreen extends Component {
                                       style={styles.iconStyle}>
                         <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
                     </TouchableOpacity>
-                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Tin nhắn</Text>
+                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Báo cáo doanh thu, sản
+                        lượng</Text>
                     <View style={{backgroundColor: 'transparent', width: 35, height: 35}}/>
                 </View>
                 <View style={{width: width, flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -293,7 +296,7 @@ export default class OrderListScreen extends Component {
         dTo.replace('/', '-');
         this.setState({dateFrom: dFrom})
         this.setState({dateTo: dTo})
-        this.getMessageListFromServer(from, to)
+        this.getReportListFromServer(from, to)
 
     }
 }
