@@ -116,7 +116,10 @@ export default class LoginScreen extends React.Component {
                             underlayColor="transparent"
                             label='Ghi nhớ đăng nhập'
                             checked={this.state.checkOfCheckBox}
-                            onChange={(checked) => this.setState({checkOfCheckBox: !this.state.checkOfCheckBox})}
+                            onChange={(checked) => {
+                                this.setState({checkOfCheckBox: !this.state.checkOfCheckBox});
+                                console.log(checked)
+                            }}
                         />
                         <TouchableHighlight
                             activeOpacity={1}
@@ -143,6 +146,7 @@ export default class LoginScreen extends React.Component {
             fetch(URlConfig.getRouterApp(this.state.idct))
                 .then((response) => response.json())
                 .then((responseJson) => {
+                    console.log("123123")
                     if (!responseJson.status) {
                         Toast.show(responseJson.msg);
                     } else {

@@ -84,6 +84,21 @@ export default class NewFeedScreen extends React.Component {
             )
     }
 
+    renderFooter = () => {
+        console.log("Footer")
+        if (ALL_LOADED || this.state.dataRender.length === 0) return null
+        return (
+            <View
+                style={{
+                    justifyContent: 'center',
+                    borderColor: "green"
+                }}
+            >
+                <ActivityIndicator animating={true} size="large"/>
+            </View>
+        );
+    };
+
     flatListorIndicator() {
 
         if (!this.state.dataRender) {
@@ -100,6 +115,7 @@ export default class NewFeedScreen extends React.Component {
             <View style={{backgroundColor: Color.itemListViewColor, flex: 9}}>
 
                 <FlatList
+                    ListFooterComponent={this.renderFooter}
                     refreshing={this.state.refreshing}
                     onRefresh={() => {
                         this.refreshData()

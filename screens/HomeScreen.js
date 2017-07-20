@@ -33,6 +33,8 @@ import TravelScreen from "./TravelScreen";
 import ReportScreen from "./ReportScreen";
 import ChartScreen from "./ChartScreen";
 import URlConfig from "../configs/url";
+import CreatePlant from "./CreatePlant";
+import CustomerPlant from "./CustomerPlant";
 var {height} = Dimensions.get('window').height;
 export default class HomeScreen extends React.Component {
     static navigationOptions = {
@@ -61,14 +63,16 @@ export default class HomeScreen extends React.Component {
                 idkehoach: 0,
                 giovaodukien: "09:55:00",
                 gioradukien: "09:56:00",
-                ghichu: ""
+                ghichu: "",
+                vieccanlam: ""
             }, {
                 idkhachhang: "4428",
                 idnhanvien: 231,
                 idkehoach: 0,
                 giovaodukien: "10:03:00",
                 gioradukien: "10:25:00",
-                ghichu: ""
+                ghichu: "",
+                vieccanlam: ""
             }],
             idnhanvien: 231
         };
@@ -92,6 +96,8 @@ export default class HomeScreen extends React.Component {
         }
         today = dd + '-' + mm + '-' + yyyy;
         this.state = ({
+            datePlant: today,
+            idNhanVienPlant: '',
             messageContent: [],
             dateSendMessage: '',
             messageFrom: '',
@@ -230,6 +236,24 @@ export default class HomeScreen extends React.Component {
                 return <ReportScreen backToHome={() => {
                     this.setState({screenName: 'Menu'})
                 }}/>
+            case "ChonNhanVien":
+                return <CreatePlant
+                    date={this.state.datePlant}
+                    backToHome={() => {
+                        this.setState({screenName: 'Menu'})
+                    }}
+                    goToCustomerPlant={(date, id) => {
+                        this.setState({date: date, idNhanVienPlant: id}, function () {
+                            this.setState({screenName: 'CustomerPlant'})
+                        })
+                    }}
+                />
+            case "CustomerPlant":
+                return <CustomerPlant
+                    idnhanvien={this.state.idNhanVienPlant}
+                    date={this.state.datePlant}
+                    backToChonNhanVien={() => this.setState({screenName: 'ChonNhanVien'})}
+                />
         }
     }
 
@@ -362,7 +386,9 @@ export default class HomeScreen extends React.Component {
                                 <Animatable.Text animation="slideInLeft" style={styles.titleIconsMenu}>Báo
                                     cáo</Animatable.Text>
                             </TouchableOpacity>
-                            <TouchableOpacity >
+                            <TouchableOpacity onPress={() => {
+                                this.setState({screenName: "ChonNhanVien"})
+                            }}>
                                 <View style={{
                                     backgroundColor: Color.iconMenuColor,
                                     borderRadius: 15,
@@ -577,6 +603,7 @@ BackHandler.addEventListener('hardwareBackPress', function () {
     backcount++
     if (backcount < 2) {
         Toast.show('Bấm thêm lần nữa để thoát')
+        this.openControlPanel()
         return true
     }
     else  return false

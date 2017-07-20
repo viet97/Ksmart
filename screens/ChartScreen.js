@@ -4,7 +4,7 @@
 
 import React, {Component} from 'react';
 import {
-    View, Dimensions, Text, Picker, StyleSheet, TouchableOpacity
+    View, Dimensions, Text, Picker, StyleSheet, TouchableOpacity, Image
 } from "react-native";
 import Icon1 from 'react-native-vector-icons/Ionicons'
 import Bar from "react-native-pathjs-charts/src/Bar";
@@ -162,6 +162,9 @@ export default class ChartScreen extends React.Component {
         });
         return (
             <View style={{flex: 1}}>
+
+                <Image source={require('../images/bg.png')}
+                       style={{position: 'absolute', left: 0, right: 0, top: 0, bottom: 0}}/>
                 <View style={styles.titleStyle}>
                     <TouchableOpacity onPress={() => this.props.backToHome()}
                                       style={styles.iconStyle}>
@@ -178,7 +181,7 @@ export default class ChartScreen extends React.Component {
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', height: 60}}>
                         <Text style={{alignSelf: 'center', backgroundColor: 'transparent', color: 'white'}}>Tháng</Text>
                         <Picker
-                            style={{height: 88, width: 44}}
+                            style={{height: 88, width: 60}}
                             itemStyle={{color: 'white', height: 60}}
                             selectedValue={this.state.month}
                             onValueChange={(itemValue) => this.setState({month: itemValue}, function () {

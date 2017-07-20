@@ -51,7 +51,6 @@ export default class ReportScreen extends Component {
         }
         today = dd + '-' + mm + '-' + yyyy;
         this.state = {
-            ALL_LOADED: false,
             dateFrom: today,
             dateTo: today,
             refreshing: false,
