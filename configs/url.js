@@ -70,4 +70,11 @@ export default class URlConfig {
         let data = URlConfig.OBJLOGIN;
         return data.urlserver + '/AppBaoCaoDoanhThu.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idct=' + data.idcongty + '&tungay=' + from + '&denngay=' + to;
     }
+
+    static getLinkLapKeHoach(obj) {
+        let data = URlConfig.OBJLOGIN;
+        ///AppLapKeHoach.aspx?token=6e22b116f5111220741848ccd290e9e9d1e733ac2eb6f3e8bb6a31b4bcbc4809&idquanly=47&idct=1&dulieukehoach=
+
+        return data.urlserver + '/AppLapKeHoach.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idct=' + data.idcongty + '&dulieukehoach=' + encodeURI(JSON.stringify(obj)) + '&type=themmoikehoach';
+    }
 }

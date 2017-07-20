@@ -32,6 +32,7 @@ import MessageScreen from "./MessageScreen";
 import TravelScreen from "./TravelScreen";
 import ReportScreen from "./ReportScreen";
 import ChartScreen from "./ChartScreen";
+import URlConfig from "../configs/url";
 var {height} = Dimensions.get('window').height;
 export default class HomeScreen extends React.Component {
     static navigationOptions = {
@@ -51,7 +52,33 @@ export default class HomeScreen extends React.Component {
     };
 
     constructor(props) {
-        super(props)
+        super(props);
+        var a = {
+            ngaylapkehoach: "18-07-2017",
+            dulieulapkehoach: [{
+                idkhachhang: "4429",
+                idnhanvien: 231,
+                idkehoach: 0,
+                giovaodukien: "09:55:00",
+                gioradukien: "09:56:00",
+                ghichu: ""
+            }, {
+                idkhachhang: "4428",
+                idnhanvien: 231,
+                idkehoach: 0,
+                giovaodukien: "10:03:00",
+                gioradukien: "10:25:00",
+                ghichu: ""
+            }],
+            idnhanvien: 231
+        };
+        console.log(URlConfig.getLinkLapKeHoach(a))
+        fetch(URlConfig.getLinkLapKeHoach(a))
+            .then((response) => (response.json()))
+            .then((responseJson) => {
+                    console.log('hihihihi', responseJson)
+                }
+            )
         var today = new Date();
         var dd = today.getDate();
         var mm = today.getMonth() + 1; //January is 0!
