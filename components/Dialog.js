@@ -212,41 +212,61 @@ export default class Dialog extends React.Component {
                     </View>
 
                 </ScrollView>
-
-                <TouchableOpacity style={{position: 'absolute', left: 16, bottom: 16, alignItems: 'center'}}
-                                  onPress={() => {
-                                      DialogManager.dismiss(() => {
-                                          this.props.callback({
-                                              'status': false,
-                                              numberPicktttt: this.props.deFaultData.numberPicktttt,
-                                              numberPickttgh: this.props.deFaultData.numberPickttgh,
-                                              numberPickttdh: this.props.deFaultData.numberPickttdh,
-                                              dateFrom: this.props.deFaultData.dateFrom,
-                                              dateTo: this.props.deFaultData.dateTo
-                                          })
-                                      });
-                                  }}>
-                    <Text style={{color: 'red', backgroundColor: 'yellow', padding: 16, fontSize: 16}}>Huỷ bỏ</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={{position: 'absolute', right: 16, bottom: 16, alignItems: 'center'}}
-                                  onPress={() => {
-                                      DialogManager.dismiss(() => {
-                                          var dFrom = String(this.state.dateFrom);
-                                          var dTo = String(this.state.dateTo);
-                                          dFrom.replace('/', '-');
-                                          dTo.replace('/', '-');
-                                          this.props.callback({
-                                              'status': true,
-                                              numberPicktttt: this.state.numberPicktttt,
-                                              numberPickttgh: this.state.numberPickttgh,
-                                              numberPickttdh: this.state.numberPickttdh,
-                                              dateFrom: dFrom,
-                                              dateTo: dTo
+                <View style={{
+                    position: 'absolute',
+                    left: 16,
+                    backgroundColor: Color.backGroundFlatList,
+                    bottom: 16,
+                    borderRadius: 5
+                }}>
+                    <TouchableOpacity style={{alignItems: 'center'}}
+                                      onPress={() => {
+                                          DialogManager.dismiss(() => {
+                                              this.props.callback({
+                                                  'status': false,
+                                                  numberPicktttt: this.props.deFaultData.numberPicktttt,
+                                                  numberPickttgh: this.props.deFaultData.numberPickttgh,
+                                                  numberPickttdh: this.props.deFaultData.numberPickttdh,
+                                                  dateFrom: this.props.deFaultData.dateFrom,
+                                                  dateTo: this.props.deFaultData.dateTo
+                                              })
                                           });
-                                      });
-                                  }}>
-                    <Text style={{color: 'red', backgroundColor: 'yellow', padding: 16, fontSize: 16}}>Áp dụng</Text>
-                </TouchableOpacity>
+                                      }}>
+                        <Text style={{color: 'red', backgroundColor: 'transparent', padding: 16, fontSize: 16}}>Huỷ
+                            bỏ</Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={{
+
+                    position: 'absolute',
+                    right: 16,
+                    backgroundColor: Color.backGroundFlatList,
+                    bottom: 16,
+                    borderRadius: 5
+                }}>
+                    <TouchableOpacity style={{alignItems: 'center'}}
+                                      onPress={() => {
+                                          DialogManager.dismiss(() => {
+                                              var dFrom = String(this.state.dateFrom);
+                                              var dTo = String(this.state.dateTo);
+                                              dFrom.replace('/', '-');
+                                              dTo.replace('/', '-');
+                                              this.props.callback({
+                                                  'status': true,
+                                                  numberPicktttt: this.state.numberPicktttt,
+                                                  numberPickttgh: this.state.numberPickttgh,
+                                                  numberPickttdh: this.state.numberPickttdh,
+                                                  dateFrom: dFrom,
+                                                  dateTo: dTo
+                                              });
+                                          });
+                                      }}>
+
+                        <Text style={{color: 'red', backgroundColor: 'transparent', padding: 16, fontSize: 16}}>Áp
+                            dụng</Text>
+
+                    </TouchableOpacity>
+                </View>
             </DialogContent>
         );
     }

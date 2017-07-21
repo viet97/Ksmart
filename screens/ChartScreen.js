@@ -99,11 +99,26 @@ export default class ChartScreen extends React.Component {
 
         if (!this.state.isEmpty) {
             return (
-                <Bar data={this.state.data} options={options} accessorKey={this.state.keyChart}/>
+                <View>
+                    <Bar data={this.state.data} options={options} accessorKey={this.state.keyChart}/>
+                    {this.getTitleChart()}
+                </View>
             )
         }
-        return null
+        return (<Text style={{alignSelf: 'center', textAlign: 'center', fontSize: 20}}>Không có dữ liệu</Text>)
 
+    }
+
+    getTitleChart() {
+        var a = 'TongTien'
+        var b = this.state.keyChart
+        var title = ''
+        if (b.localeCompare(a)) {
+            title = 'Biểu đồ sản lượng tháng ' + this.state.month + ' năm ' + this.state.year
+        } else {
+            title = 'Biểu đồ doanh thu tháng ' + this.state.month + ' năm ' + this.state.year
+        }
+        return (<Text style={{margin: 8, textAlign: 'center'}}>{title}</Text>)
     }
 
     render() {
@@ -210,7 +225,6 @@ export default class ChartScreen extends React.Component {
                         </Picker>
                     </View>
                     {this.getChartorNull(options)}
-
 
                 </View>
             </View>

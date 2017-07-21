@@ -38,6 +38,7 @@ import CustomerPlant from "./CustomerPlant";
 var {height} = Dimensions.get('window').height;
 var func;
 var backcount = 0
+var isLoginScreen = true
 export default class HomeScreen extends React.Component {
     static navigationOptions = {
         header: null
@@ -57,6 +58,7 @@ export default class HomeScreen extends React.Component {
     constructor(props) {
 
         super(props);
+        isLoginScreen = false
         var a = {
             ngaylapkehoach: "18-07-2017",
             dulieulapkehoach: [{
@@ -631,6 +633,8 @@ const styles = StyleSheet.create({
 
 BackHandler.addEventListener('hardwareBackPress', function () {
     backcount++
+    console.log(isLoginScreen)
+    if (isLoginScreen) return false
     if (backcount < 2) {
         func()
         console.log("back")

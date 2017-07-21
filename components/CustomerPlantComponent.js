@@ -39,31 +39,39 @@ export default class CustomerPlantComponent extends Component {
         return (
 
             <View style={{
+                borderRadius: 10,
+                borderWidth: 1,
+                borderColor: 'black',
                 marginTop: 4, marginBottom: 4, marginLeft: 8, marginRight: 8,
                 backgroundColor: Color.backGroundItemFlatList,
                 borderTopColor: '#227878'
             }}>
                 <View style={{
+                    justifyContent: 'space-between',
                     flexDirection: 'row',
                     marginLeft: 8,
                     marginTop: 8,
                     marginRight: 8,
                     marginBottom: 4
                 }}>
-                    <Icon size={24} color="red" name="home"/>
-                    <Text style={{
-                        marginLeft: 8,
-                        fontSize: 18,
-                        fontWeight: "bold"
-                    }}>{item.TenCuaHang}</Text>
-                    <CheckBox
-                        checkedImage={require("../images/checked.png")}
-                        uncheckedImage={require("../images/noncheck.png")}
-                        underlayColor="transparent"
-                        label=''
-                        checked={this.state.checkOfCheckBox}
-                        onChange={(checked) => this.chooseCustomer(item)}
-                    />
+                    <View style={{flexDirection: 'row'}}>
+                        <Icon size={24} color="red" name="home"/>
+                        <Text style={{
+                            marginLeft: 8,
+                            fontSize: 18,
+                            fontWeight: "bold"
+                        }}>{item.TenCuaHang}</Text>
+                    </View>
+                    <View >
+                        <CheckBox
+                            checkedImage={require("../images/checked.png")}
+                            uncheckedImage={require("../images/noncheck.png")}
+                            underlayColor="transparent"
+                            label=''
+                            checked={this.state.checkOfCheckBox}
+                            onChange={(checked) => this.chooseCustomer(item)}
+                        />
+                    </View>
                 </View>
 
                 <View style={{
@@ -77,6 +85,7 @@ export default class CustomerPlantComponent extends Component {
                     <Text style={{marginLeft: 8}}>{item.tennhomkhachhang}</Text>
                 </View>
                 <View style={{
+                    justifyContent: 'space-between',
                     flexDirection: 'row',
                     marginLeft: 8,
                     marginTop: 4,
@@ -106,6 +115,7 @@ export default class CustomerPlantComponent extends Component {
                     />
                 </View>
                 <View style={{
+                    justifyContent: 'space-between',
                     flexDirection: 'row',
                     marginLeft: 8,
                     marginTop: 4,
@@ -152,9 +162,10 @@ export default class CustomerPlantComponent extends Component {
                     marginRight: 8,
                     marginBottom: 4
                 }}>
-                    <Text style={{marginLeft: 8}}>Ghi chú: </Text>
+                    <Text style={{marginLeft: 8, alignSelf: 'center'}}>Ghi chú: </Text>
                     <TextInput
-                        style={{height: 20, width: 300, borderColor: 'gray', borderWidth: 1}}
+                        editable={!this.state.checkOfCheckBox}
+                        style={{height: 40, flex: 1, borderColor: 'gray', borderWidth: 1, backgroundColor: 'white'}}
                         onChangeText={(text) => {
                             if (!this.state.checkOfCheckBox)
                                 this.setState({ghichu: text})
@@ -170,9 +181,11 @@ export default class CustomerPlantComponent extends Component {
                     marginRight: 8,
                     marginBottom: 4
                 }}>
-                    <Text style={{marginLeft: 8}}>Việc cần làm: </Text>
+                    <Text style={{marginLeft: 8, alignSelf: 'center'}}>Việc cần làm: </Text>
+
                     <TextInput
-                        style={{height: 20, width: 300, borderColor: 'gray', borderWidth: 1}}
+                        editable={!this.state.checkOfCheckBox}
+                        style={{height: 40, flex: 1, borderColor: 'gray', borderWidth: 1, backgroundColor: 'white'}}
                         onChangeText={(text) => {
                             if (!this.state.checkOfCheckBox)
                                 this.setState({vieccanlam: text})
@@ -180,6 +193,7 @@ export default class CustomerPlantComponent extends Component {
                         }}
                         value={this.state.vieccanlam}
                     />
+
                 </View>
             </View>
 
