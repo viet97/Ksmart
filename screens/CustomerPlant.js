@@ -192,8 +192,8 @@ export default class CustomerPlant extends Component {
                         onPress={() => {
                             this.sendPlantToServer()
                         }}
-                        style={{backgroundColor: Color.backgroundNewFeed, width: 35, height: 35}}>
-                        <Text style={{color: 'white', textAlign: 'center'}}>OK</Text>
+                        style={{backgroundColor: Color.backgroundNewFeed, alignSelf: 'center', width: 35, height: 35}}>
+                        <Text style={{color: 'white', padding: 8}}>OK</Text>
                     </TouchableOpacity>
                 </View>
 

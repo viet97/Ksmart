@@ -190,7 +190,7 @@ export default class CreatePlant extends React.Component {
                                     {this.isOnline(item.dangtructuyen)}
                                 </View>
                                 <TouchableOpacity onPress={() => {
-                                    this.props.callback(item.KinhDo, item.ViDo, 'ListNhanVien', 'Địa điểm Nhân Viên')
+                                    this.props.callback(item.KinhDo, item.ViDo, 'ChonNhanVien', 'Địa điểm Nhân Viên')
                                 }}>
                                     <Icon2 size={30} color='white' name="location"/>
                                 </TouchableOpacity>
@@ -214,8 +214,8 @@ export default class CreatePlant extends React.Component {
                 <TouchableOpacity onPress={() => this.props.backToHome()}
                                   style={{width: 50, height: 50, position: 'absolute'}}/>
                 <View style={{backgroundColor: Color.itemListViewColor, flex: 9}}>
-                    <View style={{flexDirection: 'row'}}>
-                        <Text>Chọn ngày </Text>
+                    <View style={{flexDirection: 'row', backgroundColor: 'white'}}>
+                        <Text style={{marginLeft: 8, alignSelf: 'center'}}>Chọn ngày </Text>
                         <DatePicker
                             date={this.state.date}
                             mode="date"

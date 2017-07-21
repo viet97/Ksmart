@@ -36,13 +36,15 @@ import URlConfig from "../configs/url";
 import CreatePlant from "./CreatePlant";
 import CustomerPlant from "./CustomerPlant";
 var {height} = Dimensions.get('window').height;
+var func;
+var backcount = 0
 export default class HomeScreen extends React.Component {
     static navigationOptions = {
         header: null
     };
-
     closeControlPanel = () => {
         this._drawer.close()
+        backcount = 0
     };
     openControlPanel = () => {
         this._drawer.open()
@@ -52,8 +54,8 @@ export default class HomeScreen extends React.Component {
         })
 
     };
-
     constructor(props) {
+
         super(props);
         var a = {
             ngaylapkehoach: "18-07-2017",
@@ -120,6 +122,7 @@ export default class HomeScreen extends React.Component {
 
 
     showToogle() {
+        backcount = 0
         this.setState({
             width: 35,
             height: 35
@@ -238,6 +241,16 @@ export default class HomeScreen extends React.Component {
                 }}/>
             case "ChonNhanVien":
                 return <CreatePlant
+                    callback={(kinhdo, vido, previousScreen, title) => {
+                        this.setState({
+                            kinhdo: kinhdo,
+                            vido: vido,
+                            previousScreen: previousScreen,
+                            titleMap: title
+                        }, function () {
+                            this.setState({screenName: 'Map'})
+                        })
+                    }}
                     date={this.state.datePlant}
                     backToHome={() => {
                         this.setState({screenName: 'Menu'})
@@ -476,7 +489,10 @@ export default class HomeScreen extends React.Component {
                     </View>
                     <View >
                         <TouchableOpacity style={styles.itemSideMenuStyle}
-                                          onPress={() => this.setState({screenName: 'Travel'})}>
+                                          onPress={() => {
+                                              this.setState({screenName: "Travel"});
+                                              this.closeControlPanel()
+                                          }}>
                             <Icon2 size={24} style={styles.iconStyle} color="white" name="aircraft-take-off"/>
                             <Text style={styles.textStyle}>Viếng thăm</Text>
                             <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
@@ -484,7 +500,8 @@ export default class HomeScreen extends React.Component {
                     </View>
                     <View >
                         <TouchableOpacity style={styles.itemSideMenuStyle} onPress={() => {
-                            this.setState({screenName: 'Chart'})
+                            this.setState({screenName: "Chart"});
+                            this.closeControlPanel()
                         }}>
                             <Icon3 size={24} style={styles.iconStyle} color="white" name="bar-chart"/>
                             <Text style={styles.textStyle}>Biểu đồ</Text>
@@ -492,21 +509,33 @@ export default class HomeScreen extends React.Component {
                         </TouchableOpacity>
                     </View>
                     <View >
-                        <TouchableOpacity style={styles.itemSideMenuStyle}>
+                        <TouchableOpacity style={styles.itemSideMenuStyle}
+                                          onPress={() => {
+                                              this.setState({screenName: "Report"});
+                                              this.closeControlPanel()
+                                          }}>
                             <Icon3 size={24} style={styles.iconStyle} color="white" name="file-text-o"/>
                             <Text style={styles.textStyle}>Báo cáo</Text>
                             <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
                         </TouchableOpacity>
                     </View>
                     <View >
-                        <TouchableOpacity style={styles.itemSideMenuStyle}>
+                        <TouchableOpacity style={styles.itemSideMenuStyle}
+                                          onPress={() => {
+                                              this.setState({screenName: "ChonNhanVien"});
+                                              this.closeControlPanel()
+                                          }}>
                             <Icon2 size={24} style={styles.iconStyle} color="white" name="laptop"/>
                             <Text style={styles.textStyle}>Kế hoạch</Text>
                             <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
                         </TouchableOpacity>
                     </View>
                     <View >
-                        <TouchableOpacity style={styles.itemSideMenuStyle}>
+                        <TouchableOpacity style={styles.itemSideMenuStyle}
+                                          onPress={() => {
+                                              this.setState({screenName: "Message"});
+                                              this.closeControlPanel()
+                                          }}>
                             <Icon2 size={24} style={styles.iconStyle} color="white" name="mail"/>
                             <Text style={styles.textStyle}>Tin nhắn</Text>
                             <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
@@ -542,6 +571,7 @@ export default class HomeScreen extends React.Component {
 
 
     render() {
+        func = () => this.openControlPanel()
         const {navigate} = this.props.navigation
         return (
 
@@ -598,12 +628,13 @@ const styles = StyleSheet.create({
         fontFamily: 'Al Nile'
     }
 })
-var backcount = 0
+
 BackHandler.addEventListener('hardwareBackPress', function () {
     backcount++
     if (backcount < 2) {
+        func()
+        console.log("back")
         Toast.show('Bấm thêm lần nữa để thoát')
-        this.openControlPanel()
         return true
     }
     else  return false
