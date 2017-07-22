@@ -6,7 +6,9 @@ import {
     TouchableOpacity, ActivityIndicator,
     Dimensions,
     FlatList,
+    Platform
 } from 'react-native';
+import Search from 'react-native-search-box';
 import Image from 'react-native-image-progress';
 import ProgressBar from 'react-native-progress/Bar';
 import Icon from 'react-native-vector-icons/MaterialIcons'
@@ -15,7 +17,7 @@ import React from 'react';
 import Color from '../configs/color'
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import URlConfig from "../configs/url";
-var {height} = Dimensions.get('window');
+var {width, height} = Dimensions.get('window');
 var NUMBER_ROW_RENDER = 10
 export default class NewFeedScreen extends React.Component {
     onSwipeRight(gestureState) {
@@ -27,6 +29,7 @@ export default class NewFeedScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = ({
+            isSearching: false,
             refreshing: false,
             dataFull: [],
             dataRender: null,
@@ -86,7 +89,7 @@ export default class NewFeedScreen extends React.Component {
 
     renderFooter = () => {
         console.log("Footer")
-        if (ALL_LOADED || this.state.dataRender.length === 0) return null
+        if (ALL_LOADED || this.state.isSearching) return null
         return (
             <View
                 style={{
@@ -158,6 +161,41 @@ export default class NewFeedScreen extends React.Component {
                 />
             </View>)
     }
+
+    onChangeText(text) {
+        return new Promise((resolve, reject) => {
+            resolve();
+            this.setState({isSearching: true})
+            var arr = []
+            var a = text.toLowerCase()
+            SEARCH_STRING = a
+            console.log(a)
+            if (a.length === 0) this.setState({dataRender: this.state.dataSearch})
+            else
+                for (var item in this.state.dataSearch) {
+                    if (a !== SEARCH_STRING) return
+                    console.log(this.state.dataSearch[item])
+                    if (this.state.dataSearch[item].tennhanvien.toLowerCase().search(a) !== -1) {
+                        console.log(this.state.dataSearch[item])
+                        console.log(this.state.dataSearch[item])
+                        arr.push(this.state.dataSearch[item])
+                        console.log(arr)
+                    }
+                }
+
+            if (a.length !== 0) this.setState({dataRender: arr})
+            else this.setState({isSearching: false})
+        });
+    }
+
+    onCancel() {
+        return new Promise((resolve, reject) => {
+            resolve();
+            console.log("onCancle")
+            SEARCH_STRING = ''
+            this.setState({dataRender: this.state.dataSearch, isSearching: false})
+        });
+    }
     render() {
         return (
             <GestureRecognizer
@@ -167,12 +205,19 @@ export default class NewFeedScreen extends React.Component {
                 <View style={{flex: 1}}>
                     <View style={styles.titleStyle}>
                         <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
-                        <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>NewFeed</Text>
+                        <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Hoạt động</Text>
                         <View style={{backgroundColor: Color.backgroundNewFeed, width: 35, height: 35}}></View>
                     </View>
 
                     <TouchableOpacity onPress={() => this.props.backToHome()}
                                       style={{width: 50, height: 50, position: 'absolute'}}/>
+                    <View style={{width: width}}>
+                        <Search
+                            ref="search_box"
+                            onChangeText={(text) => this.onChangeText(text)}
+                            onCancel={() => this.onCancel()}
+                        />
+                    </View>
                     {this.flatListorIndicator()}
                 </View>
             </GestureRecognizer>
@@ -220,7 +265,8 @@ const styles = StyleSheet.create({
         width: 24,
         height: 24,
         backgroundColor: "transparent",
-        marginLeft: 16
+        marginLeft: 16,
+        marginTop: (Platform.OS === 'ios') ? 8 : 0
     },
     textStyle: {
         fontSize: 18,

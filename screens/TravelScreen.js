@@ -5,7 +5,8 @@ import {
     Button, ListView, StyleSheet, StatusBar,
     TouchableOpacity, ActivityIndicator,
     Dimensions,
-    FlatList
+    FlatList,
+    Platform
 } from 'react-native';
 import Image from 'react-native-image-progress';
 import ProgressBar from 'react-native-progress/Bar';
@@ -319,7 +320,8 @@ const styles = StyleSheet.create({
         width: 24,
         height: 24,
         backgroundColor: "transparent",
-        marginLeft: 16
+        marginLeft: 16,
+        marginTop: (Platform.OS === 'ios') ? 8 : 0
     },
     textStyle: {
         fontSize: 18,

@@ -10,7 +10,8 @@ import {
     Picker,
     FlatList,
     TouchableHightLight,
-    ActivityIndicator
+    ActivityIndicator,
+    Platform
 } from "react-native";
 import URlConfig from "../configs/url";
 import Color from '../configs/color'
@@ -125,7 +126,7 @@ export default class OrderListScreen extends Component {
 
     renderFooter = () => {
         console.log(ALL_LOADED)
-        if (ALL_LOADED) return null
+        if (ALL_LOADED || this.state.isSearching) return null
         return (
             <View
                 style={{
@@ -233,6 +234,16 @@ export default class OrderListScreen extends Component {
                     <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Tin nhắn</Text>
                     <View style={{backgroundColor: 'transparent', width: 35, height: 35}}/>
                 </View>
+                <TouchableOpacity onPress={() => this.props.backToHome()}
+                                  style={{
+                                      width: 50,
+                                      height: 50,
+                                      position: 'absolute',
+                                      left: 16,
+                                      top: 0,
+                                      right: 0,
+                                      bottom: 0
+                                  }}/>
                 <View style={{width: width, flexDirection: 'row', justifyContent: 'space-between'}}>
                     <DatePicker
                         date={this.state.dateFrom}
@@ -327,7 +338,8 @@ const styles = StyleSheet.create({
         width: 24,
         height: 24,
         backgroundColor: "transparent",
-        marginLeft: 8
+        marginLeft: 8,
+        marginTop: (Platform.OS === 'ios') ? 8 : 0
     },
     textStyle: {
         fontSize: 18,

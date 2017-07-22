@@ -8,7 +8,8 @@ import {
     Dimensions,
     BackHandler,
     FlatList,
-    ActivityIndicator
+    ActivityIndicator,
+    Platform
 } from 'react-native';
 import Image from 'react-native-image-progress';
 import Icon from 'react-native-vector-icons/Entypo'
@@ -207,7 +208,16 @@ export default class CustomerScreen extends Component {
                     <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Thông tin khách hàng</Text>
                     <View style={{backgroundColor: Color.backgroundNewFeed, width: 35, height: 35}}/>
                 </View>
-
+                <TouchableOpacity onPress={() => this.props.backToHome()}
+                                  style={{
+                                      width: 50,
+                                      height: 50,
+                                      position: 'absolute',
+                                      left: 16,
+                                      top: 0,
+                                      right: 0,
+                                      bottom: 0
+                                  }}/>
 
                 <View style={{
                     marginLeft: 8,
@@ -293,7 +303,8 @@ const styles = StyleSheet.create({
         width: 35,
         height: 35,
         backgroundColor: "transparent",
-        marginLeft: 16
+        marginLeft: 16,
+        marginTop: (Platform.OS === 'ios') ? 8 : 0
     },
     textStyle: {
         fontSize: 18,

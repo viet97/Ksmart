@@ -10,7 +10,8 @@ import {
     Picker,
     FlatList,
     TouchableHightLight,
-    ActivityIndicator
+    ActivityIndicator,
+    Platform
 } from "react-native";
 import URlConfig from "../configs/url";
 import Color from '../configs/color'
@@ -40,6 +41,16 @@ export default class DetailMessageScreen extends Component {
                     <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Nội Dung Tin Nhắn</Text>
                     <View style={{backgroundColor: 'transparent', width: 35, height: 35}}/>
                 </View>
+                <TouchableOpacity onPress={() => this.props.backToHome()}
+                                  style={{
+                                      width: 50,
+                                      height: 50,
+                                      position: 'absolute',
+                                      left: 16,
+                                      top: 0,
+                                      right: 0,
+                                      bottom: 0
+                                  }}/>
                 <View style={{backgroundColor: Color.backGroundFlatList, flex: 9}}>
                     <View style={{
                         width: width,
@@ -95,7 +106,8 @@ const styles = StyleSheet.create({
         width: 24,
         height: 24,
         backgroundColor: "transparent",
-        marginLeft: 8
+        marginLeft: 8,
+        marginTop: (Platform.OS === 'ios') ? 8 : 0
     },
     textStyle: {
         fontSize: 18,

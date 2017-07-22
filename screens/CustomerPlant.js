@@ -8,7 +8,7 @@ import {
     Dimensions,
     BackHandler,
     FlatList,
-    ActivityIndicator
+    ActivityIndicator, Platform
 } from 'react-native';
 import Toast from 'react-native-simple-toast';
 import Image from 'react-native-image-progress';
@@ -196,6 +196,16 @@ export default class CustomerPlant extends Component {
                         <Text style={{color: 'white', padding: 8}}>OK</Text>
                     </TouchableOpacity>
                 </View>
+                <TouchableOpacity onPress={() => this.props.backToHome()}
+                                  style={{
+                                      width: 50,
+                                      height: 50,
+                                      position: 'absolute',
+                                      left: 16,
+                                      top: 0,
+                                      right: 0,
+                                      bottom: 0
+                                  }}/>
 
 
                 <View style={{
@@ -299,7 +309,8 @@ const styles = StyleSheet.create({
         width: 35,
         height: 35,
         backgroundColor: "transparent",
-        marginLeft: 16
+        marginLeft: 16,
+        marginTop: (Platform.OS === 'ios') ? 8 : 0
     },
     textStyle: {
         fontSize: 18,

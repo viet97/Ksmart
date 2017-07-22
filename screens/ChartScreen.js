@@ -4,7 +4,7 @@
 
 import React, {Component} from 'react';
 import {
-    View, Dimensions, Text, Picker, StyleSheet, TouchableOpacity, Image
+    View, Dimensions, Text, Picker, StyleSheet, TouchableOpacity, Image, Platform
 } from "react-native";
 import Icon1 from 'react-native-vector-icons/Ionicons'
 import Bar from "react-native-pathjs-charts/src/Bar";
@@ -192,6 +192,16 @@ export default class ChartScreen extends React.Component {
                         <View></View>
                     </TouchableOpacity>
                 </View>
+                <TouchableOpacity onPress={() => this.props.backToHome()}
+                                  style={{
+                                      width: 50,
+                                      height: 50,
+                                      position: 'absolute',
+                                      left: 16,
+                                      top: 0,
+                                      right: 0,
+                                      bottom: 0
+                                  }}/>
                 <View style={{flexDirection: 'column', flex: 9}}>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', height: 60}}>
                         <Text style={{alignSelf: 'center', backgroundColor: 'transparent', color: 'white'}}>Tháng</Text>
@@ -317,7 +327,8 @@ const styles = StyleSheet.create({
         width: 24,
         height: 24,
         backgroundColor: "transparent",
-        marginLeft: 8
+        marginLeft: 8,
+        marginTop: (Platform.OS === 'ios') ? 8 : 0
     },
     textStyle: {
         fontSize: 18,

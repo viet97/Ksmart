@@ -9,7 +9,8 @@ import {
     Picker,
     FlatList,
     TouchableHightLight,
-    ActivityIndicator
+    ActivityIndicator,
+    Platform
 } from "react-native";
 import URlConfig from "../configs/url";
 import Color from '../configs/color'
@@ -50,6 +51,7 @@ export default class OrderListScreen extends Component {
         }
         today = dd + '-' + mm + '-' + yyyy;
         this.state = {
+            ALL_LOADED: false,
             isSearching: false,
             refreshing: false,
             rows: [],
@@ -72,7 +74,7 @@ export default class OrderListScreen extends Component {
     }
 
     getOrderListFromServer(datef, datet) {
-
+        this.setState({dataRender: null})
         ALL_LOADED = false
         fetch(URlConfig.getLinkOrderList(datef, datet))
             .then((response) => response.json())
@@ -106,12 +108,17 @@ export default class OrderListScreen extends Component {
             }
         this.setState({orderListDataFilt: arr}, function () {
             this.setState({
-                dataRender: this.state.orderListDataFilt.slice(0, NUMBER_ROW_RENDER + 10),
-                dataSearch: this.state.orderListDataFilt.slice(0, NUMBER_ROW_RENDER + 10)
-            }, function () {
-                console.log(this.state.dataRender)
-            })
-            NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
+                    dataRender: this.state.orderListDataFilt.slice(0, NUMBER_ROW_RENDER + 10),
+                    dataSearch: this.state.orderListDataFilt.slice(0, NUMBER_ROW_RENDER + 10)
+                }, function () {
+                    NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
+                    if (NUMBER_ROW_RENDER > this.state.orderListDataFilt.length) {
+                        ALL_LOADED = true
+                        console.log(ALL_LOADED)
+                    }
+                }
+            )
+
         })
 
     }
@@ -228,7 +235,9 @@ export default class OrderListScreen extends Component {
             })
 
             NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
-            if (NUMBER_ROW_RENDER > this.state.orderListDataFilt.length - 10) ALL_LOADED = true
+            if (NUMBER_ROW_RENDER > this.state.orderListDataFilt.length - 10) {
+                ALL_LOADED = true
+            }
         }
     }
 
@@ -238,8 +247,8 @@ export default class OrderListScreen extends Component {
     }
 
     renderFooter = () => {
-        console.log("Footer")
-        if (ALL_LOADED) return null
+        console.log(ALL_LOADED + 'renderFOOTER')
+        if (ALL_LOADED || this.state.isSearching) return null
         return (
             <View
                 style={{
@@ -365,6 +374,16 @@ export default class OrderListScreen extends Component {
                         <Text style={{color: 'white', padding: 8}}>Bộ lọc</Text>
                     </TouchableOpacity>
                 </View>
+                <TouchableOpacity onPress={() => this.props.backToHome()}
+                                  style={{
+                                      width: 50,
+                                      height: 50,
+                                      position: 'absolute',
+                                      left: 16,
+                                      top: 0,
+                                      right: 0,
+                                      bottom: 0
+                                  }}/>
                 <View style={{width: width}}>
                     <Search
                         ref="search_box"
@@ -433,7 +452,8 @@ const styles = StyleSheet.create({
         width: 24,
         height: 24,
         backgroundColor: "transparent",
-        marginLeft: 8
+        marginLeft: 8,
+        marginTop: (Platform.OS === 'ios') ? 8 : 0
     },
     textStyle: {
         fontSize: 18,

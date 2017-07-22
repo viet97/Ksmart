@@ -7,7 +7,8 @@ import {
     Dimensions,
     BackHandler,
     FlatList,
-    ActivityIndicator
+    ActivityIndicator,
+    Platform
 } from 'react-native';
 import Image from 'react-native-image-progress';
 import ProgressBar from 'react-native-progress/Bar';
@@ -212,7 +213,15 @@ export default class CreatePlant extends React.Component {
                 </View>
 
                 <TouchableOpacity onPress={() => this.props.backToHome()}
-                                  style={{width: 50, height: 50, position: 'absolute'}}/>
+                                  style={{
+                                      width: 50,
+                                      height: 50,
+                                      position: 'absolute',
+                                      left: 16,
+                                      top: 0,
+                                      right: 0,
+                                      bottom: 0
+                                  }}/>
                 <View style={{backgroundColor: Color.itemListViewColor, flex: 9}}>
                     <View style={{flexDirection: 'row', backgroundColor: 'white'}}>
                         <Text style={{marginLeft: 8, alignSelf: 'center'}}>Chọn ngày </Text>
@@ -291,7 +300,8 @@ const styles = StyleSheet.create({
         width: 24,
         height: 24,
         backgroundColor: "transparent",
-        marginLeft: 16
+        marginLeft: 16,
+        marginTop: (Platform.OS === 'ios') ? 8 : 0
     },
     textStyle: {
         fontSize: 18,

@@ -7,8 +7,10 @@ import {
     Dimensions,
     BackHandler,
     FlatList,
-    ActivityIndicator
+    ActivityIndicator,
+    Platform
 } from 'react-native';
+import Search from 'react-native-search-box';
 import Image from 'react-native-image-progress';
 import ProgressBar from 'react-native-progress/Bar';
 import Icon from 'react-native-vector-icons/MaterialIcons'
@@ -23,7 +25,7 @@ import MapListScreen from "./MapListScreen";
 
 var NUMBER_ROW_RENDER = 10
 ALL_LOADED = false
-var {height} = Dimensions.get('window');
+var {width, height} = Dimensions.get('window');
 export default class ListNhanVienScreen extends React.Component {
     onSwipeRight(gestureState) {
         console.log("onSwipeRight")
@@ -34,11 +36,14 @@ export default class ListNhanVienScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = ({
+            isSearching: false,
             selectedTab: 'ListNhanVien',
             kinhdo: 0,
             vido: 0,
             refreshing: false,
             dataFull: [],
+            dataSearch: [],
+            dataSearch: [],
             dataRender: null,
             onEndReach: true,
             waiting: false,
@@ -78,7 +83,7 @@ export default class ListNhanVienScreen extends React.Component {
 
     renderFooter = () => {
         console.log("Footer")
-        if (ALL_LOADED || this.state.dataRender.length === 0) return null
+        if (ALL_LOADED || this.state.isSearching) return null
         return (
             <View
                 style={{
@@ -96,7 +101,10 @@ export default class ListNhanVienScreen extends React.Component {
         if (!this.state.onEndReach) {
             console.log("LOADMORE")
             this.setState({onEndReach: true})
-            this.setState({dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER + 10)})
+            this.setState({
+                dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER + 10),
+                dataSearch: this.state.dataFull.slice(0, NUMBER_ROW_RENDER + 10)
+            })
             NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
             if (NUMBER_ROW_RENDER > this.state.dataFull.length - 10) ALL_LOADED = true
         }
@@ -112,7 +120,10 @@ export default class ListNhanVienScreen extends React.Component {
                     if (responseJson.status) {
                         this.setState({dataFull: responseJson.dsNhanVien}, function () {
                             console.log(this.state.dataFull)
-                            this.setState({dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER)})
+                            this.setState({
+                                dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER),
+                                dataSearch: this.state.dataFull.slice(0, NUMBER_ROW_RENDER)
+                            })
                             NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
                         })
                     }
@@ -183,6 +194,41 @@ export default class ListNhanVienScreen extends React.Component {
             </View>)
     }
 
+    onChangeText(text) {
+        return new Promise((resolve, reject) => {
+            resolve();
+            this.setState({isSearching: true})
+            var arr = []
+            var a = text.toLowerCase()
+            SEARCH_STRING = a
+            console.log(a)
+            if (a.length === 0) this.setState({dataRender: this.state.dataSearch})
+            else
+                for (var item in this.state.dataSearch) {
+                    if (a !== SEARCH_STRING) return
+                    console.log(this.state.dataSearch[item])
+                    if (this.state.dataSearch[item].tennhanvien.toLowerCase().search(a) !== -1) {
+                        console.log(this.state.dataSearch[item])
+                        console.log(this.state.dataSearch[item])
+                        arr.push(this.state.dataSearch[item])
+                        console.log(arr)
+                    }
+                }
+
+            if (a.length !== 0) this.setState({dataRender: arr})
+            else this.setState({isSearching: false})
+        });
+    }
+
+    onCancel() {
+        return new Promise((resolve, reject) => {
+            resolve();
+            console.log("onCancle")
+            SEARCH_STRING = ''
+            this.setState({dataRender: this.state.dataSearch, isSearching: false})
+        });
+    }
+
     render() {
         return (
             <TabNavigator>
@@ -201,12 +247,19 @@ export default class ListNhanVienScreen extends React.Component {
 
                         <TouchableOpacity onPress={() => this.props.backToHome()}
                                           style={{width: 50, height: 50, position: 'absolute'}}/>
+                        <View style={{width: width}}>
+                            <Search
+                                ref="search_box"
+                                onChangeText={(text) => this.onChangeText(text)}
+                                onCancel={() => this.onCancel()}
+                            />
+                        </View>
                         {this.flatListorIndicator()}
                     </View>
                 </TabNavigator.Item>
                 <TabNavigator.Item
                     selected={this.state.selectedTab === 'MapForAllLocation'}
-                    title="Map"
+                    title="Bản đồ"
                     renderIcon={() => <Icon2 size={24} color="black" name="location"/>}
                     renderSelectedIcon={() => <Icon2 size={24} color="green" name="location"/>}
                     onPress={() => this.setState({selectedTab: 'MapForAllLocation'})}>
@@ -226,7 +279,8 @@ export default class ListNhanVienScreen extends React.Component {
                         this.setState({dataFull: responseJson.dsNhanVien}, function () {
                             console.log(this.state.dataFull)
                             this.setState({
-                                    dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER)
+                                dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER),
+                                dataSearch: this.state.dataFull.splice(0, NUMBER_ROW_RENDER)
                                 }
                             )
                             NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
@@ -261,7 +315,8 @@ const styles = StyleSheet.create({
         width: 24,
         height: 24,
         backgroundColor: "transparent",
-        marginLeft: 16
+        marginLeft: 16,
+        marginTop: (Platform.OS === 'ios') ? 8 : 0
     },
     textStyle: {
         fontSize: 18,
