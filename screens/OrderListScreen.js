@@ -106,8 +106,8 @@ export default class OrderListScreen extends Component {
             }
         this.setState({orderListDataFilt: arr}, function () {
             this.setState({
-                dataRender: this.state.orderListDataFilt.slice(0, NUMBER_ROW_RENDER),
-                dataSearch: this.state.orderListDataFilt.slice(0, NUMBER_ROW_RENDER)
+                dataRender: this.state.orderListDataFilt.slice(0, NUMBER_ROW_RENDER + 10),
+                dataSearch: this.state.orderListDataFilt.slice(0, NUMBER_ROW_RENDER + 10)
             }, function () {
                 console.log(this.state.dataRender)
             })
