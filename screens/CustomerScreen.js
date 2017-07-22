@@ -66,6 +66,8 @@ export default class CustomerScreen extends Component {
                             this.setState({
                                 dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER),
                                 dataSearch: this.state.dataFull.slice(0, NUMBER_ROW_RENDER)
+                            }, function () {
+                                console.log(this.state.dataRender)
                             })
                             NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
                         })
@@ -84,7 +86,7 @@ export default class CustomerScreen extends Component {
                 dataSearch: this.state.dataFull.slice(0, NUMBER_ROW_RENDER + 10)
             })
             NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
-            if (NUMBER_ROW_RENDER > this.state.orderListDataFilt.length - 10) ALL_LOADED = true
+            if (NUMBER_ROW_RENDER > this.state.dataFull.length - 10) ALL_LOADED = true
         }
     }
 

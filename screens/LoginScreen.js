@@ -14,9 +14,10 @@ import CheckBox from 'react-native-checkbox'
 import Toast from 'react-native-simple-toast';
 import URlConfig from "../configs/url";
 import * as Animatable from 'react-native-animatable';
-
+import DialogManager, {ScaleAnimation, DialogContent} from 'react-native-dialog-component';
 import {NavigationActions} from "react-navigation";
-
+import LoginDialog from "../components/LoginDialog";
+var {width, height} = Dimensions.get('window')
 const Realm = require('realm');
 export default class LoginScreen extends React.Component {
 
@@ -137,8 +138,21 @@ export default class LoginScreen extends React.Component {
         );
     }
 
+    showDialog() {
+        DialogManager.show({
+            width: 200,
+            height: 30,
+            animationDuration: 200,
+            ScaleAnimation: new ScaleAnimation(),
+            children: (
+                <LoginDialog/>
+            ),
+        }, () => {
+            console.log('callback - show');
+        });
+    }
     startLogin() {
-
+        this.showDialog()
         if (this.state.password.length === 0 || this.state.username === 0 || this.state.idct === 0) {
             Toast.show('Vui lòng nhập đầy đủ thông tin đăng nhập!', Toast.LONG)
         } else {
@@ -183,7 +197,7 @@ export default class LoginScreen extends React.Component {
                                     }
                                     this.handlDataLogin(responseJson)
                                     const {navigate} = this.props.navigation;
-
+                                    DialogManager.dismiss()
                                     this.props
                                         .navigation
                                         .dispatch(NavigationActions.reset(

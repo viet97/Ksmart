@@ -108,6 +108,8 @@ export default class OrderListScreen extends Component {
             this.setState({
                 dataRender: this.state.orderListDataFilt.slice(0, NUMBER_ROW_RENDER),
                 dataSearch: this.state.orderListDataFilt.slice(0, NUMBER_ROW_RENDER)
+            }, function () {
+                console.log(this.state.dataRender)
             })
             NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
         })
@@ -237,7 +239,7 @@ export default class OrderListScreen extends Component {
 
     renderFooter = () => {
         console.log("Footer")
-        if (ALL_LOADED || this.state.isSearching) return null
+        if (ALL_LOADED) return null
         return (
             <View
                 style={{
