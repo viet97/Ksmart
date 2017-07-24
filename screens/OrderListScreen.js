@@ -73,6 +73,17 @@ export default class OrderListScreen extends Component {
         }
     }
 
+    getMoney(n, dp) {
+        var e = '', s = e + n, l = s.length, b = n < 0 ? 1 : 0,
+            i = s.lastIndexOf('.'), j = i == -1 ? l : i,
+            r = e, d = s.substr(j + 1, dp);
+        while ((j -= 3) > b) {
+            r = ',' + s.substr(j, 3) + r;
+        }
+        return s.substr(0, j + 3) + r +
+            (dp ? '.' + d + ( d.length < dp ?
+                    ('00000').substr(0, dp - d.length) : e) : e);
+    };
     getOrderListFromServer(datef, datet) {
         this.setState({dataRender: null})
         ALL_LOADED = false
@@ -80,6 +91,7 @@ export default class OrderListScreen extends Component {
             .then((response) => response.json())
             .then((responseJson) => {
                 console.log(responseJson)
+
                 this.setState({
                     orderListDataFull: responseJson.data
                 }, function () {
@@ -159,7 +171,7 @@ export default class OrderListScreen extends Component {
         }
         return (
             <View style={{flexDirection: 'row', justifyContent: 'space-between', flex: 1, margin: 8}}>
-                <TouchableOpacity style={{backgroundColor: 'white', flex: 1, marginRight: 4}}>
+                <View style={{backgroundColor: 'white', flex: 1, marginRight: 4}}>
                     <Icon2 size={12} color={colorGH} name="controller-record"/>
                     <Text style={{
                         fontSize: 18,
@@ -169,8 +181,8 @@ export default class OrderListScreen extends Component {
                         color: colorGH,
                         paddingBottom: 12
                     }}>{URlConfig.OBJLOGIN.ttgh[rowData.trangthaigiaohang]}</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={{backgroundColor: 'white', flex: 1, marginLeft: 4}}>
+                </View>
+                <View style={{backgroundColor: 'white', flex: 1, marginLeft: 4}}>
                     <Icon2 size={12} color={colorTT} name="controller-record"/>
                     <Text style={{
                         fontSize: 18,
@@ -181,7 +193,7 @@ export default class OrderListScreen extends Component {
                         ,
                         paddingBottom: 12
                     }}>{URlConfig.OBJLOGIN.tttt[rowData.trangthaithanhtoan]}</Text>
-                </TouchableOpacity>
+                </View>
             </View>
         );
     }
@@ -218,9 +230,9 @@ export default class OrderListScreen extends Component {
                 break;
         }
         return (
-            <TouchableOpacity style={{backgroundColor: color, marginLeft: 4, flex: 1, justifyContent: 'center'}}>
+            <View style={{backgroundColor: color, marginLeft: 4, flex: 1, justifyContent: 'center'}}>
                 <Text style={{textAlign: 'center'}}>{URlConfig.OBJLOGIN.ttdh[rowData.trangthaidonhang]}</Text>
-            </TouchableOpacity>
+            </View>
         )
     }
 
@@ -340,7 +352,7 @@ export default class OrderListScreen extends Component {
                             }}>
                             <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 8}}>
                                 <Text style={{fontWeight: "bold", fontSize: 18}}>MĐH {item.mathamchieu} </Text>
-                                <Text style={{fontSize: 18}}>{item.tongtien} Đ </Text>
+                                <Text style={{fontSize: 18}}>{this.getMoney(item.tongtien, 0)} </Text>
                             </View>
                             <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 8}}>
                                 <View style={{flex: 1, marginRight: 4}}>

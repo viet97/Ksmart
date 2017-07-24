@@ -6,10 +6,10 @@ import {
     TouchableOpacity, ActivityIndicator,
     Dimensions,
     FlatList,
-    Platform
+    Platform, Image
 } from 'react-native';
 import Search from 'react-native-search-box';
-import Image from 'react-native-image-progress';
+// import Image from 'react-native-image-progress';
 import ProgressBar from 'react-native-progress/Bar';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import Icon1 from 'react-native-vector-icons/Ionicons'
@@ -47,16 +47,16 @@ export default class NewFeedScreen extends React.Component {
 
                 <Image
                     source={require('../images/bglogin.jpg')}
-                    indicator={ProgressBar.Pie}
+                    // indicator={ProgressBar.Pie}
                     style={{margin: 8, width: 60, height: 60, borderRadius: 30}}/>
             );
         } else {
             return (
                 <Image
-
+                    style={{margin: 8, width: 60, height: 60, borderRadius: 25}}
                     source={{uri: 'http://jav.ksmart.vn' + url}}
-                    indicator={ProgressBar.Pie}
-                    style={{margin: 8, width: 60, height: 60, borderRadius: 30}}/>
+                    // indicator={ProgressBar.Pie}
+                />
             );
         }
     }
@@ -135,14 +135,14 @@ export default class NewFeedScreen extends React.Component {
                     data={this.state.dataRender}
                     renderItem={({item}) =>
                         <View style={{
-                            height: height / 7, flex: 1,
+
                             borderTopColor: '#227878', borderTopWidth: 1
                         }}>
                             <Text style={{
                                 textAlign: 'right',
                                 color: 'white',
                                 fontSize: 12
-                            }}> {item.thoigian_hienthi}</Text>
+                            }}>Cập nhật lần cuối lúc: {item.thoigian_hienthi}</Text>
                             <View style={{flexDirection: 'row'}}>
                                 <View style={{justifyContent: 'center'}}>
                                     {this.getImage(item.anhdaidien)}
