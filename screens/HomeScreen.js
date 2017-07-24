@@ -281,7 +281,6 @@ export default class HomeScreen extends React.Component {
             >
                 <View style={{flex: 1}}>
                     <Image
-                        source={require('../images/bghome.jpg')}
                         resizeMode={Image.resizeMode.contain}
                         style={{position: 'absolute', left: 0, right: 0, top: 0, bottom: 0, alignSelf: 'stretch'}}/>
                     <View style={styles.titleStyle}>
@@ -296,7 +295,7 @@ export default class HomeScreen extends React.Component {
                         <View style={{width: 50, height: 50, backgroundColor: 'transparent'}}></View>
                     </View>
 
-                    <View style={{flex: 9}}>
+                    <View style={{flex: 9, backgroundColor: '#4CB6C2'}}>
                         <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 16}}>
                             <TouchableOpacity onPress={() => this.setState({screenName: "NewFeed"})}>
                                 <View style={{

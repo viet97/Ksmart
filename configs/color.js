@@ -3,7 +3,7 @@
  */
 export  default class Color{
     static red='#123456'
-    static backgroundNewFeed='#1695A3'
+    static backgroundNewFeed = '#7FC7BD'
     static tabbarColor='#1695A3'
     static itemListViewColor='#225378'
     static itemNameListViewColor='#6AC7F1'
