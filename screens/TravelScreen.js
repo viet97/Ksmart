@@ -6,7 +6,8 @@ import {
     TouchableOpacity, ActivityIndicator,
     Dimensions,
     FlatList,
-    Platform
+    Platform,
+    Picker
 } from 'react-native';
 import Image from 'react-native-image-progress';
 import ProgressBar from 'react-native-progress/Bar';
@@ -17,7 +18,7 @@ import Color from '../configs/color'
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import URlConfig from "../configs/url";
 import DatePicker from 'react-native-datepicker'
-var {height} = Dimensions.get('window');
+var {height, width} = Dimensions.get('window');
 var NUMBER_ROW_RENDER = 10;
 export default class TravelScreen extends React.Component {
     onSwipeRight(gestureState) {
@@ -45,6 +46,8 @@ export default class TravelScreen extends React.Component {
 
         today = dd + '-' + mm + '-' + yyyy;
         this.state = ({
+            numberPickTravel: 0,
+            travelStatus: [],
             refreshing: false,
             dataFull: [],
             date: today,
@@ -57,8 +60,33 @@ export default class TravelScreen extends React.Component {
         })
     }
 
+    fillData(data, status) {
+        var arr = []
+        for (var item in data) {
+            if (status === -1 || status === data[item].TrangThai)
+                arr.push(data[item])
+        }
+        return arr
+    }
 
     componentWillMount() {
+        var status = 0
+        switch (this.state.numberPickTravel) {
+            case 0:
+                status = -1
+                break
+            case 1:
+                status = 0
+                break
+            case 2:
+                status = 1
+                break
+        }
+        var arr = []
+        arr.push('Tất cả')
+        arr.push('Chưa vào điểm')
+        arr.push('Đã vào điểm')
+        this.setState({travelStatus: arr})
         console.log(this.state.date)
         this.setState({
             URL: URlConfig.getLinkTravel(this.state.date)
@@ -68,11 +96,11 @@ export default class TravelScreen extends React.Component {
                 .then((response) => (response.json()))
                 .then((responseJson) => {
                         if (responseJson.status) {
-                            this.setState({dataFull: responseJson.data}, function () {
+                            var a = this.fillData(responseJson.data, status)
+                            this.setState({dataFull: a}, function () {
                                 console.log('dataFull', this.state.dataFull)
                                 this.setState({dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER)}, function () {
                                     console.log('datarender', this.state.dataRender)
-
                                 })
                                 NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10;
                             })
@@ -113,14 +141,27 @@ export default class TravelScreen extends React.Component {
     }
 
     refreshData() {
+        this.setState({dataRender: null})
+        var status = 0
+        switch (this.state.numberPickTravel) {
+            case 0:
+                status = -1
+                break
+            case 1:
+                status = 0
+                break
+            case 2:
+                status = 1
+                break
+        }
         console.log('hihi', this.state.URL)
         NUMBER_ROW_RENDER = 10
         fetch(this.state.URL)
             .then((response) => (response.json()))
             .then((responseJson) => {
-                    console.log(responseJson)
                     if (responseJson.status) {
-                        this.setState({dataFull: responseJson.data}, function () {
+                        var a = this.fillData(responseJson.data, status)
+                        this.setState({dataFull: a}, function () {
                             console.log(this.state.dataFull)
                             this.setState({dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER)})
                             NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10;
@@ -174,21 +215,26 @@ export default class TravelScreen extends React.Component {
             strVaoDiem = "Chưa vào điểm!"
         } else {
             var diffMins = this.millisToMinutes(item.ThoiGianVaoDiemDuKien, item.ThoiGianVaoDiemThucTe)
-            strVaoDiem = diffMins > 0 ? ('Sớm ' + diffMins + ' phút') : 'Muộn ' + Math.abs(diffMins) + ' phút';
-            strVaoDiem = item.ThoiGianVaoDiemThucTe.replace('T', ' ') + ' ' + strVaoDiem;
+            strVaoDiem = 'Vào điểm lúc: ' + item.ThoiGianVaoDiemThucTe.replace('T', ' ') + ' ' + strVaoDiem;
         }
         if (item.ThoiGianRaDiemThucTe === '1900-01-01T00:00:00') {
             strRaDiem = "Chưa ra điểm!"
         } else {
             diffMins = this.millisToMinutes(item.ThoiGianRaDiemDuKien, item.ThoiGianRaDiemThucTe)
-            strRaDiem = diffMins > 0 ? ('Sớm ' + diffMins + ' phút') : 'Muộn ' + Math.abs(diffMins) + ' phút';
-            strRaDiem = item.ThoiGianRaDiemThucTe.replace('T', ' ') + ' ' + strRaDiem;
+            strRaDiem = 'Ra điểm lúc: ' + item.ThoiGianRaDiemThucTe.replace('T', ' ') + ' ' + strRaDiem;
         }
         return (
             <TouchableOpacity onPress={() => this.props.callback(item.KinhDo, item.ViDo, 'Travel', 'Địa chỉ cửa hàng')}>
                 <View style={{
                     borderTopColor: '#227878', borderTopWidth: 1
                 }}>
+                    <Text style={{
+                        textAlign: 'right',
+                        color: 'white',
+                        fontSize: 12,
+                        marginRight: 4
+                    }}>Vào điểm dự kiến: {item.ThoiGianVaoDiemDuKien}</Text>
+
                     <Text style={{
                         textAlign: 'right',
                         color: 'white',
@@ -228,6 +274,9 @@ export default class TravelScreen extends React.Component {
     }
 
     render() {
+        let travelStatusItem = this.state.travelStatus.map((s, i) => {
+            return <Picker.Item key={i} value={i} label={s}/>
+        });
         return (
             <GestureRecognizer
                 onSwipeRight={(state) => this.onSwipeRight(state)}
@@ -242,10 +291,9 @@ export default class TravelScreen extends React.Component {
                     <TouchableOpacity onPress={() => this.props.backToHome()}
                                       style={{width: 50, height: 50, position: 'absolute'}}/>
                     <View style={{width: window.width}}>
-                        <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-                            <Text style={{backgroundColor: 'transparent', alignSelf: 'center', marginLeft: 16}}>Từ
-                                ngày </Text>
+                        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                             <DatePicker
+                                style={{marginLeft: 8}}
                                 date={this.state.date}
                                 mode="date"
                                 placeholder="select date"
@@ -266,6 +314,20 @@ export default class TravelScreen extends React.Component {
                                     this.ondateChange(date);
                                 }}
                             />
+
+                            <Picker style={{height: 40, width: width / 3}}
+                                    itemStyle={{color: 'red', height: 88}}
+                                    selectedValue={this.state.numberPickTravel}
+                                    onValueChange={(value) => {
+                                        this.setState({numberPickTravel: value}, function () {
+                                            this.refreshData()
+                                        })
+
+
+                                    }}>
+                                {travelStatusItem}
+                            </Picker>
+
                             <View></View>
                         </View>
                     </View>
@@ -285,7 +347,6 @@ export default class TravelScreen extends React.Component {
         });
 
     }
-
 
 
     millisToMinutes(from, to) {

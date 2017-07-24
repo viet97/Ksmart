@@ -9,6 +9,7 @@ import Drawer from 'react-native-drawer';
 import Color from '../configs/color'
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import  DetailMessageScreen from './DetailMessageScreen'
+import  DetailNhanVien from './DetailNhanVien'
 import * as Animatable from 'react-native-animatable';
 import {
     AppRegistry,
@@ -100,6 +101,7 @@ export default class HomeScreen extends React.Component {
         }
         today = dd + '-' + mm + '-' + yyyy;
         this.state = ({
+            dataNhanVien: [],
             datePlant: today,
             idNhanVienPlant: '',
             messageContent: [],
@@ -161,6 +163,9 @@ export default class HomeScreen extends React.Component {
                             this.setState({screenName: 'Map'})
                         })
                     }}
+                    goToDetailNhanVien={(data) => this.setState({dataNhanVien: data}, function () {
+                        this.setState({screenName: 'DetailNhanVien'})
+                    })}
                     clickMenu={() => this.openControlPanel()}
                     backToHome={() => {
                         this.setState({screenName: 'Menu'})
@@ -268,6 +273,11 @@ export default class HomeScreen extends React.Component {
                     idnhanvien={this.state.idNhanVienPlant}
                     date={this.state.datePlant}
                     backToChonNhanVien={() => this.setState({screenName: 'ChonNhanVien'})}
+                />
+            case "DetailNhanVien":
+                return <DetailNhanVien
+                    backToListNhanVienFromDetailNhanVien={this.setState({screenName: 'ListNhanVien'})}
+                    data={this.state.dataNhanVien}
                 />
         }
     }

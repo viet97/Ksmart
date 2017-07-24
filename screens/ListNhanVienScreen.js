@@ -162,33 +162,35 @@ export default class ListNhanVienScreen extends React.Component {
                     }}
                     extraData={this.state.dataRender}
                     data={this.state.dataRender}
-                    renderItem={({item}) => <View style={{
-                        height: height / 7, flex: 1,
-                        borderTopColor: '#227878', borderTopWidth: 1
-                    }}>
-                        <Text style={{textAlign: 'right', color: 'white', fontSize: 12}}> Cập nhật
-                            lúc {item.thoigiancapnhat}</Text>
-                        <View style={{flexDirection: 'row'}}>
-                            <View style={{justifyContent: 'center'}}>
-                                <Image indicator={ProgressBar.Pie}
-                                       style={{margin: 8, width: 60, height: 60, borderRadius: 30}}
-                                       source={require('../images/bglogin.jpg')}/>
-                            </View>
-                            <View style={{flex: 4, margin: 8, justifyContent: 'center'}}>
-                                <Text
-                                    style={{
-                                        fontSize: 18,
-                                        color: Color.itemNameListViewColor
-                                    }}>{item.tennhanvien}</Text>
-                                {this.isOnline(item.dangtructuyen)}
-                            </View>
-                            <TouchableOpacity onPress={() => {
-                                this.props.callback(item.KinhDo, item.ViDo, 'ListNhanVien', 'Địa điểm Nhân Viên')
+                    renderItem={({item}) =>
+                        <TouchableOpacity onPress={() => this.props.goToDetailNhanVien(item)}>
+                            <View style={{
+                                borderTopColor: '#227878', borderTopWidth: 1
                             }}>
-                                <Icon2 size={30} color='white' name="location"/>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
+                                <Text style={{textAlign: 'right', color: 'white', fontSize: 12}}> Cập nhật
+                                    lúc {item.thoigiancapnhat}</Text>
+                                <View style={{flexDirection: 'row'}}>
+                                    <View style={{justifyContent: 'center'}}>
+                                        <Image indicator={ProgressBar.Pie}
+                                               style={{margin: 8, width: 60, height: 60, borderRadius: 30}}
+                                               source={require('../images/bglogin.jpg')}/>
+                                    </View>
+                                    <View style={{flex: 4, margin: 8, justifyContent: 'center'}}>
+                                        <Text
+                                            style={{
+                                                fontSize: 18,
+                                                color: Color.itemNameListViewColor
+                                            }}>{item.tennhanvien}</Text>
+                                        {this.isOnline(item.dangtructuyen)}
+                                    </View>
+                                    <TouchableOpacity onPress={() => {
+                                        this.props.callback(item.KinhDo, item.ViDo, 'ListNhanVien', 'Địa điểm Nhân Viên')
+                                    }}>
+                                        <Icon2 size={30} color='white' name="location"/>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        </TouchableOpacity>
                     }
                 />
             </View>)
