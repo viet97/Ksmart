@@ -8,7 +8,8 @@ import {
     BackHandler,
     FlatList,
     ActivityIndicator,
-    Platform
+    Platform,
+    Picker
 } from 'react-native';
 import Search from 'react-native-search-box';
 import Image from 'react-native-image-progress';
@@ -27,15 +28,12 @@ var NUMBER_ROW_RENDER = 10
 ALL_LOADED = false
 var {width, height} = Dimensions.get('window');
 export default class ListNhanVienScreen extends React.Component {
-    onSwipeRight(gestureState) {
-        console.log("onSwipeRight")
-        this.setState({myText: 'You swiped right!'});
-        this.props.clickMenu()
-    }
-
     constructor(props) {
         super(props)
         this.state = ({
+            dataPartyNhanVien: [],
+            numberPickParty: 0,
+            partyNhanVienStatus: [],
             isSearching: false,
             selectedTab: 'ListNhanVien',
             kinhdo: 0,
@@ -43,12 +41,9 @@ export default class ListNhanVienScreen extends React.Component {
             refreshing: false,
             dataFull: [],
             dataSearch: [],
-            dataSearch: [],
             dataRender: null,
             onEndReach: true,
             waiting: false,
-            myText: 'I\'m ready to get swiped!',
-            gestureName: 'none',
         })
     }
 
@@ -82,7 +77,7 @@ export default class ListNhanVienScreen extends React.Component {
     }
 
     renderFooter = () => {
-        console.log("Footer")
+
         if (ALL_LOADED || this.state.isSearching) return null
         return (
             <View
@@ -99,7 +94,7 @@ export default class ListNhanVienScreen extends React.Component {
 
     loadMoreData() {
         if (!this.state.onEndReach) {
-            console.log("LOADMORE")
+
             this.setState({onEndReach: true})
             this.setState({
                 dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER + 10),
@@ -110,16 +105,29 @@ export default class ListNhanVienScreen extends React.Component {
         }
     }
 
+    fillData(data) {
+        var status = this.state.numberPickParty
+        var arr = []
+
+        for (var item in data) {
+            if (data[item].TenNhom === this.state.partyNhanVienStatus[status] || status === 0)
+                arr.push(data[item])
+        }
+        return arr
+    }
     refreshData() {
+        this.setState({dataRender: null})
         ALL_LOADED = false
         NUMBER_ROW_RENDER = 10
         fetch(URlConfig.getListNhanVienLink())
             .then((response) => (response.json()))
             .then((responseJson) => {
-                    console.log(responseJson)
-                    if (responseJson.status) {
-                        this.setState({dataFull: responseJson.dsNhanVien}, function () {
-                            console.log(this.state.dataFull)
+
+
+                if (responseJson.status) {
+                    var arr = this.fillData(responseJson.dsNhanVien)
+                    this.setState({dataFull: arr}, function () {
+
                             this.setState({
                                 dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER),
                                 dataSearch: this.state.dataFull.slice(0, NUMBER_ROW_RENDER)
@@ -203,17 +211,16 @@ export default class ListNhanVienScreen extends React.Component {
             var arr = []
             var a = text.toLowerCase()
             SEARCH_STRING = a
-            console.log(a)
+
             if (a.length === 0) this.setState({dataRender: this.state.dataSearch})
             else
                 for (var item in this.state.dataSearch) {
                     if (a !== SEARCH_STRING) return
-                    console.log(this.state.dataSearch[item])
+
                     if (this.state.dataSearch[item].tennhanvien.toLowerCase().search(a) !== -1) {
-                        console.log(this.state.dataSearch[item])
-                        console.log(this.state.dataSearch[item])
+
                         arr.push(this.state.dataSearch[item])
-                        console.log(arr)
+
                     }
                 }
 
@@ -225,13 +232,17 @@ export default class ListNhanVienScreen extends React.Component {
     onCancel() {
         return new Promise((resolve, reject) => {
             resolve();
-            console.log("onCancle")
+
             SEARCH_STRING = ''
             this.setState({dataRender: this.state.dataSearch, isSearching: false})
         });
     }
 
     render() {
+
+        let partyStatusItem = this.state.partyNhanVienStatus.map((s, i) => {
+            return <Picker.Item key={i} value={i} label={s}/>
+        });
         return (
             <TabNavigator>
                 <TabNavigator.Item
@@ -249,6 +260,16 @@ export default class ListNhanVienScreen extends React.Component {
 
                         <TouchableOpacity onPress={() => this.props.backToHome()}
                                           style={{width: 50, height: 50, position: 'absolute'}}/>
+                        <Picker style={{height: 40}}
+                                itemStyle={{color: 'red', height: 88}}
+                                selectedValue={this.state.numberPickParty}
+                                onValueChange={(value) => {
+                                    this.setState({numberPickParty: value}, function () {
+                                        this.refreshData()
+                                    })
+                                }}>
+                            {partyStatusItem}
+                        </Picker>
                         <View style={{width: width}}>
                             <Search
                                 ref="search_box"
@@ -261,7 +282,7 @@ export default class ListNhanVienScreen extends React.Component {
                 </TabNavigator.Item>
                 <TabNavigator.Item
                     selected={this.state.selectedTab === 'MapForAllLocation'}
-                    title="Bản đồ"
+                    title="Vị trí"
                     renderIcon={() => <Icon2 size={24} color="black" name="location"/>}
                     renderSelectedIcon={() => <Icon2 size={24} color="green" name="location"/>}
                     onPress={() => this.setState({selectedTab: 'MapForAllLocation'})}>
@@ -273,13 +294,15 @@ export default class ListNhanVienScreen extends React.Component {
     }
 
     componentDidMount() {
+
         fetch(URlConfig.getListNhanVienLink())
             .then((response) => (response.json()))
             .then((responseJson) => {
-                    console.log(responseJson)
-                    if (responseJson.status) {
+
+                if (responseJson.status) {
                         this.setState({dataFull: responseJson.dsNhanVien}, function () {
-                            console.log(this.state.dataFull)
+
+
                             this.setState({
                                 dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER),
                                 dataSearch: this.state.dataFull.splice(0, NUMBER_ROW_RENDER)
@@ -292,6 +315,21 @@ export default class ListNhanVienScreen extends React.Component {
             )
     }
 
+    componentWillMount() {
+        fetch(URlConfig.getLinkNhomNhanVien())
+            .then((response) => (response.json()))
+            .then((responseJson) => {
+                    arr = this.state.partyNhanVienStatus
+                    if (responseJson.status) {
+                        for (var item in responseJson.danhsachnhom) {
+                            arr.push(responseJson.danhsachnhom[item].TenNhom)
+                        }
+                        this.setState({partyNhanVienStatus: arr})
+                    }
+                }
+            )
+
+    }
 }
 
 const styles = StyleSheet.create({

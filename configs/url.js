@@ -77,4 +77,10 @@ export default class URlConfig {
 
         return data.urlserver + '/AppLapKeHoach.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idct=' + data.idcongty + '&dulieukehoach=' + encodeURI(JSON.stringify(obj)) + '&type=themmoikehoach';
     }
+
+    static getLinkNhomNhanVien() {
+        let data = URlConfig.OBJLOGIN;
+        return data.urlserver + '/AppDanhSachNhomQuanLy.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&macongty=' + data.idct;
+
+    }
 }
