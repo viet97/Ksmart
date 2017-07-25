@@ -8,8 +8,8 @@ import React from 'react';
 import Drawer from 'react-native-drawer';
 import Color from '../configs/color'
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
-import  DetailMessageScreen from './DetailMessageScreen'
-import  DetailNhanVien from './DetailNhanVien'
+import DetailMessageScreen from './DetailMessageScreen'
+import DetailNhanVien from './DetailNhanVien'
 import * as Animatable from 'react-native-animatable';
 import {
     AppRegistry,
@@ -36,6 +36,7 @@ import ChartScreen from "./ChartScreen";
 import URlConfig from "../configs/url";
 import CreatePlant from "./CreatePlant";
 import CustomerPlant from "./CustomerPlant";
+
 var {height} = Dimensions.get('window').height;
 var func;
 var backcount = 0
@@ -54,8 +55,8 @@ export default class HomeScreen extends React.Component {
             width: 0,
             height: 0
         })
-
     };
+
     constructor(props) {
 
         super(props);
@@ -142,7 +143,7 @@ export default class HomeScreen extends React.Component {
 
 
     renderSomething() {
-        const {navigate} = this.props.navigation
+        const {navigate} = this.props.navigation;
         switch (this.state.screenName) {
             case "Menu":
                 return this.menuScreen();
@@ -276,7 +277,7 @@ export default class HomeScreen extends React.Component {
                 />
             case "DetailNhanVien":
                 return <DetailNhanVien
-                    backToListNhanVienFromDetailNhanVien={this.setState({screenName: 'ListNhanVien'})}
+                    backToListNhanVienFromDetailNhanVien={() => this.setState({screenName: 'ListNhanVien'})}
                     data={this.state.dataNhanVien}
                 />
         }
@@ -287,12 +288,9 @@ export default class HomeScreen extends React.Component {
         return (
             <GestureRecognizer
                 onSwipeRight={(state) => this.onSwipeRight(state)}
-                style={{flex: 1}}
-            >
+                style={{flex: 1}}>
                 <View style={{flex: 1}}>
-                    <Image
-                        resizeMode={Image.resizeMode.contain}
-                        style={{position: 'absolute', left: 0, right: 0, top: 0, bottom: 0, alignSelf: 'stretch'}}/>
+                    <Image source={require('../images/bg.png')} style={{position: 'absolute'}}/>
                     <View style={styles.titleStyle}>
                         <TouchableOpacity onPress={() => this.openControlPanel()}
                                           style={{marginLeft: 16, width: 40, height: 40, alignSelf: 'center'}}>
@@ -305,7 +303,7 @@ export default class HomeScreen extends React.Component {
                         <View style={{width: 50, height: 50, backgroundColor: 'transparent'}}></View>
                     </View>
 
-                    <View style={{flex: 9, backgroundColor: '#4CB6C2'}}>
+                    <View style={{flex: 9}}>
                         <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 16}}>
                             <TouchableOpacity onPress={() => this.setState({screenName: "NewFeed"})}>
                                 <View style={{
@@ -452,7 +450,6 @@ export default class HomeScreen extends React.Component {
                 <View style={{
                     justifyContent: 'center',
                     height: 50,
-                    backgroundColor: '#570A60',
                     elevation: (Platform.OS === 'ios') ? 0 : 15,
                 }}>
                     <Image source={require('../images/bg.png')}/>
@@ -460,7 +457,7 @@ export default class HomeScreen extends React.Component {
                 <View style={{paddingTop: 15, flexDirection: 'column'}}>
                     <Image style={{position: 'absolute'}} source={require('../images/bg.png')}/>
 
-                    <View  >
+                    <View>
                         <TouchableOpacity style={styles.itemSideMenuStyle} onPress={() => {
                             this.setState({screenName: "NewFeed"});
                             this.closeControlPanel()
@@ -470,7 +467,7 @@ export default class HomeScreen extends React.Component {
                             <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
                         </TouchableOpacity>
                     </View>
-                    <View >
+                    <View>
                         <TouchableOpacity style={styles.itemSideMenuStyle} onPress={() => {
                             this.setState({screenName: "ListNhanVien"});
                             this.closeControlPanel()
@@ -478,9 +475,9 @@ export default class HomeScreen extends React.Component {
                             <Icon1 size={24} style={styles.iconStyle} color="white" name="ios-people-outline"/>
                             <Text style={styles.textStyle}>Nhân viên</Text>
                             <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
-                        </TouchableOpacity >
+                        </TouchableOpacity>
                     </View>
-                    <View >
+                    <View>
                         <TouchableOpacity style={styles.itemSideMenuStyle} onPress={() => {
                             this.setState({screenName: 'Order'})
                         }}>
@@ -498,7 +495,7 @@ export default class HomeScreen extends React.Component {
                             <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
                         </TouchableOpacity>
                     </View>
-                    <View >
+                    <View>
                         <TouchableOpacity style={styles.itemSideMenuStyle}
                                           onPress={() => {
                                               this.setState({screenName: "Travel"});
@@ -509,7 +506,7 @@ export default class HomeScreen extends React.Component {
                             <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
                         </TouchableOpacity>
                     </View>
-                    <View >
+                    <View>
                         <TouchableOpacity style={styles.itemSideMenuStyle} onPress={() => {
                             this.setState({screenName: "Chart"});
                             this.closeControlPanel()
@@ -519,7 +516,7 @@ export default class HomeScreen extends React.Component {
                             <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
                         </TouchableOpacity>
                     </View>
-                    <View >
+                    <View>
                         <TouchableOpacity style={styles.itemSideMenuStyle}
                                           onPress={() => {
                                               this.setState({screenName: "Report"});
@@ -530,7 +527,7 @@ export default class HomeScreen extends React.Component {
                             <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
                         </TouchableOpacity>
                     </View>
-                    <View >
+                    <View>
                         <TouchableOpacity style={styles.itemSideMenuStyle}
                                           onPress={() => {
                                               this.setState({screenName: "ChonNhanVien"});
@@ -541,7 +538,7 @@ export default class HomeScreen extends React.Component {
                             <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
                         </TouchableOpacity>
                     </View>
-                    <View >
+                    <View>
                         <TouchableOpacity style={styles.itemSideMenuStyle}
                                           onPress={() => {
                                               this.setState({screenName: "Message"});
@@ -552,7 +549,7 @@ export default class HomeScreen extends React.Component {
                             <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
                         </TouchableOpacity>
                     </View>
-                    <View >
+                    <View>
                         <TouchableOpacity style={styles.itemSideMenuStyle} onPress={() => {
                             this.logout()
                         }}>
@@ -607,7 +604,7 @@ const styles = StyleSheet.create({
         elevation: 15,
         justifyContent: 'space-between',
         flexDirection: 'row',
-        backgroundColor: Color.backgroundNewFeed,
+        backgroundColor: '#90c3ef',
     },
     headerStyle: {
         elevation: 15, height: this.height / 7
@@ -637,6 +634,8 @@ const styles = StyleSheet.create({
         fontSize: 16,
         backgroundColor: 'transparent',
         fontFamily: 'Al Nile'
+    }, absolute: {
+        top: 0, bottom: 0, left: 0, right: 0, position: 'absolute',
     }
 })
 
@@ -650,5 +649,5 @@ BackHandler.addEventListener('hardwareBackPress', function () {
         Toast.show('Bấm thêm lần nữa để thoát')
         return true
     }
-    else  return false
+    else return false
 });

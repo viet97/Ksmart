@@ -55,7 +55,7 @@ export default class DetailNhanVien extends React.Component {
                         style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>{this.props.data.tennhanvien}</Text>
                     <View style={{backgroundColor: Color.backgroundNewFeed, width: 35, height: 35}}/>
                 </View>
-                <TouchableOpacity onPress={() => this.props.backToListNhanVienFromDetailNhanVien()}
+                <TouchableOpacity
                                   style={{width: 50, height: 50, position: 'absolute'}}/>
                 <View style={{backgroundColor: Color.backGroundFlatList, flex: 5}}>
                     <View style={{flexDirection: 'row'}}>
@@ -79,7 +79,6 @@ export default class DetailNhanVien extends React.Component {
                             latitudeDelta: 0.0922,
                             longitudeDelta: 0.0421
                         }}
-
                     />
                 </MapView>
             </View>
