@@ -55,6 +55,7 @@ export default class CustomerScreen extends Component {
     };
 
     refreshData() {
+        this.setState({dataRender: null})
         ALL_LOADED = false
         NUMBER_ROW_RENDER = 10
         fetch(URlConfig.getCustomerLink())

@@ -26,6 +26,7 @@ import MapListScreen from "./MapListScreen";
 
 var NUMBER_ROW_RENDER = 10
 ALL_LOADED = false
+var SEARCH_STRING = '';
 var {width, height} = Dimensions.get('window');
 export default class ListNhanVienScreen extends React.Component {
     constructor(props) {
@@ -205,9 +206,10 @@ export default class ListNhanVienScreen extends React.Component {
     }
 
     onChangeText(text) {
+        this.setState({isSearching: true})
         return new Promise((resolve, reject) => {
             resolve();
-            this.setState({isSearching: true})
+
             var arr = []
             var a = text.toLowerCase()
             SEARCH_STRING = a

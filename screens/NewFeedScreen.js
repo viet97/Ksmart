@@ -17,8 +17,10 @@ import React from 'react';
 import Color from '../configs/color'
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import URlConfig from "../configs/url";
+var SEARCH_STRING = '';
 var {width, height} = Dimensions.get('window');
 var NUMBER_ROW_RENDER = 10
+ALL_LOADED = false
 export default class NewFeedScreen extends React.Component {
     onSwipeRight(gestureState) {
         console.log("onSwipeRight")
@@ -64,13 +66,18 @@ export default class NewFeedScreen extends React.Component {
     loadMoreData() {
         if (!this.state.onEndReach) {
             this.setState({onEndReach: true})
-            this.setState({dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER + 10)})
+            this.setState({
+                dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER + 10),
+                dataSearch: this.state.dataFull.slice(0, NUMBER_ROW_RENDER + 10)
+            })
             NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
             if (NUMBER_ROW_RENDER > this.state.dataFull.length - 10) ALL_LOADED = true
         }
     }
 
     refreshData() {
+        this.setState({dataRender: null})
+        ALL_LOADED = false
         NUMBER_ROW_RENDER = 10
         fetch(URlConfig.getNewFeedLink())
             .then((response) => (response.json()))
@@ -79,7 +86,10 @@ export default class NewFeedScreen extends React.Component {
                     if (responseJson.status) {
                         this.setState({dataFull: responseJson.data}, function () {
                             console.log(this.state.dataFull)
-                            this.setState({dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER)})
+                            this.setState({
+                                dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER),
+                                dataSearch: this.state.dataFull.slice(0, NUMBER_ROW_RENDER)
+                            })
                             NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
                         })
                     }
@@ -163,9 +173,10 @@ export default class NewFeedScreen extends React.Component {
     }
 
     onChangeText(text) {
+        this.setState({isSearching: true})
         return new Promise((resolve, reject) => {
             resolve();
-            this.setState({isSearching: true})
+
             var arr = []
             var a = text.toLowerCase()
             SEARCH_STRING = a
@@ -233,7 +244,10 @@ export default class NewFeedScreen extends React.Component {
                 if (!responseJson.status) {
                         this.setState({dataFull: responseJson.data}, function () {
                             console.log(this.state.dataFull)
-                            this.setState({dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER)})
+                            this.setState({
+                                dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER),
+                                dataSearch: this.state.dataFull.slice(0, NUMBER_ROW_RENDER)
+                            })
                             NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
                         })
                     }
