@@ -8,8 +8,8 @@ import React from 'react';
 import Drawer from 'react-native-drawer';
 import Color from '../configs/color'
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
-import DetailMessageScreen from './DetailMessageScreen'
-import DetailNhanVien from './DetailNhanVien'
+import  DetailMessageScreen from './DetailMessageScreen'
+import  DetailNhanVien from './DetailNhanVien'
 import * as Animatable from 'react-native-animatable';
 import {
     AppRegistry,
@@ -62,34 +62,6 @@ export default class HomeScreen extends React.Component {
 
         super(props);
         isLoginScreen = false
-        var a = {
-            ngaylapkehoach: "18-07-2017",
-            dulieulapkehoach: [{
-                idkhachhang: "4429",
-                idnhanvien: 231,
-                idkehoach: 0,
-                giovaodukien: "09:55:00",
-                gioradukien: "09:56:00",
-                ghichu: "",
-                vieccanlam: ""
-            }, {
-                idkhachhang: "4428",
-                idnhanvien: 231,
-                idkehoach: 0,
-                giovaodukien: "10:03:00",
-                gioradukien: "10:25:00",
-                ghichu: "",
-                vieccanlam: ""
-            }],
-            idnhanvien: 231
-        };
-        console.log(URlConfig.getLinkLapKeHoach(a))
-        fetch(URlConfig.getLinkLapKeHoach(a))
-            .then((response) => (response.json()))
-            .then((responseJson) => {
-                    console.log('hihihihi', responseJson)
-                }
-            )
         var today = new Date();
         var dd = today.getDate();
         var mm = today.getMonth() + 1; //January is 0!
@@ -103,6 +75,7 @@ export default class HomeScreen extends React.Component {
         }
         today = dd + '-' + mm + '-' + yyyy;
         this.state = ({
+            idDetailNhanVien: '',
             dataNhanVien: [],
             datePlant: today,
             idNhanVienPlant: '',
@@ -165,7 +138,7 @@ export default class HomeScreen extends React.Component {
                             this.setState({screenName: 'Map'})
                         })
                     }}
-                    goToDetailNhanVien={(data) => this.setState({dataNhanVien: data}, function () {
+                    goToDetailNhanVien={(data) => this.setState({idDetailNhanVien: data}, function () {
                         this.setState({screenName: 'DetailNhanVien'})
                     })}
                     clickMenu={() => this.openControlPanel()}
@@ -279,7 +252,7 @@ export default class HomeScreen extends React.Component {
             case "DetailNhanVien":
                 return <DetailNhanVien
                     backToListNhanVienFromDetailNhanVien={() => this.setState({screenName: 'ListNhanVien'})}
-                    data={this.state.dataNhanVien}
+                    idNhanVien={this.state.idDetailNhanVien}
                 />
             case "AboutUs":
                 return <AboutUsScreen backToHome={() => {

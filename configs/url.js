@@ -83,4 +83,10 @@ export default class URlConfig {
         return data.urlserver + '/AppDanhSachNhomQuanLy.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&macongty=' + data.idct;
 
     }
+
+    static getLinkDetailNhanVien(idnhanvien) {
+        let data = URlConfig.OBJLOGIN;
+        return data.urlserver + '/AppChiTietNhanVien.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idct=' + data.idcongty + '&idnhanvien=' + idnhanvien;
+
+    }
 }
