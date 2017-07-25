@@ -171,7 +171,7 @@ export default class ListNhanVienScreen extends React.Component {
                     extraData={this.state.dataRender}
                     data={this.state.dataRender}
                     renderItem={({item}) =>
-                        <TouchableOpacity onPress={() => this.props.goToDetailNhanVien(item)}>
+                        <TouchableOpacity onPress={() => this.props.goToDetailNhanVien(item.idnhanvien)}>
                             <View style={{
                                 borderTopColor: '#227878', borderTopWidth: 1
                             }}>

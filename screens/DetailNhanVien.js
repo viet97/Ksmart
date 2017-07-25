@@ -29,9 +29,10 @@ export default class DetailNhanVien extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
+            data: [],
             region: {
-                latitude: this.props.data.ViDo,
-                longitude: this.props.data.KinhDo,
+                latitude: 100,
+                longitude: 100,
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421,
             }
@@ -47,43 +48,55 @@ export default class DetailNhanVien extends React.Component {
     }
 
     render() {
+        data = this.state.data
         return (
             <View style={{flex: 1}}>
                 <View style={styles.titleStyle}>
                     <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
                     <Text
-                        style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>{this.props.data.tennhanvien}</Text>
+                        style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Profile</Text>
                     <View style={{backgroundColor: Color.backgroundNewFeed, width: 35, height: 35}}/>
                 </View>
                 <TouchableOpacity onPress={() => this.props.backToListNhanVienFromDetailNhanVien()}
                                   style={{width: 50, height: 50, position: 'absolute'}}/>
-                <View style={{backgroundColor: Color.backGroundFlatList, flex: 5}}>
-                    <View style={{flexDirection: 'row'}}>
-                        <Image style={{width: 100, height: 100, borderRadius: 50}}
-                               source={require('../images/bglogin.jpg')}/>
-                        <View>
-                            <Text style={{fontWeight: 'bold', fontSize: 18}}>{this.props.data.tennhanvien}</Text>
-                            {this.isOnline(this.props.data.dangtructuyen)}
-                            <Text>Cập nhật lần cuối: {this.props.data.thoigiancapnhat}</Text>
+                <View style={{backgroundColor: Color.backGroundFlatList, flex: 4, justifyContent: 'center'}}>
+                    <Image style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0}}
+                           source={{uri: 'http://www.designbolts.com/wp-content/uploads/2014/03/Yellow-blur-background1.jpg'}}/>
+                    <Image style={{width: 160, height: 160, borderRadius: 80, alignSelf: 'center'}}
+                           source={require('../images/bglogin.jpg')}/>
 
-                        </View>
+                </View>
+                <View style={{flex: 5,}}>
+                    <View style={styles.viewCover}>
+                        <Text style={styles.text1}>Tên đăng nhập</Text>
+                        <Text style={styles.text2}>{data.tendangnhap}</Text>
+                    </View>
+                    <View style={styles.viewCover}>
+                        <Text style={styles.text1}>Tên đầy đủ</Text>
+                        <Text style={styles.text2}>{data.tennhanvien}</Text>
+                    </View>
+                    <View style={styles.viewCover}>
+                        <Text style={styles.text1}>Email</Text>
+                        <Text style={styles.text2}>1324@gmail.com</Text>
+                    </View>
+                    <View style={styles.viewCover}>
+                        <Text style={styles.text1}>Số điện thoại</Text>
+                        <Text style={styles.text2}>01663616055</Text>
                     </View>
                 </View>
-                <MapView
-                    style={{flex: 4}}
-                    initialRegion={this.state.region}>
-                    <MapView.Marker.Animated
-                        coordinate={ {
-                            latitude: this.props.data.ViDo,
-                            longitude: this.props.data.KinhDo,
-                            latitudeDelta: 0.0922,
-                            longitudeDelta: 0.0421
-                        }}
 
-                    />
-                </MapView>
             </View>
         )
+    }
+
+    componentDidMount() {
+        fetch(URlConfig.getLinkDetailNhanVien(this.props.idNhanVien))
+            .then((response) => (response.json()))
+            .then((responseJson) => {
+                if (responseJson.status)
+                    this.setState({data: responseJson.data})
+            })
+
     }
 }
 const styles = StyleSheet.create({
@@ -127,5 +140,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         height: 80
+    },
+    text1: {
+        fontSize: 12, marginTop: 4, marginRight: 8, color: 'red'
+    },
+    text2: {
+        fontSize: 18, fontWeight: 'bold', marginTop: 4, marginRight: 8
+    },
+    viewCover: {
+        borderBottomWidth: 1, borderBottomColor: 'white', marginLeft: 16, marginTop: 8
     }
 })
