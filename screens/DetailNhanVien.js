@@ -17,6 +17,8 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import Icon1 from 'react-native-vector-icons/Ionicons'
 import URlConfig from "../configs/url";
 import Icon2 from 'react-native-vector-icons/Entypo'
+import Icon3 from 'react-native-vector-icons/FontAwesome'
+import Icon4 from 'react-native-vector-icons/Foundation'
 import React from 'react';
 import Color from '../configs/color'
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
@@ -59,11 +61,18 @@ export default class DetailNhanVien extends React.Component {
                 </View>
                 <TouchableOpacity onPress={() => this.props.backToListNhanVienFromDetailNhanVien()}
                                   style={{width: 50, height: 50, position: 'absolute'}}/>
-                <View style={{backgroundColor: Color.backGroundFlatList, flex: 4, justifyContent: 'center'}}>
+                <View style={{flex: 4, justifyContent: 'center'}}>
                     <Image style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0}}
                            source={{uri: 'http://www.designbolts.com/wp-content/uploads/2014/03/Yellow-blur-background1.jpg'}}/>
-                    <Image style={{width: 160, height: 160, borderRadius: 80, alignSelf: 'center'}}
+
+                    <Image style={{width: 120, height: 120, borderRadius: 60, alignSelf: 'center'}}
                            source={require('../images/bglogin.jpg')}/>
+                    <Text style={{
+                        fontSize: 24,
+                        color: 'white',
+                        textAlign: 'center',
+                        marginTop: 8
+                    }}>{this.state.data.tennhanvien}</Text>
                 </View>
                 <View style={{flex: 5,}}>
                     <View style={styles.viewCover}>
@@ -76,11 +85,31 @@ export default class DetailNhanVien extends React.Component {
                     </View>
                     <View style={styles.viewCover}>
                         <Text style={styles.text1}>Email</Text>
-                        <Text style={styles.text2}>1324@gmail.com</Text>
+                        <View style={{
+                            flexDirection: 'row',
+                            marginTop: 4,
+                            marginRight: 8,
+                            justifyContent: 'space-between'
+                        }}>
+                            <Text style={styles.text2}>1234@gmail.com</Text>
+                            <TouchableOpacity>
+                                <Icon4 size={36} color="yellow" name="mail"/>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                     <View style={styles.viewCover}>
                         <Text style={styles.text1}>Số điện thoại</Text>
-                        <Text style={styles.text2}>01663616055</Text>
+                        <View style={{
+                            flexDirection: 'row',
+                            marginTop: 4,
+                            marginRight: 8,
+                            justifyContent: 'space-between'
+                        }}>
+                            <Text style={styles.text2}>01663616055</Text>
+                            <TouchableOpacity>
+                                <Icon3 size={36} color="green" name="phone"/>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
 
@@ -144,7 +173,7 @@ const styles = StyleSheet.create({
         fontSize: 12, marginTop: 4, marginRight: 8, color: 'red'
     },
     text2: {
-        fontSize: 18, fontWeight: 'bold', marginTop: 4, marginRight: 8
+        fontSize: 18, fontWeight: 'bold'
     },
     viewCover: {
         borderBottomWidth: 1, borderBottomColor: 'white', marginLeft: 16, marginTop: 8
