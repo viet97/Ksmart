@@ -36,6 +36,7 @@ import ChartScreen from "./ChartScreen";
 import URlConfig from "../configs/url";
 import CreatePlant from "./CreatePlant";
 import CustomerPlant from "./CustomerPlant";
+import AboutUsScreen from "./AboutUsScreen";
 
 var {height} = Dimensions.get('window').height;
 var func;
@@ -280,6 +281,10 @@ export default class HomeScreen extends React.Component {
                     backToListNhanVienFromDetailNhanVien={() => this.setState({screenName: 'ListNhanVien'})}
                     data={this.state.dataNhanVien}
                 />
+            case "AboutUs":
+                return <AboutUsScreen backToHome={() => {
+                    this.setState({screenName: 'Menu'})
+                }}/>
         }
     }
 
@@ -546,6 +551,17 @@ export default class HomeScreen extends React.Component {
                                           }}>
                             <Icon2 size={24} style={styles.iconStyle} color="white" name="mail"/>
                             <Text style={styles.textStyle}>Tin nhắn</Text>
+                            <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
+                        </TouchableOpacity>
+                    </View>
+                    <View>
+                        <TouchableOpacity style={styles.itemSideMenuStyle}
+                                          onPress={() => {
+                                              this.setState({screenName: "AboutUs"});
+                                              this.closeControlPanel()
+                                          }}>
+                            <Icon2 size={24} style={styles.iconStyle} color="white" name="aircraft-take-off"/>
+                            <Text style={styles.textStyle}>Về chúng tôi</Text>
                             <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
                         </TouchableOpacity>
                     </View>
