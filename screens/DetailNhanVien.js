@@ -64,7 +64,6 @@ export default class DetailNhanVien extends React.Component {
                            source={{uri: 'http://www.designbolts.com/wp-content/uploads/2014/03/Yellow-blur-background1.jpg'}}/>
                     <Image style={{width: 160, height: 160, borderRadius: 80, alignSelf: 'center'}}
                            source={require('../images/bglogin.jpg')}/>
-
                 </View>
                 <View style={{flex: 5,}}>
                     <View style={styles.viewCover}>
