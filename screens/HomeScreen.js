@@ -34,7 +34,6 @@ import TravelScreen from "./TravelScreen";
 import ReportScreen from "./ReportScreen";
 import ChartScreen from "./ChartScreen";
 import URlConfig from "../configs/url";
-import CreatePlant from "./CreatePlant";
 import CustomerPlant from "./CustomerPlant";
 import AboutUsScreen from "./AboutUsScreen";
 
@@ -199,6 +198,11 @@ export default class HomeScreen extends React.Component {
                 />
             case "Travel":
                 return <TravelScreen
+                    goToCustomerPlant={(date) => {
+                        this.setState({datePlant: date}, function () {
+                            this.setState({screenName: 'CustomerPlant'})
+                        })
+                    }}
                     backToHome={() => {
                         this.setState({screenName: 'Menu'})
                     }}
@@ -221,33 +225,10 @@ export default class HomeScreen extends React.Component {
                 return <ReportScreen backToHome={() => {
                     this.setState({screenName: 'Menu'})
                 }}/>
-            case "ChonNhanVien":
-                return <CreatePlant
-                    callback={(kinhdo, vido, previousScreen, title) => {
-                        this.setState({
-                            kinhdo: kinhdo,
-                            vido: vido,
-                            previousScreen: previousScreen,
-                            titleMap: title
-                        }, function () {
-                            this.setState({screenName: 'Map'})
-                        })
-                    }}
-                    date={this.state.datePlant}
-                    backToHome={() => {
-                        this.setState({screenName: 'Menu'})
-                    }}
-                    goToCustomerPlant={(date, id) => {
-                        this.setState({date: date, idNhanVienPlant: id}, function () {
-                            this.setState({screenName: 'CustomerPlant'})
-                        })
-                    }}
-                />
             case "CustomerPlant":
                 return <CustomerPlant
-                    idnhanvien={this.state.idNhanVienPlant}
                     date={this.state.datePlant}
-                    backToChonNhanVien={() => this.setState({screenName: 'ChonNhanVien'})}
+                    backToTravel={() => this.setState({screenName: 'Travel'})}
                 />
             case "DetailNhanVien":
                 return <DetailNhanVien

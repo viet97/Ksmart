@@ -49,7 +49,7 @@ export default class URlConfig {
 
     static getCustomerLink(page) {
         let data = URlConfig.OBJLOGIN;
-        return data.urlserver + '/AppDanhSachCuaHang_v2.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idct=' + data.idcongty + '&lastid=' + page;
+        return data.urlserver + '/AppDanhSachCuaHang_v3.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idct=' + data.idcongty + '&lastid=' + page;
     }
 
     static getMessageList(from, to) {

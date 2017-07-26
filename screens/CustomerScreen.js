@@ -63,9 +63,10 @@ export default class CustomerScreen extends Component {
             .then((responseJson) => {
                 console.log(responseJson)
                 if (responseJson.status) {
+                    PAGE = responseJson.lastid
                     if (responseJson.endlist) ALL_LOADED = true
                     this.setState({
-                        customerCount: responseJson.tongsoitem,
+
                         dataRender: responseJson.data,
                         dataSearch: responseJson.data
                     })
@@ -76,7 +77,6 @@ export default class CustomerScreen extends Component {
 
 
     loadMoreData() {
-        PAGE = PAGE + NUMBER_ROW_RENDER_PER_PAGE
         if (!this.state.onEndReach) {
             console.log("LOADMORE")
             this.setState({onEndReach: true})
@@ -86,8 +86,8 @@ export default class CustomerScreen extends Component {
                     console.log(responseJson)
                     if (responseJson.status) {
                         if (responseJson.endlist) ALL_LOADED = true
-                        var arr = this.state.dataRender
-                        arr.push(responseJson.data)
+                        PAGE = responseJson.lastid
+                        var arr = this.state.dataRender.concat(responseJson.data)
                         this.setState({
                             dataRender: arr,
                             dataSearch: arr
@@ -103,7 +103,7 @@ export default class CustomerScreen extends Component {
 
         if (!this.state.dataRender) {
             return (
-                <View style={{backgroundColor: Color.itemListViewColor, flex: 9}}>
+                <View style={{backgroundColor: Color.backGroundFlatList, flex: 9}}>
                     <ActivityIndicator
                         animating={true}
                         style={styles.indicator}
@@ -233,7 +233,7 @@ export default class CustomerScreen extends Component {
                     marginBottom: 4,
                     marginTop: 4,
                     marginRight: 4,
-                    backgroundColor: Color.backgroundNewFeed
+                    backgroundColor: Color.backGroundFlatList
                 }}>
                     <Text style={{fontSize: 18, color: 'white', textAlign: 'center'}}>Tổng số khách hàng
                         : {this.state.customerCount}</Text>
@@ -274,9 +274,10 @@ export default class CustomerScreen extends Component {
         fetch(URlConfig.getCustomerLink(PAGE))
             .then((response) => (response.json()))
             .then((responseJson) => {
-                console.log(responseJson)
+                console.log(responseJson.data.length)
                 if (responseJson.endlist) ALL_LOADED = true
                 if (responseJson.status) {
+                    PAGE = responseJson.lastid
                     this.setState({
                         customerCount: responseJson.tongsoitem,
                         dataRender: responseJson.data,

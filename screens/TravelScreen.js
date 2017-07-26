@@ -285,7 +285,23 @@ export default class TravelScreen extends React.Component {
                     <View style={styles.titleStyle}>
                         <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
                         <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Viếng thăm</Text>
-                        <View style={{backgroundColor: Color.backgroundNewFeed, width: 35, height: 35}}/>
+                        <TouchableOpacity
+                            onPress={() => this.props.goToCustomerPlant(this.state.date)}
+                            style={{
+                                backgroundColor: Color.backgroundNewFeed,
+                                alignSelf: 'center',
+                                width: 35,
+                                height: 35
+                            }}>
+                            <View style={{width: 50, height: 50, justifyContent: 'center', alignSelf: 'center'}}>
+                                <Text style={{
+                                    color: 'white',
+                                    textAlign: 'center',
+                                    alignSelf: 'center',
+                                    paddingBottom: 8
+                                }}>Thêm</Text>
+                            </View>
+                        </TouchableOpacity>
                     </View>
 
                     <TouchableOpacity onPress={() => this.props.backToHome()}

@@ -36,6 +36,7 @@ export default class CustomerPlantComponent extends Component {
 
     render() {
         var item = this.props.item;
+
         return (
 
             <View style={{
@@ -208,7 +209,6 @@ export default class CustomerPlantComponent extends Component {
                 idkhachhang: item.idcuahang, idnhanvien: this.props.idnhanvien, idkehoach: 0, giovaodukien: timeCome,
                 gioradukien: timeOut, ghichu: this.state.ghichu, vieccanlam: this.state.vieccanlam
             }
-            console.log(data)
             this.props.choseCustomer(data, this.state.checkOfCheckBox)
         })
 

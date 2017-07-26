@@ -8,7 +8,8 @@ import {
     Dimensions,
     BackHandler,
     FlatList,
-    ActivityIndicator, Platform
+    ActivityIndicator, Platform,
+    Picker
 } from 'react-native';
 import Toast from 'react-native-simple-toast';
 import Image from 'react-native-image-progress';
@@ -21,15 +22,16 @@ import URlConfig from "../configs/url";
 import Search from "react-native-search-box";
 import CheckBox from 'react-native-checkbox'
 import CustomerPlantComponent from '../components/CustomerPlantComponent'
-var NUMBER_ROW_RENDER = 10
-ALL_LOADED = false
+var NUMBER_ROW_RENDER_PER_PAGE = 15
+var ALL_LOADED = false
 var SEARCH_STRING = '';
-
-var {height} = Dimensions.get('window');
+let PAGE = 0;
+var {height, width} = Dimensions.get('window');
 export default class CustomerPlant extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            idNhanvien: '',
             dataChoose: [],
             checkOfCheckBox: false,
             timeCome: '20:00',
@@ -40,13 +42,15 @@ export default class CustomerPlant extends Component {
             dataFull: [],
             dataRender: null,
             onEndReach: true,
-            dataRender: []
+            numberPickNhanVien: 0,
+            NhanVienStatus: [],
+            dataNhanVien: [],
         }
 
     }
 
     renderFooter = () => {
-        console.log("Footer")
+
         if (ALL_LOADED || this.state.isSearching) return null
         return (
             <View
@@ -61,37 +65,47 @@ export default class CustomerPlant extends Component {
     };
 
     refreshData() {
+
+        PAGE = 0;
+        this.setState({dataRender: null})
         ALL_LOADED = false
-        NUMBER_ROW_RENDER = 10
-        fetch(URlConfig.getCustomerLink())
+        fetch(URlConfig.getCustomerLink(PAGE))
             .then((response) => (response.json()))
             .then((responseJson) => {
-                    console.log(responseJson)
-                    if (responseJson.status) {
-                        this.setState({dataFull: responseJson.data}, function () {
-                            console.log(this.state.dataFull)
-                            this.setState({
-                                dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER),
-                                dataSearch: this.state.dataFull.slice(0, NUMBER_ROW_RENDER)
-                            })
-                            NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
-                        })
-                    }
+
+
+                if (responseJson.status) {
+                    if (responseJson.endlist) ALL_LOADED = true
+                    this.setState({
+                        dataRender: responseJson.data,
+                        dataSearch: responseJson.data
+                    })
+
                 }
-            )
+            })
     }
 
 
     loadMoreData() {
+        PAGE = PAGE + NUMBER_ROW_RENDER_PER_PAGE
         if (!this.state.onEndReach) {
-            console.log("LOADMORE")
+
             this.setState({onEndReach: true})
-            this.setState({
-                dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER + 10),
-                dataSearch: this.state.dataFull.slice(0, NUMBER_ROW_RENDER + 10)
-            })
-            NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
-            if (NUMBER_ROW_RENDER > this.state.dataFull.length - 10) ALL_LOADED = true
+            fetch(URlConfig.getCustomerLink(PAGE))
+                .then((response) => (response.json()))
+                .then((responseJson) => {
+
+                    if (responseJson.status) {
+                        if (responseJson.endlist) ALL_LOADED = true
+                        var arr = this.state.dataRender.concat(responseJson.data)
+                        this.setState({
+                            dataRender: arr,
+                            dataSearch: arr
+                        })
+
+                    }
+                })
+
         }
     }
 
@@ -99,7 +113,7 @@ export default class CustomerPlant extends Component {
 
         if (!this.state.dataRender) {
             return (
-                <View style={{backgroundColor: Color.itemListViewColor, flex: 9}}>
+                <View style={{backgroundColor: Color.backGroundFlatList, flex: 9}}>
                     <ActivityIndicator
                         animating={true}
                         style={styles.indicator}
@@ -127,7 +141,7 @@ export default class CustomerPlant extends Component {
                         renderItem={({item}) =>
                             <CustomerPlantComponent
                                 idcuahang={item.idcuahang}
-                                idnhanvien={this.props.idnhanvien}
+                                idnhanvien={this.state.idNhanvien}
                                 item={item}
                                 choseCustomer={(data, checked) => {
                                     var arr = this.state.dataChoose;
@@ -154,24 +168,21 @@ export default class CustomerPlant extends Component {
 
     onChangeText(text) {
         this.setState({isSearching: true})
-        console.log("onChangeText")
+
         return new Promise((resolve, reject) => {
             resolve();
-            console.log("promise")
+
             var arr = []
             var a = text.toLowerCase()
             SEARCH_STRING = a
-            console.log(a)
+
             if (a.length === 0) this.setState({dataRender: this.state.dataSearch})
             else
                 for (var item in this.state.dataSearch) {
                     if (a !== SEARCH_STRING) return
-                    console.log(this.state.dataSearch[item])
+
                     if (this.state.dataSearch[item].TenCuaHang.toLowerCase().search(a) !== -1) {
-                        console.log(this.state.dataSearch[item])
-                        console.log(this.state.dataSearch[item])
                         arr.push(this.state.dataSearch[item])
-                        console.log(arr)
                     }
                 }
 
@@ -181,13 +192,16 @@ export default class CustomerPlant extends Component {
     }
 
     render() {
+        let NhanVienStatusItem = this.state.NhanVienStatus.map((s, i) => {
+            return <Picker.Item key={i} value={i} label={s}/>
+        });
         return (
             <View style={{flex: 1, backgroundColor: Color.backGroundFlatList}}>
                 <View style={styles.titleStyle}>
-                    <TouchableOpacity style={styles.iconStyle} onPress={() => this.props.backToChonNhanVien()}>
+                    <TouchableOpacity style={styles.iconStyle} onPress={() => this.props.backToTravel()}>
                         <Icon2 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
                     </TouchableOpacity>
-                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Chọn khách hàng</Text>
+                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Lập kế hoạch </Text>
                     <TouchableOpacity
                         onPress={() => {
                             this.sendPlantToServer()
@@ -196,7 +210,7 @@ export default class CustomerPlant extends Component {
                         <Text style={{color: 'white', padding: 8}}>OK</Text>
                     </TouchableOpacity>
                 </View>
-                <TouchableOpacity onPress={() => this.props.backToHome()}
+                <TouchableOpacity onPress={() => this.props.backToTravel()}
                                   style={{
                                       width: 50,
                                       height: 50,
@@ -230,6 +244,26 @@ export default class CustomerPlant extends Component {
                         onCancel={() => this.onCancel()}
                     />
                 </View>
+                <View style={{width: width, flexDirection: 'row', justifyContent: 'center', marginLeft: 16}}>
+                    <Text style={{textAlign: 'center', alignSelf: 'center'}}>Chọn nhân viên </Text>
+                    <Picker style={{height: 40, width: width / 2}}
+                            itemStyle={{color: 'red', height: 88}}
+                            selectedValue={this.state.numberPickNhanVien}
+                            onValueChange={(value) => {
+                                this.setState({numberPickNhanVien: value}, function () {
+                                    for (var item in this.state.dataNhanVien) {
+                                        if (this.state.NhanVienStatus[value] === this.state.dataNhanVien[item].tennhanvien) {
+                                            this.setState({idNhanvien: this.state.dataNhanVien[item].idnhanvien})
+                                            break;
+                                        }
+                                    }
+                                })
+
+
+                            }}>
+                        {NhanVienStatusItem}
+                    </Picker>
+                </View>
                 {this.flatListorIndicator()}
 
             </View>
@@ -239,51 +273,66 @@ export default class CustomerPlant extends Component {
     onCancel() {
         return new Promise((resolve, reject) => {
             resolve();
-            console.log("onCancle")
+
             SEARCH_STRING = ''
             this.setState({dataRender: this.state.dataSearch, isSearching: false})
         });
     }
 
     sendPlantToServer() {
+        console.log('Trước khi send to sever' + this.state.idNhanvien)
         var obj = {
             ngaylapkehoach: this.props.date,
             dulieulapkehoach: this.state.dataChoose,
-            idnhanvien: this.props.idnhanvien
+            idnhanvien: this.state.idNhanvien
         }
-        console.log(obj)
-        console.log(URlConfig.getLinkLapKeHoach(obj))
+
         fetch(URlConfig.getLinkLapKeHoach(obj))
             .then((response) => (response.json()))
             .then((responseJson) => {
+                console.log(responseJson)
                 if (responseJson.status) {
                     if (responseJson.listkehoachmoi.length !== 0)
                         Toast.show('Lập kế hoạch thành công')
                     else
                         Toast.show('Kế hoạch đã bị trùng , vui lòng thử lại')
-                    this.props.backToChonNhanVien()
+                    this.props.backToTravel()
                 }
             })
+
     }
 
     componentDidMount() {
         ALL_LOADED = false
-        fetch(URlConfig.getCustomerLink())
+        fetch(URlConfig.getCustomerLink(PAGE))
             .then((response) => (response.json()))
             .then((responseJson) => {
-                    console.log(responseJson)
-                    if (responseJson.status) {
-                        this.setState({dataFull: responseJson.data}, function () {
-                            console.log(this.state.dataFull)
-                            this.setState({
-                                dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER),
-                                dataSearch: this.state.dataFull.slice(0, NUMBER_ROW_RENDER)
-                            })
-                            NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
-                        })
-                    }
+                console.log(responseJson.data.length)
+                if (responseJson.endlist) ALL_LOADED = true
+                if (responseJson.status) {
+                    this.setState({
+                        dataRender: responseJson.data,
+                        dataSearch: responseJson.data
+                    })
+
+
                 }
-            )
+            })
+        fetch(URlConfig.getListNhanVienLink())
+            .then((response) => (response.json()))
+            .then((responseJson) => {
+                if (responseJson.status) {
+                    var arr = []
+                    this.setState({
+                        dataNhanVien: responseJson.dsNhanVien
+                    }, function () {
+                        for (var item in responseJson.dsNhanVien)
+                            arr.push(responseJson.dsNhanVien[item].tennhanvien)
+                        this.setState({NhanVienStatus: arr, idNhanvien: this.state.dataNhanVien[0].idnhanvien})
+                    })
+
+                }
+            })
     }
 }
 const styles = StyleSheet.create({
