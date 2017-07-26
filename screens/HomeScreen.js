@@ -458,6 +458,7 @@ export default class HomeScreen extends React.Component {
                     <View>
                         <TouchableOpacity style={styles.itemSideMenuStyle} onPress={() => {
                             this.setState({screenName: 'Order'})
+                            this.closeControlPanel()
                         }}>
                             <Icon2 size={24} style={styles.iconStyle} color="white" name="archive"/>
                             <Text style={styles.textStyle}>Đơn hàng</Text>
@@ -540,6 +541,7 @@ export default class HomeScreen extends React.Component {
                     </View>
                     <View>
                         <TouchableOpacity style={styles.itemSideMenuStyle} onPress={() => {
+                            this.closeControlPanel()
                             this.logout()
                         }}>
                             <Icon4 size={24} style={styles.iconStyle} color="white" name="power"/>

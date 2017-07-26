@@ -20,7 +20,8 @@ import URlConfig from "../configs/url";
 var SEARCH_STRING = '';
 var {width, height} = Dimensions.get('window');
 var NUMBER_ROW_RENDER = 10
-ALL_LOADED = false
+var ALL_LOADED = false
+var PAGE = 0;
 export default class NewFeedScreen extends React.Component {
     onSwipeRight(gestureState) {
         console.log("onSwipeRight")

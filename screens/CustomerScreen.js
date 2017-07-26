@@ -19,22 +19,22 @@ import Icon2 from 'react-native-vector-icons/Ionicons'
 import Color from '../configs/color'
 import URlConfig from "../configs/url";
 import Search from "react-native-search-box";
-var NUMBER_ROW_RENDER = 10
-ALL_LOADED = false
+var NUMBER_ROW_RENDER_PER_PAGE = 15
+var ALL_LOADED = false
 var SEARCH_STRING = '';
-
+var PAGE = 0;
 var {height} = Dimensions.get('window');
 export default class CustomerScreen extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            customerCount: 0,
             isSearching: false,
             refreshing: false,
             dataSearch: [],
             dataFull: [],
             dataRender: null,
             onEndReach: true,
-            dataRender: []
         }
 
     }
@@ -55,40 +55,47 @@ export default class CustomerScreen extends Component {
     };
 
     refreshData() {
+        PAGE = 0;
         this.setState({dataRender: null})
         ALL_LOADED = false
-        NUMBER_ROW_RENDER = 10
-        fetch(URlConfig.getCustomerLink())
+        fetch(URlConfig.getCustomerLink(PAGE))
             .then((response) => (response.json()))
             .then((responseJson) => {
-                    console.log(responseJson)
-                    if (responseJson.status) {
-                        this.setState({dataFull: responseJson.data}, function () {
-                            console.log(this.state.dataFull)
-                            this.setState({
-                                dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER),
-                                dataSearch: this.state.dataFull.slice(0, NUMBER_ROW_RENDER)
-                            }, function () {
-                                console.log(this.state.dataRender)
-                            })
-                            NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
-                        })
-                    }
+                console.log(responseJson)
+                if (responseJson.status) {
+                    if (responseJson.endlist) ALL_LOADED = true
+                    this.setState({
+                        customerCount: responseJson.tongsoitem,
+                        dataRender: responseJson.data,
+                        dataSearch: responseJson.data
+                    })
+
                 }
-            )
+            })
     }
 
 
     loadMoreData() {
+        PAGE = PAGE + NUMBER_ROW_RENDER_PER_PAGE
         if (!this.state.onEndReach) {
             console.log("LOADMORE")
             this.setState({onEndReach: true})
-            this.setState({
-                dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER + 10),
-                dataSearch: this.state.dataFull.slice(0, NUMBER_ROW_RENDER + 10)
-            })
-            NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
-            if (NUMBER_ROW_RENDER > this.state.dataFull.length - 10) ALL_LOADED = true
+            fetch(URlConfig.getCustomerLink(PAGE))
+                .then((response) => (response.json()))
+                .then((responseJson) => {
+                    console.log(responseJson)
+                    if (responseJson.status) {
+                        if (responseJson.endlist) ALL_LOADED = true
+                        var arr = this.state.dataRender
+                        arr.push(responseJson.data)
+                        this.setState({
+                            dataRender: arr,
+                            dataSearch: arr
+                        })
+
+                    }
+                })
+
         }
     }
 
@@ -229,7 +236,7 @@ export default class CustomerScreen extends Component {
                     backgroundColor: Color.backgroundNewFeed
                 }}>
                     <Text style={{fontSize: 18, color: 'white', textAlign: 'center'}}>Tổng số khách hàng
-                        : {this.state.dataFull.length}</Text>
+                        : {this.state.customerCount}</Text>
                 </View>
                 <View style={{
                     marginLeft: 8,
@@ -263,22 +270,21 @@ export default class CustomerScreen extends Component {
 
     componentDidMount() {
         ALL_LOADED = false
-        fetch(URlConfig.getCustomerLink())
+
+        fetch(URlConfig.getCustomerLink(PAGE))
             .then((response) => (response.json()))
             .then((responseJson) => {
-                    console.log(responseJson)
-                    if (responseJson.status) {
-                        this.setState({dataFull: responseJson.data}, function () {
-                            console.log(this.state.dataFull)
-                            this.setState({
-                                dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER),
-                                dataSearch: this.state.dataFull.slice(0, NUMBER_ROW_RENDER)
-                            })
-                            NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
-                        })
-                    }
+                console.log(responseJson)
+                if (responseJson.endlist) ALL_LOADED = true
+                if (responseJson.status) {
+                    this.setState({
+                        customerCount: responseJson.tongsoitem,
+                        dataRender: responseJson.data,
+                        dataSearch: responseJson.data
+                    })
+
                 }
-            )
+            })
     }
 }
 const styles = StyleSheet.create({
