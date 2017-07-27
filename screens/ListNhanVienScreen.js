@@ -262,8 +262,8 @@ export default class ListNhanVienScreen extends React.Component {
 
                         <TouchableOpacity onPress={() => this.props.backToHome()}
                                           style={{width: 50, height: 50, position: 'absolute'}}/>
-                        <Picker style={{height: 40}}
-                                itemStyle={{color: 'red', height: 88}}
+                        <Picker style={{height: 44}}
+                                itemStyle={{color: 'red', height: 44}}
                                 selectedValue={this.state.numberPickParty}
                                 onValueChange={(value) => {
                                     this.setState({numberPickParty: value}, function () {
@@ -336,6 +336,7 @@ export default class ListNhanVienScreen extends React.Component {
 
 const styles = StyleSheet.create({
     titleStyle: {
+        marginTop: Platform.OS === 'ios' ? 16 : 0,
         flex: 1,
         elevation: 15,
         justifyContent: 'space-between',
