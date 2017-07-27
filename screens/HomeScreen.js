@@ -38,6 +38,7 @@ import CustomerPlant from "./CustomerPlant";
 import AboutUsScreen from "./AboutUsScreen";
 import ChooseTypeChart from "./ChooseTypeChart";
 import OnlineChartScreen from "./OnlineChartScreen";
+import TravelChartScreen from "./TravelChartScreen";
 import RevenuePerPersonnelScreen from "./RevenuePerPersonnelScreen";
 
 var {height} = Dimensions.get('window').height;
@@ -264,6 +265,9 @@ export default class HomeScreen extends React.Component {
                 return <AboutUsScreen backToHome={() => {
                     this.setState({screenName: 'Menu'})
                 }}/>
+            case 'TravelChart':
+                return <TravelChartScreen
+                    backToChooseTypeChart={() => this.setState({screenName: 'Chart'})}/>
         }
     }
 
