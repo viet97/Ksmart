@@ -37,6 +37,12 @@ export default class URlConfig {
         let data = URlConfig.OBJLOGIN;
         return data.urlserver + '/AppBieuOnlineTrongNgay.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idct=' + data.idcongty + '&ngay=' + date;
     }
+
+    static getTravelChartLink(dateFrom, dateTo) {
+        // return 'http://jav.ksmart.vn/AppBieuOnlineTrongNgay.aspx?idct=1&idquanly=47&ngay=26-07-2017'
+        let data = URlConfig.OBJLOGIN;
+        return data.urlserver + '/AppBieuDoTanSuatViengThamNhanVien.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idct=' + data.idcongty + '&tungay=' + dateFrom + '&denngay=' + dateTo;
+    }
     static getNewFeedLink() {
         let data = URlConfig.OBJLOGIN;
         return data.urlserver + '/AppNewFeed.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&macongty=' + data.idct;

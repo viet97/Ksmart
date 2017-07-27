@@ -51,7 +51,7 @@ export default class ChooseTypeChart extends React.Component {
                                       right: 0,
                                       bottom: 0
                                   }}/>
-                <View style={{flex: 9}}>
+                <View style={{flex: 9, justifyContent: 'center'}}>
                     <TouchableOpacity
                         onPress={() => this.props.goToDoanhThuChart()}
                         style={styles.touchableStyle}>
@@ -68,7 +68,9 @@ export default class ChooseTypeChart extends React.Component {
                         <Text style={styles.textStyle}>Biểu đồ tần suất
                             nhân viên online</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.touchableStyle}>
+                    <TouchableOpacity
+                        onPress={() => this.props.goToTravelChart()}
+                        style={styles.touchableStyle}>
                         <Text style={styles.textStyle}>Biểu đồ tần suất
                             viếng thăm theo nhân viên</Text>
                     </TouchableOpacity>

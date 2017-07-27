@@ -1,0 +1,355 @@
+/**
+ * Created by hao on 7/10/17.
+ */
+
+import React, {Component} from 'react';
+import {
+    View, Dimensions, Text, Picker, StyleSheet, TouchableOpacity, Image, Platform
+} from "react-native";
+import Icon1 from 'react-native-vector-icons/Ionicons'
+import Bar from "react-native-pathjs-charts/src/Bar";
+import Radar from "react-native-pathjs-charts/src/Radar";
+import StockLine from "react-native-pathjs-charts/src/StockLine";
+import DatePicker from "react-native-datepicker";
+import URlConfig from "../configs/url";
+import Color from "../configs/color";
+var {height, width} = Dimensions.get('window');
+export default class TravelChartScreen extends React.Component {
+    static navigationOptions = {
+        header: null
+    };
+
+    constructor(props) {
+        super(props);
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1; //January is 0!
+        var yyyy = today.getFullYear();
+        if (dd < 10) {
+            dd = '0' + dd
+        }
+
+        if (mm < 10) {
+            mm = '0' + mm
+        }
+        today = dd + '-' + mm + '-' + yyyy;
+        var now = new Date();
+        this.state = {
+            dateFrom: today,
+            dateTo: today,
+            isEmpty: true,
+            data: [],
+            arr: [],
+            keyChart: 'TongKhachHangViengTham'
+        }
+    }
+
+    componentDidMount() {
+        this.getDataChart();
+    }
+
+
+    getDataChart() {
+        fetch(URlConfig.getTravelChartLink(this.state.dateFrom, this.state.dateTo))
+            .then((response) => (response.json()))
+            .then((responseJson) => {
+                    console.log(responseJson.data)
+                    var res = responseJson.data;
+                    var dt = []
+
+                    for (var item of res) {
+                        var arr = []
+
+
+                        var time = item['tennhanvien'];
+                        item['name'] = time
+
+                        arr.push(item)
+                        dt.push(arr)
+                        // date = item['thoigian'].split('/')[0];
+                        // item['name'] = date
+                    }
+                    var dem = 0;
+                    for (var item in res) {
+                        if (res[item].TongKhachHangViengTham !== 0) {
+                            dem = dem + 1;
+                            break;
+                        }
+                    }
+                    if (dem > 0) {
+                        this.setState({
+                            data: dt,
+                            arr: res,
+                            isEmpty: false
+                        })
+                    }
+                    else this.setState({isEmpty: true})
+                }
+            )
+    }
+
+    getChartorNull(options) {
+
+        if (!this.state.isEmpty) {
+            return (
+                <View>
+                    <Bar data={this.state.data} options={options} accessorKey={this.state.keyChart}/>
+                    {this.getTitleChart()}
+                </View>
+            )
+        }
+        return (
+            <Text style={{alignSelf: 'center', textAlign: 'center', fontSize: 20, backgroundColor: 'transparent'}}>Không
+                có dữ liệu</Text>)
+
+    }
+
+    getTitleChart() {
+        var b = this.state.keyChart
+        title = 'Biểu đồ tần suất nhân viên viếng thăm từ ngày ' + this.state.dateFrom + ' đến ngày ' + this.state.dateTo
+        return (<Text style={{margin: 8, textAlign: 'center', backgroundColor: 'transparent'}}>{title}</Text>)
+    }
+
+    render() {
+        var {height, width} = Dimensions.get('window');
+        let options = {
+            width: width - 40,
+            height: 300,
+            margin: {
+                top: 20,
+                left: 25,
+                bottom: 50,
+                right: 20
+            },
+            color: '#2980B9',
+            gutter: 20,
+            animate: {
+                type: 'oneByTrue',
+                duration: 200,
+                fillTransition: 3
+            },
+            axisX: {
+                showAxis: true,
+                showLines: true,
+                showLabels: true,
+                showTicks: true,
+                zeroAxis: false,
+                orient: 'bottom',
+                label: {
+                    fontFamily: 'Arial',
+                    fontSize: 2,
+                    fontWeight: true,
+                    fill: '#34495E'
+                }
+            },
+            axisY: {
+                showAxis: true,
+                showLines: true,
+                showLabels: true,
+                showTicks: true,
+                zeroAxis: false,
+                orient: 'left',
+                label: {
+                    fontFamily: 'Arial',
+                    fontSize: 8,
+                    fontWeight: true,
+                    fill: '#34495E'
+                }
+            }
+        }
+        return (
+            <View style={{flex: 1}}>
+
+                <Image source={require('../images/bg.png')}
+                       style={{position: 'absolute', left: 0, right: 0, top: 0, bottom: 0}}/>
+                <View style={styles.titleStyle}>
+                    <TouchableOpacity onPress={() => this.props.backToChooseTypeChart()}
+                                      style={styles.iconStyle}>
+                        <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
+                    </TouchableOpacity>
+                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Biểu đồ tần suất nhân viên viếng
+                        thăm </Text>
+                    <TouchableOpacity style={{alignSelf: 'center'}} onPress={() => {
+                        this.showDialog();
+                    }}>
+                        <View></View>
+                    </TouchableOpacity>
+                </View>
+                <TouchableOpacity onPress={() => this.props.backToChooseTypeChart()}
+                                  style={{
+                                      width: 50,
+                                      height: 50,
+                                      position: 'absolute',
+                                      left: 16,
+                                      top: 0,
+                                      right: 0,
+                                      bottom: 0
+                                  }}/>
+                <View style={{flexDirection: 'column', flex: 9}}>
+                    <View style={{width: width, flexDirection: 'row', justifyContent: 'space-between'}}>
+                        <DatePicker
+                            date={this.state.dateFrom}
+                            mode="date"
+                            placeholder="select date"
+                            format="DD-MM-YYYY"
+                            confirmBtnText="Xác nhận"
+                            cancelBtnText="Huỷ bỏ"
+                            customStyles={{
+                                dateIcon: {},
+                                dateInput: {
+                                    backgroundColor: 'white',
+                                    borderWidth: 1,
+                                    borderColor: 'gray',
+                                    borderRadius: 4,
+                                }
+                            }}
+                            onDateChange={(date) => {
+
+                                this.ondateChange(date, this.state.dateTo);
+                            }}
+                        />
+
+                        <Text style={{alignSelf: 'center'}}>Đến ngày </Text>
+                        <DatePicker
+                            date={this.state.dateTo}
+                            mode="date"
+                            placeholder="select date"
+                            format="DD-MM-YYYY"
+
+                            confirmBtnText="Xác nhận"
+                            cancelBtnText="Huỷ bỏ"
+                            customStyles={{
+                                dateIcon: {},
+                                dateInput: {
+                                    backgroundColor: 'white',
+                                    borderWidth: 1,
+                                    borderColor: 'gray',
+                                    borderRadius: 4,
+                                },
+                            }}
+                            onDateChange={(date) => {
+                                this.ondateChange(this.state.dateFrom, date);
+                            }}
+                        />
+                    </View>
+                    {this.getChartorNull(options)}
+
+                </View>
+            </View>
+        )
+
+
+    }
+
+    ondateChange(from, to) {
+        this.setState({dataRender: null})
+        var dFrom = String(from);
+        var dTo = String(to);
+        dFrom.replace('/', '-');
+        dTo.replace('/', '-');
+        this.setState({dateFrom: dFrom})
+        this.setState({dateTo: dTo})
+        this.getDataChart(from, to)
+
+    }
+
+    render1() {
+        let options = {
+            width: 250,
+            height: 250,
+            color: '#2980B9',
+            margin: {
+                top: 10,
+                left: 35,
+                bottom: 30,
+                right: 10
+            },
+            animate: {
+                type: 'delayed',
+                duration: 200
+            },
+            axisX: {
+                showAxis: true,
+                showLines: true,
+                showLabels: true,
+                showTicks: true,
+                zeroAxis: false,
+                orient: 'bottom',
+                tickValues: [],
+                label: {
+                    fontFamily: 'Arial',
+                    fontSize: 8,
+                    fontWeight: true,
+                    fill: '#34495E'
+                }
+            },
+            axisY: {
+                showAxis: true,
+                showLines: true,
+                showLabels: true,
+                showTicks: true,
+                zeroAxis: false,
+                orient: 'left',
+                tickValues: [],
+                label: {
+                    fontFamily: 'Arial',
+                    fontSize: 8,
+                    fontWeight: true,
+                    fill: '#34495E'
+                }
+            }
+        }
+
+        return (
+            <View>
+                <StockLine data={this.state.arr} options={options} xKey='x' yKey='y'/>
+            </View>
+        )
+    }
+}
+const styles = StyleSheet.create({
+    indicator: {
+        alignSelf: 'center',
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: 80
+    },
+    titleStyle: {
+        flex: 1,
+        elevation: 15,
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+        backgroundColor: Color.backgroundNewFeed,
+    },
+    headerStyle: {
+        elevation: 15, height: this.height / 7
+    },
+    itemSideMenuStyle: {
+        borderBottomWidth: 1,
+        borderBottomColor: 'white',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        margin: 8,
+        paddingBottom: 8
+    }, iconStyle: {
+        alignSelf: 'center',
+        width: 24,
+        height: 24,
+        backgroundColor: "transparent",
+        marginLeft: 8,
+        marginTop: (Platform.OS === 'ios') ? 8 : 0
+    },
+    textStyle: {
+        fontSize: 18,
+        color: 'white',
+        backgroundColor: 'transparent'
+    },
+    titleIconsMenu: {
+        textAlign: 'center',
+        color: 'white',
+        fontSize: 16,
+        backgroundColor: 'transparent',
+        fontFamily: 'Al Nile'
+    }
+})
