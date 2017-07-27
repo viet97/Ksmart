@@ -14,6 +14,9 @@ import DatePicker from "react-native-datepicker";
 import URlConfig from "../configs/url";
 import Color from "../configs/color";
 export default class OnlineChartScreen extends React.Component {
+    static navigationOptions = {
+        header: null
+    };
     constructor(props) {
         super(props);
         var today = new Date();
@@ -34,8 +37,12 @@ export default class OnlineChartScreen extends React.Component {
             isEmpty: true,
             data: [],
             arr: [],
-            keyChart: 'gio'
+            keyChart: 'sonhanvien'
         }
+    }
+
+    componentDidMount() {
+        this.getDataChart();
     }
 
 
@@ -88,14 +95,16 @@ export default class OnlineChartScreen extends React.Component {
                 </View>
             )
         }
-        return (<Text style={{alignSelf: 'center', textAlign: 'center', fontSize: 20}}>Không có dữ liệu</Text>)
+        return (
+            <Text style={{alignSelf: 'center', textAlign: 'center', fontSize: 20, backgroundColor: 'transparent'}}>Không
+                có dữ liệu</Text>)
 
     }
 
     getTitleChart() {
         var b = this.state.keyChart
-        title = 'Biểu đồ Nhân viên online' + this.state.date
-        return (<Text style={{margin: 8, textAlign: 'center'}}>{title}</Text>)
+        title = 'Biểu đồ Nhân viên online ngày ' + this.state.date
+        return (<Text style={{margin: 8, textAlign: 'center', backgroundColor: 'transparent'}}>{title}</Text>)
     }
 
     render() {
@@ -155,7 +164,7 @@ export default class OnlineChartScreen extends React.Component {
                                       style={styles.iconStyle}>
                         <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
                     </TouchableOpacity>
-                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Biểu đồ nhân viên online</Text>
+                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Biểu đồ nhân viên online </Text>
                     <TouchableOpacity style={{alignSelf: 'center'}} onPress={() => {
                         this.showDialog();
                     }}>
@@ -173,8 +182,8 @@ export default class OnlineChartScreen extends React.Component {
                                       bottom: 0
                                   }}/>
                 <View style={{flexDirection: 'column', flex: 9}}>
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between', height: 60}}>
-                        <Text>Chọn ngày </Text>
+                    <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: 60}}>
+                        <Text style={{backgroundColor: 'transparent'}}>Chọn ngày </Text>
                         <DatePicker
                             style={{marginLeft: 8}}
                             date={this.state.date}
@@ -208,8 +217,10 @@ export default class OnlineChartScreen extends React.Component {
     }
 
     ondateChange(date) {
-        this.setState({date: date})
-        this.getDataChart()
+        this.setState({date: date}, function () {
+            this.getDataChart();
+        })
+
     }
 
     render1() {

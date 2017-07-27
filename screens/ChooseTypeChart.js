@@ -58,4 +58,4 @@ const styles = StyleSheet.create({
         paddingVertical: 16,
         elevation: 10
     }
-})
+});
