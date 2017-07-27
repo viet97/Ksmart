@@ -181,13 +181,13 @@ export default class ChartScreen extends React.Component {
             <View style={{flex: 1}}>
 
                 <Image source={require('../images/bg.png')}
-                       style={{position: 'absolute', left: 0, right: 0, top: 0, bottom: 0}}/>
+                       style={{position: 'absolute', left: 0, right: 0, top: 16, bottom: 0}}/>
                 <View style={styles.titleStyle}>
                     <TouchableOpacity onPress={() => this.props.backToChooseTypeChart()}
                                       style={styles.iconStyle}>
                         <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
                     </TouchableOpacity>
-                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Danh sách đơn hàng</Text>
+                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Biểu đồ doanh thu</Text>
                     <TouchableOpacity style={{alignSelf: 'center'}} onPress={() => {
                         this.showDialog();
                     }}>
@@ -308,6 +308,7 @@ const styles = StyleSheet.create({
         height: 80
     },
     titleStyle: {
+        marginTop: Platform.OS === 'ios' ? 16 : 0,
         flex: 1,
         elevation: 15,
         justifyContent: 'space-between',

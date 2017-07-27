@@ -263,6 +263,7 @@ export default class NewFeedScreen extends React.Component {
 }
 const styles = StyleSheet.create({
     titleStyle: {
+        marginTop: Platform.OS === 'ios' ? 16 : 0,
         flex: 1,
         elevation: 15,
         justifyContent: 'space-between',
