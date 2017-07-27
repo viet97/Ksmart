@@ -11,7 +11,7 @@ import {
     Platform, Image
 } from 'react-native';
 import Search from 'react-native-search-box';
-
+import Communications from 'react-native-communications';
 import ProgressBar from 'react-native-progress/Bar';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import Icon1 from 'react-native-vector-icons/Ionicons'
@@ -25,7 +25,7 @@ import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import TabNavigator from 'react-native-tab-navigator';
 import MapListScreen from "./MapListScreen";
 import MapView from 'react-native-maps';
-
+import {PagerTabIndicator, IndicatorViewPager, PagerTitleIndicator, PagerDotIndicator} from 'rn-viewpager';
 var {width, height} = Dimensions.get('window');
 export default class DetailNhanVien extends React.Component {
     constructor(props) {
@@ -33,8 +33,8 @@ export default class DetailNhanVien extends React.Component {
         this.state = {
             data: [],
             region: {
-                latitude: 100,
-                longitude: 100,
+                latitude: 0,
+                longitude: 0,
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421,
             }
@@ -67,66 +67,108 @@ export default class DetailNhanVien extends React.Component {
 
                     <Image style={{width: 120, height: 120, borderRadius: 60, alignSelf: 'center'}}
                            source={require('../images/bglogin.jpg')}/>
-                    <Text style={{
+                    <View style={{flexDirection: 'row', alignSelf: 'center', justifyContent: 'center'}}>
+                        {this.isOnline(this.state.datadangtructuyen)}
+                        <Text style={{
                         fontSize: 24,
                         color: 'white',
                         textAlign: 'center',
                         marginTop: 8
                     }}>{this.state.data.tennhanvien}</Text>
+                    </View>
+
                 </View>
                 <View style={{flex: 5,}}>
-                    <View style={styles.viewCover}>
-                        <Text style={styles.text1}>Tên đăng nhập</Text>
-                        <Text style={styles.text2}>{data.tendangnhap}</Text>
-                    </View>
-                    <View style={styles.viewCover}>
-                        <Text style={styles.text1}>Tên đầy đủ</Text>
-                        <Text style={styles.text2}>{data.tennhanvien}</Text>
-                    </View>
-                    <View style={styles.viewCover}>
-                        <Text style={styles.text1}>Email</Text>
-                        <View style={{
-                            flexDirection: 'row',
-                            marginTop: 4,
-                            marginRight: 8,
-                            justifyContent: 'space-between'
-                        }}>
-                            <Text style={styles.text2}>1234@gmail.com</Text>
-                            <TouchableOpacity>
-                                <Icon4 size={36} color="yellow" name="mail"/>
-                            </TouchableOpacity>
+                    <IndicatorViewPager
+                        style={{flex: 1, backgroundColor: 'white'}}
+                        indicator={this._renderTitleIndicator()}
+                    >
+                        <View>
+                            <View style={styles.viewCover}>
+                                <Text style={styles.text1}>Tên đăng nhập</Text>
+                                <Text style={styles.text2}>{data.tendangnhap}</Text>
+                            </View>
+                            <View style={styles.viewCover}>
+                                <Text style={styles.text1}>Tên đầy đủ</Text>
+                                <Text style={styles.text2}>{data.tennhanvien}</Text>
+                            </View>
+                            <View style={styles.viewCover}>
+                                <Text style={styles.text1}>Email</Text>
+                                <View style={{
+                                    flexDirection: 'row',
+                                    marginTop: 4,
+                                    marginRight: 8,
+                                    justifyContent: 'space-between'
+                                }}>
+                                    <Text style={styles.text2}>1234@gmail.com</Text>
+                                    <TouchableOpacity
+                                        onPress={() => Communications.email(['123@gmail.com'], null, null, 'My Subject', 'My body text')}>
+                                        <Icon4 size={36} color="yellow" name="mail"/>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                            <View style={styles.viewCover}>
+                                <Text style={styles.text1}>Số điện thoại</Text>
+                                <View style={{
+                                    flexDirection: 'row',
+                                    marginTop: 4,
+                                    marginRight: 8,
+                                    justifyContent: 'space-between'
+                                }}>
+                                    <Text style={styles.text2}>01663616055</Text>
+                                    <TouchableOpacity onPress={() => Communications.phonecall('01663616055', true)}>
+                                        <Icon3 size={36} color="green" name="phone"/>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
                         </View>
-                    </View>
-                    <View style={styles.viewCover}>
-                        <Text style={styles.text1}>Số điện thoại</Text>
-                        <View style={{
-                            flexDirection: 'row',
-                            marginTop: 4,
-                            marginRight: 8,
-                            justifyContent: 'space-between'
-                        }}>
-                            <Text style={styles.text2}>01663616055</Text>
-                            <TouchableOpacity>
-                                <Icon3 size={36} color="green" name="phone"/>
-                            </TouchableOpacity>
+
+                        <View>
+                            <MapView
+                                style={{flex: 1}}
+                                initialRegion={this.state.region}>
+                                <MapView.Marker.Animated
+                                    coordinate={ {
+                                        latitude: this.state.region.latitude,
+                                        longitude: this.state.region.longitude,
+                                        latitudeDelta: 0.0922,
+                                        longitudeDelta: 0.0421
+                                    }}
+
+                                />
+                            </MapView>
                         </View>
-                    </View>
+                    </IndicatorViewPager>
+
                 </View>
 
             </View>
         )
     }
 
+    _renderTitleIndicator() {
+        return <PagerTitleIndicator titles={['Hồ sơ', 'Vị trí']}/>;
+    }
     componentDidMount() {
         fetch(URlConfig.getLinkDetailNhanVien(this.props.idNhanVien))
             .then((response) => (response.json()))
             .then((responseJson) => {
                 if (responseJson.status)
-                    this.setState({data: responseJson.data})
+                    this.setState({data: responseJson.data}, function () {
+                        this.setState({
+                            region: {
+                                latitude: this.state.data.vido,
+                                longitude: this.state.data.kinhdo,
+                                latitudeDelta: 0.0922,
+                                longitudeDelta: 0.0421,
+                            }
+                        })
+                    })
             })
 
     }
 }
+
 const styles = StyleSheet.create({
     titleStyle: {
         flex: 1,
@@ -177,5 +219,14 @@ const styles = StyleSheet.create({
     },
     viewCover: {
         borderBottomWidth: 1, borderBottomColor: 'white', marginLeft: 16, marginTop: 8
+    },
+    list: {
+        justifyContent: 'center',
+        marginTop: 10,
+        flexDirection: 'row',
+        flexWrap: 'wrap'
+    },
+    item: {
+        margin: 3,
     }
 })

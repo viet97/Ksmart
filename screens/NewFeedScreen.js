@@ -87,13 +87,14 @@ export default class NewFeedScreen extends React.Component {
                     if (responseJson.status) {
                         this.setState({dataFull: responseJson.data}, function () {
                             console.log(this.state.dataFull)
+                            if (NUMBER_ROW_RENDER > this.state.dataFull.length) ALL_LOADED = true
                             this.setState({
                                 dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER),
                                 dataSearch: this.state.dataFull.slice(0, NUMBER_ROW_RENDER)
                             })
-                            NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
                         })
-                    }
+                    } else ALL_LOADED = true
+                NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
                 }
             )
     }
@@ -245,13 +246,16 @@ export default class NewFeedScreen extends React.Component {
                 if (!responseJson.status) {
                         this.setState({dataFull: responseJson.data}, function () {
                             console.log(this.state.dataFull)
+                            if (NUMBER_ROW_RENDER > this.state.dataFull.length) ALL_LOADED = true
                             this.setState({
                                 dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER),
                                 dataSearch: this.state.dataFull.slice(0, NUMBER_ROW_RENDER)
                             })
-                            NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
+
                         })
-                    }
+                }
+                else ALL_LOADED = true
+                NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
                 }
             )
     }

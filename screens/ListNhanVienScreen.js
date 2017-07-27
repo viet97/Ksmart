@@ -25,7 +25,7 @@ import TabNavigator from 'react-native-tab-navigator';
 import MapListScreen from "./MapListScreen";
 
 var NUMBER_ROW_RENDER = 10
-ALL_LOADED = false
+var ALL_LOADED = false
 var SEARCH_STRING = '';
 var {width, height} = Dimensions.get('window');
 export default class ListNhanVienScreen extends React.Component {
@@ -128,14 +128,16 @@ export default class ListNhanVienScreen extends React.Component {
                 if (responseJson.status) {
                     var arr = this.fillData(responseJson.dsNhanVien)
                     this.setState({dataFull: arr}, function () {
-
+                        if (NUMBER_ROW_RENDER > this.state.dataFull.length) ALL_LOADED = true
                             this.setState({
                                 dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER),
                                 dataSearch: this.state.dataFull.slice(0, NUMBER_ROW_RENDER)
                             })
-                            NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
-                        })
-                    }
+
+                    })
+                }
+                else ALL_LOADED = true
+                NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
                 }
             )
     }
@@ -304,15 +306,16 @@ export default class ListNhanVienScreen extends React.Component {
                 if (responseJson.status) {
                         this.setState({dataFull: responseJson.dsNhanVien}, function () {
 
-
+                            if (NUMBER_ROW_RENDER > this.state.dataFull.length) ALL_LOADED = true
                             this.setState({
                                 dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER),
                                 dataSearch: this.state.dataFull.splice(0, NUMBER_ROW_RENDER)
                                 }
                             )
-                            NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
+
                         })
-                    }
+                } else ALL_LOADED = true
+                NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
                 }
             )
     }
