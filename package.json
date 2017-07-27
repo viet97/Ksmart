@@ -42,7 +42,8 @@
     "react-redux": "^5.0.5",
     "realm": "^1.8.3",
     "redux": "^3.7.1",
-    "rn-textinputlayout": "^1.0.4"
+    "rn-textinputlayout": "^1.0.4",
+    "rn-viewpager": "^1.2.3"
   },
   "devDependencies": {
     "babel-jest": "20.0.3",

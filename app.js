@@ -15,6 +15,7 @@ import MapScreen from "./screens/MapScreen";
 import ChartScreen from "./screens/ChartScreen";
 import MapListScreen from "./screens/MapListScreen";
 import OrderListScreen from "./screens/OrderListScreen";
+import ChooseTypeChart from "./screens/ChooseTypeChart";
 
 const Ksmart = StackNavigator({
     Splash: {screen: SplashScreen},
@@ -23,6 +24,6 @@ const Ksmart = StackNavigator({
     Home: {screen: HomeScreen},
     Menu: {screen: MenuScreen},
     Map: {screen: MapScreen},
-
+    TypeChart: {screen: ChooseTypeChart}
 });
 AppRegistry.registerComponent('Ksmart', () => Ksmart);

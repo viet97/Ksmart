@@ -8,8 +8,8 @@ import React from 'react';
 import Drawer from 'react-native-drawer';
 import Color from '../configs/color'
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
-import  DetailMessageScreen from './DetailMessageScreen'
-import  DetailNhanVien from './DetailNhanVien'
+import DetailMessageScreen from './DetailMessageScreen'
+import DetailNhanVien from './DetailNhanVien'
 import * as Animatable from 'react-native-animatable';
 import {
     AppRegistry,
@@ -36,6 +36,7 @@ import ChartScreen from "./ChartScreen";
 import URlConfig from "../configs/url";
 import CustomerPlant from "./CustomerPlant";
 import AboutUsScreen from "./AboutUsScreen";
+import ChooseTypeChart from "./ChooseTypeChart";
 
 var {height} = Dimensions.get('window').height;
 var func;
@@ -97,7 +98,6 @@ export default class HomeScreen extends React.Component {
             vido: 0,
         })
     }
-
 
     showToogle() {
         backcount = 0
@@ -218,7 +218,7 @@ export default class HomeScreen extends React.Component {
                     }}
                 />
             case "Chart":
-                return <ChartScreen backToHome={() => {
+                return <ChooseTypeChart backToHome={() => {
                     this.setState({screenName: 'Menu'})
                 }}/>
             case "Report":

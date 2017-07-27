@@ -18,6 +18,9 @@ export default class AboutUsScreen extends React.Component {
     }
 
     render() {
+        const phonenumber = '043.565.2626';
+        const hotline = '0902.295.486';
+        const email = 'phanmem@lachongmedia.vn';
         return (
             <View style={{flexDirection: 'column', flex: 1}}>
                 <View style={styles.titleStyle}>
@@ -40,17 +43,17 @@ export default class AboutUsScreen extends React.Component {
                     <View style={{flexDirection: 'row', backgroundColor: 'transparent'}}>
                         <Text>Điện thoại: </Text>
                         <TouchableOpacity onPress={() => {
-                            Communications.phonecall('043.565.2626', true)
+                            Communications.phonecall(phonenumber, true)
                         }}>
-                            <Text style={{color: '#3cbdee'}}>043.565.2626</Text>
+                            <Text style={{color: '#3cbdee'}}>{phonenumber}</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={{flexDirection: 'row', backgroundColor: 'transparent'}}>
                         <Text>Hotline: </Text>
                         <TouchableOpacity onPress={() => {
-                            Communications.phonecall('0902.295.486', true)
+                            Communications.phonecall(hotline, true)
                         }}>
-                            <Text style={{color: '#3cbdee'}}>0902.295.486</Text>
+                            <Text style={{color: '#3cbdee'}}>{hotline}</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={{flexDirection: 'row', backgroundColor: 'transparent'}}>
@@ -62,8 +65,8 @@ export default class AboutUsScreen extends React.Component {
                     <View style={{flexDirection: 'row', backgroundColor: 'transparent'}}>
                         <Text>Email: </Text>
                         <TouchableOpacity
-                            onPress={() => Communications.email(['phanmem@lachongmedia.vn'], null, null, 'My Subject', 'My body text')}>
-                            <Text style={{color: '#3cbdee'}}>phanmem@lachongmedia.vn</Text>
+                            onPress={() => Communications.email([email], null, null, 'My Subject', 'My body text')}>
+                            <Text style={{color: '#3cbdee'}}>{email}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

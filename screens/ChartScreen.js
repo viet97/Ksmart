@@ -105,25 +105,27 @@ export default class ChartScreen extends React.Component {
                 </View>
             )
         }
-        return (<Text style={{alignSelf: 'center', textAlign: 'center', fontSize: 20}}>Không có dữ liệu</Text>)
+        return (
+            <Text style={{alignSelf: 'center', textAlign: 'center', fontSize: 20, backgroundColor: 'transparent'}}>Không
+                có dữ liệu</Text>)
 
     }
 
     getTitleChart() {
-        var a = 'TongTien'
-        var b = this.state.keyChart
-        var title = ''
+        let a = 'TongTien';
+        let b = this.state.keyChart;
+        let title = '';
         if (b.localeCompare(a)) {
             title = 'Biểu đồ sản lượng tháng ' + this.state.month + ' năm ' + this.state.year
         } else {
             title = 'Biểu đồ doanh thu tháng ' + this.state.month + ' năm ' + this.state.year
         }
-        return (<Text style={{margin: 8, textAlign: 'center'}}>{title}</Text>)
+        return (<Text style={{margin: 8, textAlign: 'center', backgroundColor: 'transparent'}}>{title}</Text>)
     }
 
     render() {
         console.log('abcdef', this.state.month, this.state.year)
-        var {height, width} = Dimensions.get('window');
+        let {height, width} = Dimensions.get('window');
         let options = {
             width: width - 40,
             height: 300,
