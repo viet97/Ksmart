@@ -21,11 +21,19 @@ export default class ChooseTypeChart extends React.Component {
                 alignItems: 'center',
                 justifyContent: 'center'
             }}>
-                <TouchableOpacity style={styles.touchableStyle}>
+                <TouchableOpacity
+                    onPress={() => this.props.goToDoanhThuChart()}
+                    style={styles.touchableStyle}>
                     <Text style={styles.textStyle}>Biểu đồ doanh thu
                         sản lượng</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.touchableStyle}>
+                    <Text style={styles.textStyle}>Biểu đồ doanh thu
+                        sản lượng theo nhân viên</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => this.props.goToOnlineChart()}
+                    style={styles.touchableStyle}>
                     <Text style={styles.textStyle}>Biểu đồ tần suất
                         nhân viên online</Text>
                 </TouchableOpacity>

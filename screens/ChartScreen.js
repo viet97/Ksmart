@@ -183,7 +183,7 @@ export default class ChartScreen extends React.Component {
                 <Image source={require('../images/bg.png')}
                        style={{position: 'absolute', left: 0, right: 0, top: 0, bottom: 0}}/>
                 <View style={styles.titleStyle}>
-                    <TouchableOpacity onPress={() => this.props.backToHome()}
+                    <TouchableOpacity onPress={() => this.props.backToChooseTypeChart()}
                                       style={styles.iconStyle}>
                         <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
                     </TouchableOpacity>
@@ -194,7 +194,7 @@ export default class ChartScreen extends React.Component {
                         <View></View>
                     </TouchableOpacity>
                 </View>
-                <TouchableOpacity onPress={() => this.props.backToHome()}
+                <TouchableOpacity onPress={() => this.props.backToChooseTypeChart()}
                                   style={{
                                       width: 50,
                                       height: 50,

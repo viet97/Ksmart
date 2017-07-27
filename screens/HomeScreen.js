@@ -37,6 +37,7 @@ import URlConfig from "../configs/url";
 import CustomerPlant from "./CustomerPlant";
 import AboutUsScreen from "./AboutUsScreen";
 import ChooseTypeChart from "./ChooseTypeChart";
+import OnlineChartScreen from "./OnlineChartScreen";
 
 var {height} = Dimensions.get('window').height;
 var func;
@@ -218,9 +219,30 @@ export default class HomeScreen extends React.Component {
                     }}
                 />
             case "Chart":
-                return <ChooseTypeChart backToHome={() => {
-                    this.setState({screenName: 'Menu'})
-                }}/>
+                return <ChooseTypeChart
+                    backToHome={() => {
+                        this.setState({screenName: 'Menu'})
+                    }}
+                    goToOnlineChart={() => {
+                        this.setState({screenName: 'OnlineChart'})
+                    }}
+                    goToDoanhThuNVChart={() => {
+                        this.setState({screenName: 'DoanhThuNVChart'})
+                    }}
+                    goToTravelChart={() => {
+                        this.setState({screenName: 'TravelChart'})
+                    }}
+                    goToDoanhThuChart={() => {
+                        this.setState({screenName: 'DoanhThuChart'})
+                    }}
+                />
+            case 'OnlineChart':
+                return <OnlineChartScreen
+                    backToChooseTypeChart={() => this.setState({screenName: 'Chart'})}/>
+            case 'DoanhThuChart':
+                return <ChartScreen
+                    backToChooseTypeChart={() => this.setState({screenName: 'Chart'})}/>
+
             case "Report":
                 return <ReportScreen backToHome={() => {
                     this.setState({screenName: 'Menu'})
