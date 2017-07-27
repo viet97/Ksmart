@@ -13,10 +13,12 @@ import StockLine from "react-native-pathjs-charts/src/StockLine";
 import DatePicker from "react-native-datepicker";
 import URlConfig from "../configs/url";
 import Color from "../configs/color";
-export default class OnlineChartScreen extends React.Component {
+
+export default class RevenuePerPersonnelScreen extends React.Component {
     static navigationOptions = {
         header: null
     };
+
     constructor(props) {
         super(props);
         var today = new Date();
@@ -34,10 +36,11 @@ export default class OnlineChartScreen extends React.Component {
         var now = new Date();
         this.state = {
             date: today,
+            dateto: today,
             isEmpty: true,
             data: [],
             arr: [],
-            keyChart: 'sonhanvien'
+            keyChart: 'TongTien'
         }
     }
 
@@ -47,27 +50,24 @@ export default class OnlineChartScreen extends React.Component {
 
 
     getDataChart() {
-        fetch(URlConfig.getOnlineChartLink(this.state.date))
+        fetch(URlConfig.getRevenuePerson(this.state.date, this.state.dateto))
             .then((response) => (response.json()))
             .then((responseJson) => {
                     console.log(responseJson.data)
-                let res = responseJson.data;
-                let dt = []
+                    let res = responseJson.data;
+                    let dt = []
 
-                for (let item of res) {
-                    let arr = []
+                    for (let item of res) {
+                        let arr = []
 
 
-                    let time = item['gio'];
-                        item['name'] = time
-
+                        let name = item['tennhanvien'];
+                        item['name'] = name
                         arr.push(item)
                         dt.push(arr)
-                        // date = item['thoigian'].split('/')[0];
-                        // item['name'] = date
                     }
-                let dem = 0;
-                for (let item in res) {
+                    let dem = 0;
+                    for (let item in res) {
                         if (res[item].sonhanvien !== 0) {
                             dem = dem + 1;
                             break;
@@ -134,10 +134,12 @@ export default class OnlineChartScreen extends React.Component {
                 orient: 'bottom',
                 label: {
                     fontFamily: 'Arial',
-                    fontSize: 2,
+                    fontSize: 10,
                     fontWeight: true,
-                    fill: '#34495E'
-                }
+                    fill: '#34495E',
+                    rotate: 270,
+                    textAlign: 'justify'
+                },
             },
             axisY: {
                 showAxis: true,
@@ -150,7 +152,8 @@ export default class OnlineChartScreen extends React.Component {
                     fontFamily: 'Arial',
                     fontSize: 8,
                     fontWeight: true,
-                    fill: '#34495E'
+                    fill: '#34495E',
+                    transform: [{rotate: '90deg'}]
                 }
             }
         }
@@ -183,7 +186,7 @@ export default class OnlineChartScreen extends React.Component {
                                   }}/>
                 <View style={{flexDirection: 'column', flex: 9}}>
                     <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: 60}}>
-                        <Text style={{backgroundColor: 'transparent'}}>Chọn ngày </Text>
+                        <Text style={{backgroundColor: 'transparent'}}>Từ</Text>
                         <DatePicker
                             style={{marginLeft: 8}}
                             date={this.state.date}
@@ -203,7 +206,34 @@ export default class OnlineChartScreen extends React.Component {
                                 },
                             }}
                             onDateChange={(date) => {
-                                this.ondateChange(date);
+                                this.setState({date: date}, function () {
+                                    this.getDataChart()
+                                })
+                            }}
+                        />
+                        <Text style={{backgroundColor: 'transparent'}}>đến</Text>
+                        <DatePicker
+                            style={{marginLeft: 8}}
+                            date={this.state.dateto}
+                            mode="date"
+                            placeholder="select date"
+                            format="DD-MM-YYYY"
+
+                            confirmBtnText="Xác nhận"
+                            cancelBtnText="Huỷ bỏ"
+                            customStyles={{
+                                dateIcon: {},
+                                dateInput: {
+                                    backgroundColor: 'white',
+                                    borderWidth: 1,
+                                    borderColor: 'gray',
+                                    borderRadius: 4,
+                                },
+                            }}
+                            onDateChange={(date) => {
+                                this.setState({dateto: date}, function () {
+                                    this.getDataChart()
+                                })
                             }}
                         />
                     </View>
@@ -216,12 +246,6 @@ export default class OnlineChartScreen extends React.Component {
 
     }
 
-    ondateChange(date) {
-        this.setState({date: date}, function () {
-            this.getDataChart();
-        })
-
-    }
 
     render1() {
         let options = {

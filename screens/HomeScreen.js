@@ -38,6 +38,7 @@ import CustomerPlant from "./CustomerPlant";
 import AboutUsScreen from "./AboutUsScreen";
 import ChooseTypeChart from "./ChooseTypeChart";
 import OnlineChartScreen from "./OnlineChartScreen";
+import RevenuePerPersonnelScreen from "./RevenuePerPersonnelScreen";
 
 var {height} = Dimensions.get('window').height;
 var func;
@@ -236,6 +237,8 @@ export default class HomeScreen extends React.Component {
                         this.setState({screenName: 'DoanhThuChart'})
                     }}
                 />
+            case 'DoanhThuNVChart':
+                return <RevenuePerPersonnelScreen backToChooseTypeChart={() => this.setState({screenName: 'Chart'})}/>
             case 'OnlineChart':
                 return <OnlineChartScreen
                     backToChooseTypeChart={() => this.setState({screenName: 'Chart'})}/>

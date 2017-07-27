@@ -26,6 +26,12 @@ export default class URlConfig {
             + '&ngaycaidat='
     }
 
+    static getRevenuePerson(from, to) {
+        let data = URlConfig.OBJLOGIN;
+        return data.urlserver + '/AppBieuDoDoanhThuNhanVien.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idct=' + data.idcongty + '&tungay=' + from + '&denngay=' + to;
+
+    }
+
     static getOnlineChartLink(date) {
         // return 'http://jav.ksmart.vn/AppBieuOnlineTrongNgay.aspx?idct=1&idquanly=47&ngay=26-07-2017'
         let data = URlConfig.OBJLOGIN;

@@ -58,7 +58,7 @@ export default class ChooseTypeChart extends React.Component {
                         <Text style={styles.textStyle}>Biểu đồ doanh thu
                             sản lượng</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.touchableStyle}>
+                    <TouchableOpacity style={styles.touchableStyle} onPress={() => this.props.goToDoanhThuNVChart()}>
                         <Text style={styles.textStyle}>Biểu đồ doanh thu
                             sản lượng theo nhân viên</Text>
                     </TouchableOpacity>
