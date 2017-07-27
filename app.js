@@ -16,8 +16,10 @@ import ChartScreen from "./screens/ChartScreen";
 import MapListScreen from "./screens/MapListScreen";
 import OrderListScreen from "./screens/OrderListScreen";
 import ChooseTypeChart from "./screens/ChooseTypeChart";
+import OnlineChartScreen from "./screens/OnlineChartScreen";
 
 const Ksmart = StackNavigator({
+    OnlineChart: {screen: OnlineChartScreen},
     Splash: {screen: SplashScreen},
     Chart: {screen: ChartScreen},
     Login: {screen: LoginScreen},
