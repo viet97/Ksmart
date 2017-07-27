@@ -34,7 +34,7 @@ export default class OnlineChartScreen extends React.Component {
             isEmpty: true,
             data: [],
             arr: [],
-            keyChart: 'gio'
+            keyChart: 'sonhanvien'
         }
     }
 
