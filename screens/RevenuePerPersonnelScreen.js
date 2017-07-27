@@ -161,13 +161,18 @@ export default class RevenuePerPersonnelScreen extends React.Component {
             <View style={{flex: 1}}>
 
                 <Image source={require('../images/bg.png')}
-                       style={{position: 'absolute', left: 0, right: 0, top: 0, bottom: 0}}/>
+                       style={{position: 'absolute', left: 0, right: 0, top: 16, bottom: 0}}/>
                 <View style={styles.titleStyle}>
                     <TouchableOpacity onPress={() => this.props.backToChooseTypeChart()}
                                       style={styles.iconStyle}>
                         <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
                     </TouchableOpacity>
-                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Biểu đồ nhân viên online </Text>
+                    <Text style={{
+                        fontSize: 20,
+                        color: 'white',
+                        alignSelf: 'center',
+                        textAlign: 'center'
+                    }}>{'Biểu đồ doanh thu sản lượng \n theo nhân viên'}</Text>
                     <TouchableOpacity style={{alignSelf: 'center'}} onPress={() => {
                         this.showDialog();
                     }}>
@@ -310,6 +315,7 @@ const styles = StyleSheet.create({
         height: 80
     },
     titleStyle: {
+        marginTop: Platform.OS === 'ios' ? 16 : 0,
         flex: 1,
         elevation: 15,
         justifyContent: 'space-between',
@@ -328,11 +334,8 @@ const styles = StyleSheet.create({
         paddingBottom: 8
     }, iconStyle: {
         alignSelf: 'center',
-        width: 24,
-        height: 24,
         backgroundColor: "transparent",
-        marginLeft: 8,
-        marginTop: (Platform.OS === 'ios') ? 8 : 0
+        padding: 8,
     },
     textStyle: {
         fontSize: 18,

@@ -85,6 +85,7 @@ const styles = StyleSheet.create({
         height: 80
     },
     titleStyle: {
+        marginTop: Platform.OS === 'ios' ? 16 : 0,
         flex: 1,
         elevation: 15,
         justifyContent: 'space-between',
