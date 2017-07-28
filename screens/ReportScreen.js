@@ -27,6 +27,9 @@ import orderListData from '../dbcontext/orderListData'
 import AtoZListView from 'react-native-atoz-listview';
 import Search from 'react-native-search-box';
 import Toast from 'react-native-simple-toast';
+import ultils from "../configs/ultils";
+import Communications from 'react-native-communications';
+
 var {height, width} = Dimensions.get('window');
 var GiftedListView = require('react-native-gifted-listview');
 
@@ -53,6 +56,7 @@ export default class ReportScreen extends Component {
         }
         today = dd + '-' + mm + '-' + yyyy;
         this.state = {
+            title: 'Báo cáo doanh thu sản lượng',
             reportStatus: [],
             numberPickType: 0,
             dateFrom: today,
@@ -80,15 +84,23 @@ export default class ReportScreen extends Component {
 
     getReportListFromServer(dateFrom, dateTo) {
         let url = ''
+
         switch (this.state.numberPickType) {
             case 0:
                 url = URlConfig.getReportList(dateFrom, dateTo)
+                this.setState({title: 'Báo cáo doanh thu sản lượng'})
                 break
             case 1:
                 url = URlConfig.getLinkTopDoanhThu(dateFrom, dateTo, 1)
+                this.setState({title: '10 nhân viên doanh thu cao nhất'})
                 break
             case 2:
                 url = URlConfig.getLinkTopDoanhThu(dateFrom, dateTo, 2)
+                this.setState({title: '10 nhân viên doanh thu thấp nhất'})
+                break
+            case 3:
+                url = URlConfig.getLinkKhongCoDoanhThu(dateFrom, dateTo)
+                this.setState({title: 'Nhân viên không có doanh thu'})
                 break
         }
 
@@ -138,54 +150,100 @@ export default class ReportScreen extends Component {
         this.getReportListFromServer(this.state.dateFrom, this.state.dateTo)
     }
 
-    renderReport(item) {
+    renderKhongCoDoanhThu(item) {
+        return (
+            <TouchableOpacity onPress={() => Communications.phonecall(item.dienthoai, true)}>
+                <View style={{
+                    marginTop: 4, marginBottom: 4, marginLeft: 8, marginRight: 8,
+                    backgroundColor: Color.backGroundItemFlatList,
+                    borderTopColor: '#227878'
+                }}>
+                    <View style={{
+                        flexDirection: 'row',
+                        marginLeft: 8,
+                        marginTop: 8,
+                        marginRight: 8,
+                        marginBottom: 4
+                    }}>
+                        <Text style={{alignSelf: 'center'}}>Tên nhân viên:</Text>
+                        <Text style={{
+                            marginLeft: 8,
+                            fontSize: 18,
+                            fontWeight: "bold"
+                        }}>{item.tennhanvien}</Text>
+                    </View>
 
+                    <View style={{
+                        flexDirection: 'row',
+                        marginLeft: 8,
+                        marginTop: 4,
+                        marginRight: 8,
+                        marginBottom: 4
+                    }}>
+                        <Text>khách hàng cuối:</Text>
+                        <Text style={{marginLeft: 8}}>{item.donhangcuoi_tenkhachhang}</Text>
+                    </View>
+                    <View style={{
+                        flexDirection: 'row',
+                        marginLeft: 8,
+                        marginTop: 4,
+                        marginRight: 8,
+                        marginBottom: 4
+                    }}>
+                        <Text>Đơn hàng cuối lúc:</Text>
+                        <Text style={{marginLeft: 8}}>{item.donhangcuoi_thoigian}</Text>
+                    </View>
+                </View>
+            </TouchableOpacity>
+        )
     }
 
     renderTopDoanhThu(item) {
         Toast.show('render')
         return (
-            <View style={{
-                marginTop: 4, marginBottom: 4, marginLeft: 8, marginRight: 8,
-                backgroundColor: Color.backGroundItemFlatList,
-                borderTopColor: '#227878'
-            }}>
+            <TouchableOpacity onPress={() => Communications.phonecall(item.dienthoai, true)}>
                 <View style={{
-                    flexDirection: 'row',
-                    marginLeft: 8,
-                    marginTop: 8,
-                    marginRight: 8,
-                    marginBottom: 4
+                    marginTop: 4, marginBottom: 4, marginLeft: 8, marginRight: 8,
+                    backgroundColor: Color.backGroundItemFlatList,
+                    borderTopColor: '#227878'
                 }}>
-                    <Icon1 size={24} color="black" name="ios-people-outline"/>
-                    <Text style={{
+                    <View style={{
+                        flexDirection: 'row',
                         marginLeft: 8,
-                        fontSize: 18,
-                        fontWeight: "bold"
-                    }}>{item.tennhanvien}</Text>
-                </View>
+                        marginTop: 8,
+                        marginRight: 8,
+                        marginBottom: 4
+                    }}>
+                        <Icon1 size={24} color="black" name="ios-people-outline"/>
+                        <Text style={{
+                            marginLeft: 8,
+                            fontSize: 18,
+                            fontWeight: "bold"
+                        }}>{item.tennhanvien}</Text>
+                    </View>
 
-                <View style={{
-                    flexDirection: 'row',
-                    marginLeft: 8,
-                    marginTop: 4,
-                    marginRight: 8,
-                    marginBottom: 4
-                }}>
-                    <Icon2 size={24} color="black" name="news"/>
-                    <Text style={{marginLeft: 8}}>{item.DonHang}</Text>
+                    <View style={{
+                        flexDirection: 'row',
+                        marginLeft: 8,
+                        marginTop: 4,
+                        marginRight: 8,
+                        marginBottom: 4
+                    }}>
+                        <Icon2 size={24} color="black" name="news"/>
+                        <Text style={{marginLeft: 8}}>{item.DonHang}</Text>
+                    </View>
+                    <View style={{
+                        flexDirection: 'row',
+                        marginLeft: 8,
+                        marginTop: 4,
+                        marginRight: 8,
+                        marginBottom: 4
+                    }}>
+                        <Icon size={24} color="green" name="attach-money"/>
+                        <Text style={{marginLeft: 8}}>{ultils.getMoney(item.TongTien, 0)}</Text>
+                    </View>
                 </View>
-                <View style={{
-                    flexDirection: 'row',
-                    marginLeft: 8,
-                    marginTop: 4,
-                    marginRight: 8,
-                    marginBottom: 4
-                }}>
-                    <Icon size={24} color="green" name="attach-money"/>
-                    <Text style={{marginLeft: 8}}>{item.TongTien} Đ</Text>
-                </View>
-            </View>
+            </TouchableOpacity>
         )
     }
 
@@ -239,7 +297,7 @@ export default class ReportScreen extends Component {
                     marginBottom: 4
                 }}>
                     <Icon size={24} color="green" name="attach-money"/>
-                    <Text style={{marginLeft: 8}}>{item.tongtien} Đ</Text>
+                    <Text style={{marginLeft: 8}}>{ultils.getMoney(item.tongtien, 0)}</Text>
                 </View>
             </View>
         )
@@ -302,6 +360,8 @@ export default class ReportScreen extends Component {
                                 return this.renderTopDoanhThu(item)
                             case 2:
                                 return this.renderTopDoanhThu(item)
+                            case 3:
+                                return this.renderKhongCoDoanhThu(item)
 
                         }
                     }}
@@ -321,8 +381,7 @@ export default class ReportScreen extends Component {
                                       style={styles.iconStyle}>
                         <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
                     </TouchableOpacity>
-                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Báo cáo doanh thu, sản
-                        lượng</Text>
+                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>{this.state.title}</Text>
                     <View style={{backgroundColor: 'transparent', width: 35, height: 35}}/>
                 </View>
                 <TouchableOpacity onPress={() => this.props.backToHome()}
@@ -335,64 +394,66 @@ export default class ReportScreen extends Component {
                                       right: 0,
                                       bottom: 0
                                   }}/>
-                <View style={{width: width, flexDirection: 'row', justifyContent: 'space-between'}}>
-                    <DatePicker
-                        date={this.state.dateFrom}
-                        mode="date"
-                        placeholder="select date"
-                        format="DD-MM-YYYY"
-                        confirmBtnText="Xác nhận"
-                        cancelBtnText="Huỷ bỏ"
-                        customStyles={{
-                            dateIcon: {},
-                            dateInput: {
-                                backgroundColor: 'white',
-                                borderWidth: 1,
-                                borderColor: 'gray',
-                                borderRadius: 4,
-                            }
-                        }}
-                        onDateChange={(date) => {
+                <View>
+                    <View style={{width: width, flexDirection: 'row', justifyContent: 'space-between'}}>
+                        <DatePicker
+                            date={this.state.dateFrom}
+                            mode="date"
+                            placeholder="select date"
+                            format="DD-MM-YYYY"
+                            confirmBtnText="Xác nhận"
+                            cancelBtnText="Huỷ bỏ"
+                            customStyles={{
+                                dateIcon: {},
+                                dateInput: {
+                                    backgroundColor: 'white',
+                                    borderWidth: 1,
+                                    borderColor: 'gray',
+                                    borderRadius: 4,
+                                }
+                            }}
+                            onDateChange={(date) => {
 
-                            this.ondateChange(date, this.state.dateTo);
-                        }}
-                    />
+                                this.ondateChange(date, this.state.dateTo);
+                            }}
+                        />
 
-                    <Text style={{alignSelf: 'center'}}>Đến ngày </Text>
-                    <DatePicker
-                        date={this.state.dateTo}
-                        mode="date"
-                        placeholder="select date"
-                        format="DD-MM-YYYY"
+                        <Text style={{alignSelf: 'center'}}>Đến ngày </Text>
+                        <DatePicker
+                            date={this.state.dateTo}
+                            mode="date"
+                            placeholder="select date"
+                            format="DD-MM-YYYY"
 
-                        confirmBtnText="Xác nhận"
-                        cancelBtnText="Huỷ bỏ"
-                        customStyles={{
-                            dateIcon: {},
-                            dateInput: {
-                                backgroundColor: 'white',
-                                borderWidth: 1,
-                                borderColor: 'gray',
-                                borderRadius: 4,
-                            },
-                        }}
-                        onDateChange={(date) => {
-                            this.ondateChange(this.state.dateFrom, date);
-                        }}
-                    />
+                            confirmBtnText="Xác nhận"
+                            cancelBtnText="Huỷ bỏ"
+                            customStyles={{
+                                dateIcon: {},
+                                dateInput: {
+                                    backgroundColor: 'white',
+                                    borderWidth: 1,
+                                    borderColor: 'gray',
+                                    borderRadius: 4,
+                                },
+                            }}
+                            onDateChange={(date) => {
+                                this.ondateChange(this.state.dateFrom, date);
+                            }}
+                        />
+                    </View>
+                    <Picker style={{height: 44, width: width}}
+                            itemStyle={{color: 'red', height: 88}}
+                            selectedValue={this.state.numberPickType}
+                            onValueChange={(value) => {
+                                this.setState({numberPickType: value}, function () {
+                                    this.getReportListFromServer(this.state.dateFrom, this.state.dateTo)
+                                })
+
+
+                            }}>
+                        {reportStatusItem}
+                    </Picker>
                 </View>
-                <Picker style={{height: 88, width: width}}
-                        itemStyle={{color: 'red', height: 88}}
-                        selectedValue={this.state.numberPickType}
-                        onValueChange={(value) => {
-                            this.setState({numberPickType: value}, function () {
-                                this.getReportListFromServer(this.state.dateFrom, this.state.dateTo)
-                            })
-
-
-                        }}>
-                    {reportStatusItem}
-                </Picker>
                 {this.flatListorIndicator()}
             </View>
 

@@ -25,6 +25,7 @@ import Dialog from '../components/Dialog'
 import orderListData from '../dbcontext/orderListData'
 import AtoZListView from 'react-native-atoz-listview';
 import Search from 'react-native-search-box';
+import ultils from "../configs/ultils";
 var {height, width} = Dimensions.get('window');
 var GiftedListView = require('react-native-gifted-listview');
 
@@ -73,17 +74,7 @@ export default class OrderListScreen extends Component {
         }
     }
 
-    getMoney(n, dp) {
-        var e = '', s = e + n, l = s.length, b = n < 0 ? 1 : 0,
-            i = s.lastIndexOf('.'), j = i == -1 ? l : i,
-            r = e, d = s.substr(j + 1, dp);
-        while ((j -= 3) > b) {
-            r = ',' + s.substr(j, 3) + r;
-        }
-        return s.substr(0, j + 3) + r +
-            (dp ? '.' + d + ( d.length < dp ?
-                    ('00000').substr(0, dp - d.length) : e) : e);
-    };
+
     getOrderListFromServer(datef, datet) {
         this.setState({dataRender: null})
         ALL_LOADED = false
@@ -352,7 +343,7 @@ export default class OrderListScreen extends Component {
                             }}>
                             <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 8}}>
                                 <Text style={{fontWeight: "bold", fontSize: 18}}>MĐH {item.mathamchieu} </Text>
-                                <Text style={{fontSize: 18}}>{this.getMoney(item.tongtien, 0)} </Text>
+                                <Text style={{fontSize: 18}}>{ultils.getMoney(item.tongtien, 0)} </Text>
                             </View>
                             <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 8}}>
                                 <View style={{flex: 1, marginRight: 4}}>
