@@ -11,7 +11,7 @@ import {
     FlatList,
     TouchableHightLight,
     ActivityIndicator,
-    Platform
+    Platform,
 } from "react-native";
 import URlConfig from "../configs/url";
 import Color from '../configs/color'
@@ -26,6 +26,7 @@ import Dialog from '../components/Dialog'
 import orderListData from '../dbcontext/orderListData'
 import AtoZListView from 'react-native-atoz-listview';
 import Search from 'react-native-search-box';
+import Toast from 'react-native-simple-toast';
 var {height, width} = Dimensions.get('window');
 var GiftedListView = require('react-native-gifted-listview');
 
@@ -52,6 +53,8 @@ export default class ReportScreen extends Component {
         }
         today = dd + '-' + mm + '-' + yyyy;
         this.state = {
+            reportStatus: [],
+            numberPickType: 0,
             dateFrom: today,
             dateTo: today,
             refreshing: false,
@@ -63,6 +66,12 @@ export default class ReportScreen extends Component {
 
     componentWillMount() {
         ALL_LOADED = true
+        let arr = []
+        arr.push('Doanh thu sản lượng')
+        arr.push('10 nhân viên doanh thu cao nhất')
+        arr.push('10 nhân viên doanh thu thấp nhất')
+        arr.push('Nhân viên chưa có doanh thu trong ngày')
+        this.setState({reportStatus: arr})
     }
 
     componentDidMount() {
@@ -70,13 +79,27 @@ export default class ReportScreen extends Component {
     }
 
     getReportListFromServer(dateFrom, dateTo) {
+        let url = ''
+        switch (this.state.numberPickType) {
+            case 0:
+                url = URlConfig.getReportList(dateFrom, dateTo)
+                break
+            case 1:
+                url = URlConfig.getLinkTopDoanhThu(dateFrom, dateTo, 1)
+                break
+            case 2:
+                url = URlConfig.getLinkTopDoanhThu(dateFrom, dateTo, 2)
+                break
+        }
+
         this.setState({dataRender: null})
-        console.log(URlConfig.getMessageList(dateFrom, dateTo))
-        fetch(URlConfig.getReportList(dateFrom, dateTo))
+        fetch(url)
             .then((response) => response.json())
             .then((responseJson) => {
+
                 console.log(responseJson)
-                if (responseJson.status) {
+                if (responseJson.data !== null) {
+
                     this.setState({
                         dataFull: responseJson.data
                     }, function () {
@@ -115,6 +138,113 @@ export default class ReportScreen extends Component {
         this.getReportListFromServer(this.state.dateFrom, this.state.dateTo)
     }
 
+    renderReport(item) {
+
+    }
+
+    renderTopDoanhThu(item) {
+        Toast.show('render')
+        return (
+            <View style={{
+                marginTop: 4, marginBottom: 4, marginLeft: 8, marginRight: 8,
+                backgroundColor: Color.backGroundItemFlatList,
+                borderTopColor: '#227878'
+            }}>
+                <View style={{
+                    flexDirection: 'row',
+                    marginLeft: 8,
+                    marginTop: 8,
+                    marginRight: 8,
+                    marginBottom: 4
+                }}>
+                    <Icon1 size={24} color="black" name="ios-people-outline"/>
+                    <Text style={{
+                        marginLeft: 8,
+                        fontSize: 18,
+                        fontWeight: "bold"
+                    }}>{item.tennhanvien}</Text>
+                </View>
+
+                <View style={{
+                    flexDirection: 'row',
+                    marginLeft: 8,
+                    marginTop: 4,
+                    marginRight: 8,
+                    marginBottom: 4
+                }}>
+                    <Icon2 size={24} color="black" name="news"/>
+                    <Text style={{marginLeft: 8}}>{item.DonHang}</Text>
+                </View>
+                <View style={{
+                    flexDirection: 'row',
+                    marginLeft: 8,
+                    marginTop: 4,
+                    marginRight: 8,
+                    marginBottom: 4
+                }}>
+                    <Icon size={24} color="green" name="attach-money"/>
+                    <Text style={{marginLeft: 8}}>{item.TongTien} Đ</Text>
+                </View>
+            </View>
+        )
+    }
+
+    renderDoanhThuSanLuong(item) {
+        return (
+            <View style={{
+                marginTop: 4, marginBottom: 4, marginLeft: 8, marginRight: 8,
+                backgroundColor: Color.backGroundItemFlatList,
+                borderTopColor: '#227878'
+            }}>
+                <View style={{
+                    flexDirection: 'row',
+                    marginLeft: 8,
+                    marginTop: 8,
+                    marginRight: 8,
+                    marginBottom: 4
+                }}>
+                    <Icon1 size={24} color="black" name="ios-people-outline"/>
+                    <Text style={{
+                        marginLeft: 8,
+                        fontSize: 18,
+                        fontWeight: "bold"
+                    }}>{item.tenkhachhang}</Text>
+                </View>
+                <View style={{
+                    flexDirection: 'row',
+                    marginLeft: 8,
+                    marginTop: 4,
+                    marginRight: 8,
+                    marginBottom: 4
+                }}>
+                    <Icon2 size={24} color="red" name="location-pin"/>
+                    <Text style={{marginLeft: 8}}>{item.diachikhachhang}</Text>
+
+                </View>
+                <View style={{
+                    flexDirection: 'row',
+                    marginLeft: 8,
+                    marginTop: 4,
+                    marginRight: 8,
+                    marginBottom: 4
+                }}>
+                    <Icon2 size={24} color="black" name="news"/>
+                    <Text style={{marginLeft: 8}}>{item.sodonhang}</Text>
+                </View>
+                <View style={{
+                    flexDirection: 'row',
+                    marginLeft: 8,
+                    marginTop: 4,
+                    marginRight: 8,
+                    marginBottom: 4
+                }}>
+                    <Icon size={24} color="green" name="attach-money"/>
+                    <Text style={{marginLeft: 8}}>{item.tongtien} Đ</Text>
+                </View>
+            </View>
+        )
+    }
+
     renderFooter = () => {
         console.log("Footer")
         if (ALL_LOADED) return null
@@ -129,7 +259,6 @@ export default class ReportScreen extends Component {
             </View>
         );
     };
-
 
     flatListorIndicator() {
 
@@ -165,65 +294,25 @@ export default class ReportScreen extends Component {
                     }}
                     extraData={this.state.dataRender}
                     data={this.state.dataRender}
-                    renderItem={({item}) =>
-                        <View style={{
-                            marginTop: 4, marginBottom: 4, marginLeft: 8, marginRight: 8,
-                            backgroundColor: Color.backGroundItemFlatList,
-                            borderTopColor: '#227878'
-                        }}>
-                            <View style={{
-                                flexDirection: 'row',
-                                marginLeft: 8,
-                                marginTop: 8,
-                                marginRight: 8,
-                                marginBottom: 4
-                            }}>
-                                <Icon1 size={24} color="black" name="ios-people-outline"/>
-                                <Text style={{
-                                    marginLeft: 8,
-                                    fontSize: 18,
-                                    fontWeight: "bold"
-                                }}>{item.tenkhachhang}</Text>
-                            </View>
-                            <View style={{
-                                flexDirection: 'row',
-                                marginLeft: 8,
-                                marginTop: 4,
-                                marginRight: 8,
-                                marginBottom: 4
-                            }}>
-                                <Icon2 size={24} color="red" name="location-pin"/>
-                                <Text style={{marginLeft: 8}}>{item.diachikhachhang}</Text>
+                    renderItem={({item}) => {
+                        switch (this.state.numberPickType) {
+                            case 0:
+                                return this.renderDoanhThuSanLuong(item)
+                            case 1:
+                                return this.renderTopDoanhThu(item)
+                            case 2:
+                                return this.renderTopDoanhThu(item)
 
-                            </View>
-                            <View style={{
-                                flexDirection: 'row',
-                                marginLeft: 8,
-                                marginTop: 4,
-                                marginRight: 8,
-                                marginBottom: 4
-                            }}>
-                                <Icon2 size={24} color="black" name="news"/>
-                                <Text style={{marginLeft: 8}}>{item.sodonhang}</Text>
-                            </View>
-                            <View style={{
-                                flexDirection: 'row',
-                                marginLeft: 8,
-                                marginTop: 4,
-                                marginRight: 8,
-                                marginBottom: 4
-                            }}>
-                                <Icon size={24} color="green" name="attach-money"/>
-                                <Text style={{marginLeft: 8}}>{item.tongtien} Đ</Text>
-                            </View>
-                        </View>
-                    }
+                        }
+                    }}
                 />
             </View>)
     }
 
     render() {
-
+        let reportStatusItem = this.state.reportStatus.map((s, i) => {
+            return <Picker.Item key={i} value={i} label={s}/>
+        });
         return (
             <View style={{flex: 1}}>
 
@@ -292,6 +381,18 @@ export default class ReportScreen extends Component {
                         }}
                     />
                 </View>
+                <Picker style={{height: 88, width: width}}
+                        itemStyle={{color: 'red', height: 88}}
+                        selectedValue={this.state.numberPickType}
+                        onValueChange={(value) => {
+                            this.setState({numberPickType: value}, function () {
+                                this.getReportListFromServer(this.state.dateFrom, this.state.dateTo)
+                            })
+
+
+                        }}>
+                    {reportStatusItem}
+                </Picker>
                 {this.flatListorIndicator()}
             </View>
 

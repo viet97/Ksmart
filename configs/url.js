@@ -106,4 +106,10 @@ export default class URlConfig {
         return data.urlserver + '/AppChiTietNhanVien.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idct=' + data.idcongty + '&idnhanvien=' + idnhanvien;
 
     }
+
+    static getLinkTopDoanhThu(dateFrom, dateTo, type) {
+        let data = URlConfig.OBJLOGIN;
+        return data.urlserver + '/AppBieuDoTopDoanhThu.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&macongty=' + data.idct + '&tungay=' + dateFrom + '&denngay=' + dateTo + '&loai=' + type;
+
+    }
 }

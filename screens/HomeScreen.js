@@ -20,7 +20,7 @@ import {
     Dimensions,
     Platform,
     ScrollView,
-    Alert
+    Alert, Animated
 } from 'react-native';
 import NewFeedScreen from "./NewFeedScreen";
 import ListNhanVienScreen from "./ListNhanVienScreen";
@@ -78,6 +78,7 @@ export default class HomeScreen extends React.Component {
         }
         today = dd + '-' + mm + '-' + yyyy;
         this.state = ({
+            fadeAnim: new Animated.Value(0),
             idDetailNhanVien: '',
             dataNhanVien: [],
             datePlant: today,
@@ -287,7 +288,7 @@ export default class HomeScreen extends React.Component {
                                 style={{width: 35, height: 35, alignSelf: 'center'}}/>
                         </TouchableOpacity>
                         <Animatable.Text animation="fadeInDown"
-                                         style={{fontSize: 20, alignSelf: 'center'}}>😘😘Menu😂😂</Animatable.Text>
+                                         style={{fontSize: 20, alignSelf: 'center'}}>Menu</Animatable.Text>
                         <View style={{width: 50, height: 50, backgroundColor: 'transparent'}}></View>
                     </View>
 
@@ -431,6 +432,15 @@ export default class HomeScreen extends React.Component {
         )
     }
 
+    componentDidMount() {
+        Animated.timing(                  // Animate over time
+            this.state.fadeAnim,            // The animated value to drive
+            {
+                toValue: 1,                   // Animate to opacity: 1 (opaque)
+                duration: 10000,              // Make it take a while
+            }
+        ).start();
+    }
     sideMenuView() {
         const {navigate} = this.props.navigation;
         return (
@@ -590,7 +600,6 @@ export default class HomeScreen extends React.Component {
                 openDrawerOffset={0.4}
                 negotiatePan={true}
                 onCloseStart={() => this.showToogle()}
-
                 content={this.sideMenuView()}>
                 {this.renderSomething()}
             </Drawer>
