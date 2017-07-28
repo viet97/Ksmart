@@ -24,6 +24,7 @@
     "react-native-drawer": "^2.3.0",
     "react-native-fit-image": "^1.4.9",
     "react-native-gifted-listview": "0.0.15",
+    "react-native-highcharts": "^1.0.1",
     "react-native-image-progress": "^1.0.1",
     "react-native-maps": "^0.15.3",
     "react-native-md5": "^1.0.0",

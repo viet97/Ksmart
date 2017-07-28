@@ -11,6 +11,10 @@ export default class URlConfig {
         return url + idct;
     }
 
+    static getNumber() {
+        return 2;
+    }
+
     static BASE_URL_APP = '';
     static OBJLOGIN = null;
 
@@ -29,7 +33,6 @@ export default class URlConfig {
     static getRevenuePerson(from, to) {
         let data = URlConfig.OBJLOGIN;
         return data.urlserver + '/AppBieuDoDoanhThuNhanVien.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idct=' + data.idcongty + '&tungay=' + from + '&denngay=' + to;
-
     }
 
     static getOnlineChartLink(date) {
@@ -46,6 +49,12 @@ export default class URlConfig {
     static getNewFeedLink() {
         let data = URlConfig.OBJLOGIN;
         return data.urlserver + '/AppNewFeed.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&macongty=' + data.idct;
+    }
+
+    static getLinkOnlinePerson() {
+        //http://jav.ksmart.vn/AppBaoCaoTrangChu.aspx?token=6e22b116f5111220741848ccd290e9e9bd8757498aeff45f479463cec823a1dc&idquanly=47&macongty=LACHONG
+        let data = URlConfig.OBJLOGIN;
+        return data.urlserver + '/AppBaoCaoTrangChu.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&macongty=' + data.idct;
     }
     static getListNhanVienLink(){
         let data = URlConfig.OBJLOGIN;

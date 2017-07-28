@@ -40,6 +40,7 @@ import ChooseTypeChart from "./ChooseTypeChart";
 import OnlineChartScreen from "./OnlineChartScreen";
 import TravelChartScreen from "./TravelChartScreen";
 import RevenuePerPersonnelScreen from "./RevenuePerPersonnelScreen";
+import RealtimeChartScreen from "./RealtimeChartScreen";
 
 var {height} = Dimensions.get('window').height;
 var func;
@@ -269,6 +270,10 @@ export default class HomeScreen extends React.Component {
             case 'TravelChart':
                 return <TravelChartScreen
                     backToChooseTypeChart={() => this.setState({screenName: 'Chart'})}/>
+            case 'RealtimeChart':
+                return <RealtimeChartScreen backToHome={() => {
+                    this.setState({screenName: 'Menu'})
+                }}/>
         }
     }
 
@@ -398,7 +403,7 @@ export default class HomeScreen extends React.Component {
                                     cáo</Animatable.Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => {
-                                this.setState({screenName: "ChonNhanVien"})
+                                this.setState({screenName: "RealtimeChart"})
                             }}>
                                 <View style={{
                                     backgroundColor: Color.iconMenuColor,
@@ -529,7 +534,7 @@ export default class HomeScreen extends React.Component {
                     <View>
                         <TouchableOpacity style={styles.itemSideMenuStyle}
                                           onPress={() => {
-                                              this.setState({screenName: "ChonNhanVien"});
+                                              this.setState({screenName: "RealtimeChart"});
                                               this.closeControlPanel()
                                           }}>
                             <Icon2 size={24} style={styles.iconStyle} color="white" name="laptop"/>
