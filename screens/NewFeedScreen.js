@@ -84,7 +84,7 @@ export default class NewFeedScreen extends React.Component {
             .then((response) => (response.json()))
             .then((responseJson) => {
                     console.log(responseJson)
-                    if (responseJson.status) {
+                if (!responseJson.status) {
                         this.setState({dataFull: responseJson.data}, function () {
                             console.log(this.state.dataFull)
                             if (NUMBER_ROW_RENDER > this.state.dataFull.length) ALL_LOADED = true

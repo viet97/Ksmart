@@ -82,6 +82,9 @@ export default class ReportScreen extends Component {
         this.getReportListFromServer(this.state.dateFrom, this.state.dateTo)
     }
 
+    getdate(date) {
+        return date.replace(T, ' ')
+    }
     getReportListFromServer(dateFrom, dateTo) {
         let url = ''
 

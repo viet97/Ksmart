@@ -41,6 +41,7 @@ import OnlineChartScreen from "./OnlineChartScreen";
 import TravelChartScreen from "./TravelChartScreen";
 import RevenuePerPersonnelScreen from "./RevenuePerPersonnelScreen";
 import RealtimeChartScreen from "./RealtimeChartScreen";
+import OnlineReportScreen from "./OnlineReportScreen";
 
 var {height} = Dimensions.get('window').height;
 var func;
@@ -264,14 +265,15 @@ export default class HomeScreen extends React.Component {
                     idNhanVien={this.state.idDetailNhanVien}
                 />
             case "AboutUs":
-                return <AboutUsScreen backToHome={() => {
+                return <AboutUsScreen
+                    backToHome={() => {
                     this.setState({screenName: 'Menu'})
                 }}/>
             case 'TravelChart':
                 return <TravelChartScreen
                     backToChooseTypeChart={() => this.setState({screenName: 'Chart'})}/>
             case 'RealtimeChart':
-                return <RealtimeChartScreen backToHome={() => {
+                return <OnlineReportScreen backToHome={() => {
                     this.setState({screenName: 'Menu'})
                 }}/>
         }
@@ -414,8 +416,8 @@ export default class HomeScreen extends React.Component {
                                 }}>
                                     <Icon2 style={{alignSelf: 'center'}} size={60} color="white" name="laptop"/>
                                 </View>
-                                <Animatable.Text animation="bounceIn" style={styles.titleIconsMenu}>Kế
-                                    hoạch</Animatable.Text>
+                                <Animatable.Text animation="bounceIn" style={styles.titleIconsMenu}>Live
+                                </Animatable.Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => this.setState({screenName: "Message"})}>
                                 <View style={{
@@ -538,7 +540,7 @@ export default class HomeScreen extends React.Component {
                                               this.closeControlPanel()
                                           }}>
                             <Icon2 size={24} style={styles.iconStyle} color="white" name="laptop"/>
-                            <Text style={styles.textStyle}>Kế hoạch</Text>
+                            <Text style={styles.textStyle}>Báo cáo online</Text>
                             <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
                         </TouchableOpacity>
                     </View>
@@ -645,6 +647,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent'
     },
     titleIconsMenu: {
+        alignSelf: 'center',
         textAlign: 'center',
         color: 'white',
         fontSize: 16,

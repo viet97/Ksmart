@@ -15,16 +15,18 @@ import Toast from 'react-native-simple-toast'
 export default class RealtimeChartScreen extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            data: [],
+        }
     }
-
-    static arr = [1, 2, 3];
+    ;
 
     componentDidMount() {
         fetch(URlConfig.getLinkOnlinePerson())
             .then((response) => response.json())
             .then((responseJson) => {
                 console.log('responjson', responseJson)
-                RealtimeChartScreen.arr.push(responseJson.nhanvienonline)
+                this.setState({data: responseJson})
             })
             .catch((error) => {
                 console.error(error);
@@ -32,17 +34,194 @@ export default class RealtimeChartScreen extends React.Component {
     }
 
     loadViewRealTime() {
-        var series = this.series[0];
-        setInterval(function () {
-            var x = (new Date()).getTime() + 7 * 3600 * 1000,
-                y = 2;//TODO sua o day la no doc realtime
-            series.addPoint([x, y], true, true);
-        }, 3000);
+
     }
 
     render() {
+        let t = 2
+        console.log('' + this.state.data.nhanvienonline)
         var Highcharts = 'Highcharts';
-        var conf = {
+        var onLineconf = {
+            chart: {
+                type: 'spline',
+                animation: Highcharts.svg, // don't animate in old IE
+                marginRight: 10,
+                events: {
+                    load: function () {
+                        console.log('123')
+                        var series = this.series[0];
+                        setInterval(function () {
+                            console.log('Interval')
+                            var x = (new Date()).getTime() + 7 * 3600 * 1000,
+                                y = t
+                            series.addPoint([x, y], true, true);
+                        }, 3000);
+                    }
+                }
+            },
+            title: {
+                text: 'Live random data'
+            },
+            xAxis: {
+                type: 'datetime',
+                tickPixelInterval: 150
+            },
+            yAxis: {
+                title: {
+                    text: 'Value'
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
+            },
+            tooltip: {
+                formatter: function () {
+                    return '<b>' + this.series.name + '</b><br/>' +
+                        Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' +
+                        Highcharts.numberFormat(this.y, 2);
+                }
+            },
+            legend: {
+                enabled: false
+            },
+            exporting: {
+                enabled: false
+            },
+            series: [{
+                name: 'Random data',
+                data: (function () {
+                    // generate an array of random data
+                    var data = [],
+                        time = (new Date()).getTime() + 7 * 3600 * 1000,
+                        i;
+                    for (i = -19; i <= 0; i += 1) {
+                        data.push({
+                            x: time + i * 3000,
+                            y: 0
+                        });
+                    }
+                    console.log('vao vao1')
+                    return data;
+                }())
+            }]
+        };
+        var checkinConf = {
+            chart: {
+                type: 'spline',
+                animation: Highcharts.svg, // don't animate in old IE
+                marginRight: 10,
+                events: {
+                    load: this.loadViewRealTime
+                }
+            },
+            title: {
+                text: 'Nhân viên online'
+            },
+            xAxis: {
+                type: 'datetime',
+                tickPixelInterval: 150
+            },
+            yAxis: {
+                title: {
+                    text: 'Value'
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
+            },
+            tooltip: {
+                formatter: function () {
+                    return '<b>' + this.series.name + '</b><br/>' +
+                        Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' +
+                        Highcharts.numberFormat(this.y, 2);
+                }
+            },
+            legend: {
+                enabled: false
+            },
+            exporting: {
+                enabled: false
+            },
+            series: [{
+                name: 'Random data',
+                data: (function () {
+                    // generate an array of random data
+                    var data = [],
+                        time = (new Date()).getTime() + 7 * 3600 * 1000,
+                        i;
+                    for (i = -19; i <= 0; i += 1) {
+                        data.push({
+                            x: time + i * 3000,
+                            y: 0
+                        });
+                    }
+                    console.log('vao vao1')
+                    return data;
+                }())
+            }]
+        };
+        var DoanhThuConf = {
+            chart: {
+                type: 'spline',
+                animation: Highcharts.svg, // don't animate in old IE
+                marginRight: 10,
+                events: {
+                    load: this.loadViewRealTime
+                }
+            },
+            title: {
+                text: 'Live random data'
+            },
+            xAxis: {
+                type: 'datetime',
+                tickPixelInterval: 150
+            },
+            yAxis: {
+                title: {
+                    text: 'Value'
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
+            },
+            tooltip: {
+                formatter: function () {
+                    return '<b>' + this.series.name + '</b><br/>' +
+                        Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' +
+                        Highcharts.numberFormat(this.y, 2);
+                }
+            },
+            legend: {
+                enabled: false
+            },
+            exporting: {
+                enabled: false
+            },
+            series: [{
+                name: 'Random data',
+                data: (function () {
+                    // generate an array of random data
+                    var data = [],
+                        time = (new Date()).getTime() + 7 * 3600 * 1000,
+                        i;
+                    for (i = -19; i <= 0; i += 1) {
+                        data.push({
+                            x: time + i * 3000,
+                            y: 0
+                        });
+                    }
+                    console.log('vao vao1')
+                    return data;
+                }())
+            }]
+        };
+        var orderConf = {
             chart: {
                 type: 'spline',
                 animation: Highcharts.svg, // don't animate in old IE
@@ -100,7 +279,13 @@ export default class RealtimeChartScreen extends React.Component {
             }]
         };
         return (
-            <ChartView style={{height: 300}} config={conf}></ChartView>
+            <View style={{flex: 1}}>
+                <ChartView style={{flex: 1}} config={onLineconf}></ChartView>
+                <View style={{flex: 1}}/>
+                <View style={{flex: 1}}/>
+                <View style={{flex: 1}}/>
+
+            </View>
         );
 
     }

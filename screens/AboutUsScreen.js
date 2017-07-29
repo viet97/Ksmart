@@ -24,14 +24,15 @@ export default class AboutUsScreen extends React.Component {
         return (
             <View style={{flexDirection: 'column', flex: 1}}>
                 <View style={styles.titleStyle}>
-                    <TouchableOpacity style={{alignSelf: 'center'}} onPress={() => {
-                        this.props.backToHome()
-                    }}>
+                    <TouchableOpacity onPress={() => this.props.backToHome()}
+                                      style={styles.iconStyle}>
                         <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
                     </TouchableOpacity>
-                    <Text
-                        style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>dm</Text>
-                    <View style={{backgroundColor: Color.backgroundNewFeed, width: 35, height: 35}}/>
+                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Về chúng tôi</Text>
+                    <View
+                        style={{backgroundColor: 'transparent', width: 35, height: 35, alignSelf: 'center'}}>
+                    </View>
+
                 </View>
                 <View style={{flex: 9, flexDirection: 'column', backgroundColor: 'transparent', margin: 16}}>
                     <Image source={require('../images/logolh.png')}
