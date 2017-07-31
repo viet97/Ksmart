@@ -219,7 +219,7 @@ export default class NewFeedScreen extends React.Component {
                     <View style={styles.titleStyle}>
                         <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
                         <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Hoạt động</Text>
-                        <View style={{backgroundColor: Color.backgroundNewFeed, width: 35, height: 35}}></View>
+                        <View style={{backgroundColor: 'transparent', width: 35, height: 35}}></View>
                     </View>
 
                     <TouchableOpacity onPress={() => this.props.backToHome()}

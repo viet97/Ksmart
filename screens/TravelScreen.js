@@ -104,7 +104,7 @@ export default class TravelScreen extends React.Component {
                                     console.log('datarender', this.state.dataRender)
                                 })
                                 NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10;
-                                if (NUMBER_ROW_RENDER > this.state.orderListDataFilt.length - 10) {
+                                if (NUMBER_ROW_RENDER > this.state.dataFull.length - 10) {
                                     ALL_LOADED = true
                                     this.forceUpdate()
                                 }
@@ -340,7 +340,7 @@ export default class TravelScreen extends React.Component {
                             />
 
                             <Picker style={{height: 40, width: width / 3}}
-                                    itemStyle={{color: 'red', height: 88}}
+                                    itemStyle={{height: 88}}
                                     selectedValue={this.state.numberPickTravel}
                                     onValueChange={(value) => {
                                         this.setState({numberPickTravel: value}, function () {

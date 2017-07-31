@@ -266,7 +266,12 @@ export default class ListNhanVienScreen extends React.Component {
                         <TouchableOpacity onPress={() => this.props.backToHome()}
                                           style={{width: 50, height: 50, position: 'absolute'}}/>
                         <View style={{flexDirection: 'row'}}>
-                            <Text style={{alignSelf: 'center', fontSize: 15, color: 'black'}}>Nhóm/Phòng</Text>
+                            <Text style={{
+                                alignSelf: 'center',
+                                fontSize: 15,
+                                color: 'black',
+                                backgroundColor: 'transparent'
+                            }}>Nhóm/Phòng</Text>
                             <Picker style={{height: 44, width: width * 3 / 4, marginLeft: 8}}
                                     itemStyle={{height: 44, alignSelf: 'center'}}
                                     selectedValue={this.state.numberPickParty}
