@@ -10,277 +10,150 @@ import StockLine from "react-native-pathjs-charts/src/StockLine";
 import DatePicker from "react-native-datepicker";
 import URlConfig from "../configs/url";
 import Color from "../configs/color";
-import Toast from 'react-native-simple-toast'
-const timer = require('react-native-timer');
-let arr = []
+import Toast from 'react-native-simple-toast';
+
+const timer = require('react-native-timer')
+
 export default class RealtimeChartScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: '',
-            dataRender: [],
+            data: {
+                status: true,
+                nhanvienonline: 0,
+                tongdoanhthu: 0,
+                tongdonhang: 0,
+                tongluotcheckin: 0,
+                msg: "Xử lý thành công."
+            },
+            listData: [1, 2, 4],
+            timeUpdate: 10
+
         }
-    }
-    ;
 
-    componentDidMount() {
-        timer.setInterval(this, "123", () => {
-            fetch(URlConfig.getLinkOnlinePerson())
-                .then((response) => response.json())
-                .then((responseJson) => {
-
-
-                    console.log('responjson', responseJson)
-                    this.setState({data: responseJson})
-                    var time = (new Date()).getTime() + 7 * 3600 * 1000
-                    arr.push({x: time, y: responseJson.nhanvienonline})
-
-                })
-                .catch((error) => {
-                    console.error(error);
-                });
-        }, 3000);
     }
 
-    loadViewRealTime() {
+    componentWillMount() {
+        this.getDatafromServer();
+    }
 
+    componentDidUpdate() {
+        timer.clearInterval(this);
+        if (this.state.timeUpdate !== 0)
+            timer.setInterval(this, '123', () => this.getDatafromServer(), this.state.timeUpdate * 1000)
+    }
+
+    getDatafromServer() {
+        fetch(URlConfig.getLinkOnlinePerson())
+            .then((response) => response.json())
+            .then((responseJson) => {
+                console.log('responjson', responseJson)
+                this.setState({data: responseJson})
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }
+
+    getDataForChar() {
+
+    }
+
+    getConfigSmall() {
+        var currentdate = new Date();
+        var datetime = "Last Sync: " + currentdate.getDate() + "/"
+            + (currentdate.getMonth() + 1) + "/"
+            + currentdate.getFullYear() + " @ "
+            + currentdate.getHours() + ":"
+            + currentdate.getMinutes() + ":"
+            + currentdate.getSeconds();
+        let conf = {
+            chart: {
+                type: 'bar',
+
+            },
+            title: {
+                text: ' '
+            },
+            xAxis: {
+                categories: ['Nhân viên online', 'Tổng đơn hàng', 'Số lượt checkin']
+            },
+            yAxis: {
+                title: {
+                    text: 'Cập nhật mỗi ' + this.state.timeUpdate + ' giây'
+                }
+            },
+            series: [{
+                name: datetime,
+                data: [1, 0, 4]
+            },]
+        }
+        console.log(conf);
+        return conf;
+    }
+
+    getConfigTongDoanhThu() {
+        var currentdate = new Date();
+        var datetime = "Last Sync: " + currentdate.getDate() + "/"
+            + (currentdate.getMonth() + 1) + "/"
+            + currentdate.getFullYear() + " @ "
+            + currentdate.getHours() + ":"
+            + currentdate.getMinutes() + ":"
+            + currentdate.getSeconds();
+        let conf = {
+            chart: {
+                type: 'bar',
+
+            },
+            title: {
+                text: ' '
+            },
+            xAxis: {
+                categories: ['Tổng doanh thu']
+            },
+            yAxis: {
+                title: {
+                    text: 'Cập nhật mỗi ' + this.state.timeUpdate + ' giây'
+                }
+            },
+            series: [{
+                name: datetime,
+                data: [this.state.data.tongdoanhthu, 0, 0]
+            },]
+        }
+        console.log(conf);
+        return conf;
     }
 
     render() {
 
-
-        console.log('' + this.state.data.nhanvienonline)
-        var Highcharts = 'Highcharts';
-        var onLineconf = {
-            chart: {
-                type: 'spline',
-                animation: Highcharts.svg, // don't animate in old IE
-                marginRight: 10,
-                events: {
-                    load: function () {
-                        console.log('123')
-                        var series = this.series[0];
-                        setInterval(function () {
-                            console.log('Interval')
-                            var time = (new Date()).getTime() + 7 * 3600 * 1000,
-                                y = this.state.data.sonhanvien
-
-                        }, 3000);
-                    }
-                }
-            },
-            title: {
-                text: 'Live random data'
-            },
-            xAxis: {
-                type: 'datetime',
-                tickPixelInterval: 150
-            },
-            yAxis: {
-                title: {
-                    text: 'Value'
-                },
-                plotLines: [{
-                    value: 0,
-                    width: 1,
-                    color: '#808080'
-                }]
-            },
-            tooltip: {
-                formatter: function () {
-                    return '<b>' + this.series.name + '</b><br/>' +
-                        Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' +
-                        Highcharts.numberFormat(this.y, 2);
-                }
-            },
-            legend: {
-                enabled: false
-            },
-            exporting: {
-                enabled: false
-            },
-            series: [{
-                name: 'Random data',
-                data: arr
-
-            }]
-        };
-        var checkinConf = {
-            chart: {
-                type: 'spline',
-                animation: Highcharts.svg, // don't animate in old IE
-                marginRight: 10,
-                events: {
-                    load: this.loadViewRealTime
-                }
-            },
-            title: {
-                text: 'Nhân viên online'
-            },
-            xAxis: {
-                type: 'datetime',
-                tickPixelInterval: 150
-            },
-            yAxis: {
-                title: {
-                    text: 'Value'
-                },
-                plotLines: [{
-                    value: 0,
-                    width: 1,
-                    color: '#808080'
-                }]
-            },
-            tooltip: {
-                formatter: function () {
-                    return '<b>' + this.series.name + '</b><br/>' +
-                        Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' +
-                        Highcharts.numberFormat(this.y, 2);
-                }
-            },
-            legend: {
-                enabled: false
-            },
-            exporting: {
-                enabled: false
-            },
-            series: [{
-                name: 'Random data',
-                data: (function () {
-                    // generate an array of random data
-                    var data = [],
-                        time = (new Date()).getTime() + 7 * 3600 * 1000,
-                        i;
-                    for (i = -19; i <= 0; i += 1) {
-                        data.push({
-                            x: time + i * 3000,
-                            y: 0
-                        });
-                    }
-                    console.log('vao vao1')
-                    return data;
-                }())
-            }]
-        };
-        var DoanhThuConf = {
-            chart: {
-                type: 'spline',
-                animation: Highcharts.svg, // don't animate in old IE
-                marginRight: 10,
-                events: {
-                    load: this.loadViewRealTime
-                }
-            },
-            title: {
-                text: 'Live random data'
-            },
-            xAxis: {
-                type: 'datetime',
-                tickPixelInterval: 150
-            },
-            yAxis: {
-                title: {
-                    text: 'Value'
-                },
-                plotLines: [{
-                    value: 0,
-                    width: 1,
-                    color: '#808080'
-                }]
-            },
-            tooltip: {
-                formatter: function () {
-                    return '<b>' + this.series.name + '</b><br/>' +
-                        Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' +
-                        Highcharts.numberFormat(this.y, 2);
-                }
-            },
-            legend: {
-                enabled: false
-            },
-            exporting: {
-                enabled: false
-            },
-            series: [{
-                name: 'Random data',
-                data: (function () {
-                    // generate an array of random data
-                    var data = [],
-                        time = (new Date()).getTime() + 7 * 3600 * 1000,
-                        i;
-                    for (i = -19; i <= 0; i += 1) {
-                        data.push({
-                            x: time + i * 3000,
-                            y: 0
-                        });
-                    }
-                    console.log('vao vao1')
-                    return data;
-                }())
-            }]
-        };
-        var orderConf = {
-            chart: {
-                type: 'spline',
-                animation: Highcharts.svg, // don't animate in old IE
-                marginRight: 10,
-                events: {
-                    load: this.loadViewRealTime
-                }
-            },
-            title: {
-                text: 'Live random data'
-            },
-            xAxis: {
-                type: 'datetime',
-                tickPixelInterval: 150
-            },
-            yAxis: {
-                title: {
-                    text: 'Value'
-                },
-                plotLines: [{
-                    value: 0,
-                    width: 1,
-                    color: '#808080'
-                }]
-            },
-            tooltip: {
-                formatter: function () {
-                    return '<b>' + this.series.name + '</b><br/>' +
-                        Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' +
-                        Highcharts.numberFormat(this.y, 2);
-                }
-            },
-            legend: {
-                enabled: false
-            },
-            exporting: {
-                enabled: false
-            },
-            series: [{
-                name: 'Random data',
-                data: (function () {
-                    // generate an array of random data
-                    var data = [],
-                        time = (new Date()).getTime() + 7 * 3600 * 1000,
-                        i;
-                    for (i = -19; i <= 0; i += 1) {
-                        data.push({
-                            x: time + i * 3000,
-                            y: 0
-                        });
-                    }
-                    console.log('vao vao1')
-                    return data;
-                }())
-            }]
-        };
         return (
             <View style={{flex: 1}}>
-                <ChartView style={{flex: 1}} config={onLineconf}></ChartView>
-                <View style={{flex: 1}}/>
-                <View style={{flex: 1}}/>
+                <View style={{flex: 1}}>
+                    <ChartView config={this.getConfigSmall()} style={{padding: 16, flex: 1}}/>
+                    <Text style={{alignSelf: 'center', textAlign: 'center', width: Dimensions.get('window').width / 2}}>Biểu
+                        đồ số lượng nhân viên online, checkin, đơn hàng</Text>
+                </View>
+                <View style={{flex: 1, marginTop: 40}}>
+                    <ChartView style={{padding: 16, flex: 1}} config={this.getConfigTongDoanhThu()}/>
+                    <Text style={{alignSelf: 'center', textAlign: 'center'}}>Biểu đồ doanh thu</Text>
+                </View>
+                <View style={{flex: 1, marginTop: 40, flexDirection: 'row'}}>
+                    <Text style={{flex: 1, height: 70, alignSelf: 'center', textAlign: 'center'}}>Cập nhật</Text>
+                    <Picker style={{flex: 3, height: 70}}
+                            itemStyle={{height: 60}}
+                            selectedValue={this.state.timeUpdate}
+                            onValueChange={(value) => {
+                                this.setState({timeUpdate: value})
+                            }}>
+                        <Picker.Item key={0} value={0} label={'Không bao giờ'}/>
+                        <Picker.Item key={1} value={10} label={'Mỗi 10 giây'}/>
+                        <Picker.Item key={2} value={30} label={'Mỗi 30 giây'}/>
+                        <Picker.Item key={3} value={60} label={'Mỗi 60 giây'}/>
+                        <Picker.Item key={4} value={180} label={'Mỗi 3 phút'}/>
+                        <Picker.Item key={5} value={300} label={'Mỗi 5 phút'}/>
+                    </Picker>
+                </View>
                 <View style={{flex: 1}}/>
 
             </View>
