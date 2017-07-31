@@ -11,26 +11,35 @@ import DatePicker from "react-native-datepicker";
 import URlConfig from "../configs/url";
 import Color from "../configs/color";
 import Toast from 'react-native-simple-toast'
-
+const timer = require('react-native-timer');
+let arr = []
 export default class RealtimeChartScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: [],
+            data: '',
+            dataRender: [],
         }
     }
     ;
 
     componentDidMount() {
-        fetch(URlConfig.getLinkOnlinePerson())
-            .then((response) => response.json())
-            .then((responseJson) => {
-                console.log('responjson', responseJson)
-                this.setState({data: responseJson})
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+        timer.setInterval(this, "123", () => {
+            fetch(URlConfig.getLinkOnlinePerson())
+                .then((response) => response.json())
+                .then((responseJson) => {
+
+
+                    console.log('responjson', responseJson)
+                    this.setState({data: responseJson})
+                    var time = (new Date()).getTime() + 7 * 3600 * 1000
+                    arr.push({x: time, y: responseJson.nhanvienonline})
+
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        }, 3000);
     }
 
     loadViewRealTime() {
@@ -38,7 +47,8 @@ export default class RealtimeChartScreen extends React.Component {
     }
 
     render() {
-        let t = 2
+
+
         console.log('' + this.state.data.nhanvienonline)
         var Highcharts = 'Highcharts';
         var onLineconf = {
@@ -52,9 +62,9 @@ export default class RealtimeChartScreen extends React.Component {
                         var series = this.series[0];
                         setInterval(function () {
                             console.log('Interval')
-                            var x = (new Date()).getTime() + 7 * 3600 * 1000,
-                                y = t
-                            series.addPoint([x, y], true, true);
+                            var time = (new Date()).getTime() + 7 * 3600 * 1000,
+                                y = this.state.data.sonhanvien
+
                         }, 3000);
                     }
                 }
@@ -91,20 +101,8 @@ export default class RealtimeChartScreen extends React.Component {
             },
             series: [{
                 name: 'Random data',
-                data: (function () {
-                    // generate an array of random data
-                    var data = [],
-                        time = (new Date()).getTime() + 7 * 3600 * 1000,
-                        i;
-                    for (i = -19; i <= 0; i += 1) {
-                        data.push({
-                            x: time + i * 3000,
-                            y: 0
-                        });
-                    }
-                    console.log('vao vao1')
-                    return data;
-                }())
+                data: arr
+
             }]
         };
         var checkinConf = {

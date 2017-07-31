@@ -116,6 +116,7 @@ export default class ListNhanVienScreen extends React.Component {
         }
         return arr
     }
+
     refreshData() {
         this.setState({dataRender: null})
         ALL_LOADED = false
@@ -264,16 +265,19 @@ export default class ListNhanVienScreen extends React.Component {
 
                         <TouchableOpacity onPress={() => this.props.backToHome()}
                                           style={{width: 50, height: 50, position: 'absolute'}}/>
-                        <Picker style={{height: 44}}
-                                itemStyle={{color: 'red', height: 44}}
-                                selectedValue={this.state.numberPickParty}
-                                onValueChange={(value) => {
-                                    this.setState({numberPickParty: value}, function () {
-                                        this.refreshData()
-                                    })
-                                }}>
-                            {partyStatusItem}
-                        </Picker>
+                        <View style={{flexDirection: 'row'}}>
+                            <Text style={{alignSelf: 'center', fontSize: 15, color: 'black'}}>Nhóm/Phòng</Text>
+                            <Picker style={{height: 44, width: width * 3 / 4, marginLeft: 8}}
+                                    itemStyle={{height: 44, alignSelf: 'center'}}
+                                    selectedValue={this.state.numberPickParty}
+                                    onValueChange={(value) => {
+                                        this.setState({numberPickParty: value}, function () {
+                                            this.refreshData()
+                                        })
+                                    }}>
+                                {partyStatusItem}
+                            </Picker>
+                        </View>
                         <View style={{width: width}}>
                             <Search
                                 ref="search_box"
