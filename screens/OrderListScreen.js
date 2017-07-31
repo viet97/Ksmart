@@ -83,13 +83,13 @@ export default class OrderListScreen extends Component {
             .then((response) => response.json())
             .then((responseJson) => {
                 if (responseJson.status) {
-                console.log(responseJson)
+                    console.log(responseJson)
 
-                this.setState({
-                    orderListDataFull: responseJson.data
-                }, function () {
-                    this.filtData(responseJson.data)
-                });
+                    this.setState({
+                        orderListDataFull: responseJson.data
+                    }, function () {
+                        this.filtData(responseJson.data)
+                    });
                 } else {
                     ALL_LOADED = true
                     NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
@@ -331,7 +331,7 @@ export default class OrderListScreen extends Component {
                     onEndReachedThreshold={0.2}
                     onEndReached={() => {
                         if (SEARCH_STRING.length === 0)
-                        this.loadMoreData()
+                            this.loadMoreData()
                     }}
                     onMomentumScrollBegin={() => {
 
@@ -372,7 +372,6 @@ export default class OrderListScreen extends Component {
             <View style={{flex: 1}}>
 
                 <View style={styles.titleStyle}>
-                    <Image source={require('../images/bg.png')} style={{position: 'absolute', right: 0, top: 0}}/>
                     <TouchableOpacity onPress={() => this.props.backToHome()}
                                       style={styles.iconStyle}>
                         <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>

@@ -154,7 +154,6 @@ export default class RealtimeChartScreen extends React.Component {
                         <Picker.Item key={5} value={300} label={'Mỗi 5 phút'}/>
                     </Picker>
                 </View>
-                <View style={{flex: 1}}/>
 
             </View>
         );
