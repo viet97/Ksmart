@@ -35,6 +35,7 @@ export default class ChooseTypeChart extends React.Component {
                 backgroundColor: Color.backGroundFlatList
             }}>
                 <View style={styles.titleStyle}>
+                    <Image source={require('../images/bg.png')} style={{position: 'absolute', right: 0, top: 0}}/>
                     <TouchableOpacity style={styles.iconStyle} onPress={() => this.props.backToHome()}>
                         <Icon2 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
                     </TouchableOpacity>

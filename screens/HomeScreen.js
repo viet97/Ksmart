@@ -290,14 +290,20 @@ export default class HomeScreen extends React.Component {
                     <Image source={require('../images/bg.png')} style={{position: 'absolute'}}/>
                     <ScrollView style={{flex: 9, marginTop: (Platform.OS === 'ios') ? 16 : 0}}>
                         <View style={styles.titleStyle}>
+                            <Image source={require('../images/bg.png')}
+                                   style={{position: 'absolute', right: 0, top: 0}}/>
                             <TouchableOpacity onPress={() => this.openControlPanel()}
                                               style={{marginLeft: 16, width: 40, height: 40, alignSelf: 'center'}}>
-                                <Image
-                                    source={require('../images/MenuBar.png')}
-                                    style={{width: 35, height: 35, alignSelf: 'center'}}/>
+                                <Icon1
+                                    size={35} name="ios-menu-outline"
+                                    color="white"/>
                             </TouchableOpacity>
                             <Animatable.Text animation="fadeInDown"
-                                             style={{fontSize: 20, alignSelf: 'center'}}>Menu</Animatable.Text>
+                                             style={{
+                                                 fontSize: 20,
+                                                 alignSelf: 'center',
+                                                 color: 'white'
+                                             }}>Menu</Animatable.Text>
                             <View style={{width: 50, height: 50, backgroundColor: 'transparent'}}></View>
                         </View>
 
@@ -632,7 +638,7 @@ const styles = StyleSheet.create({
         elevation: 15,
         justifyContent: 'space-between',
         flexDirection: 'row',
-        backgroundColor: Color.backgroundNewFeed,
+        backgroundColor: '#1A237E',
     },
     headerStyle: {
         elevation: 15, height: this.height / 7
