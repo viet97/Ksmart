@@ -71,7 +71,7 @@ export default class CustomerScreen extends Component {
                         dataSearch: responseJson.data
                     })
 
-                }
+                } else ALL_LOADED = true
             })
     }
 

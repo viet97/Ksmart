@@ -87,6 +87,7 @@ export default class OrderListScreen extends Component {
                             console.log(this.state.dataFull.length)
                             console.log(NUMBER_ROW_RENDER)
                             ALL_LOADED = true
+                            this.forceUpdate()
                         }
                         else {
                             ALL_LOADED = false
@@ -98,6 +99,7 @@ export default class OrderListScreen extends Component {
                 } else {
                     this.setState({dataRender: []})
                     ALL_LOADED = true
+                    this.forceUpdate()
                 }
             })
             .catch((error) => {
@@ -115,12 +117,15 @@ export default class OrderListScreen extends Component {
             })
 
             NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
-            if (NUMBER_ROW_RENDER > this.state.dataFull.length - 10) ALL_LOADED = true
+            if (NUMBER_ROW_RENDER > this.state.dataFull.length - 10) {
+                ALL_LOADED = true
+                this.forceUpdate()
+            }
         }
     }
 
     refreshData() {
-        NUMBER_ROW_RENDER = 0
+        NUMBER_ROW_RENDER = 10
         this.getMessageListFromServer(this.state.dateFrom, this.state.dateTo)
     }
 

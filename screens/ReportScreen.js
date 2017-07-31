@@ -119,7 +119,10 @@ export default class ReportScreen extends Component {
                         dataFull: responseJson.data
                     }, function () {
                         this.setState({dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER + 10)})
-                        if (this.state.dataFull.length === 0 || NUMBER_ROW_RENDER > this.state.dataFull.length) ALL_LOADED = true
+                        if (this.state.dataFull.length === 0 || NUMBER_ROW_RENDER > this.state.dataFull.length) {
+                            ALL_LOADED = true
+                            this.forceUpdate()
+                        }
                         else ALL_LOADED = false
                         NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
 
@@ -127,6 +130,7 @@ export default class ReportScreen extends Component {
                 } else {
                     this.setState({dataRender: []})
                     ALL_LOADED = true
+                    this.forceUpdate()
                 }
             })
             .catch((error) => {
@@ -144,12 +148,15 @@ export default class ReportScreen extends Component {
             })
 
             NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
-            if (NUMBER_ROW_RENDER > this.state.dataFull.length - 10) ALL_LOADED = true
+            if (NUMBER_ROW_RENDER > this.state.dataFull.length - 10) {
+                ALL_LOADED = true
+                this.forceUpdate()
+            }
         }
     }
 
     refreshData() {
-        NUMBER_ROW_RENDER = 0
+        NUMBER_ROW_RENDER = 10
         this.getReportListFromServer(this.state.dateFrom, this.state.dateTo)
     }
 
@@ -202,7 +209,6 @@ export default class ReportScreen extends Component {
     }
 
     renderTopDoanhThu(item) {
-        Toast.show('render')
         return (
             <TouchableOpacity onPress={() => Communications.phonecall(item.dienthoai, true)}>
                 <View style={{

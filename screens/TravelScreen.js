@@ -20,6 +20,7 @@ import URlConfig from "../configs/url";
 import DatePicker from 'react-native-datepicker'
 var {height, width} = Dimensions.get('window');
 var NUMBER_ROW_RENDER = 10;
+let ALL_LOADED = false;
 export default class TravelScreen extends React.Component {
     onSwipeRight(gestureState) {
         console.log("onSwipeRight")
@@ -103,8 +104,12 @@ export default class TravelScreen extends React.Component {
                                     console.log('datarender', this.state.dataRender)
                                 })
                                 NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10;
+                                if (NUMBER_ROW_RENDER > this.state.orderListDataFilt.length - 10) {
+                                    ALL_LOADED = true
+                                    this.forceUpdate()
+                                }
                             })
-                        }
+                        } else ALL_LOADED = true
                     }
                 )
         })
@@ -136,7 +141,10 @@ export default class TravelScreen extends React.Component {
             this.setState({onEndReach: true})
             this.setState({dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER + 10)})
             NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
-            if (NUMBER_ROW_RENDER > this.state.dataFull.length - 10) ALL_LOADED = true
+            if (NUMBER_ROW_RENDER > this.state.dataFull.length - 10) {
+                ALL_LOADED = true
+                this.forceUpdate()
+            }
         }
     }
 

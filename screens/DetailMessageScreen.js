@@ -41,7 +41,7 @@ export default class DetailMessageScreen extends Component {
                     <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Nội Dung Tin Nhắn</Text>
                     <View style={{backgroundColor: 'transparent', width: 35, height: 35}}/>
                 </View>
-                <TouchableOpacity onPress={() => this.props.backToHome()}
+                <TouchableOpacity onPress={() => this.props.backToMessage()}
                                   style={{
                                       width: 50,
                                       height: 50,

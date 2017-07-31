@@ -78,9 +78,11 @@ export default class OrderListScreen extends Component {
     getOrderListFromServer(datef, datet) {
         this.setState({dataRender: null})
         ALL_LOADED = false
+        NUMBER_ROW_RENDER = 10
         fetch(URlConfig.getLinkOrderList(datef, datet))
             .then((response) => response.json())
             .then((responseJson) => {
+                if (responseJson.status) {
                 console.log(responseJson)
 
                 this.setState({
@@ -88,6 +90,10 @@ export default class OrderListScreen extends Component {
                 }, function () {
                     this.filtData(responseJson.data)
                 });
+                } else {
+                    ALL_LOADED = true
+                    NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
+                }
             })
             .catch((error) => {
                 console.error(error);
@@ -118,6 +124,7 @@ export default class OrderListScreen extends Component {
                     if (NUMBER_ROW_RENDER > this.state.orderListDataFilt.length) {
                         ALL_LOADED = true
                         console.log(ALL_LOADED)
+                        this.forceUpdate()
                     }
                 }
             )
@@ -240,17 +247,16 @@ export default class OrderListScreen extends Component {
             NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
             if (NUMBER_ROW_RENDER > this.state.orderListDataFilt.length - 10) {
                 ALL_LOADED = true
+                this.forceUpdate()
             }
         }
     }
 
     refreshData() {
-        NUMBER_ROW_RENDER = 0
         this.getOrderListFromServer(this.state.filtDialog.dateFrom, this.state.filtDialog.dateTo)
     }
 
     renderFooter = () => {
-        console.log(ALL_LOADED + 'renderFOOTER')
         if (ALL_LOADED || this.state.isSearching) return null
         return (
             <View

@@ -81,7 +81,7 @@ export default class CustomerPlant extends Component {
                         dataSearch: responseJson.data
                     })
 
-                }
+                } else ALL_LOADED = true
             })
     }
 

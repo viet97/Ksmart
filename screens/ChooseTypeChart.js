@@ -32,7 +32,7 @@ export default class ChooseTypeChart extends React.Component {
             <View style={{
                 flex: 1,
                 marginTop: Platform.OS === 'ios' ? 16 : 0,
-
+                backgroundColor: Color.backGroundFlatList
             }}>
                 <View style={styles.titleStyle}>
                     <TouchableOpacity style={styles.iconStyle} onPress={() => this.props.backToHome()}>
