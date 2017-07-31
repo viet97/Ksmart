@@ -308,7 +308,7 @@ export default class HomeScreen extends React.Component {
                                     width: 80,
                                     height: 80,
                                     borderRadius: 40,
-                                    elevation: 10,
+                                    elevation: 5,
                                     justifyContent: 'center'
                                 }}>
                                     <IconMaterial style={{alignSelf: 'center'}} size={40} color="white" name="payment"/>
@@ -320,7 +320,7 @@ export default class HomeScreen extends React.Component {
                                 <View style={{
                                     backgroundColor: '#3c8efd',
                                     width: 80,
-                                    height: 80, elevation: 10,
+                                    height: 80, elevation: 5,
                                     borderRadius: 40,
                                     justifyContent: 'center'
                                 }}>
@@ -335,7 +335,7 @@ export default class HomeScreen extends React.Component {
                             }}>
                                 <View style={{
                                     backgroundColor: '#009e8a',
-                                    width: 80, elevation: 10,
+                                    width: 80, elevation: 5,
                                     borderRadius: 40,
                                     height: 80,
                                     justifyContent: 'center'
@@ -352,7 +352,7 @@ export default class HomeScreen extends React.Component {
                             }}>
                                 <View style={{
                                     backgroundColor: '#6fdb38',
-                                    width: 80, elevation: 10,
+                                    width: 80, elevation: 5,
                                     borderRadius: 40,
                                     height: 80,
                                     justifyContent: 'center'
@@ -365,7 +365,7 @@ export default class HomeScreen extends React.Component {
                             <TouchableOpacity onPress={() => this.setState({screenName: 'Travel'})}>
                                 <View style={{
                                     backgroundColor: '#ffa100',
-                                    width: 80, elevation: 10,
+                                    width: 80, elevation: 5,
                                     borderRadius: 40,
                                     height: 80,
                                     justifyContent: 'center'
@@ -381,7 +381,7 @@ export default class HomeScreen extends React.Component {
                             }}>
                                 <View style={{
                                     backgroundColor: '#5a00bc',
-                                    width: 80, elevation: 10,
+                                    width: 80, elevation: 5,
                                     borderRadius: 40,
                                     height: 80,
                                     justifyContent: 'center'
@@ -396,7 +396,7 @@ export default class HomeScreen extends React.Component {
                             <TouchableOpacity onPress={() => this.setState({screenName: 'Report'})}>
                                 <View style={{
                                     backgroundColor: '#00b9da',
-                                    width: 80, elevation: 10,
+                                    width: 80, elevation: 5,
                                     borderRadius: 40,
                                     height: 80,
                                     justifyContent: 'center'
@@ -411,7 +411,7 @@ export default class HomeScreen extends React.Component {
                             }}>
                                 <View style={{
                                     backgroundColor: '#bcf600',
-                                    width: 80, elevation: 10,
+                                    width: 80, elevation: 5,
                                     borderRadius: 40,
                                     height: 80,
                                     justifyContent: 'center'
@@ -426,7 +426,7 @@ export default class HomeScreen extends React.Component {
                                     backgroundColor: '#ff4700',
                                     width: 80,
                                     borderRadius: 40,
-                                    height: 80, elevation: 10,
+                                    height: 80, elevation: 5,
                                     justifyContent: 'center'
                                 }}>
                                     <Icon2 style={{alignSelf: 'center'}} size={40} color="white" name="mail"/>
