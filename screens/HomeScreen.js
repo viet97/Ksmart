@@ -274,7 +274,7 @@ export default class HomeScreen extends React.Component {
                 return <TravelChartScreen
                     backToChooseTypeChart={() => this.setState({screenName: 'Chart'})}/>
             case 'RealtimeChart':
-                return <OnlineReportScreen backToHome={() => {
+                return <RealtimeChartScreen backToHome={() => {
                     this.setState({screenName: 'Menu'})
                 }}/>
         }

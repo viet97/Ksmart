@@ -118,7 +118,7 @@ export default class RealtimeChartScreen extends React.Component {
             },
             series: [{
                 name: datetime,
-                data: [this.state.data.tongdoanhthu, 0, 0]
+                data: [this.state.data.tongdoanhthu]
             },]
         }
         console.log(conf);
@@ -129,12 +129,12 @@ export default class RealtimeChartScreen extends React.Component {
 
         return (
             <View style={{flex: 1}}>
-                <View style={{flex: 1}}>
+                <View style={{flex: 4}}>
                     <ChartView config={this.getConfigSmall()} style={{padding: 16, flex: 1}}/>
                     <Text style={{alignSelf: 'center', textAlign: 'center', width: Dimensions.get('window').width / 2}}>Biểu
                         đồ số lượng nhân viên online, checkin, đơn hàng</Text>
                 </View>
-                <View style={{flex: 1, marginTop: 40}}>
+                <View style={{flex: 4, marginTop: 40}}>
                     <ChartView style={{padding: 16, flex: 1}} config={this.getConfigTongDoanhThu()}/>
                     <Text style={{alignSelf: 'center', textAlign: 'center'}}>Biểu đồ doanh thu</Text>
                 </View>
@@ -154,7 +154,6 @@ export default class RealtimeChartScreen extends React.Component {
                         <Picker.Item key={5} value={300} label={'Mỗi 5 phút'}/>
                     </Picker>
                 </View>
-
             </View>
         );
 
