@@ -17,7 +17,9 @@ import * as Animatable from 'react-native-animatable';
 import DialogManager, {ScaleAnimation, DialogContent} from 'react-native-dialog-component';
 import {NavigationActions} from "react-navigation";
 import LoginDialog from "../components/LoginDialog";
-var {width, height} = Dimensions.get('window')
+import {ProgressDialog} from 'react-native-simple-dialogs';
+
+let {width, height} = Dimensions.get('window')
 const Realm = require('realm');
 export default class LoginScreen extends React.Component {
 
@@ -32,6 +34,7 @@ export default class LoginScreen extends React.Component {
             idct: '',
             username: '',
             password: '',
+            progressVisible: false
         };
     }
 
@@ -63,7 +66,6 @@ export default class LoginScreen extends React.Component {
 
     render() {
         var windowWidth = Dimensions.get('window').width;
-        var windowHeight = Dimensions.get('window').height;
         return (
             <View style={{flex: 1, justifyContent: 'center', flexDirection: 'column'}}>
                 <Animatable.Image
@@ -81,31 +83,44 @@ export default class LoginScreen extends React.Component {
                         <TextInputLayout style={styles.inputLayout}
                                          hintColor='white' focusColor='white'>
                             <TextInput
+                                returnKeyType={"next"}
                                 value={this.state.idct}
                                 style={styles.textInput}
                                 placeholder={'Mã công ty'}
                                 secureTextEntry={false}
                                 onChangeText={(text) => this.setState({idct: text})}
+                                onSubmitEditing={(event) => {
+                                    this.refs.ipPass.focus();
+                                }}
 
                             />
                         </TextInputLayout>
                         <TextInputLayout style={styles.inputLayout} hintColor='white' focusColor='white'>
                             <TextInput
+                                ref="ipPass"
+                                returnKeyType={"next"}
                                 value={this.state.username}
                                 style={styles.textInput}
                                 placeholder={'Tên đăng nhập'}
                                 secureTextEntry={false}
                                 onChangeText={(text) => this.setState({username: text})}
+                                onSubmitEditing={(event) => {
+                                    this.refs.ipRePass.focus();
+                                }}
                             />
                         </TextInputLayout>
                         <TextInputLayout style={styles.inputLayout} hintColor='white' focusColor='white'>
                             <TextInput
-
+                                ref="ipRePass"
                                 value={this.state.password}
                                 style={styles.textInput}
+                                returnKeyType={"done"}
                                 placeholder={'Mật khẩu'}
                                 secureTextEntry={true}
                                 onChangeText={(text) => this.setState({password: text})}
+                                onSubmitEditing={(event) => {
+                                    this.startLogin();
+                                }}
                             />
                         </TextInputLayout>
                     </View>
@@ -133,26 +148,18 @@ export default class LoginScreen extends React.Component {
                         </TouchableHighlight>
                     </View>
                 </View>
+                <ProgressDialog
+                    visible={this.state.progressVisible}
+                    title=""
+                    message="Đang đăng nhập"
+                />
 
             </View>
         );
     }
 
-    showDialog() {
-        DialogManager.show({
-            width: 200,
-            height: 30,
-            animationDuration: 200,
-            ScaleAnimation: new ScaleAnimation(),
-            children: (
-                <LoginDialog/>
-            ),
-        }, () => {
-            console.log('callback - show');
-        });
-    }
     startLogin() {
-        this.showDialog()
+        this.setState({progressVisible: true})
         if (this.state.password.length === 0 || this.state.username === 0 || this.state.idct === 0) {
             Toast.show('Vui lòng nhập đầy đủ thông tin đăng nhập!', Toast.LONG)
         } else {
@@ -197,7 +204,7 @@ export default class LoginScreen extends React.Component {
                                     }
                                     this.handlDataLogin(responseJson)
                                     const {navigate} = this.props.navigation;
-                                    DialogManager.dismiss()
+                                    this.setState({progressVisible: false})
                                     this.props
                                         .navigation
                                         .dispatch(NavigationActions.reset(

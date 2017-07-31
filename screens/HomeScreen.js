@@ -451,7 +451,8 @@ export default class HomeScreen extends React.Component {
     sideMenuView() {
         const {navigate} = this.props.navigation;
         return (
-            <View style={{marginTop: (Platform.OS === 'ios') ? 16 : 0,}}>
+            <ScrollView style={{marginTop: (Platform.OS === 'ios') ? 16 : 0,}}>
+                <View>
                 <View style={{
                     justifyContent: 'center',
                     height: 50,
@@ -578,6 +579,7 @@ export default class HomeScreen extends React.Component {
                     </View>
                 </View>
             </View>
+            </ScrollView>
         )
     }
 
