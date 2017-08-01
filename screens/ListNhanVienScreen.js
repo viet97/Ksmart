@@ -285,6 +285,8 @@ export default class ListNhanVienScreen extends React.Component {
                         </View>
                         <View style={{width: width}}>
                             <Search
+                                placeholder="Tìm kiếm"
+                                cancelTitle="Huỷ bỏ"
                                 ref="search_box"
                                 onChangeText={(text) => this.onChangeText(text)}
                                 onCancel={() => this.onCancel()}

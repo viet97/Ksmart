@@ -227,6 +227,8 @@ export default class NewFeedScreen extends React.Component {
                     <View style={{width: width}}>
                         <Search
                             ref="search_box"
+                            placeholder="Tìm kiếm"
+                            cancelTitle="Huỷ bỏ"
                             onChangeText={(text) => this.onChangeText(text)}
                             onCancel={() => this.onCancel()}
                         />

@@ -109,7 +109,7 @@ export default class RealtimeChartScreen extends React.Component {
                 text: ' '
             },
             xAxis: {
-                categories: ['Tổng doanh thu']
+                categories: ['Tổng doanh thu'],
             },
             yAxis: {
                 title: {
@@ -118,7 +118,7 @@ export default class RealtimeChartScreen extends React.Component {
             },
             series: [{
                 name: datetime,
-                data: [this.state.data.tongdoanhthu]
+                data: [this.state.data.tongdoanhthu, 0, 0]
             },]
         }
         console.log(conf);

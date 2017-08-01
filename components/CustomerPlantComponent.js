@@ -166,7 +166,15 @@ export default class CustomerPlantComponent extends Component {
                     <Text style={{marginLeft: 8, alignSelf: 'center'}}>Ghi chú: </Text>
                     <TextInput
                         editable={!this.state.checkOfCheckBox}
-                        style={{height: 40, flex: 1, borderColor: 'gray', borderWidth: 1, backgroundColor: 'white'}}
+                        style={{
+                            height: 40,
+                            flex: 1,
+                            borderColor: 'gray',
+                            borderWidth: 1,
+                            backgroundColor: 'white',
+                            paddingLeft: 8,
+                            marginLeft: 32
+                        }}
                         onChangeText={(text) => {
                             if (!this.state.checkOfCheckBox)
                                 this.setState({ghichu: text})
@@ -186,7 +194,14 @@ export default class CustomerPlantComponent extends Component {
 
                     <TextInput
                         editable={!this.state.checkOfCheckBox}
-                        style={{height: 40, flex: 1, borderColor: 'gray', borderWidth: 1, backgroundColor: 'white'}}
+                        style={{
+                            height: 40,
+                            flex: 1,
+                            borderColor: 'gray',
+                            borderWidth: 1,
+                            backgroundColor: 'white',
+                            paddingLeft: 8
+                        }}
                         onChangeText={(text) => {
                             if (!this.state.checkOfCheckBox)
                                 this.setState({vieccanlam: text})

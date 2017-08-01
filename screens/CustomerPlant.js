@@ -201,13 +201,13 @@ export default class CustomerPlant extends Component {
                     <TouchableOpacity style={styles.iconStyle} onPress={() => this.props.backToTravel()}>
                         <Icon2 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
                     </TouchableOpacity>
-                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Lập kế hoạch </Text>
+                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Lập kế hoạch</Text>
                     <TouchableOpacity
                         onPress={() => {
                             this.sendPlantToServer()
                         }}
-                        style={{backgroundColor: Color.backgroundNewFeed, alignSelf: 'center', width: 35, height: 35}}>
-                        <Text style={{color: 'white', padding: 8}}>OK</Text>
+                        style={styles.iconStyle}>
+                        <Text style={{color: 'white', paddingRight: 8, paddingTop: 4}}>OK</Text>
                     </TouchableOpacity>
                 </View>
                 <TouchableOpacity onPress={() => this.props.backToTravel()}
@@ -226,7 +226,6 @@ export default class CustomerPlant extends Component {
                     marginLeft: 8,
                     marginTop: 8,
                     marginBottom: 4,
-                    marginTop: 4,
                     marginRight: 4,
                     backgroundColor: Color.backgroundNewFeed
                 }}>
@@ -235,19 +234,21 @@ export default class CustomerPlant extends Component {
                     marginLeft: 8,
                     marginTop: 8,
                     marginBottom: 4,
-                    marginTop: 4,
                     marginRight: 4
                 }}>
                     <Search
+                        placeholder="Tìm kiếm"
+                        cancelTitle="Huỷ bỏ"
                         ref="search_box"
                         onChangeText={(text) => this.onChangeText(text)}
                         onCancel={() => this.onCancel()}
                     />
                 </View>
-                <View style={{width: width, flexDirection: 'row', justifyContent: 'center', marginLeft: 16}}>
+                <View
+                    style={{width: width, flexDirection: 'row', justifyContent: 'center', marginLeft: 16, height: 45}}>
                     <Text style={{textAlign: 'center', alignSelf: 'center'}}>Chọn nhân viên </Text>
-                    <Picker style={{height: 40, width: width / 2}}
-                            itemStyle={{color: 'red', height: 88}}
+                    <Picker style={{height: 88, width: width / 2}}
+                            itemStyle={{color: 'red', height: 44}}
                             selectedValue={this.state.numberPickNhanVien}
                             onValueChange={(value) => {
                                 this.setState({numberPickNhanVien: value}, function () {
@@ -342,6 +343,7 @@ const styles = StyleSheet.create({
         elevation: 15,
         justifyContent: 'space-between',
         flexDirection: 'row',
+        alignItems: 'center',
         backgroundColor: Color.backgroundNewFeed,
     },
     headerStyle: {

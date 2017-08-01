@@ -247,6 +247,8 @@ export default class CustomerScreen extends Component {
                 }}>
                     <Search
                         ref="search_box"
+                        placeholder="Tìm kiếm"
+                        cancelTitle="Huỷ bỏ"
                         onChangeText={(text) => this.onChangeText(text)}
                         onCancel={() => this.onCancel()}
                     />

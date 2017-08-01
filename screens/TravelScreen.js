@@ -306,7 +306,8 @@ export default class TravelScreen extends React.Component {
                                     color: 'white',
                                     textAlign: 'center',
                                     alignSelf: 'center',
-                                    paddingBottom: 8
+                                    paddingBottom: 8,
+                                    paddingRight: 8
                                 }}>Thêm</Text>
                             </View>
                         </TouchableOpacity>
@@ -314,7 +315,7 @@ export default class TravelScreen extends React.Component {
 
                     <TouchableOpacity onPress={() => this.props.backToHome()}
                                       style={{width: 50, height: 50, position: 'absolute'}}/>
-                    <View style={{width: window.width}}>
+                    <View style={{width: window.width, height: 45, elevation: 5}}>
                         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                             <DatePicker
                                 style={{marginLeft: 8}}
@@ -339,8 +340,8 @@ export default class TravelScreen extends React.Component {
                                 }}
                             />
 
-                            <Picker style={{height: 40, width: width / 3}}
-                                    itemStyle={{height: 88}}
+                            <Picker style={{height: 88, width: width / 2}}
+                                    itemStyle={{height: 44}}
                                     selectedValue={this.state.numberPickTravel}
                                     onValueChange={(value) => {
                                         this.setState({numberPickTravel: value}, function () {
