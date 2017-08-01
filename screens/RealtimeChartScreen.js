@@ -11,7 +11,7 @@ import DatePicker from "react-native-datepicker";
 import URlConfig from "../configs/url";
 import Color from "../configs/color";
 import Toast from 'react-native-simple-toast';
-
+import Icon3 from 'react-native-vector-icons/MaterialCommunityIcons'
 const timer = require('react-native-timer')
 
 export default class RealtimeChartScreen extends React.Component {
@@ -129,33 +129,99 @@ export default class RealtimeChartScreen extends React.Component {
 
         return (
             <View style={{flex: 1}}>
-                <View style={{flex: 4}}>
-                    <ChartView config={this.getConfigSmall()} style={{padding: 16, flex: 1}}/>
-                    <Text style={{alignSelf: 'center', textAlign: 'center', width: Dimensions.get('window').width / 2}}>Biểu
-                        đồ số lượng nhân viên online, checkin, đơn hàng</Text>
+                <View style={styles.titleStyle}>
+                    <TouchableOpacity onPress={() => this.props.backToHome()}
+                                      style={styles.iconStyle}>
+                        <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
+                    </TouchableOpacity>
+                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Báo cáo online</Text>
+                    <TouchableOpacity
+                        onPress={() => this.getDatafromServer()}
+                        style={{backgroundColor: 'transparent', width: 35, height: 35, alignSelf: 'center'}}>
+                        <Icon3 style={{alignSelf: 'center'}} size={24} color="white"
+                               name="reload"/>
+                    </TouchableOpacity>
                 </View>
-                <View style={{flex: 4, marginTop: 40}}>
-                    <ChartView style={{padding: 16, flex: 1}} config={this.getConfigTongDoanhThu()}/>
-                    <Text style={{alignSelf: 'center', textAlign: 'center'}}>Biểu đồ doanh thu</Text>
-                </View>
-                <View style={{flex: 1, marginTop: 40, flexDirection: 'row'}}>
-                    <Text style={{flex: 1, height: 70, alignSelf: 'center', textAlign: 'center'}}>Cập nhật</Text>
-                    <Picker style={{flex: 3, height: 70}}
-                            itemStyle={{height: 60}}
-                            selectedValue={this.state.timeUpdate}
-                            onValueChange={(value) => {
-                                this.setState({timeUpdate: value})
-                            }}>
-                        <Picker.Item key={0} value={0} label={'Không bao giờ'}/>
-                        <Picker.Item key={1} value={10} label={'Mỗi 10 giây'}/>
-                        <Picker.Item key={2} value={30} label={'Mỗi 30 giây'}/>
-                        <Picker.Item key={3} value={60} label={'Mỗi 60 giây'}/>
-                        <Picker.Item key={4} value={180} label={'Mỗi 3 phút'}/>
-                        <Picker.Item key={5} value={300} label={'Mỗi 5 phút'}/>
-                    </Picker>
+                <View style={{flex: 9}}>
+                    <View style={{flex: 4}}>
+                        <ChartView config={this.getConfigSmall()} style={{padding: 16, flex: 1}}/>
+                        <Text style={{
+                            alignSelf: 'center',
+                            textAlign: 'center',
+                            width: Dimensions.get('window').width / 2
+                        }}>Biểu
+                            đồ số lượng nhân viên online, checkin, đơn hàng</Text>
+                    </View>
+                    <View style={{flex: 4, marginTop: 40}}>
+                        <ChartView style={{padding: 16, flex: 1}} config={this.getConfigTongDoanhThu()}/>
+                        <Text style={{alignSelf: 'center', textAlign: 'center'}}>Biểu đồ doanh thu</Text>
+                    </View>
+                    <View style={{flex: 1, marginTop: 40, flexDirection: 'row'}}>
+                        <Text style={{flex: 1, height: 70, alignSelf: 'center', textAlign: 'center'}}>Cập nhật</Text>
+                        <Picker style={{flex: 3, height: 70}}
+                                itemStyle={{height: 60}}
+                                selectedValue={this.state.timeUpdate}
+                                onValueChange={(value) => {
+                                    this.setState({timeUpdate: value})
+                                }}>
+                            <Picker.Item key={0} value={0} label={'Không bao giờ'}/>
+                            <Picker.Item key={1} value={10} label={'Mỗi 10 giây'}/>
+                            <Picker.Item key={2} value={30} label={'Mỗi 30 giây'}/>
+                            <Picker.Item key={3} value={60} label={'Mỗi 60 giây'}/>
+                            <Picker.Item key={4} value={180} label={'Mỗi 3 phút'}/>
+                            <Picker.Item key={5} value={300} label={'Mỗi 5 phút'}/>
+                        </Picker>
+                    </View>
                 </View>
             </View>
         );
 
     }
 }
+const styles = StyleSheet.create({
+    indicator: {
+        alignSelf: 'center',
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: 80
+    },
+    titleStyle: {
+        marginTop: Platform.OS === 'ios' ? 16 : 0,
+        flex: 1,
+        elevation: 15,
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+        backgroundColor: Color.backgroundNewFeed,
+    },
+    headerStyle: {
+        elevation: 15, height: this.height / 7
+    },
+    itemSideMenuStyle: {
+        borderBottomWidth: 1,
+        borderBottomColor: 'white',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        margin: 8,
+        paddingBottom: 8
+    }, iconStyle: {
+        alignSelf: 'center',
+        width: 24,
+        height: 24,
+        backgroundColor: "transparent",
+        marginLeft: 8,
+        marginTop: (Platform.OS === 'ios') ? 8 : 0
+    },
+    textStyle: {
+        fontSize: 18,
+        color: 'white',
+        backgroundColor: 'transparent'
+    },
+    titleIconsMenu: {
+        textAlign: 'center',
+        color: 'white',
+        fontSize: 16,
+        backgroundColor: 'transparent',
+        fontFamily: 'Al Nile'
+    }
+})

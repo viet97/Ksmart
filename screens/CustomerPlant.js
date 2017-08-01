@@ -287,7 +287,8 @@ export default class CustomerPlant extends Component {
             dulieulapkehoach: this.state.dataChoose,
             idnhanvien: this.state.idNhanvien
         }
-
+        if (obj.dulieulapkehoach.length === 0) Toast.show('Vui lòng chọn kế hoạch cho nhân viên trước khi lập kế hoạch')
+        else
         fetch(URlConfig.getLinkLapKeHoach(obj))
             .then((response) => (response.json()))
             .then((responseJson) => {

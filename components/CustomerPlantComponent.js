@@ -176,10 +176,10 @@ export default class CustomerPlantComponent extends Component {
                             marginLeft: 32
                         }}
                         onChangeText={(text) => {
-                            if (!this.state.checkOfCheckBox)
                                 this.setState({ghichu: text})
-                            else   Toast.show('Vui lòng bỏ chọn trước khi chỉnh sửa')
+
                         }}
+
                         value={this.state.ghichu}
                     />
                 </View>
