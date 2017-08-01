@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import {TextInputLayout} from 'rn-textinputlayout';
 import CheckBox from 'react-native-checkbox'
-import Toast from 'react-native-simple-toast';
+import Toast from 'react-native-root-toast';
 import URlConfig from "../configs/url";
 import * as Animatable from 'react-native-animatable';
 import DialogManager, {ScaleAnimation, DialogContent} from 'react-native-dialog-component';
@@ -27,16 +27,44 @@ export default class LoginScreen extends React.Component {
         header: null
     }
 
+    showToast(msg, time = 3000) {
+        let toast = Toast.show(msg, {
+            duration: Toast.durations.LONG,
+            position: Toast.positions.BOTTOM,
+            shadow: true,
+            animation: true,
+            hideOnPress: true,
+            delay: 0,
+            onShow: () => {
+                // calls on toast\`s appear animation start
+            },
+            onShown: () => {
+                // calls on toast\`s appear animation end.
+            },
+            onHide: () => {
+                // calls on toast\`s hide animation start.
+            },
+            onHidden: () => {
+                // calls on toast\`s hide animation end.
+            }
+        });
+
+        setTimeout(function () {
+            Toast.hide(toast);
+        }, time);
+    }
+
     constructor(props) {
         super(props);
         this.state = {
-            checkOfCheckBox: false,
+            checkOfCheckBox: true,
             idct: '',
             username: '',
             password: '',
             progressVisible: false
         };
     }
+
 
     componentWillMount() {
         let realm = new Realm({
@@ -158,81 +186,99 @@ export default class LoginScreen extends React.Component {
         );
     }
 
-    startLogin() {
-        this.setState({progressVisible: true})
-        if (this.state.password.length === 0 || this.state.username === 0 || this.state.idct === 0) {
-            Toast.show('Vui lòng nhập đầy đủ thông tin đăng nhập!', Toast.LONG)
-            this.setState({progressVisible: false})
-        } else {
+    getBaseURL() {
 
-            fetch(URlConfig.getRouterApp(this.state.idct))
+        fetch(URlConfig.getRouterApp(this.state.idct))
+            .then((response) => response.json())
+            .then((responseJson) => {
+                if (!responseJson.status) {
+                    console.log('vao day r')
+                    this.showToast(responseJson.msg, 5000)
+                    this.setState({progressVisible: false})
+                } else {
+                    this.requestLogin(responseJson)
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+                this.setState({progressVisible: false})
+                this.showToast('Có lỗi xảy ra, kiểm tra cài đặt internet và thử lại sau')
+            });
+    }
+
+    requestLogin(value) {
+        console.log('valueeeee', value)
+        if (value !== undefined && value.status) {
+            URlConfig.BASE_URL_APP = value.data;
+            let urlLogin = URlConfig.getLoginRouter(this.state.username, this.state.password, this.state.idct);
+            console.log(urlLogin)
+            fetch(urlLogin)
                 .then((response) => response.json())
                 .then((responseJson) => {
-                    console.log("123123")
+                    this.setState({progressVisible: false})
                     if (!responseJson.status) {
-                        Toast.show(responseJson.msg);
-                        this.setState({progressVisible: false})
+                        this.showToast(responseJson.msg);
                     } else {
-                        URlConfig.BASE_URL_APP = responseJson.data;
-                        let urlLogin = URlConfig.getLoginRouter(this.state.username, this.state.password, this.state.idct);
-                        console.log(urlLogin)
-                        fetch(urlLogin)
-                            .then((response) => response.json())
-                            .then((responseJson) => {
-                                if (!responseJson.status) {
-                                    Toast.show(responseJson.msg);
-                                } else {
-                                    if (this.state.checkOfCheckBox) {
+                        if (this.state.checkOfCheckBox) {
 
-                                        let realm = new Realm();
-                                        let allLogin = realm.objects('LoginSave');
+                            let realm = new Realm();
+                            let allLogin = realm.objects('LoginSave');
 
-                                        realm.write(() => {
-                                            realm.delete(allLogin);
-                                            realm.create('LoginSave', {
-                                                idct: this.state.idct,
-                                                username: this.state.username,
-                                                password: this.state.password
-                                            });
-                                        });
-                                        realm.close()
-                                    } else {
-                                        let realm = new Realm();
-                                        let allLogin = realm.objects('LoginSave');
-                                        realm.write(() => {
-                                            realm.delete(allLogin);
-                                        })
-
-                                    }
-                                    this.handlDataLogin(responseJson)
-                                    const {navigate} = this.props.navigation;
-                                    this.setState({progressVisible: false})
-                                    this.props
-                                        .navigation
-                                        .dispatch(NavigationActions.reset(
-                                            {
-                                                index: 0,
-                                                actions: [
-                                                    NavigationActions.navigate({routeName: 'Home'})
-                                                ]
-                                            }));
-
-                                }
-                            })
-                            .catch((error) => {
-                                console.error(error);
-                                this.setState({progressVisible: true})
-                                Toast.show('Có lỗi xảy ra, thử lại sau')
+                            realm.write(() => {
+                                realm.delete(allLogin);
+                                realm.create('LoginSave', {
+                                    idct: this.state.idct,
+                                    username: this.state.username,
+                                    password: this.state.password
+                                });
                             });
+                            realm.close()
+                        } else {
+                            let realm = new Realm();
+                            let allLogin = realm.objects('LoginSave');
+                            realm.write(() => {
+                                realm.delete(allLogin);
+                            })
+
+                        }
+                        this.handlDataLogin(responseJson)
+                        const {navigate} = this.props.navigation;
+                        this.setState({progressVisible: false})
+                        this.props
+                            .navigation
+                            .dispatch(NavigationActions.reset(
+                                {
+                                    index: 0,
+                                    actions: [
+                                        NavigationActions.navigate({routeName: 'Home'})
+                                    ]
+                                }));
+
                     }
                 })
                 .catch((error) => {
                     console.error(error);
-                    this.setState({progressVisible: true})
-                    Toast.show('Có lỗi xảy ra, thử lại sau')
+                    this.setState({progressVisible: false})
+                    this.showToast('Có lỗi xảy ra, kiểm tra cài đặt internet và thử lại sau')
                 });
+        } else {
+            this.showToast('Có lỗi xảy ra, thử lại sau')
+            this.setState({progressVisible: false})
         }
     }
+
+
+    startLogin() {
+
+        if (this.state.password.length === 0 || this.state.username === 0 || this.state.idct === 0) {
+            this.showToast('Vui lòng nhập đầy đủ thông tin đăng nhập!', 5000)
+        } else {
+            this.setState({progressVisible: true});
+            this.getBaseURL();
+        }
+
+    }
+
 
     handlDataLogin(responseJson) {
         let data = responseJson.data;

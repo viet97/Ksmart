@@ -798,7 +798,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = NZASYHTWSD;
+						DevelopmentTeam = 6H45C2TY4R;
 						ProvisioningStyle = Automatic;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
@@ -1390,7 +1390,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = NZASYHTWSD;
+				DEVELOPMENT_TEAM = 6H45C2TY4R;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
@@ -1422,7 +1422,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = NZASYHTWSD;
+				DEVELOPMENT_TEAM = 6H45C2TY4R;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
