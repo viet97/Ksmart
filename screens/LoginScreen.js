@@ -162,6 +162,7 @@ export default class LoginScreen extends React.Component {
         this.setState({progressVisible: true})
         if (this.state.password.length === 0 || this.state.username === 0 || this.state.idct === 0) {
             Toast.show('Vui lòng nhập đầy đủ thông tin đăng nhập!', Toast.LONG)
+            this.setState({progressVisible: false})
         } else {
 
             fetch(URlConfig.getRouterApp(this.state.idct))
@@ -170,6 +171,7 @@ export default class LoginScreen extends React.Component {
                     console.log("123123")
                     if (!responseJson.status) {
                         Toast.show(responseJson.msg);
+                        this.setState({progressVisible: false})
                     } else {
                         URlConfig.BASE_URL_APP = responseJson.data;
                         let urlLogin = URlConfig.getLoginRouter(this.state.username, this.state.password, this.state.idct);
@@ -219,11 +221,15 @@ export default class LoginScreen extends React.Component {
                             })
                             .catch((error) => {
                                 console.error(error);
+                                this.setState({progressVisible: true})
+                                Toast.show('Có lỗi xảy ra, thử lại sau')
                             });
                     }
                 })
                 .catch((error) => {
                     console.error(error);
+                    this.setState({progressVisible: true})
+                    Toast.show('Có lỗi xảy ra, thử lại sau')
                 });
         }
     }
