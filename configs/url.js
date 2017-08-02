@@ -127,4 +127,9 @@ export default class URlConfig {
         return data.urlserver + '/AppBaoCaoNhanVienKhongCoDoanhThu.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&macongty=' + data.idct + '&tungay=' + dateFrom + '&denngay=' + dateTo;
 
     }
+
+    static getLinkTimKiemKhachHang(keyWord) {
+        let data = URlConfig.OBJLOGIN;
+        return data.urlserver + '/AppDanhSachCuaHang_v3.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idct=' + data.idcongty + '&loctatca=' + keyWord;
+    }
 }

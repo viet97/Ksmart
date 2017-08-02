@@ -30,7 +30,22 @@ var {height, width} = Dimensions.get('window');
 export default class CustomerPlant extends Component {
     constructor(props) {
         super(props)
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1; //January is 0!
+        var yyyy = today.getFullYear();
+
+        if (dd < 10) {
+            dd = '0' + dd
+        }
+
+        if (mm < 10) {
+            mm = '0' + mm
+        }
+
+        today = dd + '-' + mm + '-' + yyyy;
         this.state = {
+            datePlant: today,
             idNhanvien: '',
             dataChoose: [],
             checkOfCheckBox: false,
@@ -65,7 +80,6 @@ export default class CustomerPlant extends Component {
     };
 
     refreshData() {
-
         PAGE = 0;
         this.setState({dataRender: null})
         ALL_LOADED = false
@@ -246,8 +260,36 @@ export default class CustomerPlant extends Component {
                 </View>
                 <View
                     style={{width: width, flexDirection: 'row', justifyContent: 'center', marginLeft: 16, height: 45}}>
-                    <Text style={{textAlign: 'center', alignSelf: 'center'}}>Chọn nhân viên </Text>
-                    <Picker style={{height: 88, width: width / 2}}
+                    <Text style={{textAlign: 'center', alignSelf: 'center', backgroundColor: 'transparent'}}>Chọn
+                        ngày</Text>
+                    <DatePicker
+                        style={{marginLeft: 8}}
+                        date={this.state.datePlant}
+                        mode="date"
+                        placeholder="select date"
+                        format="DD-MM-YYYY"
+
+                        confirmBtnText="Xác nhận"
+                        cancelBtnText="Huỷ bỏ"
+                        customStyles={{
+                            dateIcon: {},
+                            dateInput: {
+                                backgroundColor: 'white',
+                                borderWidth: 1,
+                                borderColor: 'gray',
+                                borderRadius: 4,
+                            },
+                        }}
+                        onDateChange={(date) => {
+                            this.setState({datePlant: date})
+                        }}
+                    />
+                </View>
+                <View
+                    style={{width: width, flexDirection: 'row', justifyContent: 'center', marginLeft: 16, height: 45}}>
+                    <Text style={{textAlign: 'center', alignSelf: 'center', backgroundColor: 'transparent'}}>Chọn nhân
+                        viên </Text>
+                    <Picker style={{height: 44, width: width / 2}}
                             itemStyle={{color: 'red', height: 44}}
                             selectedValue={this.state.numberPickNhanVien}
                             onValueChange={(value) => {
@@ -283,7 +325,7 @@ export default class CustomerPlant extends Component {
     sendPlantToServer() {
         console.log('Trước khi send to sever' + this.state.idNhanvien)
         var obj = {
-            ngaylapkehoach: this.props.date,
+            ngaylapkehoach: this.state.datePlant,
             dulieulapkehoach: this.state.dataChoose,
             idnhanvien: this.state.idNhanvien
         }

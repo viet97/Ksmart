@@ -167,28 +167,45 @@ export default class OrderListScreen extends Component {
                 break
         }
         return (
-            <View style={{flexDirection: 'row', justifyContent: 'space-between', flex: 1, margin: 8}}>
-                <View style={{backgroundColor: 'white', flex: 1, marginRight: 4}}>
-                    <Icon2 size={12} color={colorGH} name="controller-record"/>
+            <View style={{flexDirection: 'row', flex: 1, margin: 8}}>
+                <View style={{
+                    paddingBottom: 8,
+                    paddingTop: 8,
+                    flexDirection: 'row',
+                    backgroundColor: 'white',
+                    marginRight: 4,
+                    width: width / 2 - 12,
+                    justifyContent: 'center'
+                }}>
+                    <Icon2 style={{alignSelf: 'center', marginRight: 8}} size={12} color={colorGH}
+                           name="controller-record"/>
                     <Text style={{
-                        fontSize: 18,
+                        fontSize: 15,
                         fontWeight: "bold",
                         backgroundColor: 'transparent',
+                        alignSelf: 'center',
                         textAlign: 'center',
                         color: colorGH,
-                        paddingBottom: 12
                     }}>{URlConfig.OBJLOGIN.ttgh[rowData.trangthaigiaohang]}</Text>
                 </View>
-                <View style={{backgroundColor: 'white', flex: 1, marginLeft: 4}}>
-                    <Icon2 size={12} color={colorTT} name="controller-record"/>
+                <View style={{
+                    paddingBottom: 8,
+                    paddingTop: 8,
+                    flexDirection: 'row',
+                    backgroundColor: 'white',
+                    marginLeft: 4,
+                    width: width / 2 - 12,
+                    justifyContent: 'center'
+                }}>
+                    <Icon2 style={{alignSelf: 'center', marginRight: 8}} size={12} color={colorTT}
+                           name="controller-record"/>
                     <Text style={{
-                        fontSize: 18,
+                        fontSize: 15,
                         fontWeight: "bold",
                         backgroundColor: 'transparent',
                         textAlign: 'center',
-                        color: colorTT
-                        ,
-                        paddingBottom: 12
+                        alignSelf: 'center',
+                        color: colorTT,
                     }}>{URlConfig.OBJLOGIN.tttt[rowData.trangthaithanhtoan]}</Text>
                 </View>
             </View>
@@ -226,9 +243,18 @@ export default class OrderListScreen extends Component {
                 color = URlConfig.OBJLOGIN.color[24]
                 break;
         }
+        let info = URlConfig.OBJLOGIN.ttdh[rowData.trangthaidonhang]
+        if (info.length > 20) info = info.slice(0, 20)
         return (
-            <View style={{backgroundColor: color, marginLeft: 4, flex: 1, justifyContent: 'center'}}>
-                <Text style={{textAlign: 'center'}}>{URlConfig.OBJLOGIN.ttdh[rowData.trangthaidonhang]}</Text>
+            <View style={{
+                paddingTop: 8,
+                paddingBottom: 8,
+                backgroundColor: color,
+                marginLeft: 4,
+                width: width / 2 - 12,
+                justifyContent: 'center'
+            }}>
+                <Text style={{textAlign: 'center'}}>{info}</Text>
             </View>
         )
     }
@@ -344,18 +370,19 @@ export default class OrderListScreen extends Component {
                             style={{
                                 margin: 4,
                                 backgroundColor: Color.backGroundItemFlatList,
-                                flex: 1
                             }}>
                             <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 8}}>
                                 <Text style={{fontWeight: "bold", fontSize: 18}}>MĐH {item.mathamchieu} </Text>
-                                <Text style={{fontSize: 18}}>{ultils.getMoney(item.tongtien, 0)} </Text>
+                                <Text style={{fontSize: 18}}>{ultils.getMoney(item.tongtien, 2)} </Text>
                             </View>
                             <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 8}}>
                                 <View style={{flex: 1, marginRight: 4}}>
                                     <Text style={{fontSize: 17}}>{item.tenkhachhang} </Text>
                                     <Text style={{fontSize: 10}}>{item.thoigianlapdon} </Text>
                                 </View>
-                                {this.getInfoKhachHang(item)}
+                                <View style={{flex: 1}}>
+                                    {this.getInfoKhachHang(item)}
+                                </View>
                             </View>
                             {this.getGiaoHangHoacThanhToan(item)}
 

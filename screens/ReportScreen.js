@@ -247,7 +247,7 @@ export default class ReportScreen extends Component {
                         marginBottom: 4
                     }}>
                         <Icon size={24} color="green" name="attach-money"/>
-                        <Text style={{marginLeft: 8}}>{ultils.getMoney(item.TongTien, 0)}</Text>
+                        <Text style={{marginLeft: 8}}>{ultils.getMoney(item.TongTien, 2)}</Text>
                     </View>
                 </View>
             </TouchableOpacity>

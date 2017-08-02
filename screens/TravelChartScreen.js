@@ -108,7 +108,8 @@ export default class TravelChartScreen extends React.Component {
     getTitleChart() {
         var b = this.state.keyChart
         title = 'Biểu đồ tần suất nhân viên viếng thăm từ ngày ' + this.state.dateFrom + ' đến ngày ' + this.state.dateTo
-        return (<Text style={{margin: 8, textAlign: 'center', backgroundColor: 'transparent'}}>{title}</Text>)
+        return (<Text
+            style={{margin: 8, textAlign: 'center', backgroundColor: 'transparent', color: 'white'}}>{title}</Text>)
     }
 
     render() {

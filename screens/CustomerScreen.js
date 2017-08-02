@@ -54,7 +54,7 @@ export default class CustomerScreen extends Component {
         );
     };
 
-    refreshData() {
+    getDataFromSv() {
         PAGE = 0;
         this.setState({dataRender: null})
         ALL_LOADED = false
@@ -66,16 +66,31 @@ export default class CustomerScreen extends Component {
                     PAGE = responseJson.lastid
                     if (responseJson.endlist) ALL_LOADED = true
                     this.setState({
-
-                        dataRender: responseJson.data,
-                        dataSearch: responseJson.data
+                        customerCount: responseJson.tongsoitem,
+                        dataFull: responseJson.data,
+                    }, function () {
+                        if (SEARCH_STRING.length === 0) this.setState({dataRender: responseJson.data})
+                        else this.getdataSearch(SEARCH_STRING)
                     })
 
                 } else ALL_LOADED = true
             }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
     }
 
+    refreshData() {
 
+        this.getDataFromSv()
+    }
+
+    getdataSearch(keyword) {
+        fetch(URlConfig.getLinkTimKiemKhachHang(keyword))
+            .then((response) => (response.json()))
+            .then((responseJson) => {
+                if (responseJson.status)
+                    this.setState({dataRender: responseJson.data})
+            })
+            .catch((e) => Toast.show('vui lòng kiểm tra lại đường truyền'))
+    }
     loadMoreData() {
         if (!this.state.onEndReach) {
             console.log("LOADMORE")
@@ -90,7 +105,7 @@ export default class CustomerScreen extends Component {
                         var arr = this.state.dataRender.concat(responseJson.data)
                         this.setState({
                             dataRender: arr,
-                            dataSearch: arr
+                            dataFull: arr
                         })
 
                     }
@@ -185,25 +200,13 @@ export default class CustomerScreen extends Component {
         return new Promise((resolve, reject) => {
             resolve();
             console.log("promise")
-            var arr = []
-            var a = text.toLowerCase()
-            SEARCH_STRING = a
-            console.log(a)
-            if (a.length === 0) this.setState({dataRender: this.state.dataSearch})
-            else
-                for (var item in this.state.dataSearch) {
-                    if (a !== SEARCH_STRING) return
-                    console.log(this.state.dataSearch[item])
-                    if (this.state.dataSearch[item].TenCuaHang.toLowerCase().search(a) !== -1) {
-                        console.log(this.state.dataSearch[item])
-                        console.log(this.state.dataSearch[item])
-                        arr.push(this.state.dataSearch[item])
-                        console.log(arr)
-                    }
-                }
-
-            if (a.length !== 0) this.setState({dataRender: arr})
-            else this.setState({isSearching: false})
+            var keyword = text.toLowerCase()
+            SEARCH_STRING = keyword
+            if (keyword.length !== 0) this.getdataSearch(keyword)
+            else this.setState({
+                dataRender: this.state.dataFull,
+                isSearching: false
+            })
         });
     }
 
@@ -267,28 +270,12 @@ export default class CustomerScreen extends Component {
             resolve();
             console.log("onCancle")
             SEARCH_STRING = ''
-            this.setState({dataRender: this.state.dataSearch, isSearching: false})
+            this.setState({dataRender: this.state.dataFull, isSearching: false})
         });
     }
 
     componentDidMount() {
-        ALL_LOADED = false
-
-        fetch(URlConfig.getCustomerLink(PAGE))
-            .then((response) => (response.json()))
-            .then((responseJson) => {
-                console.log(responseJson.data.length)
-                if (responseJson.endlist) ALL_LOADED = true
-                if (responseJson.status) {
-                    PAGE = responseJson.lastid
-                    this.setState({
-                        customerCount: responseJson.tongsoitem,
-                        dataRender: responseJson.data,
-                        dataSearch: responseJson.data
-                    })
-
-                }
-            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+        this.getDataFromSv()
     }
 }
 const styles = StyleSheet.create({

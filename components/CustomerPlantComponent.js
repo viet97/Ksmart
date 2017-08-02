@@ -111,7 +111,9 @@ export default class CustomerPlantComponent extends Component {
                             },
                         }}
                         onDateChange={(time) => {
-                            this.ondateComeChange(time);
+                            if (this.checkTime(time))
+                                this.onDateChange(time, this.state.timeOut);
+                            else Toast.show('Thời gian nhỏ hơn hiện tại')
                         }}
                     />
                 </View>
@@ -141,7 +143,9 @@ export default class CustomerPlantComponent extends Component {
                             },
                         }}
                         onDateChange={(time) => {
-                            this.ondateOutChange(time);
+                            if (this.checkTime(time))
+                                this.onDateChange(this.state.timeCome, time);
+                            else Toast.show('Thời gian ko hợp lý')
                         }}
                     />
                 </View>
@@ -176,7 +180,7 @@ export default class CustomerPlantComponent extends Component {
                             marginLeft: 32
                         }}
                         onChangeText={(text) => {
-                                this.setState({ghichu: text})
+                            this.setState({ghichu: text})
 
                         }}
 
@@ -216,6 +220,27 @@ export default class CustomerPlantComponent extends Component {
         )
     }
 
+    checkTime(time) {
+        currentDate = new Date()
+        currentTime = currentDate.getHours() + ":" + currentDate.getMinutes()
+        let currentArr = currentTime.split(":")
+        let timeArr = time.split(":")
+        if (currentArr[0] > timeArr[0]) return false
+        if (currentArr[0] === timeArr[0]) {
+            if (currentArr[1] > timeArr[1]) return false
+        }
+        return true
+    }
+
+    compareTime(time1, time2) {
+        let timeArr1 = time1.split(":")
+        let timeArr2 = time2.split(":")
+        if (timeArr1[0] > timeArr2[0]) return false
+        if (timeArr1[0] === timeArr2[0]) {
+            if (timeArr1[1] > timeArr2[1]) return false
+        }
+        return true
+    }
     chooseCustomer(item) {
         this.setState({checkOfCheckBox: !this.state.checkOfCheckBox}, function () {
             var timeOut = this.state.timeOut + ':00'
@@ -229,18 +254,20 @@ export default class CustomerPlantComponent extends Component {
 
     }
 
-    ondateOutChange(time) {
-        if (!this.state.checkOfCheckBox)
-            this.setState({timeOut: time})
-        else   Toast.show('Vui lòng bỏ chọn trước khi chỉnh sửa')
+    onDateChange(from, to) {
+        Toast.show(from)
+        if (this.compareTime(from, to) || this.state.timeOut === '00:00') {
+            if (!this.state.checkOfCheckBox)
+                this.setState({
+                    timeOut: to,
+                    timeCome: from
+                })
+            else   Toast.show('Vui lòng bỏ chọn trước khi chỉnh sửa')
 
+        } else Toast.show('giờ ra điểm nhỏ hơn giờ vào điểm')
     }
 
-    ondateComeChange(time) {
-        if (!this.state.checkOfCheckBox)
-            this.setState({timeCome: time})
-        else   Toast.show('Vui lòng bỏ chọn trước khi chỉnh sửa')
-    }
+
 }
 const styles = StyleSheet.create({
     titleStyle: {
