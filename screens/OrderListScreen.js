@@ -26,6 +26,7 @@ import orderListData from '../dbcontext/orderListData'
 import AtoZListView from 'react-native-atoz-listview';
 import Search from 'react-native-search-box';
 import ultils from "../configs/ultils";
+import Toast from 'react-native-simple-toast'
 var {height, width} = Dimensions.get('window');
 var GiftedListView = require('react-native-gifted-listview');
 
@@ -95,9 +96,7 @@ export default class OrderListScreen extends Component {
                     NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
                 }
             })
-            .catch((error) => {
-                console.error(error);
-            });
+            .catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'));
     }
 
     filtData(data) {

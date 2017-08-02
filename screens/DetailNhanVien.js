@@ -21,6 +21,7 @@ import Icon3 from 'react-native-vector-icons/FontAwesome'
 import Icon4 from 'react-native-vector-icons/Foundation'
 import React from 'react';
 import Color from '../configs/color'
+import Toast from 'react-native-simple-toast'
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import TabNavigator from 'react-native-tab-navigator';
 import MapListScreen from "./MapListScreen";
@@ -56,7 +57,7 @@ export default class DetailNhanVien extends React.Component {
                 <View style={styles.titleStyle}>
                     <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
                     <Text
-                        style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Profile</Text>
+                        style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Thông Tin Nhân Viên</Text>
                     <View style={{backgroundColor: Color.backgroundNewFeed, width: 35, height: 35}}/>
                 </View>
                 <TouchableOpacity onPress={() => this.props.backToListNhanVienFromDetailNhanVien()}
@@ -164,7 +165,7 @@ export default class DetailNhanVien extends React.Component {
                             }
                         })
                     })
-            })
+            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
 
     }
 }

@@ -13,6 +13,7 @@ import StockLine from "react-native-pathjs-charts/src/StockLine";
 import DatePicker from "react-native-datepicker";
 import URlConfig from "../configs/url";
 import Color from "../configs/color";
+import Toast from 'react-native-simple-toast'
 var {height, width} = Dimensions.get('window');
 export default class TravelChartScreen extends React.Component {
     static navigationOptions = {
@@ -85,7 +86,7 @@ export default class TravelChartScreen extends React.Component {
                     }
                     else this.setState({isEmpty: true})
                 }
-            )
+            ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
     }
 
     getChartorNull(options) {

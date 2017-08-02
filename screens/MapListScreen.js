@@ -42,9 +42,7 @@ export default class MapListScreen extends Component {
                 } else {
                     Toast.show(responseJson.msg)
                 }
-            }).catch((e) => {
-            console.log('Có lỗi xảy ra, vui lòng kiểm tra kết nối internet')
-        })
+            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
     }
 
     render() {

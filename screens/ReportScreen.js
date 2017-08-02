@@ -133,9 +133,7 @@ export default class ReportScreen extends Component {
                     this.forceUpdate()
                 }
             })
-            .catch((error) => {
-                console.error(error);
-            });
+            .catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'));
     }
 
     loadMoreData() {

@@ -50,9 +50,7 @@ export default class RealtimeChartScreen extends React.Component {
                 console.log('responjson', responseJson)
                 this.setState({data: responseJson})
             })
-            .catch((error) => {
-                console.error(error);
-            });
+            .catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'));
     }
 
     getDataForChar() {

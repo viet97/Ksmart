@@ -19,6 +19,7 @@ import Icon1 from 'react-native-vector-icons/Ionicons'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import Icon2 from 'react-native-vector-icons/Entypo'
 import Image from 'react-native-image-progress';
+import Toast from 'react-native-simple-toast'
 import ProgressBar from 'react-native-progress/Bar';
 import DialogManager, {ScaleAnimation, DialogContent} from 'react-native-dialog-component';
 import {DialogComponent, SlideAnimation} from 'react-native-dialog-component';
@@ -102,9 +103,7 @@ export default class OrderListScreen extends Component {
                     this.forceUpdate()
                 }
             })
-            .catch((error) => {
-                console.error(error);
-            });
+            .catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'));
     }
 
     loadMoreData() {

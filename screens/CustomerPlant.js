@@ -82,7 +82,7 @@ export default class CustomerPlant extends Component {
                     })
 
                 } else ALL_LOADED = true
-            })
+            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
     }
 
 
@@ -104,7 +104,7 @@ export default class CustomerPlant extends Component {
                         })
 
                     }
-                })
+                }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
 
         }
     }
@@ -300,7 +300,7 @@ export default class CustomerPlant extends Component {
                         Toast.show('Kế hoạch đã bị trùng , vui lòng thử lại')
                     this.props.backToTravel()
                 }
-            })
+            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
 
     }
 
@@ -319,7 +319,7 @@ export default class CustomerPlant extends Component {
 
 
                 }
-            })
+            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
         fetch(URlConfig.getListNhanVienLink())
             .then((response) => (response.json()))
             .then((responseJson) => {
@@ -334,7 +334,7 @@ export default class CustomerPlant extends Component {
                     })
 
                 }
-            })
+            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
     }
 }
 const styles = StyleSheet.create({

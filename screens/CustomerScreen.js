@@ -15,7 +15,7 @@ import Image from 'react-native-image-progress';
 import Icon from 'react-native-vector-icons/Entypo'
 import Icon1 from 'react-native-vector-icons/MaterialIcons'
 import Icon2 from 'react-native-vector-icons/Ionicons'
-
+import Toast from 'react-native-simple-toast'
 import Color from '../configs/color'
 import URlConfig from "../configs/url";
 import Search from "react-native-search-box";
@@ -72,7 +72,7 @@ export default class CustomerScreen extends Component {
                     })
 
                 } else ALL_LOADED = true
-            })
+            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
     }
 
 
@@ -94,7 +94,7 @@ export default class CustomerScreen extends Component {
                         })
 
                     }
-                })
+                }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
 
         }
     }
@@ -121,7 +121,8 @@ export default class CustomerScreen extends Component {
                         ref="listview"
                         onEndReachedThreshold={0.2}
                         onEndReached={() => {
-                            this.loadMoreData()
+                            if (SEARCH_STRING.length === 0)
+                                this.loadMoreData()
                         }}
                         onMomentumScrollBegin={() => {
                             this.setState({onEndReach: false})
@@ -287,7 +288,7 @@ export default class CustomerScreen extends Component {
                     })
 
                 }
-            })
+            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
     }
 }
 const styles = StyleSheet.create({

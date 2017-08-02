@@ -17,17 +17,13 @@ import React from 'react';
 import Color from '../configs/color'
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import URlConfig from "../configs/url";
+import Toast from 'react-native-simple-toast'
 var SEARCH_STRING = '';
 var {width, height} = Dimensions.get('window');
 var NUMBER_ROW_RENDER = 10
 var ALL_LOADED = false
-var PAGE = 0;
 export default class NewFeedScreen extends React.Component {
-    onSwipeRight(gestureState) {
-        console.log("onSwipeRight")
-        this.setState({myText: 'You swiped right!'});
-        this.props.clickMenu()
-    }
+
 
     constructor(props) {
         super(props)
@@ -88,6 +84,7 @@ export default class NewFeedScreen extends React.Component {
                         this.setState({dataFull: responseJson.data}, function () {
                             console.log(this.state.dataFull)
                             if (NUMBER_ROW_RENDER > this.state.dataFull.length) ALL_LOADED = true
+                            else ALL_LOADED = false
                             this.setState({
                                 dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER),
                                 dataSearch: this.state.dataFull.slice(0, NUMBER_ROW_RENDER)
@@ -96,7 +93,7 @@ export default class NewFeedScreen extends React.Component {
                     } else ALL_LOADED = true
                 NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
                 }
-            )
+            ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
     }
 
     renderFooter = () => {
@@ -138,7 +135,8 @@ export default class NewFeedScreen extends React.Component {
                     ref="listview"
                     onEndReachedThreshold={0.2}
                     onEndReached={() => {
-                        this.loadMoreData()
+                        if (SEARCH_STRING.length === 0)
+                            this.loadMoreData()
                     }}
                     onMomentumScrollBegin={() => {
                         this.setState({onEndReach: false})
@@ -209,33 +207,30 @@ export default class NewFeedScreen extends React.Component {
             this.setState({dataRender: this.state.dataSearch, isSearching: false})
         });
     }
+
     render() {
         return (
-            <GestureRecognizer
-                onSwipeRight={(state) => this.onSwipeRight(state)}
-                style={{flex: 1}}
-            >
-                <View style={{flex: 1}}>
-                    <View style={styles.titleStyle}>
-                        <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
-                        <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Hoạt động</Text>
-                        <View style={{backgroundColor: 'transparent', width: 35, height: 35}}></View>
-                    </View>
 
-                    <TouchableOpacity onPress={() => this.props.backToHome()}
-                                      style={{width: 50, height: 50, position: 'absolute'}}/>
-                    <View style={{width: width}}>
-                        <Search
-                            ref="search_box"
-                            placeholder="Tìm kiếm"
-                            cancelTitle="Huỷ bỏ"
-                            onChangeText={(text) => this.onChangeText(text)}
-                            onCancel={() => this.onCancel()}
-                        />
-                    </View>
-                    {this.flatListorIndicator()}
+            <View style={{flex: 1}}>
+                <View style={styles.titleStyle}>
+                    <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
+                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Hoạt động</Text>
+                    <View style={{backgroundColor: 'transparent', width: 35, height: 35}}></View>
                 </View>
-            </GestureRecognizer>
+
+                <TouchableOpacity onPress={() => this.props.backToHome()}
+                                  style={{width: 50, height: 50, position: 'absolute'}}/>
+                <View style={{width: width}}>
+                    <Search
+                        ref="search_box"
+                        placeholder="Tìm kiếm"
+                        cancelTitle="Huỷ bỏ"
+                        onChangeText={(text) => this.onChangeText(text)}
+                        onCancel={() => this.onCancel()}
+                    />
+                </View>
+                {this.flatListorIndicator()}
+            </View>
 
         )
     }

@@ -11,6 +11,7 @@ import {
     Platform,
     Picker
 } from 'react-native';
+import Toast from 'react-native-simple-toast';
 import Search from 'react-native-search-box';
 import Image from 'react-native-image-progress';
 import ProgressBar from 'react-native-progress/Bar';
@@ -109,7 +110,8 @@ export default class ListNhanVienScreen extends React.Component {
     fillData(data) {
         var status = this.state.numberPickParty
         var arr = []
-
+        var idNhom = this.state.dataPartyNhanVien[this.state.partyNhanVienStatus[status]].IDNhom
+        var idParent = this.state.dataPartyNhanVien[this.state.partyNhanVienStatus[status]].IDParent
         for (var item in data) {
             if (data[item].TenNhom === this.state.partyNhanVienStatus[status] || status === 0)
                 arr.push(data[item])
@@ -140,7 +142,7 @@ export default class ListNhanVienScreen extends React.Component {
                 else ALL_LOADED = true
                 NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
                 }
-            )
+            ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
     }
 
     flatListorIndicator() {
@@ -167,7 +169,8 @@ export default class ListNhanVienScreen extends React.Component {
                     ref="listview"
                     onEndReachedThreshold={0.2}
                     onEndReached={() => {
-                        this.loadMoreData()
+                        if (SEARCH_STRING.length === 0)
+                            this.loadMoreData()
                     }}
                     onMomentumScrollBegin={() => {
                         this.setState({onEndReach: false})
@@ -309,7 +312,7 @@ export default class ListNhanVienScreen extends React.Component {
     }
 
     componentDidMount() {
-
+        console.log('123')
         fetch(URlConfig.getListNhanVienLink())
             .then((response) => (response.json()))
             .then((responseJson) => {
@@ -328,23 +331,37 @@ export default class ListNhanVienScreen extends React.Component {
                 } else ALL_LOADED = true
                 NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
                 }
-            )
+            ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
     }
 
-    componentWillMount() {
+    getNhomNhanVienFromSv() {
         fetch(URlConfig.getLinkNhomNhanVien())
             .then((response) => (response.json()))
             .then((responseJson) => {
                     arr = this.state.partyNhanVienStatus
+                Toast.show('' + responseJson)
+                let dsnhom = {}
                     if (responseJson.status) {
+                        let data = responseJson.danhsachnhom
                         for (var item in responseJson.danhsachnhom) {
-                            arr.push(responseJson.danhsachnhom[item].TenNhom)
+                            arr.push(data[item].TenNhom)
+                            let a = {IDNhom: data[item].ID_Nhom, IDParent: data[item].ID_PARENT}
+                            dsnhom[data[item].TenNhom] = a
                         }
-                        this.setState({partyNhanVienStatus: arr})
+
+                        Toast.show('' + dsnhom)
+                        this.setState({
+                            dataPartyNhanVien: dsnhom,
+                            partyNhanVienStatus: arr
+                        })
                     }
                 }
-            )
+            ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+    }
 
+    componentWillMount() {
+        this.getNhomNhanVienFromSv()
+        console.log('13123')
     }
 }
 

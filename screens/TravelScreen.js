@@ -17,6 +17,7 @@ import React from 'react';
 import Color from '../configs/color'
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import URlConfig from "../configs/url";
+import Toast from 'react-native-simple-toast'
 import DatePicker from 'react-native-datepicker'
 var {height, width} = Dimensions.get('window');
 var NUMBER_ROW_RENDER = 10;
@@ -29,6 +30,16 @@ export default class TravelScreen extends React.Component {
 
     }
 
+    getDataFromSv() {
+        fetch(URlConfig.getLinkTravel(this.state.date))
+            .then((response) => (response.json()))
+            .then((responseJson) => {
+                    if (responseJson.status) {
+                        this.setState({dataFull: responseJson.data})
+                    }
+                }
+            ).catch((e) => Toast.show('' + e))
+    }
 
     constructor(props) {
         super(props);
@@ -61,58 +72,17 @@ export default class TravelScreen extends React.Component {
         })
     }
 
-    fillData(data, status) {
-        var arr = []
-        for (var item in data) {
-            if (status === -1 || status === data[item].TrangThai)
-                arr.push(data[item])
-        }
-        return arr
-    }
+
 
     componentWillMount() {
-        var status = 0
-        switch (this.state.numberPickTravel) {
-            case 0:
-                status = -1
-                break
-            case 1:
-                status = 0
-                break
-            case 2:
-                status = 1
-                break
-        }
+
         var arr = []
         arr.push('Tất cả')
         arr.push('Chưa vào điểm')
         arr.push('Đã vào điểm')
         this.setState({travelStatus: arr})
         console.log(this.state.date)
-        this.setState({
-            URL: URlConfig.getLinkTravel(this.state.date)
-        }, function () {
-            console.log(this.state.URL)
-            fetch(this.state.URL)
-                .then((response) => (response.json()))
-                .then((responseJson) => {
-                        if (responseJson.status) {
-                            var a = this.fillData(responseJson.data, status)
-                            this.setState({dataFull: a}, function () {
-                                console.log('dataFull', this.state.dataFull)
-                                this.setState({dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER)}, function () {
-                                    console.log('datarender', this.state.dataRender)
-                                })
-                                NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10;
-                                if (NUMBER_ROW_RENDER > this.state.dataFull.length - 10) {
-                                    ALL_LOADED = true
-                                    this.forceUpdate()
-                                }
-                            })
-                        } else ALL_LOADED = true
-                    }
-                )
-        })
+        this.getDataFromSv()
     }
 
 
@@ -150,33 +120,7 @@ export default class TravelScreen extends React.Component {
 
     refreshData() {
         this.setState({dataRender: null})
-        var status = 0
-        switch (this.state.numberPickTravel) {
-            case 0:
-                status = -1
-                break
-            case 1:
-                status = 0
-                break
-            case 2:
-                status = 1
-                break
-        }
-        console.log('hihi', this.state.URL)
-        NUMBER_ROW_RENDER = 10
-        fetch(this.state.URL)
-            .then((response) => (response.json()))
-            .then((responseJson) => {
-                    if (responseJson.status) {
-                        var a = this.fillData(responseJson.data, status)
-                        this.setState({dataFull: a}, function () {
-                            console.log(this.state.dataFull)
-                            this.setState({dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER)})
-                            NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10;
-                        })
-                    }
-                }
-            )
+        this.getDataFromSv()
     }
 
     flatListorIndicator() {
@@ -340,12 +284,15 @@ export default class TravelScreen extends React.Component {
                                 }}
                             />
 
-                            <Picker style={{height: 88, width: width / 2}}
+                            <Picker style={{height: 44, width: width / 2, alignSelf: 'center'}}
                                     itemStyle={{height: 44}}
                                     selectedValue={this.state.numberPickTravel}
                                     onValueChange={(value) => {
                                         this.setState({numberPickTravel: value}, function () {
-                                            this.refreshData()
+                                            let a = this.fillData(this.state.dataFull)
+                                            this.setState({dataFull: a}, function () {
+                                                this.setState({dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER + 10)})
+                                            })
                                         })
 
 

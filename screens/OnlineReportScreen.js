@@ -65,9 +65,8 @@ export default class ReportScreen extends Component {
                     console.log(responseJson)
                     if (responseJson.status)
                         this.setState({data: responseJson})
-                    else Toast.show('Vui lòng kiểm tra lại đường truyền')
                 }
-            )
+            ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
     }
 
     componentDidMount() {
