@@ -103,7 +103,7 @@ export default class RevenuePerPersonnelScreen extends React.Component {
 
     getTitleChart() {
         var b = this.state.keyChart
-        title = 'Biểu đồ Nhân viên online ngày ' + this.state.date
+        title = 'Biểu đồ doanh thu sản lượng theo nhân viên ngày ' + this.state.date
         return (<Text style={{margin: 8, textAlign: 'center', backgroundColor: 'transparent'}}>{title}</Text>)
     }
 

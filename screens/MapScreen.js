@@ -9,6 +9,16 @@ import MapView from 'react-native-maps';
 import Icon1 from 'react-native-vector-icons/Ionicons'
 import Color from '../configs/color'
 export default class MapScreen extends Component {
+    static navigationOptions = ({navigation}) => ({
+        title: ` ${navigation.state.params.title}`,
+        headerTintColor: 'white',
+        headerStyle: {
+            backgroundColor: Color.backgroundNewFeed
+        },
+        headerTitleStyle: {
+            alignSelf: 'center'
+        }
+    });
     constructor(props) {
         super(props);
         this.state = {
@@ -22,11 +32,11 @@ export default class MapScreen extends Component {
     }
 
     componentDidMount() {
-        console.log(this.props.kinhdo, this.props.vido)
+        const {params} = this.props.navigation.state;
         this.setState({
                 region: {
-                    latitude: this.props.vido,
-                    longitude: this.props.kinhdo,
+                    latitude: params.vido,
+                    longitude: params.kinhdo,
                     latitudeDelta: 0.0922,
                     longitudeDelta: 0.0421,
                 },
@@ -51,23 +61,16 @@ export default class MapScreen extends Component {
     }
 
     render() {
+        const {params} = this.props.navigation.state;
             return (
                 <View style={{flex: 1}}>
-                    <View style={styles.titleStyle}>
-                        <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
-                        <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>{this.props.titleMap}</Text>
-                        <View style={{backgroundColor: Color.backgroundNewFeed, width: 35, height: 35}}/>
-                    </View>
-
-                    <TouchableOpacity onPress={() => this.props.backToListNhanVienFromMap()}
-                                      style={{width: 50, height: 50, position: 'absolute'}}/>
                     <MapView
                         style={{flex: 9}}
                         initialRegion={this.state.region}>
                         <MapView.Marker.Animated
                             coordinate={ {
-                                latitude: this.props.vido,
-                                longitude: this.props.kinhdo,
+                                latitude: params.vido,
+                                longitude: params.kinhdo,
                                 latitudeDelta: 0.0922,
                                 longitudeDelta: 0.0421
                             }}

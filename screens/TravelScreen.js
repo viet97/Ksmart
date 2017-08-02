@@ -222,7 +222,7 @@ export default class TravelScreen extends React.Component {
             strRaDiem = 'Ra điểm lúc: ' + item.ThoiGianRaDiemThucTe.replace('T', ' ') + ' ' + strRaDiem;
         }
         return (
-            <TouchableOpacity onPress={() => this.props.callback(item.KinhDo, item.ViDo, 'Travel', 'Địa chỉ cửa hàng')}>
+            <TouchableOpacity onPress={() => this.props.callback(item.KinhDo, item.ViDo, 'Địa chỉ cửa hàng')}>
                 <View style={{
                     borderTopColor: '#227878', borderTopWidth: 1
                 }}>

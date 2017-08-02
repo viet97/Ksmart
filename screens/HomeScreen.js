@@ -134,19 +134,10 @@ export default class HomeScreen extends React.Component {
             case "ListNhanVien":
                 return <ListNhanVienScreen
                     ref="ListNhanVien"
-                    callback={(kinhdo, vido, previousScreen, title) => {
-                        this.setState({
-                            kinhdo: kinhdo,
-                            vido: vido,
-                            previousScreen: previousScreen,
-                            titleMap: title
-                        }, function () {
-                            this.setState({screenName: 'Map'})
-                        })
+                    callback={(kinhdo, vido, title) => {
+                        navigate('Map', {title: title, kinhdo: kinhdo, vido: vido})
                     }}
-                    goToDetailNhanVien={(data) => this.setState({idDetailNhanVien: data}, function () {
-                        this.setState({screenName: 'DetailNhanVien'})
-                    })}
+                    goToDetailNhanVien={(data) => navigate('DetailNhanVien', {idNhanVien: data})}
                     clickMenu={() => this.openControlPanel()}
                     backToHome={() => {
                         this.setState({screenName: 'Menu'})
@@ -156,24 +147,15 @@ export default class HomeScreen extends React.Component {
                     }}
                 />
             case "Map":
-                return <MapScreen backToListNhanVienFromMap={() => {
-                    this.setState({screenName: this.state.previousScreen})
-                }} kinhdo={this.state.kinhdo} vido={this.state.vido} titleMap={this.state.titleMap}/>
+                return <MapScreen />
             case "Order":
                 return <OrderListScreen backToHome={() => {
                     this.setState({screenName: 'Menu'})
                 }}/>
             case "Customer":
                 return <CustomerScreen
-                    callback={(kinhdo, vido, previousScreen, title) => {
-                        this.setState({
-                            kinhdo: kinhdo,
-                            vido: vido,
-                            previousScreen: previousScreen,
-                            titleMap: title
-                        }, function () {
-                            this.setState({screenName: 'Map'})
-                        })
+                    callback={(kinhdo, vido, title) => {
+                        navigate('Map', {title: title, kinhdo: kinhdo, vido: vido})
                     }}
                     backToHome={() => {
                         this.setState({screenName: 'Menu'})
@@ -182,27 +164,15 @@ export default class HomeScreen extends React.Component {
                 return <MessageScreen
                     dateFrom={this.state.dateFromForMessage}
                     dateTo={this.state.dateToForMessage}
-                    moveToDetailMessage={(dateFrom, dateTo, nguoigui, thoigian, noidung) => this.setState({
-                        dateFromForMessage: dateFrom,
-                        dateToForMessage: dateTo,
-                        messageFrom: nguoigui,
-                        dateSendMessage: thoigian,
-                        messageContent: noidung
-                    }, function () {
-                        this.setState({screenName: 'DetailMessage'})
-                    })}
+                    moveToDetailMessage={(dateFrom, dateTo, nguoigui, thoigian, noidung) => {
+                        navigate('DetailMessage', {nguoigui: nguoigui, thoigian: thoigian, noidung: noidung})
+                    }
+                    }
                     backToHome={() => {
                         this.setState({screenName: 'Menu'})
                     }}/>
             case "DetailMessage":
-                return <DetailMessageScreen
-                    nguoigui={this.state.messageFrom}
-                    thoigian={this.state.dateSendMessage}
-                    noidung={this.state.messageContent}
-                    backToMessage={() => {
-                        this.setState({screenName: 'Message'})
-                    }}
-                />
+                return <DetailMessageScreen />
             case "Travel":
                 return <TravelScreen
                     goToCustomerPlant={(date) => {
@@ -213,15 +183,8 @@ export default class HomeScreen extends React.Component {
                     backToHome={() => {
                         this.setState({screenName: 'Menu'})
                     }}
-                    callback={(kinhdo, vido, previousScreen, title) => {
-                        this.setState({
-                            kinhdo: kinhdo,
-                            vido: vido,
-                            previousScreen: previousScreen,
-                            titleMap: title
-                        }, function () {
-                            this.setState({screenName: 'Map'})
-                        })
+                    callback={(kinhdo, vido, title) => {
+                        navigate('Map', {title: title, kinhdo: kinhdo, vido: vido})
                     }}
                 />
             case "Chart":
@@ -261,10 +224,7 @@ export default class HomeScreen extends React.Component {
                     backToTravel={() => this.setState({screenName: 'Travel'})}
                 />
             case "DetailNhanVien":
-                return <DetailNhanVien
-                    backToListNhanVienFromDetailNhanVien={() => this.setState({screenName: 'ListNhanVien'})}
-                    idNhanVien={this.state.idDetailNhanVien}
-                />
+                return <DetailNhanVien/>
             case "AboutUs":
                 return <AboutUsScreen
                     backToHome={() => {

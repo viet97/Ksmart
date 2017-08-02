@@ -29,6 +29,16 @@ import MapView from 'react-native-maps';
 import {PagerTabIndicator, IndicatorViewPager, PagerTitleIndicator, PagerDotIndicator} from 'rn-viewpager';
 var {width, height} = Dimensions.get('window');
 export default class DetailNhanVien extends React.Component {
+    static navigationOptions = ({navigation}) => ({
+        title: ` Thông tin nhân viên`,
+        headerTintColor: 'white',
+        headerStyle: {
+            backgroundColor: Color.backgroundNewFeed
+        },
+        headerTitleStyle: {
+            alignSelf: 'center'
+        }
+    });
     constructor(props) {
         super(props)
         this.state = {
@@ -51,17 +61,10 @@ export default class DetailNhanVien extends React.Component {
     }
 
     render() {
+
         data = this.state.data
         return (
             <View style={{flex: 1}}>
-                <View style={styles.titleStyle}>
-                    <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
-                    <Text
-                        style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Thông Tin Nhân Viên</Text>
-                    <View style={{backgroundColor: Color.backgroundNewFeed, width: 35, height: 35}}/>
-                </View>
-                <TouchableOpacity onPress={() => this.props.backToListNhanVienFromDetailNhanVien()}
-                                  style={{width: 50, height: 50, position: 'absolute'}}/>
                 <View style={{flex: 4, justifyContent: 'center'}}>
                     <Image style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0}}
                            source={{uri: 'http://www.designbolts.com/wp-content/uploads/2014/03/Yellow-blur-background1.jpg'}}/>
@@ -151,7 +154,8 @@ export default class DetailNhanVien extends React.Component {
         return <PagerTitleIndicator titles={['Hồ sơ', 'Vị trí']}/>;
     }
     componentDidMount() {
-        fetch(URlConfig.getLinkDetailNhanVien(this.props.idNhanVien))
+        const {params} = this.props.navigation.state;
+        fetch(URlConfig.getLinkDetailNhanVien(params.idNhanVien))
             .then((response) => (response.json()))
             .then((responseJson) => {
                 if (responseJson.status)

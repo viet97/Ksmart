@@ -29,28 +29,20 @@ import Search from 'react-native-search-box';
 var {height, width} = Dimensions.get('window');
 var GiftedListView = require('react-native-gifted-listview');
 export default class DetailMessageScreen extends Component {
+    static navigationOptions = ({navigation}) => ({
+        title: `Nội dung tin nhắn`,
+        headerTintColor: 'white',
+        headerStyle: {
+            backgroundColor: Color.backgroundNewFeed
+        },
+        headerTitleStyle: {
+            alignSelf: 'center'
+        }
+    });
     render() {
+        const {params} = this.props.navigation.state;
         return (
             <View style={{flex: 1}}>
-
-                <View style={styles.titleStyle}>
-                    <TouchableOpacity onPress={() => this.props.backToMessage()}
-                                      style={styles.iconStyle}>
-                        <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
-                    </TouchableOpacity>
-                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Nội Dung Tin Nhắn</Text>
-                    <View style={{backgroundColor: 'transparent', width: 35, height: 35}}/>
-                </View>
-                <TouchableOpacity onPress={() => this.props.backToMessage()}
-                                  style={{
-                                      width: 50,
-                                      height: 50,
-                                      position: 'absolute',
-                                      left: 16,
-                                      top: 0,
-                                      right: 0,
-                                      bottom: 0
-                                  }}/>
                 <View style={{backgroundColor: Color.backGroundFlatList, flex: 9}}>
                     <View style={{
                         width: width,
@@ -61,15 +53,15 @@ export default class DetailMessageScreen extends Component {
                         marginBottom: 4
                     }}>
                         <Text>Người gửi: </Text>
-                        <Text style={{marginLeft: 4}}>{this.props.nguoigui}</Text>
+                        <Text style={{marginLeft: 4}}>{params.nguoigui}</Text>
                     </View>
                     <View style={{width: width, flexDirection: 'row', marginRight: 8, marginLeft: 8}}>
                         <Text>Thời gian: </Text>
-                        <Text style={{marginLeft: 4}}>{this.props.thoigian}</Text>
+                        <Text style={{marginLeft: 4}}>{params.thoigian}</Text>
                     </View>
                     <Text style={{margin: 8}}>Nội Dung</Text>
                     <View style={{flex: 1, backgroundColor: 'white', marginLeft: 8, marginRight: 8}}>
-                        <Text style={{margin: 4}}>{this.props.noidung}</Text>
+                        <Text style={{margin: 4}}>{params.noidung}</Text>
                     </View>
                 </View>
             </View>

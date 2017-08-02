@@ -199,7 +199,7 @@ export default class ListNhanVienScreen extends React.Component {
                                         {this.isOnline(item.dangtructuyen)}
                                     </View>
                                     <TouchableOpacity onPress={() => {
-                                        this.props.callback(item.KinhDo, item.ViDo, 'ListNhanVien', 'Địa điểm Nhân Viên')
+                                        this.props.callback(item.KinhDo, item.ViDo, 'Địa điểm Nhân Viên')
                                     }}>
                                         <Icon2 size={30} color='white' name="location"/>
                                     </TouchableOpacity>

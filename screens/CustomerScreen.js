@@ -19,6 +19,7 @@ import Toast from 'react-native-simple-toast'
 import Color from '../configs/color'
 import URlConfig from "../configs/url";
 import Search from "react-native-search-box";
+import {StackNavigator} from 'react-navigation';
 var NUMBER_ROW_RENDER_PER_PAGE = 15
 var ALL_LOADED = false
 var SEARCH_STRING = '';
@@ -115,7 +116,6 @@ export default class CustomerScreen extends Component {
     }
 
     flatListorIndicator() {
-
         if (!this.state.dataRender) {
             return (
                 <View style={{backgroundColor: Color.backGroundFlatList, flex: 9}}>
@@ -146,7 +146,7 @@ export default class CustomerScreen extends Component {
                         data={this.state.dataRender}
                         renderItem={({item}) =>
                             <TouchableOpacity
-                                onPress={() => this.props.callback(item.KinhDo, item.ViDo, 'Customer', 'Địa chỉ khách hàng')}>
+                                onPress={() => this.props.callback(item.KinhDo, item.ViDo, 'Địa chỉ khách hàng')}>
                                 <View style={{
                                     marginTop: 4, marginBottom: 4, marginLeft: 8, marginRight: 8,
                                     backgroundColor: Color.backGroundItemFlatList,
