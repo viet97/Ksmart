@@ -19,9 +19,11 @@ import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import URlConfig from "../configs/url";
 import Toast from 'react-native-simple-toast'
 import DatePicker from 'react-native-datepicker'
+
 var {height, width} = Dimensions.get('window');
 var NUMBER_ROW_RENDER = 10;
 let ALL_LOADED = false;
+const TIME_SAP_DEN_GIO = 10 * 60;//10 phut
 export default class TravelScreen extends React.Component {
     onSwipeRight(gestureState) {
         console.log("onSwipeRight")
@@ -35,7 +37,9 @@ export default class TravelScreen extends React.Component {
             .then((response) => (response.json()))
             .then((responseJson) => {
                     if (responseJson.status) {
-                        this.setState({dataFull: responseJson.data})
+                        this.setState({dataFull: responseJson.data}, function () {
+                            this.setDataRender();
+                        })
                     }
                 }
             ).catch((e) => Toast.show('' + e))
@@ -73,16 +77,58 @@ export default class TravelScreen extends React.Component {
     }
 
 
-
     componentWillMount() {
 
         var arr = []
         arr.push('Tất cả')
         arr.push('Chưa vào điểm')
         arr.push('Đã vào điểm')
+        arr.push('Sắp đến giờ');
         this.setState({travelStatus: arr})
         console.log(this.state.date)
         this.getDataFromSv()
+    }
+
+    setDataRender() {
+        switch (this.state.numberPickTravel) {
+            case 0:
+                this.setState({dataRender: this.state.dataFull})
+                break;
+            case 1:
+                let arr = []
+                for (let item of this.state.dataFull) {
+                    if (item.TrangThai === 0) {
+                        arr.push(item)
+                    }
+                }
+                this.setState({dataRender: arr});
+                break;
+            case 2:
+                arr = [];
+                for (let item of this.state.dataFull) {
+                    if (item.TrangThai === 1) {
+                        arr.push(item)
+                    }
+                }
+                this.setState({dataRender: arr});
+                break;
+            case 3:
+                arr = []
+                for (let item of this.state.dataFull) {
+                    let now = new Date();
+                    let timeItem = new Date(item.ThoiGianVaoDiemDuKien);
+                    let seconds = (timeItem.getTime() - 7 * 3600 * 1000 - now.getTime()) / 1000;
+                    console.log('phut', seconds);
+                    console.log(now, timeItem)
+                    if (seconds >= 0 && seconds <= TIME_SAP_DEN_GIO) {
+                        arr.push(item)
+                    }
+
+                }
+                this.setState({dataRender: arr});
+                break;
+
+        }
     }
 
 
@@ -289,13 +335,8 @@ export default class TravelScreen extends React.Component {
                                     selectedValue={this.state.numberPickTravel}
                                     onValueChange={(value) => {
                                         this.setState({numberPickTravel: value}, function () {
-                                            let a = this.fillData(this.state.dataFull)
-                                            this.setState({dataFull: a}, function () {
-                                                this.setState({dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER + 10)})
-                                            })
+                                            this.setDataRender();
                                         })
-
-
                                     }}>
                                 {travelStatusItem}
                             </Picker>
@@ -308,6 +349,7 @@ export default class TravelScreen extends React.Component {
             </GestureRecognizer>
         )
     }
+
 
     ondateChange(date) {
         console.log('date', date)

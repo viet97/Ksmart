@@ -44,7 +44,7 @@ import RevenuePerPersonnelScreen from "./RevenuePerPersonnelScreen";
 import RealtimeChartScreen from "./RealtimeChartScreen";
 import OnlineReportScreen from "./OnlineReportScreen";
 
-var {height} = Dimensions.get('window').height;
+var {height} = Dimensions.get('window');
 var func;
 var backcount = 0
 var isLoginScreen = true
@@ -282,6 +282,7 @@ export default class HomeScreen extends React.Component {
 
 
     menuScreen() {
+        var l = height / 10
         return (
             <GestureRecognizer
                 onSwipeRight={(state) => this.onSwipeRight(state)}
@@ -289,20 +290,21 @@ export default class HomeScreen extends React.Component {
                 <View style={{flex: 1}}>
                     <Image source={require('../images/bg.png')}
                            style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0}}/>
-                    <ScrollView style={{height: height}}>
+                    <ScrollView style={{flex: 1}}>
                         <View style={styles.titleStyle}>
                             <Image source={require('../images/bg.png')}
-                                   style={{position: 'absolute', left: 0, bottom: -250}}/>
+                                   style={{position: 'absolute', left: 0, bottom: -height * 9 / 10, height: 50}}/>
                             <TouchableOpacity onPress={() => this.openControlPanel()}
                                               style={{marginLeft: 16, width: 40, height: 40, alignSelf: 'center'}}>
                                 <Icon1
-                                    style={{alignSelf: 'center'}}
+                                    style={{alignSelf: 'center', backgroundColor: 'transparent'}}
                                     size={35}
                                     color="white" name="ios-menu"
                                 />
                             </TouchableOpacity>
                             <Animatable.Text animation="fadeInDown"
                                              style={{
+                                                 backgroundColor: 'transparent',
                                                  fontSize: 20,
                                                  alignSelf: 'center',
                                                  color: 'white'
@@ -643,7 +645,6 @@ const styles = StyleSheet.create({
         elevation: 15,
         justifyContent: 'space-between',
         flexDirection: 'row',
-        backgroundColor: Color.backgroundNewFeed,
     },
     headerStyle: {
         elevation: 15, height: this.height / 7

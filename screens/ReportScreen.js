@@ -448,8 +448,8 @@ export default class ReportScreen extends Component {
                             }}
                         />
                     </View>
-                    <Picker style={{height: 44, width: width}}
-                            itemStyle={{color: 'red', height: 88}}
+                    <Picker style={{height: 44, width: width, paddingTop: 4}}
+                            itemStyle={{color: 'red', height: 44}}
                             selectedValue={this.state.numberPickType}
                             onValueChange={(value) => {
                                 this.setState({numberPickType: value}, function () {

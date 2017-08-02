@@ -146,9 +146,6 @@ export default class LoginScreen extends React.Component {
                                 placeholder={'Mật khẩu'}
                                 secureTextEntry={true}
                                 onChangeText={(text) => this.setState({password: text})}
-                                onSubmitEditing={(event) => {
-                                    this.startLogin();
-                                }}
                             />
                         </TextInputLayout>
                     </View>
