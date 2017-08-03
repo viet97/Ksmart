@@ -254,7 +254,8 @@ export default class NewFeedScreen extends React.Component {
                 else ALL_LOADED = true
                 NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
                 }
-            )
+            ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+
     }
 
 }
