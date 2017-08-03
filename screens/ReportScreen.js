@@ -425,7 +425,7 @@ export default class ReportScreen extends Component {
                             }}
                         />
 
-                        <Text style={{alignSelf: 'center'}}>Đến ngày </Text>
+                        <Text style={{alignSelf: 'center', backgroundColor: 'transparent'}}>Đến ngày </Text>
                         <DatePicker
                             date={this.state.dateTo}
                             mode="date"

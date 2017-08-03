@@ -281,7 +281,7 @@ export default class HomeScreen extends React.Component {
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     style={{alignSelf: 'center', width: 90, height: 70}}
-                                    onPress={() => this.setState({screenName: "NewFeed"})}>
+                                    onPress={() => this.setState({screenName: "ListNhanVien"})}>
                                     <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
                                            source={require('../images/linkedin-contacts-2013.png')}/>
                                     <Animatable.Text animation="slideInLeft" style={styles.titleIconsMenu}>Nhân
@@ -289,7 +289,7 @@ export default class HomeScreen extends React.Component {
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     style={{alignSelf: 'center', width: 90, height: 70}}
-                                    onPress={() => this.setState({screenName: "NewFeed"})}>
+                                    onPress={() => this.setState({screenName: "Order"})}>
                                     <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
                                            source={require('../images/120-in-1-applets-2013.png')}/>
                                     <Animatable.Text animation="slideInLeft" style={styles.titleIconsMenu}>Đơn
@@ -299,7 +299,7 @@ export default class HomeScreen extends React.Component {
                             <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 16}}>
                                 <TouchableOpacity
                                     style={{alignSelf: 'center', width: 90, height: 70}}
-                                    onPress={() => this.setState({screenName: "NewFeed"})}>
+                                    onPress={() => this.setState({screenName: "Customer"})}>
                                     <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
                                            source={require('../images/myface-for-facebook-2013.png')}/>
                                     <Animatable.Text animation="slideInLeft" style={styles.titleIconsMenu}>Khách
@@ -307,7 +307,7 @@ export default class HomeScreen extends React.Component {
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     style={{alignSelf: 'center', width: 90, height: 70}}
-                                    onPress={() => this.setState({screenName: "NewFeed"})}>
+                                    onPress={() => this.setState({screenName: "Travel"})}>
                                     <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
                                            source={require('../images/flight-live-status-weather-2014.png')}/>
                                     <Animatable.Text animation="slideInLeft" style={styles.titleIconsMenu}>Viếng
@@ -315,7 +315,7 @@ export default class HomeScreen extends React.Component {
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     style={{alignSelf: 'center', width: 90, height: 70}}
-                                    onPress={() => this.setState({screenName: "NewFeed"})}>
+                                    onPress={() => this.setState({screenName: "Chart"})}>
                                     <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
                                            source={require('../images/cardiograph-2012.png')}/>
                                     <Animatable.Text animation="slideInLeft" style={styles.titleIconsMenu}>Biểu
@@ -325,7 +325,7 @@ export default class HomeScreen extends React.Component {
                             <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 16}}>
                                 <TouchableOpacity
                                     style={{alignSelf: 'center', width: 90, height: 70}}
-                                    onPress={() => this.setState({screenName: "NewFeed"})}>
+                                    onPress={() => this.setState({screenName: "Report"})}>
                                     <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
                                            source={require('../images/appadvice-2017.png')}/>
                                     <Animatable.Text animation="slideInLeft" style={styles.titleIconsMenu}>Báo
@@ -333,7 +333,7 @@ export default class HomeScreen extends React.Component {
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     style={{alignSelf: 'center', width: 90, height: 70}}
-                                    onPress={() => this.setState({screenName: "NewFeed"})}>
+                                    onPress={() => this.setState({screenName: "RealtimeChart"})}>
                                     <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
                                            source={require('../images/meipai-hottest-short-video-2015.png')}/>
                                     <Animatable.Text animation="slideInLeft"
@@ -341,7 +341,7 @@ export default class HomeScreen extends React.Component {
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     style={{alignSelf: 'center', width: 90, height: 70}}
-                                    onPress={() => this.setState({screenName: "NewFeed"})}>
+                                    onPress={() => this.setState({screenName: "Message"})}>
                                     <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
                                            source={require('../images/webmail-2012.png')}/>
                                     <Animatable.Text animation="slideInLeft" style={styles.titleIconsMenu}>Tin
