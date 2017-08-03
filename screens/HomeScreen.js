@@ -259,6 +259,7 @@ export default class HomeScreen extends React.Component {
                                     color="white" name="ios-menu"
                                 />
                             </TouchableOpacity>
+
                             <Animatable.Text animation="fadeInDown"
                                              style={{
                                                  backgroundColor: 'transparent',
@@ -266,86 +267,103 @@ export default class HomeScreen extends React.Component {
                                                  alignSelf: 'center',
                                                  color: 'white'
                                              }}>Menu</Animatable.Text>
+
                             <View style={{width: 50, height: 50, backgroundColor: 'transparent'}}></View>
                         </View>
 
                         <View style={{flex: 9}}>
                             <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 16}}>
                                 <TouchableOpacity
-                                    style={{alignSelf: 'center', width: 90, height: 70}}
+                                    style={{alignSelf: 'center', width: 90}}
                                     onPress={() => this.setState({screenName: "NewFeed"})}>
                                     <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
                                            source={require('../images/unarchiver-2012.png')}/>
+
                                     <Animatable.Text animation="slideInLeft" style={styles.titleIconsMenu}>Hoạt
                                         động</Animatable.Text>
+
                                 </TouchableOpacity>
                                 <TouchableOpacity
-                                    style={{alignSelf: 'center', width: 90, height: 70}}
+                                    style={{alignSelf: 'center', width: 90}}
                                     onPress={() => this.setState({screenName: "ListNhanVien"})}>
                                     <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
                                            source={require('../images/linkedin-contacts-2013.png')}/>
-                                    <Animatable.Text animation="slideInLeft" style={styles.titleIconsMenu}>Nhân
+
+                                    <Animatable.Text animation="zoomIn" style={styles.titleIconsMenu}>Nhân
                                         viên</Animatable.Text>
+
                                 </TouchableOpacity>
                                 <TouchableOpacity
-                                    style={{alignSelf: 'center', width: 90, height: 70}}
+                                    style={{alignSelf: 'center', width: 90}}
                                     onPress={() => this.setState({screenName: "Order"})}>
                                     <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
                                            source={require('../images/120-in-1-applets-2013.png')}/>
-                                    <Animatable.Text animation="slideInLeft" style={styles.titleIconsMenu}>Đơn
+
+                                    <Animatable.Text animation="slideInRight" style={styles.titleIconsMenu}>Đơn
                                         hàng </Animatable.Text>
+
                                 </TouchableOpacity>
                             </View>
                             <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 16}}>
                                 <TouchableOpacity
-                                    style={{alignSelf: 'center', width: 90, height: 70}}
+                                    style={{alignSelf: 'center', width: 90}}
                                     onPress={() => this.setState({screenName: "Customer"})}>
                                     <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
                                            source={require('../images/myface-for-facebook-2013.png')}/>
+
                                     <Animatable.Text animation="slideInLeft" style={styles.titleIconsMenu}>Khách
                                         hàng </Animatable.Text>
+
                                 </TouchableOpacity>
                                 <TouchableOpacity
-                                    style={{alignSelf: 'center', width: 90, height: 70}}
+                                    style={{alignSelf: 'center', width: 90}}
                                     onPress={() => this.setState({screenName: "Travel"})}>
                                     <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
                                            source={require('../images/flight-live-status-weather-2014.png')}/>
-                                    <Animatable.Text animation="slideInLeft" style={styles.titleIconsMenu}>Viếng
+                                    <Animatable.Text animation="flipInY" style={styles.titleIconsMenu}>Viếng
                                         thăm</Animatable.Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity
-                                    style={{alignSelf: 'center', width: 90, height: 70}}
+                                    style={{alignSelf: 'center', width: 90}}
                                     onPress={() => this.setState({screenName: "Chart"})}>
                                     <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
                                            source={require('../images/cardiograph-2012.png')}/>
-                                    <Animatable.Text animation="slideInLeft" style={styles.titleIconsMenu}>Biểu
+
+                                    <Animatable.Text animation="flipInY" style={styles.titleIconsMenu}>Biểu
                                         đồ</Animatable.Text>
+
                                 </TouchableOpacity>
                             </View>
                             <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 16}}>
                                 <TouchableOpacity
-                                    style={{alignSelf: 'center', width: 90, height: 70}}
+                                    style={{alignSelf: 'center', width: 90}}
                                     onPress={() => this.setState({screenName: "Report"})}>
                                     <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
                                            source={require('../images/appadvice-2017.png')}/>
+
                                     <Animatable.Text animation="slideInLeft" style={styles.titleIconsMenu}>Báo
                                         cáo</Animatable.Text>
+
                                 </TouchableOpacity>
                                 <TouchableOpacity
-                                    style={{alignSelf: 'center', width: 90, height: 70}}
+                                    style={{alignSelf: 'center', width: 90}}
                                     onPress={() => this.setState({screenName: "RealtimeChart"})}>
                                     <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
                                            source={require('../images/meipai-hottest-short-video-2015.png')}/>
-                                    <Animatable.Text animation="slideInLeft"
+
+                                    <Animatable.Text animation="bounceIn"
                                                      style={styles.titleIconsMenu}>Live</Animatable.Text>
+
                                 </TouchableOpacity>
                                 <TouchableOpacity
-                                    style={{alignSelf: 'center', width: 90, height: 70}}
+                                    style={{alignSelf: 'center', width: 90}}
                                     onPress={() => this.setState({screenName: "Message"})}>
                                     <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
                                            source={require('../images/webmail-2012.png')}/>
-                                    <Animatable.Text animation="slideInLeft" style={styles.titleIconsMenu}>Tin
+
+                                    <Animatable.Text animation="slideInRight" style={styles.titleIconsMenu}>Tin
                                         nhắn</Animatable.Text>
+
                                 </TouchableOpacity>
                             </View>
                         </View>

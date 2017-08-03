@@ -339,7 +339,7 @@ export default class ListNhanVienScreen extends React.Component {
             .then((response) => (response.json()))
             .then((responseJson) => {
                     arr = this.state.partyNhanVienStatus
-                Toast.show('' + responseJson)
+
                 let dsnhom = {}
                     if (responseJson.status) {
                         let data = responseJson.danhsachnhom
@@ -349,7 +349,6 @@ export default class ListNhanVienScreen extends React.Component {
                             dsnhom[data[item].TenNhom] = a
                         }
 
-                        Toast.show('' + dsnhom)
                         this.setState({
                             dataPartyNhanVien: dsnhom,
                             partyNhanVienStatus: arr

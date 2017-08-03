@@ -30,7 +30,7 @@ import {PagerTabIndicator, IndicatorViewPager, PagerTitleIndicator, PagerDotIndi
 var {width, height} = Dimensions.get('window');
 export default class DetailNhanVien extends React.Component {
     static navigationOptions = ({navigation}) => ({
-        title: ` Thông tin nhân viên`,
+        title: `Thông tin nhân viên`,
         headerTintColor: 'white',
         headerStyle: {
             backgroundColor: Color.backgroundNewFeed
@@ -77,7 +77,8 @@ export default class DetailNhanVien extends React.Component {
                         fontSize: 24,
                         color: 'white',
                         textAlign: 'center',
-                        marginTop: 8
+                            marginTop: 8,
+                            backgroundColor: 'transparent'
                     }}>{this.state.data.tennhanvien}</Text>
                     </View>
 
@@ -218,10 +219,10 @@ const styles = StyleSheet.create({
         height: 80
     },
     text1: {
-        fontSize: 12, marginTop: 4, marginRight: 8, color: 'red'
+        fontSize: 12, marginTop: 4, marginRight: 8, color: 'red', backgroundColor: 'transparent'
     },
     text2: {
-        fontSize: 18, fontWeight: 'bold'
+        fontSize: 18, fontWeight: 'bold', backgroundColor: 'transparent'
     },
     viewCover: {
         borderBottomWidth: 1, borderBottomColor: 'white', marginLeft: 16, marginTop: 8

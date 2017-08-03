@@ -206,11 +206,11 @@ export default class ChartScreen extends React.Component {
                                       bottom: 0
                                   }}/>
                 <View style={{flexDirection: 'column', flex: 9}}>
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between', height: 60}}>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between', height: 44}}>
                         <Text style={{alignSelf: 'center', backgroundColor: 'transparent', color: 'white'}}>Tháng</Text>
                         <Picker
-                            style={{height: 88, width: 60}}
-                            itemStyle={{color: 'white', height: 60}}
+                            style={{height: 44, width: 50, alignSelf: 'center'}}
+                            itemStyle={{color: 'white', height: 44}}
                             selectedValue={this.state.month}
                             onValueChange={(itemValue) => this.setState({month: itemValue}, function () {
                                 this.getDataChart();
@@ -219,8 +219,8 @@ export default class ChartScreen extends React.Component {
                         </Picker>
                         <Text style={{alignSelf: 'center', backgroundColor: 'transparent', color: 'white'}}>Năm</Text>
                         <Picker
-                            style={{height: 88, width: 60}}
-                            itemStyle={{color: 'white', height: 60}}
+                            style={{height: 44, width: 73}}
+                            itemStyle={{color: 'white', height: 44}}
                             selectedValue={this.state.year}
                             onValueChange={(itemValue) => this.setState({year: itemValue}, function () {
                                 this.getDataChart();
@@ -229,8 +229,8 @@ export default class ChartScreen extends React.Component {
                         </Picker>
                         <Text style={{alignSelf: 'center', backgroundColor: 'transparent', color: 'white'}}>Theo</Text>
                         <Picker
-                            style={{height: 88, width: 100}}
-                            itemStyle={{color: 'white', height: 60}}
+                            style={{height: 44, width: 110}}
+                            itemStyle={{color: 'white', height: 44}}
                             selectedValue={this.state.keyChart}
                             onValueChange={(itemValue) => this.setState({keyChart: itemValue})}>
                             <Picker.Item label="Doanh thu" value="TongTien"/>
@@ -332,7 +332,6 @@ const styles = StyleSheet.create({
         height: 24,
         backgroundColor: "transparent",
         marginLeft: 8,
-        marginTop: (Platform.OS === 'ios') ? 8 : 0
     },
     textStyle: {
         fontSize: 18,

@@ -159,13 +159,12 @@ export default class RealtimeChartScreen extends React.Component {
                     <View style={{flex: 1, marginTop: 40, flexDirection: 'row'}}>
                         <Text style={{
                             flex: 1,
-                            height: 70,
                             alignSelf: 'center',
                             textAlign: 'center',
                             backgroundColor: 'transparent'
                         }}>Cập nhật</Text>
-                        <Picker style={{flex: 3, height: 70}}
-                                itemStyle={{height: 60}}
+                        <Picker style={{flex: 3, height: 44}}
+                                itemStyle={{height: 44}}
                                 selectedValue={this.state.timeUpdate}
                                 onValueChange={(value) => {
                                     this.setState({timeUpdate: value})
