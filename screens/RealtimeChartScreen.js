@@ -132,7 +132,8 @@ export default class RealtimeChartScreen extends React.Component {
                                       style={styles.iconStyle}>
                         <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
                     </TouchableOpacity>
-                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Báo cáo online</Text>
+                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Báo
+                        cáo online</Text>
                     <TouchableOpacity
                         onPress={() => this.getDatafromServer()}
                         style={{backgroundColor: 'transparent', width: 35, height: 35, alignSelf: 'center'}}>
@@ -146,16 +147,23 @@ export default class RealtimeChartScreen extends React.Component {
                         <Text style={{
                             alignSelf: 'center',
                             textAlign: 'center',
-                            width: Dimensions.get('window').width / 2
+                            width: Dimensions.get('window').width / 2, backgroundColor: 'transparent'
                         }}>Biểu
                             đồ số lượng nhân viên online, checkin, đơn hàng</Text>
                     </View>
                     <View style={{flex: 4, marginTop: 40}}>
                         <ChartView style={{padding: 16, flex: 1}} config={this.getConfigTongDoanhThu()}/>
-                        <Text style={{alignSelf: 'center', textAlign: 'center'}}>Biểu đồ doanh thu</Text>
+                        <Text style={{alignSelf: 'center', textAlign: 'center', backgroundColor: 'transparent'}}>Biểu đồ
+                            doanh thu</Text>
                     </View>
                     <View style={{flex: 1, marginTop: 40, flexDirection: 'row'}}>
-                        <Text style={{flex: 1, height: 70, alignSelf: 'center', textAlign: 'center'}}>Cập nhật</Text>
+                        <Text style={{
+                            flex: 1,
+                            height: 70,
+                            alignSelf: 'center',
+                            textAlign: 'center',
+                            backgroundColor: 'transparent'
+                        }}>Cập nhật</Text>
                         <Picker style={{flex: 3, height: 70}}
                                 itemStyle={{height: 60}}
                                 selectedValue={this.state.timeUpdate}

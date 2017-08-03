@@ -271,129 +271,80 @@ export default class HomeScreen extends React.Component {
 
                         <View style={{flex: 9}}>
                             <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 16}}>
-                                <TouchableOpacity onPress={() => this.setState({screenName: "NewFeed"})}>
-                                    <Image style={{width: 50, height: 50, borderRadius: 10}}
-                                           source={require('../images/invoice-by-alto-pro-invoicing-2017.png')}/>
+                                <TouchableOpacity
+                                    style={{alignSelf: 'center', width: 90, height: 70}}
+                                    onPress={() => this.setState({screenName: "NewFeed"})}>
+                                    <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
+                                           source={require('../images/unarchiver-2012.png')}/>
                                     <Animatable.Text animation="slideInLeft" style={styles.titleIconsMenu}>Hoạt
                                         động</Animatable.Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => this.setState({screenName: "ListNhanVien"})}>
-                                    <View style={{
-                                        backgroundColor: '#3c8efd',
-                                        width: 80,
-                                        height: 80, elevation: 5,
-                                        borderRadius: 40,
-                                        justifyContent: 'center'
-                                    }}>
-                                        <Icon1 style={{alignSelf: 'center'}} size={40} color="white"
-                                               name="ios-people-outline"/>
-                                    </View>
-                                    <Animatable.Text animation="zoomIn" style={styles.titleIconsMenu}>Nhân
+                                <TouchableOpacity
+                                    style={{alignSelf: 'center', width: 90, height: 70}}
+                                    onPress={() => this.setState({screenName: "NewFeed"})}>
+                                    <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
+                                           source={require('../images/fastcontact-2012.png')}/>
+                                    <Animatable.Text animation="slideInLeft" style={styles.titleIconsMenu}>Nhân
                                         viên</Animatable.Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => {
-                                    this.setState({screenName: 'Order'})
-                                }}>
-                                    <View style={{
-                                        backgroundColor: '#009e8a',
-                                        width: 80, elevation: 5,
-                                        borderRadius: 40,
-                                        height: 80,
-                                        justifyContent: 'center'
-                                    }}>
-                                        <Icon2 style={{alignSelf: 'center'}} size={40} color="white" name="archive"/>
-                                    </View>
-                                    <Animatable.Text animation="slideInRight" style={styles.titleIconsMenu}>Đơn
-                                        hàng</Animatable.Text>
+                                <TouchableOpacity
+                                    style={{alignSelf: 'center', width: 90, height: 70}}
+                                    onPress={() => this.setState({screenName: "NewFeed"})}>
+                                    <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
+                                           source={require('../images/120-in-1-applets-2013.png')}/>
+                                    <Animatable.Text animation="slideInLeft" style={styles.titleIconsMenu}>Đơn
+                                        hàng </Animatable.Text>
                                 </TouchableOpacity>
                             </View>
                             <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 16}}>
-                                <TouchableOpacity onPress={() => {
-                                    this.setState({screenName: 'Customer'})
-                                }}>
-                                    <View style={{
-                                        backgroundColor: '#6fdb38',
-                                        width: 80, elevation: 5,
-                                        borderRadius: 40,
-                                        height: 80,
-                                        justifyContent: 'center'
-                                    }}>
-                                        <Icon2 style={{alignSelf: 'center'}} size={40} color="white" name="user"/>
-                                    </View>
-                                    <Animatable.Text animation="slideInLeft" style={styles.titleIconsMenu}> Khách
-                                        hàng</Animatable.Text>
+                                <TouchableOpacity
+                                    style={{alignSelf: 'center', width: 90, height: 70}}
+                                    onPress={() => this.setState({screenName: "NewFeed"})}>
+                                    <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
+                                           source={require('../images/myface-for-facebook-2013.png')}/>
+                                    <Animatable.Text animation="slideInLeft" style={styles.titleIconsMenu}>Khách
+                                        hàng </Animatable.Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => this.setState({screenName: 'Travel'})}>
-                                    <View style={{
-                                        backgroundColor: '#ffa100',
-                                        width: 80, elevation: 5,
-                                        borderRadius: 40,
-                                        height: 80,
-                                        justifyContent: 'center'
-                                    }}>
-                                        <Icon2 style={{alignSelf: 'center'}} size={40} color="white"
-                                               name="aircraft-take-off"/>
-                                    </View>
-                                    <Animatable.Text animation="flipInY" style={styles.titleIconsMenu}>Viếng
+                                <TouchableOpacity
+                                    style={{alignSelf: 'center', width: 90, height: 70}}
+                                    onPress={() => this.setState({screenName: "NewFeed"})}>
+                                    <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
+                                           source={require('../images/flight-live-status-weather-2014.png')}/>
+                                    <Animatable.Text animation="slideInLeft" style={styles.titleIconsMenu}>Viếng
                                         thăm</Animatable.Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => {
-                                    this.setState({screenName: 'Chart'})
-                                }}>
-                                    <View style={{
-                                        backgroundColor: '#5a00bc',
-                                        width: 80, elevation: 5,
-                                        borderRadius: 40,
-                                        height: 80,
-                                        justifyContent: 'center'
-                                    }}>
-                                        <Icon3 style={{alignSelf: 'center'}} size={40} color="white" name="bar-chart"/>
-                                    </View>
-                                    <Animatable.Text animation="slideInRight" style={styles.titleIconsMenu}>Biểu
+                                <TouchableOpacity
+                                    style={{alignSelf: 'center', width: 90, height: 70}}
+                                    onPress={() => this.setState({screenName: "NewFeed"})}>
+                                    <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
+                                           source={require('../images/invoice-by-alto-pro-invoicing-2017.png')}/>
+                                    <Animatable.Text animation="slideInLeft" style={styles.titleIconsMenu}>Biểu
                                         đồ</Animatable.Text>
                                 </TouchableOpacity>
                             </View>
                             <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 16}}>
-                                <TouchableOpacity onPress={() => this.setState({screenName: 'Report'})}>
-                                    <View style={{
-                                        backgroundColor: '#00b9da',
-                                        width: 80, elevation: 5,
-                                        borderRadius: 40,
-                                        height: 80,
-                                        justifyContent: 'center'
-                                    }}>
-                                        <Icon3 style={{alignSelf: 'center'}} size={40} color="white"
-                                               name="file-text-o"/>
-                                    </View>
+                                <TouchableOpacity
+                                    style={{alignSelf: 'center', width: 90, height: 70}}
+                                    onPress={() => this.setState({screenName: "NewFeed"})}>
+                                    <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
+                                           source={require('../images/appadvice-2017.png')}/>
                                     <Animatable.Text animation="slideInLeft" style={styles.titleIconsMenu}>Báo
                                         cáo</Animatable.Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => {
-                                    this.setState({screenName: "RealtimeChart"})
-                                }}>
-                                    <View style={{
-                                        backgroundColor: '#bcf600',
-                                        width: 80, elevation: 5,
-                                        borderRadius: 40,
-                                        height: 80,
-                                        justifyContent: 'center'
-                                    }}>
-                                        <Icon2 style={{alignSelf: 'center'}} size={40} color="white" name="laptop"/>
-                                    </View>
-                                    <Animatable.Text animation="bounceIn" style={styles.titleIconsMenu}>Live
-                                    </Animatable.Text>
+                                <TouchableOpacity
+                                    style={{alignSelf: 'center', width: 90, height: 70}}
+                                    onPress={() => this.setState({screenName: "NewFeed"})}>
+                                    <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
+                                           source={require('../images/meipai-hottest-short-video-2015.png')}/>
+                                    <Animatable.Text animation="slideInLeft"
+                                                     style={styles.titleIconsMenu}>Live</Animatable.Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => this.setState({screenName: "Message"})}>
-                                    <View style={{
-                                        backgroundColor: '#ff4700',
-                                        width: 80,
-                                        borderRadius: 40,
-                                        height: 80, elevation: 5,
-                                        justifyContent: 'center'
-                                    }}>
-                                        <Icon2 style={{alignSelf: 'center'}} size={40} color="white" name="mail"/>
-                                    </View>
-                                    <Animatable.Text animation="slideInRight" style={styles.titleIconsMenu}>Tin
+                                <TouchableOpacity
+                                    style={{alignSelf: 'center', width: 90, height: 70}}
+                                    onPress={() => this.setState({screenName: "NewFeed"})}>
+                                    <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
+                                           source={require('../images/webmail-2012.png')}/>
+                                    <Animatable.Text animation="slideInLeft" style={styles.titleIconsMenu}>Tin
                                         nhắn</Animatable.Text>
                                 </TouchableOpacity>
                             </View>
