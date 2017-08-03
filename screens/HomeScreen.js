@@ -560,7 +560,7 @@ const styles = StyleSheet.create({
         width: 24,
         height: 24,
         backgroundColor: "transparent",
-        marginLeft: 8
+        marginLeft: 16
     },
     textStyle: {
         fontSize: 18,

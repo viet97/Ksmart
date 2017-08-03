@@ -390,7 +390,7 @@ const styles = StyleSheet.create({
         height: 24,
         backgroundColor: "transparent",
         marginLeft: 16,
-        marginTop: (Platform.OS === 'ios') ? 8 : 0
+
     },
     textStyle: {
         fontSize: 18,

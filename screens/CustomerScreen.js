@@ -302,8 +302,8 @@ const styles = StyleSheet.create({
         width: 35,
         height: 35,
         backgroundColor: "transparent",
-        marginLeft: 16,
-        marginTop: (Platform.OS === 'ios') ? 8 : 0
+        marginLeft: 8,
+        marginTop: (Platform.OS === 'ios') ? 4 : 0
     },
     textStyle: {
         fontSize: 18,
