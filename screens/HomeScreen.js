@@ -283,7 +283,7 @@ export default class HomeScreen extends React.Component {
                                     style={{alignSelf: 'center', width: 90, height: 70}}
                                     onPress={() => this.setState({screenName: "NewFeed"})}>
                                     <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
-                                           source={require('../images/fastcontact-2012.png')}/>
+                                           source={require('../images/linkedin-contacts-2013.png')}/>
                                     <Animatable.Text animation="slideInLeft" style={styles.titleIconsMenu}>Nhân
                                         viên</Animatable.Text>
                                 </TouchableOpacity>
@@ -317,7 +317,7 @@ export default class HomeScreen extends React.Component {
                                     style={{alignSelf: 'center', width: 90, height: 70}}
                                     onPress={() => this.setState({screenName: "NewFeed"})}>
                                     <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
-                                           source={require('../images/invoice-by-alto-pro-invoicing-2017.png')}/>
+                                           source={require('../images/cardiograph-2012.png')}/>
                                     <Animatable.Text animation="slideInLeft" style={styles.titleIconsMenu}>Biểu
                                         đồ</Animatable.Text>
                                 </TouchableOpacity>
