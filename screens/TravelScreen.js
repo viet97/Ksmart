@@ -33,16 +33,16 @@ export default class TravelScreen extends React.Component {
     }
 
     getDataFromSv() {
-        fetch(URlConfig.getLinkTravel(this.state.date))
+        fetch(URlConfig.getLinkTravel(this.state.dateFrom, this.state.dateTo))
             .then((response) => (response.json()))
             .then((responseJson) => {
                     if (responseJson.status) {
                         this.setState({dataFull: responseJson.data}, function () {
                             this.setDataRender();
                         })
-                    }
+                    } else Toast.show('đường dẫn sai , vui long liên hệ với admin')
                 }
-            ).catch((e) => Toast.show('' + e))
+            ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
     }
 
     constructor(props) {
@@ -66,7 +66,8 @@ export default class TravelScreen extends React.Component {
             travelStatus: [],
             refreshing: false,
             dataFull: [],
-            date: today,
+            dateFrom: today,
+            dateTo: today,
             dataRender: null,
             onEndReach: true,
             waiting: false,
@@ -85,7 +86,7 @@ export default class TravelScreen extends React.Component {
         arr.push('Đã vào điểm')
         arr.push('Sắp đến giờ');
         this.setState({travelStatus: arr})
-        console.log(this.state.date)
+
         this.getDataFromSv()
     }
 
@@ -284,7 +285,7 @@ export default class TravelScreen extends React.Component {
                         <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
                         <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Viếng thăm</Text>
                         <TouchableOpacity
-                            onPress={() => this.props.goToCustomerPlant(this.state.date)}
+                            onPress={() => this.props.goToCustomerPlant()}
                             style={{
                                 backgroundColor: Color.backgroundNewFeed,
                                 alignSelf: 'center',
@@ -309,7 +310,7 @@ export default class TravelScreen extends React.Component {
                         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                             <DatePicker
                                 style={{marginLeft: 8}}
-                                date={this.state.date}
+                                date={this.state.dateFrom}
                                 mode="date"
                                 placeholder="select date"
                                 format="DD-MM-YYYY"
@@ -326,23 +327,58 @@ export default class TravelScreen extends React.Component {
                                     },
                                 }}
                                 onDateChange={(date) => {
-                                    this.ondateChange(date);
+                                    this.ondateChange(date, this.state.dateTo);
                                 }}
                             />
+                            <Text style={{
+                                textAlign: 'center',
+                                alignSelf: 'center',
+                                backgroundColor: 'transparent',
+                                color: 'black'
+                            }}>Đến
+                                ngày</Text>
+                            <DatePicker
+                                style={{marginLeft: 8}}
+                                date={this.state.dateTo}
+                                mode="date"
+                                placeholder="select date"
+                                format="DD-MM-YYYY"
 
-                            <Picker style={{height: 44, width: width / 2, alignSelf: 'center'}}
-                                    itemStyle={{height: 44}}
-                                    selectedValue={this.state.numberPickTravel}
-                                    onValueChange={(value) => {
-                                        this.setState({numberPickTravel: value}, function () {
-                                            this.setDataRender();
-                                        })
-                                    }}>
-                                {travelStatusItem}
-                            </Picker>
-
-                            <View></View>
+                                confirmBtnText="Xác nhận"
+                                cancelBtnText="Huỷ bỏ"
+                                customStyles={{
+                                    dateIcon: {},
+                                    dateInput: {
+                                        backgroundColor: 'white',
+                                        borderWidth: 1,
+                                        borderColor: 'gray',
+                                        borderRadius: 4,
+                                    },
+                                }}
+                                onDateChange={(date) => {
+                                    this.ondateChange(this.state.dateFrom, date);
+                                }}
+                            />
                         </View>
+                    </View>
+                    <View style={{width: width, flexDirection: 'row', justifyContent: 'center'}}>
+                        <Text style={{
+                            alignSelf: 'center',
+                            textAlign: 'center',
+                            backgroundColor: 'transparent',
+                            color: 'black'
+                        }}>Trạng thái</Text>
+                        <Picker style={{marginLeft: 8, height: 44, width: width / 2, alignSelf: 'center'}}
+                                itemStyle={{height: 44}}
+                                selectedValue={this.state.numberPickTravel}
+                                onValueChange={(value) => {
+                                    this.setState({numberPickTravel: value}, function () {
+                                        this.setDataRender();
+                                    })
+                                }}>
+                            {travelStatusItem}
+                        </Picker>
+
                     </View>
                     {this.flatListorIndicator()}
                 </View>
@@ -351,11 +387,11 @@ export default class TravelScreen extends React.Component {
     }
 
 
-    ondateChange(date) {
-        console.log('date', date)
+    ondateChange(dateFrom, dateTo) {
         this.setState({
-            date: date,
-            URL: URlConfig.getLinkTravel(date)
+            dateFrom: dateFrom,
+            dateTo: dateTo,
+            URL: URlConfig.getLinkTravel(dateFrom, dateTo)
         }, function () {
             this.refreshData()
         });

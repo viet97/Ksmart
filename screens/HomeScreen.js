@@ -176,9 +176,7 @@ export default class HomeScreen extends React.Component {
             case "Travel":
                 return <TravelScreen
                     goToCustomerPlant={(date) => {
-                        this.setState({datePlant: date}, function () {
                             this.setState({screenName: 'CustomerPlant'})
-                        })
                     }}
                     backToHome={() => {
                         this.setState({screenName: 'Menu'})
@@ -220,7 +218,6 @@ export default class HomeScreen extends React.Component {
                 }}/>
             case "CustomerPlant":
                 return <CustomerPlant
-                    date={this.state.datePlant}
                     backToTravel={() => this.setState({screenName: 'Travel'})}
                 />
             case "DetailNhanVien":
@@ -275,17 +272,8 @@ export default class HomeScreen extends React.Component {
                         <View style={{flex: 9}}>
                             <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 16}}>
                                 <TouchableOpacity onPress={() => this.setState({screenName: "NewFeed"})}>
-                                    <View style={{
-                                        backgroundColor: '#7d00bd',
-                                        width: 80,
-                                        height: 80,
-                                        borderRadius: 40,
-                                        elevation: 5,
-                                        justifyContent: 'center'
-                                    }}>
-                                        <IconMaterial style={{alignSelf: 'center'}} size={40} color="white"
-                                                      name="payment"/>
-                                    </View>
+                                    <Image style={{width: 50, height: 50, borderRadius: 10}}
+                                           source={require('../images/invoice-by-alto-pro-invoicing-2017.png')}/>
                                     <Animatable.Text animation="slideInLeft" style={styles.titleIconsMenu}>Hoạt
                                         động</Animatable.Text>
                                 </TouchableOpacity>
