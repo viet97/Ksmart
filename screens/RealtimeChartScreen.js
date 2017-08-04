@@ -59,7 +59,7 @@ export default class RealtimeChartScreen extends React.Component {
 
     getConfigSmall() {
         var currentdate = new Date();
-        var datetime = "Last Sync: " + currentdate.getDate() + "/"
+        var datetime = "Cập nhật: " + currentdate.getDate() + "/"
             + (currentdate.getMonth() + 1) + "/"
             + currentdate.getFullYear() + " @ "
             + currentdate.getHours() + ":"
@@ -156,7 +156,7 @@ export default class RealtimeChartScreen extends React.Component {
                         <Text style={{alignSelf: 'center', textAlign: 'center', backgroundColor: 'transparent'}}>Biểu đồ
                             doanh thu</Text>
                     </View>
-                    <View style={{flex: 1, marginTop: 40, flexDirection: 'row'}}>
+                    <View style={{flex: 1, marginTop: 40, flexDirection: 'row', borderWidth: 1}}>
                         <Text style={{
                             flex: 1,
                             alignSelf: 'center',
