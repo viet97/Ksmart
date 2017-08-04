@@ -244,7 +244,6 @@ export default class OrderListScreen extends Component {
                 break;
         }
         let info = URlConfig.OBJLOGIN.ttdh[rowData.trangthaidonhang]
-        if (info.length > 20) info = info.slice(0, 20)
         return (
             <View style={{
                 paddingTop: 8,
@@ -254,7 +253,7 @@ export default class OrderListScreen extends Component {
                 width: width / 2 - 12,
                 justifyContent: 'center'
             }}>
-                <Text style={{textAlign: 'center'}}>{info}</Text>
+                <Text numberOfLines={1} style={{textAlign: 'center', width: width / 2 - 20,}}>{info}</Text>
             </View>
         )
     }
@@ -368,25 +367,43 @@ export default class OrderListScreen extends Component {
                     data={this.state.dataRender}
                     renderItem={({item}) =>
                         <View
-
                             style={{
                                 margin: 4,
-                                backgroundColor: Color.backGroundItemFlatList,
                             }}>
-                            <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 8}}>
-                                <Text style={{fontWeight: "bold", fontSize: 18}}>MĐH {item.mathamchieu} </Text>
-                                <Text style={{fontSize: 18}}>{ultils.getMoney(item.tongtien, 2)} </Text>
-                            </View>
-                            <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 8}}>
-                                <View style={{flex: 1, marginRight: 4}}>
-                                    <Text style={{fontSize: 17}}>{item.tenkhachhang} </Text>
-                                    <Text style={{fontSize: 10}}>{item.thoigianlapdon} </Text>
+                            <Image source={require('../images/bg1.png')}
+                                   style={{
+                                       width: width - 8,
+                                       height: height / 4.5
+                                   }}>
+                                <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 8}}>
+                                    <Text numberOfLines={1} style={{
+                                        fontWeight: "bold",
+                                        fontSize: 18,
+                                        backgroundColor: 'transparent'
+                                    }}>MĐH {item.mathamchieu} </Text>
+                                    <Text numberOfLines={1} style={{
+                                        fontSize: 18,
+                                        backgroundColor: 'transparent'
+                                    }}>{ultils.getMoney(item.tongtien, 2)} </Text>
                                 </View>
-                                <View style={{flex: 1}}>
-                                    {this.getInfoKhachHang(item)}
+                                <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 8}}>
+                                    <View style={{flex: 1, marginRight: 4}}>
+                                        <Text numberOfLines={1} style={{
+                                            fontSize: 17,
+                                            backgroundColor: 'transparent'
+                                        }}>{item.tenkhachhang} </Text>
+                                        <Text numberOfLines={1} style={{
+                                            fontSize: 10,
+                                            backgroundColor: 'transparent'
+                                        }}>{item.thoigianlapdon} </Text>
+                                    </View>
+                                    <View style={{flex: 1}}>
+                                        {this.getInfoKhachHang(item)}
+                                    </View>
                                 </View>
-                            </View>
-                            {this.getGiaoHangHoacThanhToan(item)}
+                                {this.getGiaoHangHoacThanhToan(item)}
+                            </Image>
+
 
                         </View>
                     }
