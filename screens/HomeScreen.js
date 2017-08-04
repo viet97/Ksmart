@@ -287,6 +287,7 @@ export default class HomeScreen extends React.Component {
                                     style={{alignSelf: 'center', width: 90}}
                                     onPress={() => this.setState({screenName: "ListNhanVien"})}>
                                     <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
+
                                            source={require('../images/linkedin-contacts-2013.png')}/>
 
                                     <Animatable.Text animation="zoomIn" style={styles.titleIconsMenu}>Nhân

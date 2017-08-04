@@ -108,7 +108,7 @@ export default class RevenuePerPersonnelScreen extends React.Component {
     }
 
     render() {
-        var {height, width} = Dimensions.get('window');
+        var {height, width} = Dimensions.Fget('window');
         let options = {
             width: width - 40,
             height: 300,

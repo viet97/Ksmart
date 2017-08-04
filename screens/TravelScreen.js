@@ -25,12 +25,7 @@ var NUMBER_ROW_RENDER = 10;
 let ALL_LOADED = false;
 const TIME_SAP_DEN_GIO = 10 * 60;//10 phut
 export default class TravelScreen extends React.Component {
-    onSwipeRight(gestureState) {
-        console.log("onSwipeRight")
-        this.setState({myText: 'You swiped right!'});
-        this.props.clickMenu()
 
-    }
 
     getDataFromSv() {
         fetch(URlConfig.getLinkTravel(this.state.dateFrom, this.state.dateTo))
@@ -277,9 +272,6 @@ export default class TravelScreen extends React.Component {
             return <Picker.Item key={i} value={i} label={s}/>
         });
         return (
-            <GestureRecognizer
-                onSwipeRight={(state) => this.onSwipeRight(state)}
-                style={{flex: 1}}>
                 <View style={{flex: 1}}>
                     <View style={styles.titleStyle}>
                         <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
@@ -382,7 +374,6 @@ export default class TravelScreen extends React.Component {
                     </View>
                     {this.flatListorIndicator()}
                 </View>
-            </GestureRecognizer>
         )
     }
 
