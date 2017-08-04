@@ -145,28 +145,30 @@ export default class OrderListScreen extends Component {
 
     getTenNguoigui(item) {
         if (item.TrangThai) {
-            return (<Text >{item.Ten_NGUOIGUI}</Text>)
-        } else return (<Text style={{fontWeight: "bold"}}>{item.Ten_NGUOIGUI}</Text>)
+            return (<Text style={{backgroundColor: 'transparent'}}>{item.Ten_NGUOIGUI}</Text>)
+        } else return (<Text style={{fontWeight: "bold", backgroundColor: 'transparent'}}>{item.Ten_NGUOIGUI}</Text>)
     }
 
     getNoiDungBenNgoai(item) {
         var string = item.NoiDung.slice(0, 50)
         if (item.NoiDung.length > 50)
             string = string + '...'
-        return (<Text style={{marginTop: 4}}>{string}</Text>)
+        return (<Text style={{marginTop: 4, backgroundColor: 'transparent'}}>{string}</Text>)
     }
 
     getIconMessage(item) {
         if (item.Loai)
-            return (<Icon style={{alignSelf: 'center'}} size={36} color='yellow' name="message"/>)
-        else return (<Icon2 style={{alignSelf: 'center'}} size={36} color='blue' name="paper-plane"/>)
+            return (<Icon style={{alignSelf: 'center', backgroundColor: 'transparent'}} size={36} color='yellow'
+                          name="message"/>)
+        else return (<Icon2 style={{alignSelf: 'center', backgroundColor: 'transparent'}} size={36} color='blue'
+                            name="paper-plane"/>)
     }
 
     flatListorIndicator() {
 
         if (!this.state.dataRender) {
             return (
-                <View style={{backgroundColor: Color.backGroundFlatList, flex: 9}}>
+                <View style={{flex: 9}}>
                     <ActivityIndicator
                         animating={true}
                         style={styles.indicator}
@@ -175,7 +177,7 @@ export default class OrderListScreen extends Component {
         }
 
         return (
-            <View style={{backgroundColor: Color.backGroundFlatList, flex: 9}}>
+            <View style={{flex: 9}}>
                 <FlatList
                     ListFooterComponent={this.renderFooter}
                     ref={(listV) => {
@@ -207,17 +209,24 @@ export default class OrderListScreen extends Component {
                             <View
                                 style={{
                                     margin: 4,
-                                    backgroundColor: Color.backGroundItemFlatList,
                                     flex: 1, flexDirection: 'row'
                                 }}>
-                                <View style={{flexDirection: 'column', flex: 6, margin: 4}}>
-                                    {this.getTenNguoigui(item)}
-                                    {this.getNoiDungBenNgoai(item)}
-                                    <Text style={{marginTop: 4}}>{item.NgayGui}</Text>
-                                </View>
-                                <View style={{flex: 1, justifyContent: 'center'}}>
-                                    {this.getIconMessage(item)}
-                                </View>
+                                <Image source={require('../images/bg1.png')}
+                                       style={{
+                                           width: width - 8,
+                                           height: height / 7,
+                                           flexDirection: 'row'
+                                       }}>
+                                    <View style={{flexDirection: 'column', flex: 6, margin: 4}}>
+                                        {this.getTenNguoigui(item)}
+                                        {this.getNoiDungBenNgoai(item)}
+                                        <Text
+                                            style={{marginTop: 4, backgroundColor: 'transparent'}}>{item.NgayGui}</Text>
+                                    </View>
+                                    <View style={{flex: 1, justifyContent: 'center'}}>
+                                        {this.getIconMessage(item)}
+                                    </View>
+                                </Image>
                             </View>
                         </TouchableOpacity>
                     }
@@ -229,13 +238,17 @@ export default class OrderListScreen extends Component {
 
         return (
             <View style={{flex: 1}}>
-
+                <Image source={require('../images/bg.png')}
+                       style={{position: 'absolute', top: 0}}/>
                 <View style={styles.titleStyle}>
+                    <Image source={require('../images/bg.png')}
+                           style={{position: 'absolute'}}/>
                     <TouchableOpacity onPress={() => this.props.backToHome()}
                                       style={styles.iconStyle}>
                         <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
                     </TouchableOpacity>
-                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Tin nhắn</Text>
+                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Tin
+                        nhắn</Text>
                     <View style={{backgroundColor: 'transparent', width: 35, height: 35}}/>
                 </View>
                 <TouchableOpacity onPress={() => this.props.backToHome()}
