@@ -334,6 +334,8 @@ export default class OrderListScreen extends Component {
         if (!this.state.dataRender) {
             return (
                 <View style={{backgroundColor: Color.backGroundFlatList, flex: 9}}>
+                    <Image source={require('../images/bg.png')}
+                           style={{position: 'absolute'}}/>
                     <ActivityIndicator
                         animating={true}
                         style={styles.indicator}

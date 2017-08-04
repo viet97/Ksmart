@@ -24,7 +24,7 @@ var NUMBER_ROW_RENDER_PER_PAGE = 15
 var ALL_LOADED = false
 var SEARCH_STRING = '';
 var PAGE = 0;
-var {height} = Dimensions.get('window');
+var {height, width} = Dimensions.get('window');
 export default class CustomerScreen extends Component {
     constructor(props) {
         super(props)
@@ -79,7 +79,6 @@ export default class CustomerScreen extends Component {
     }
 
     refreshData() {
-
         this.getDataFromSv()
     }
 
@@ -119,6 +118,8 @@ export default class CustomerScreen extends Component {
         if (!this.state.dataRender) {
             return (
                 <View style={{backgroundColor: Color.backGroundFlatList, flex: 9}}>
+                    <Image source={require('../images/bg.png')}
+                           style={{position: 'absolute'}}/>
                     <ActivityIndicator
                         animating={true}
                         style={styles.indicator}
@@ -127,6 +128,8 @@ export default class CustomerScreen extends Component {
         } else
             return (
                 <View style={{backgroundColor: Color.backGroundFlatList, flex: 9}}>
+                    <Image source={require('../images/bg.png')}
+                           style={{position: 'absolute'}}/>
                     <FlatList
                         refreshing={this.state.refreshing}
                         onRefresh={() => {
@@ -145,13 +148,18 @@ export default class CustomerScreen extends Component {
                         extraData={this.state.dataRender}
                         data={this.state.dataRender}
                         renderItem={({item}) =>
+
                             <TouchableOpacity
                                 onPress={() => this.props.callback(item.KinhDo, item.ViDo, 'Địa chỉ khách hàng')}>
+
                                 <View style={{
-                                    marginTop: 4, marginBottom: 4, marginLeft: 8, marginRight: 8,
-                                    backgroundColor: Color.backGroundItemFlatList,
-                                    borderTopColor: '#227878'
+                                    marginTop: 4, marginBottom: 4, marginLeft: 4, marginRight: 4,
                                 }}>
+                                    <Image source={require('../images/bg1.png')}
+                                           style={{
+                                               width: width - 8,
+                                               height: height / 5
+                                           }}>
                                     <View style={{
                                         flexDirection: 'row',
                                         marginLeft: 8,
@@ -159,8 +167,10 @@ export default class CustomerScreen extends Component {
                                         marginRight: 8,
                                         marginBottom: 4
                                     }}>
-                                        <Icon size={24} color="red" name="home"/>
+                                        <Icon style={{backgroundColor: 'transparent',}} size={24} color="red"
+                                              name="home"/>
                                         <Text style={{
+                                            backgroundColor: 'transparent',
                                             marginLeft: 8,
                                             fontSize: 18,
                                             fontWeight: "bold"
@@ -173,8 +183,12 @@ export default class CustomerScreen extends Component {
                                         marginRight: 8,
                                         marginBottom: 4
                                     }}>
-                                        <Icon1 size={24} color="black" name="people-outline"/>
-                                        <Text style={{marginLeft: 8}}>{item.tennhomkhachhang}</Text>
+                                        <Icon1 style={{backgroundColor: 'transparent',}} size={24} color="black"
+                                               name="people-outline"/>
+                                        <Text style={{
+                                            backgroundColor: 'transparent',
+                                            marginLeft: 8
+                                        }}>{item.tennhomkhachhang}</Text>
                                     </View>
                                     <View style={{
                                         flexDirection: 'row',
@@ -183,11 +197,16 @@ export default class CustomerScreen extends Component {
                                         marginRight: 8,
                                         marginBottom: 4
                                     }}>
-                                        <Icon size={24} color="white" name="location-pin"/>
-                                        <Text style={{marginLeft: 8}}>{item.DiaChi}</Text>
+                                        <Icon style={{backgroundColor: 'transparent',}} size={24} color="white"
+                                              name="location-pin"/>
+                                        <Text
+                                            style={{backgroundColor: 'transparent', marginLeft: 8}}>{item.DiaChi}</Text>
                                     </View>
+                                    </Image>
                                 </View>
+
                             </TouchableOpacity>
+
                         }
                     />
                 </View>)
@@ -213,12 +232,17 @@ export default class CustomerScreen extends Component {
     render() {
         return (
             <View style={{flex: 1, backgroundColor: Color.backGroundFlatList}}>
+                <Image source={require('../images/bg.png')}
+                       style={{position: 'absolute', top: 0}}/>
                 <View style={styles.titleStyle}>
+                    <Image source={require('../images/bg.png')}
+                           style={{position: 'absolute'}}/>
                     <TouchableOpacity style={styles.iconStyle} onPress={() => this.props.backToHome()}>
                         <Icon2 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
                     </TouchableOpacity>
-                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Thông tin khách hàng</Text>
-                    <View style={{backgroundColor: Color.backgroundNewFeed, width: 35, height: 35}}/>
+                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Thông
+                        tin khách hàng</Text>
+                    <View style={{width: 35, height: 35}}/>
                 </View>
                 <TouchableOpacity onPress={() => this.props.backToHome()}
                                   style={{
@@ -237,9 +261,9 @@ export default class CustomerScreen extends Component {
                     marginBottom: 4,
                     marginTop: 4,
                     marginRight: 4,
-                    backgroundColor: Color.backGroundFlatList
                 }}>
-                    <Text style={{fontSize: 18, color: 'white', textAlign: 'center'}}>Tổng số khách hàng
+                    <Text style={{fontSize: 18, color: 'white', textAlign: 'center', backgroundColor: 'transparent'}}>Tổng
+                        số khách hàng
                         : {this.state.customerCount}</Text>
                 </View>
                 <View style={{
