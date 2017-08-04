@@ -118,7 +118,6 @@ export default class CustomerScreen extends Component {
         if (!this.state.dataRender) {
             return (
                 <View style={{backgroundColor: Color.backGroundFlatList, flex: 9}}>
-                    <Image source={require('../images/bg.png')}
                            style={{position: 'absolute'}}/>
                     <ActivityIndicator
                         animating={true}
@@ -128,8 +127,7 @@ export default class CustomerScreen extends Component {
         } else
             return (
                 <View style={{backgroundColor: Color.backGroundFlatList, flex: 9}}>
-                    <Image source={require('../images/bg.png')}
-                           style={{position: 'absolute'}}/>
+
                     <FlatList
                         refreshing={this.state.refreshing}
                         onRefresh={() => {
