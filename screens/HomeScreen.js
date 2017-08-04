@@ -388,16 +388,16 @@ export default class HomeScreen extends React.Component {
         const {navigate} = this.props.navigation;
         return (
 
-            <View>
+            <View style={{flex: 1}}>
                 <View style={{
                     justifyContent: 'center',
-                    height: 50,
+                    flex: 1,
                     elevation: (Platform.OS === 'ios') ? 0 : 15,
                 }}>
                     <Image source={require('../images/bg.png')}/>
                 </View>
 
-                <View style={{paddingTop: 15, flexDirection: 'column'}}>
+                <View style={{paddingTop: 15, flexDirection: 'column', flex: 9}}>
                     <Image style={{position: 'absolute'}} source={require('../images/bg.png')}/>
                     <ScrollView style={{marginTop: (Platform.OS === 'ios') ? 16 : 0,}}>
                         <View>
