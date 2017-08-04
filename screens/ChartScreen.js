@@ -180,10 +180,11 @@ export default class ChartScreen extends React.Component {
         });
         return (
             <View style={{flex: 1}}>
-
                 <Image source={require('../images/bg.png')}
-                       style={{position: 'absolute', left: 0, right: 0, top: 16, bottom: 0}}/>
+                       style={{position: 'absolute', top: 0}}/>
                 <View style={styles.titleStyle}>
+                    <Image source={require('../images/bg.png')}
+                           style={{position: 'absolute'}}/>
                     <TouchableOpacity onPress={() => this.props.backToChooseTypeChart()}
                                       style={styles.iconStyle}>
                         <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
@@ -314,7 +315,7 @@ const styles = StyleSheet.create({
         elevation: 15,
         justifyContent: 'space-between',
         flexDirection: 'row',
-        backgroundColor: Color.backgroundNewFeed,
+        backgroundColor: 'transparent'
     },
     headerStyle: {
         elevation: 15, height: this.height / 7

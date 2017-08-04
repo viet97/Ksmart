@@ -43,7 +43,9 @@ export default class DetailMessageScreen extends Component {
         const {params} = this.props.navigation.state;
         return (
             <View style={{flex: 1}}>
-                <View style={{backgroundColor: Color.backGroundFlatList, flex: 9}}>
+                <Image source={require('../images/bg.png')}
+                       style={{position: 'absolute', top: 0}}/>
+                <View style={{flex: 9}}>
                     <View style={{
                         width: width,
                         flexDirection: 'row',
@@ -52,16 +54,16 @@ export default class DetailMessageScreen extends Component {
                         marginTop: 8,
                         marginBottom: 4
                     }}>
-                        <Text>Người gửi: </Text>
-                        <Text style={{marginLeft: 4}}>{params.nguoigui}</Text>
+                        <Text style={{backgroundColor: 'transparent'}}>Người gửi: </Text>
+                        <Text style={{marginLeft: 4, backgroundColor: 'transparent'}}>{params.nguoigui}</Text>
                     </View>
                     <View style={{width: width, flexDirection: 'row', marginRight: 8, marginLeft: 8}}>
-                        <Text>Thời gian: </Text>
-                        <Text style={{marginLeft: 4}}>{params.thoigian}</Text>
+                        <Text style={{backgroundColor: 'transparent'}}>Thời gian: </Text>
+                        <Text style={{marginLeft: 4, backgroundColor: 'transparent'}}>{params.thoigian}</Text>
                     </View>
-                    <Text style={{margin: 8}}>Nội Dung</Text>
+                    <Text style={{margin: 8, backgroundColor: 'transparent'}}>Nội Dung</Text>
                     <View style={{flex: 1, backgroundColor: 'white', marginLeft: 8, marginRight: 8}}>
-                        <Text style={{margin: 4}}>{params.noidung}</Text>
+                        <Text style={{margin: 4, backgroundColor: 'transparent'}}>{params.noidung}</Text>
                     </View>
                 </View>
             </View>

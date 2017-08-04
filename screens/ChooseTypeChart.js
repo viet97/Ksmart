@@ -50,15 +50,18 @@ export default class ChooseTypeChart extends React.Component {
         return (
             <View style={{
                 flex: 1,
-                marginTop: Platform.OS === 'ios' ? 16 : 0,
-                backgroundColor: Color.backGroundFlatList
             }}>
+                <Image source={require('../images/bg.png')}
+                       style={{position: 'absolute', top: 0}}/>
                 <View style={styles.titleStyle}>
+                    <Image source={require('../images/bg.png')}
+                           style={{position: 'absolute'}}/>
                     <TouchableOpacity style={styles.iconStyle} onPress={() => this.props.backToHome()}>
                         <Icon2 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
                     </TouchableOpacity>
-                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Chọn loại biểu đồ</Text>
-                    <View style={{backgroundColor: Color.backgroundNewFeed, width: 35, height: 35}}/>
+                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Chọn
+                        loại biểu đồ</Text>
+                    <View style={{width: 35, height: 35}}/>
                 </View>
                 <TouchableOpacity onPress={() => this.props.backToHome()}
                                   style={{

@@ -231,7 +231,7 @@ export default class CustomerScreen extends Component {
 
     render() {
         return (
-            <View style={{flex: 1, backgroundColor: Color.backGroundFlatList}}>
+            <View style={{flex: 1}}>
                 <Image source={require('../images/bg.png')}
                        style={{position: 'absolute', top: 0}}/>
                 <View style={styles.titleStyle}>
