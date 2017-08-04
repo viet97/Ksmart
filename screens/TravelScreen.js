@@ -169,7 +169,7 @@ export default class TravelScreen extends React.Component {
 
         if (!this.state.dataRender) {
             return (
-                <View style={{backgroundColor: Color.itemListViewColor, flex: 9}}>
+                <View style={{flex: 9}}>
                     <ActivityIndicator
                         animating={true}
                         style={styles.indicator}
@@ -178,7 +178,7 @@ export default class TravelScreen extends React.Component {
         }
 
         return (
-            <View style={{backgroundColor: Color.itemListViewColor, flex: 9}}>
+            <View style={{flex: 9}}>
 
                 <FlatList
                     refreshing={this.state.refreshing}
@@ -220,24 +220,29 @@ export default class TravelScreen extends React.Component {
         return (
             <TouchableOpacity onPress={() => this.props.callback(item.KinhDo, item.ViDo, 'Địa chỉ cửa hàng')}>
                 <View style={{
-                    borderTopColor: '#227878', borderTopWidth: 1
+                    margin: 4
                 }}>
+                    <Image source={require('../images/bg1.png')}
+                           style={{
+                               width: width - 8,
+                               height: height / 4
+                           }}>
                     <Text style={{
                         textAlign: 'right',
-                        color: 'white',
+                        backgroundColor: 'transparent',
                         fontSize: 12,
                         marginRight: 4
                     }}>Vào điểm dự kiến: {item.ThoiGianVaoDiemDuKien}</Text>
 
                     <Text style={{
                         textAlign: 'right',
-                        color: 'white',
+                        backgroundColor: 'transparent',
                         fontSize: 12,
                         marginRight: 4
                     }}>{strVaoDiem}</Text>
                     <Text style={{
                         textAlign: 'right',
-                        color: 'white',
+                        backgroundColor: 'transparent',
                         fontSize: 12,
                         marginRight: 4
                     }}>{strRaDiem}</Text>
@@ -249,19 +254,25 @@ export default class TravelScreen extends React.Component {
                             <Text
                                 style={{
                                     fontSize: 18,
-                                    color: Color.itemNameListViewColor,
+                                    backgroundColor: 'transparent',
                                     margin: 4
                                 }}>{item.TenCuaHang}</Text>
                             <Text
                                 style={{
                                     fontSize: 12,
                                     margin: 4,
-                                    color: Color.itemNameListViewColor
+                                    backgroundColor: 'transparent',
                                 }}>{item.TenNhanVien}</Text>
                             <Text
-                                style={{fontSize: 13, margin: 4, color: item.text_color}}>{item.text_color_mota}</Text>
+                                style={{
+                                    fontSize: 13,
+                                    margin: 4,
+                                    color: item.text_color,
+                                    backgroundColor: 'transparent',
+                                }}>{item.text_color_mota}</Text>
                         </View>
                     </View>
+                    </Image>
                 </View>
             </TouchableOpacity>
         );
@@ -273,13 +284,18 @@ export default class TravelScreen extends React.Component {
         });
         return (
                 <View style={{flex: 1}}>
+                    <Image source={require('../images/bg.png')}
+                           style={{position: 'absolute', top: 0}}/>
                     <View style={styles.titleStyle}>
+                        <Image source={require('../images/bg.png')}
+                               style={{position: 'absolute'}}/>
                         <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
-                        <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Viếng thăm</Text>
+                        <Text
+                            style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Viếng
+                            thăm</Text>
                         <TouchableOpacity
                             onPress={() => this.props.goToCustomerPlant()}
                             style={{
-                                backgroundColor: Color.backgroundNewFeed,
                                 alignSelf: 'center',
                                 width: 35,
                                 height: 35
@@ -290,7 +306,8 @@ export default class TravelScreen extends React.Component {
                                     textAlign: 'center',
                                     alignSelf: 'center',
                                     paddingBottom: 8,
-                                    paddingRight: 8
+                                    paddingRight: 8,
+                                    backgroundColor: 'transparent'
                                 }}>Thêm</Text>
                             </View>
                         </TouchableOpacity>
