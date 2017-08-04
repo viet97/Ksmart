@@ -115,7 +115,7 @@ export default class NewFeedScreen extends React.Component {
 
         if (!this.state.dataRender) {
             return (
-                <View style={{backgroundColor: Color.itemListViewColor, flex: 9}}>
+                <View style={{flex: 9}}>
                     <ActivityIndicator
                         animating={true}
                         style={styles.indicator}
@@ -124,7 +124,7 @@ export default class NewFeedScreen extends React.Component {
         }
 
         return (
-            <View style={{backgroundColor: Color.itemListViewColor, flex: 9}}>
+            <View style={{flex: 9}}>
 
                 <FlatList
                     ListFooterComponent={this.renderFooter}
@@ -145,27 +145,36 @@ export default class NewFeedScreen extends React.Component {
                     data={this.state.dataRender}
                     renderItem={({item}) =>
                         <View style={{
-
-                            borderTopColor: '#227878', borderTopWidth: 1
+                            margin: 4,
                         }}>
-                            <Text style={{
-                                textAlign: 'right',
-                                color: 'white',
-                                fontSize: 12
-                            }}>Cập nhật lần cuối lúc: {item.thoigian_hienthi}</Text>
-                            <View style={{flexDirection: 'row'}}>
-                                <View style={{justifyContent: 'center'}}>
-                                    {this.getImage(item.anhdaidien)}
+                            <Image source={require('../images/bg1.png')}
+                                   style={{
+                                       width: width - 8,
+                                       height: height / 6
+                                   }}>
+                                <Text style={{
+                                    textAlign: 'right',
+                                    fontSize: 12,
+                                    backgroundColor: 'transparent'
+                                }}>Cập nhật lần cuối lúc: {item.thoigian_hienthi}</Text>
+                                <View style={{flexDirection: 'row'}}>
+                                    <View style={{justifyContent: 'center'}}>
+                                        {this.getImage(item.anhdaidien)}
+                                    </View>
+                                    <View style={{flex: 4, margin: 8, justifyContent: 'center'}}>
+                                        <Text
+                                            style={{
+                                                fontWeight: 'bold',
+                                                fontSize: 18,
+                                                backgroundColor: 'transparent'
+                                            }}>{item.tennhanvien}</Text>
+                                        <Text style={{
+                                            fontSize: 13,
+                                            backgroundColor: 'transparent'
+                                        }}> {item.tenloai}</Text>
+                                    </View>
                                 </View>
-                                <View style={{flex: 4, margin: 8, justifyContent: 'center'}}>
-                                    <Text
-                                        style={{
-                                            fontSize: 18,
-                                            color: Color.itemNameListViewColor
-                                        }}>{item.tennhanvien}</Text>
-                                    <Text style={{fontSize: 13, color: 'white'}}> {item.tenloai}</Text>
-                                </View>
-                            </View>
+                            </Image>
                         </View>
                     }
                 />
@@ -212,9 +221,14 @@ export default class NewFeedScreen extends React.Component {
         return (
 
             <View style={{flex: 1}}>
+                <Image source={require('../images/bg.png')}
+                       style={{position: 'absolute', top: 0}}/>
                 <View style={styles.titleStyle}>
+                    <Image source={require('../images/bg.png')}
+                           style={{position: 'absolute'}}/>
                     <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
-                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Hoạt động</Text>
+                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Hoạt
+                        động</Text>
                     <View style={{backgroundColor: 'transparent', width: 35, height: 35}}></View>
                 </View>
 

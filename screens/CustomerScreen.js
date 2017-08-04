@@ -118,6 +118,7 @@ export default class CustomerScreen extends Component {
         if (!this.state.dataRender) {
             return (
                 <View style={{backgroundColor: Color.backGroundFlatList, flex: 9}}>
+                    <Image source={require('../images/bg.png')}
                            style={{position: 'absolute'}}/>
                     <ActivityIndicator
                         animating={true}
@@ -127,7 +128,8 @@ export default class CustomerScreen extends Component {
         } else
             return (
                 <View style={{backgroundColor: Color.backGroundFlatList, flex: 9}}>
-
+                    <Image source={require('../images/bg.png')}
+                           style={{position: 'absolute'}}/>
                     <FlatList
                         refreshing={this.state.refreshing}
                         onRefresh={() => {
@@ -258,9 +260,9 @@ export default class CustomerScreen extends Component {
                     marginTop: 8,
                     marginBottom: 4,
                     marginTop: 4,
-                    marginRight: 4,
+                    marginRight: 4
                 }}>
-                    <Text style={{fontSize: 18, color: 'white', textAlign: 'center', backgroundColor: 'transparent'}}>Tổng
+                    <Text style={{fontSize: 18, color: 'white', textAlign: 'center', backgroundColor: "transparent"}}>Tổng
                         số khách hàng
                         : {this.state.customerCount}</Text>
                 </View>
