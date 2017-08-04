@@ -12,6 +12,7 @@ import URlConfig from "../configs/url";
 import Color from "../configs/color";
 import Toast from 'react-native-simple-toast';
 import Icon3 from 'react-native-vector-icons/MaterialCommunityIcons'
+
 const timer = require('react-native-timer')
 
 export default class RealtimeChartScreen extends React.Component {
@@ -160,7 +161,15 @@ export default class RealtimeChartScreen extends React.Component {
                         <Text style={{alignSelf: 'center', textAlign: 'center', backgroundColor: 'transparent'}}>Biểu đồ
                             doanh thu</Text>
                     </View>
-                    <View style={{flex: 1, marginTop: 40, flexDirection: 'row', borderWidth: 1}}>
+                    <View style={{
+                        flex: 1,
+                        marginTop: 40,
+                        flexDirection: 'row',
+                        borderWidth: 0.8,
+                        borderColor: 'white',
+                        margin: 4,
+                        borderRadius: 5
+                    }}>
                         <Text style={{
                             flex: 1,
                             alignSelf: 'center',

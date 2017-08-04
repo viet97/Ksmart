@@ -115,12 +115,6 @@ export default class HomeScreen extends React.Component {
 
     }
 
-    onSwipeRight(gestureState) {
-        console.log("onSwipeRight")
-        this.setState({myText: 'You swiped right!'});
-        this.openControlPanel()
-    }
-
 
     renderSomething() {
         const {navigate} = this.props.navigation;
@@ -239,7 +233,6 @@ export default class HomeScreen extends React.Component {
 
 
     menuScreen() {
-        var l = height / 10
         return (
             <GestureRecognizer
                 onSwipeRight={(state) => this.onSwipeRight(state)}

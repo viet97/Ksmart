@@ -10,7 +10,6 @@ import {
     TouchableOpacity, findNodeHandle, TextInput, Dimensions
 } from 'react-native';
 import {TextInputLayout} from 'rn-textinputlayout';
-import CheckBox from 'react-native-checkbox'
 import Toast from 'react-native-root-toast';
 import URlConfig from "../configs/url";
 import * as Animatable from 'react-native-animatable';
@@ -19,6 +18,7 @@ import {NavigationActions} from "react-navigation";
 import LoginDialog from "../components/LoginDialog";
 import {ProgressDialog} from 'react-native-simple-dialogs';
 import ultils from "../configs/ultils";
+import {CheckBox} from 'react-native-elements'
 
 let {width, height} = Dimensions.get('window')
 const Realm = require('realm');
@@ -1176,16 +1176,10 @@ export default class LoginScreen extends React.Component {
                     </View>
                     <View style={{flexDirection: 'column', alignSelf: 'center', marginTop: 16, alignItems: 'center'}}>
                         <CheckBox
-                            checkedImage={require("../images/checked.png")}
-                            uncheckedImage={require("../images/noncheck.png")}
-                            labelStyle={{color: '#00B232'}}
-                            underlayColor="transparent"
-                            label='Ghi nhớ đăng nhập'
+                            title='Ghi nhớ đăng nhập'
                             checked={this.state.checkOfCheckBox}
-                            onChange={(checked) => {
-                                this.setState({checkOfCheckBox: !this.state.checkOfCheckBox});
-                                console.log(checked)
-                            }}
+                            onPress={() => this.setState({checkOfCheckBox: !this.state.checkOfCheckBox})}
+                            style={{backgroundColor: 'transparent'}}
                         />
                         <TouchableHighlight
                             activeOpacity={1}
