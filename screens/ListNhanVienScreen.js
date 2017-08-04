@@ -72,9 +72,11 @@ export default class ListNhanVienScreen extends React.Component {
 
     isOnline(dangtructuyen) {
         if (dangtructuyen === 1)
-            return <Icon2 size={36} color="green" name="controller-record"/>
-        else if (dangtructuyen === 2) return <Icon2 size={24} color="red" name="controller-record"/>
-        else if (dangtructuyen === 0) return <Icon2 size={24} color="gray" name="controller-record"/>
+            return <Icon2 style={{backgroundColor: 'transparent'}} size={36} color="green" name="controller-record"/>
+        else if (dangtructuyen === 2) return <Icon2 style={{backgroundColor: 'transparent'}} size={24} color="red"
+                                                    name="controller-record"/>
+        else if (dangtructuyen === 0) return <Icon2 style={{backgroundColor: 'transparent'}} size={24} color="gray"
+                                                    name="controller-record"/>
 
     }
 
@@ -149,7 +151,7 @@ export default class ListNhanVienScreen extends React.Component {
 
         if (!this.state.dataRender) {
             return (
-                <View style={{backgroundColor: Color.itemListViewColor, flex: 9}}>
+                <View style={{flex: 9}}>
                     <ActivityIndicator
                         animating={true}
                         style={styles.indicator}
@@ -158,7 +160,7 @@ export default class ListNhanVienScreen extends React.Component {
         }
 
         return (
-            <View style={{backgroundColor: Color.itemListViewColor, flex: 9}}>
+            <View style={{flex: 9}}>
 
                 <FlatList
                     refreshing={this.state.refreshing}
@@ -180,9 +182,15 @@ export default class ListNhanVienScreen extends React.Component {
                     renderItem={({item}) =>
                         <TouchableOpacity onPress={() => this.props.goToDetailNhanVien(item.idnhanvien)}>
                             <View style={{
-                                borderTopColor: '#227878', borderTopWidth: 1
+                                margin: 4
                             }}>
-                                <Text style={{textAlign: 'right', color: 'white', fontSize: 12}}> Cập nhật
+                                <Image source={require('../images/bg1.png')}
+                                       style={{
+                                           width: width - 8,
+                                           height: height / 6
+                                       }}>
+                                    <Text style={{textAlign: 'right', fontSize: 12, backgroundColor: 'transparent'}}>
+                                        Cập nhật
                                     lúc {item.thoigiancapnhat}</Text>
                                 <View style={{flexDirection: 'row'}}>
                                     <View style={{justifyContent: 'center'}}>
@@ -193,17 +201,18 @@ export default class ListNhanVienScreen extends React.Component {
                                     <View style={{flex: 4, margin: 8, justifyContent: 'center'}}>
                                         <Text
                                             style={{
-                                                fontSize: 18,
-                                                color: Color.itemNameListViewColor
+                                                fontSize: 18, backgroundColor: 'transparent'
                                             }}>{item.tennhanvien}</Text>
                                         {this.isOnline(item.dangtructuyen)}
                                     </View>
                                     <TouchableOpacity onPress={() => {
                                         this.props.callback(item.KinhDo, item.ViDo, 'Địa điểm Nhân Viên')
                                     }}>
-                                        <Icon2 size={30} color='white' name="location"/>
+                                        <Icon2 style={{backgroundColor: 'transparent'}} size={30} color='red'
+                                               name="location"/>
                                     </TouchableOpacity>
                                 </View>
+                                </Image>
                             </View>
                         </TouchableOpacity>
                     }
@@ -260,10 +269,19 @@ export default class ListNhanVienScreen extends React.Component {
                     renderSelectedIcon={() => <Icon1 size={24} color="green" name="ios-people-outline"/>}
                     onPress={() => this.setState({selectedTab: 'ListNhanVien'})}>
                     <View style={{flex: 1}}>
+                        <Image source={require('../images/bg.png')}
+                               style={{position: 'absolute', top: 0}}/>
                         <View style={styles.titleStyle}>
+                            <Image source={require('../images/bg.png')}
+                                   style={{position: 'absolute'}}/>
                             <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
-                            <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Danh sách nhân viên</Text>
-                            <View style={{backgroundColor: Color.backgroundNewFeed, width: 35, height: 35}}/>
+                            <Text style={{
+                                fontSize: 20,
+                                color: 'white',
+                                alignSelf: 'center',
+                                backgroundColor: 'transparent'
+                            }}>Danh sách nhân viên</Text>
+                            <View style={{width: 35, height: 35}}/>
                         </View>
 
                         <TouchableOpacity onPress={() => this.props.backToHome()}
@@ -276,7 +294,7 @@ export default class ListNhanVienScreen extends React.Component {
                                 backgroundColor: 'transparent'
                             }}>Nhóm/Phòng</Text>
                             <Picker style={{height: 44, width: width * 3 / 4, marginLeft: 8}}
-                                    itemStyle={{height: 44, alignSelf: 'center'}}
+                                    itemStyle={{color: 'red', height: 44, alignSelf: 'center'}}
                                     selectedValue={this.state.numberPickParty}
                                     onValueChange={(value) => {
                                         this.setState({numberPickParty: value}, function () {
