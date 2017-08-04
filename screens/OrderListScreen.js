@@ -196,6 +196,7 @@ export default class OrderListScreen extends Component {
                     marginLeft: 4,
                     width: width / 2 - 12,
                     justifyContent: 'center'
+
                 }}>
                     <Icon2 style={{alignSelf: 'center', marginRight: 8}} size={12} color={colorTT}
                            name="controller-record"/>
@@ -253,7 +254,8 @@ export default class OrderListScreen extends Component {
                 width: width / 2 - 12,
                 justifyContent: 'center'
             }}>
-                <Text numberOfLines={1} style={{textAlign: 'center', width: width / 2 - 20,}}>{info}</Text>
+                <Text numberOfLines={1}
+                      style={{textAlign: 'center', width: width / 2 - 20, paddingLeft: 4}}>{info}</Text>
             </View>
         )
     }
@@ -461,8 +463,8 @@ export default class OrderListScreen extends Component {
 
     showDialog() {
         DialogManager.show({
-
             title: 'Bộ lọc',
+            titleStyle: {},
             titleAlign: 'center',
             animationDuration: 200,
             ScaleAnimation: new ScaleAnimation(),

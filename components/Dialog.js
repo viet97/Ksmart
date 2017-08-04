@@ -19,14 +19,6 @@ import {TextInputLayout} from "rn-textinputlayout";
 import orderListData from '../dbcontext/orderListData'
 import DataTemp from "./DataTemp";
 
-let jsonChoose = {
-    ttgh: 'Trạng thái giao hàng',
-    tkh: 'Tên khách hàng',
-    tttt: 'Trạng thái thanh toán',
-    mch: 'Mã cửa hàng',
-    id: 'ID đơn hàng',
-    mtc: 'Mã tham chiếu'
-};
 export default class Dialog extends React.Component {
     constructor(props) {
         super(props);
@@ -102,12 +94,15 @@ export default class Dialog extends React.Component {
             return <Picker.Item key={i} value={i} label={s}/>
         });
         return (
-            <DialogContent >
-
-                <ScrollView style={{flexDirection: 'column'}}
+            <DialogContent>
+                <Image source={require('../images/bg.png')}
+                       style={{position: 'absolute', top: 0, bottom: 0, right: 0, left: 0}}/>
+                <ScrollView style={{flexDirection: 'column', height: Dimensions.get('window').height - 100}}
                             keyboardShouldPersistTaps="always">
+
                     <View style={{flexDirection: 'column'}}>
-                        <Text>Từ ngày </Text>
+
+                        <Text style={{color: 'white'}}>Từ ngày </Text>
                         <DatePicker
                             date={this.state.dateFrom}
                             mode="date"
@@ -128,7 +123,7 @@ export default class Dialog extends React.Component {
                         />
                     </View>
                     <View style={{flexDirection: 'column'}}>
-                        <Text>Đến ngày </Text>
+                        <Text style={{color: 'white'}}>Đến ngày </Text>
                         <DatePicker
                             date={this.state.dateTo}
                             mode="date"
@@ -140,11 +135,8 @@ export default class Dialog extends React.Component {
                             customStyles={{
                                 dateIcon: {},
                                 dateInput: {
-                                    backgroundColor: 'white',
-                                    borderWidth: 1,
-                                    borderColor: 'gray',
-                                    borderRadius: 4,
-                                },
+                                    borderColor: 'transparent'
+                                }
                             }}
                             onDateChange={(date) => {
                                 this.ondateChange(this.state.dateFrom, date);
@@ -152,7 +144,7 @@ export default class Dialog extends React.Component {
                         />
                     </View>
                     <View style={{flexDirection: 'column'}}>
-                        <Text>Trạng thái đơn hàng</Text>
+                        <Text style={{color: 'white'}}>Trạng thái đơn hàng</Text>
                         <Picker style={{height: 88}}
                                 itemStyle={{color: 'red', height: 88}}
                                 selectedValue={this.state.numberPickttdh}
@@ -171,7 +163,7 @@ export default class Dialog extends React.Component {
                         </Picker>
                     </View>
                     <View style={{flexDirection: 'column'}}>
-                        <Text>Trạng thái giao hàng</Text>
+                        <Text style={{color: 'white'}}>Trạng thái giao hàng</Text>
                         <Picker style={{height: 88}}
                                 itemStyle={{color: 'red', height: 88}}
                                 selectedValue={this.state.numberPickttgh}
@@ -189,7 +181,7 @@ export default class Dialog extends React.Component {
                         </Picker>
                     </View>
                     <View style={{flexDirection: 'column', paddingBottom: 16}}>
-                        <Text>Trạng thái thanh toán</Text>
+                        <Text style={{color: 'white'}}>Trạng thái thanh toán</Text>
                         <Picker style={{height: 88}}
                                 itemStyle={{color: 'red', height: 88}}
                                 selectedValue={this.state.numberPicktttt}
@@ -210,16 +202,20 @@ export default class Dialog extends React.Component {
                         </Picker>
 
                     </View>
-
                 </ScrollView>
+
                 <View style={{
                     position: 'absolute',
                     left: 16,
-                    backgroundColor: Color.backGroundFlatList,
-                    bottom: 16,
-                    borderRadius: 5
+                    backgroundColor: 'transparent',
+                    bottom: 32,
+                    borderRadius: 5,
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    width: Dimensions.get('window').width - 32
                 }}>
-                    <TouchableOpacity style={{alignItems: 'center'}}
+
+                    <TouchableOpacity style={{alignItems: 'center', backgroundColor: 'transparent', height: 36}}
                                       onPress={() => {
                                           DialogManager.dismiss(() => {
                                               this.props.callback({
@@ -232,19 +228,18 @@ export default class Dialog extends React.Component {
                                               })
                                           });
                                       }}>
-                        <Text style={{color: 'red', backgroundColor: 'transparent', padding: 16, fontSize: 16}}>Huỷ
+                        <Text style={{
+                            color: 'white',
+                            backgroundColor: 'transparent',
+                            padding: 8,
+                            fontSize: 16,
+                            alignSelf: 'center'
+                        }}>Huỷ
                             bỏ</Text>
                     </TouchableOpacity>
-                </View>
-                <View style={{
+                    <View style={{width: 5, height: 5}}/>
 
-                    position: 'absolute',
-                    right: 16,
-                    backgroundColor: Color.backGroundFlatList,
-                    bottom: 16,
-                    borderRadius: 5
-                }}>
-                    <TouchableOpacity style={{alignItems: 'center'}}
+                    <TouchableOpacity style={{alignItems: 'center', backgroundColor: 'transparent', height: 36}}
                                       onPress={() => {
                                           DialogManager.dismiss(() => {
                                               var dFrom = String(this.state.dateFrom);
@@ -262,7 +257,13 @@ export default class Dialog extends React.Component {
                                           });
                                       }}>
 
-                        <Text style={{color: 'red', backgroundColor: 'transparent', padding: 16, fontSize: 16}}>Áp
+                        <Text style={{
+                            color: 'white',
+                            backgroundColor: 'transparent',
+                            padding: 8,
+                            fontSize: 16,
+                            alignSelf: 'center'
+                        }}>Áp
                             dụng</Text>
 
                     </TouchableOpacity>
