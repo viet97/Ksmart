@@ -294,7 +294,7 @@ export default class ListNhanVienScreen extends React.Component {
                                 backgroundColor: 'transparent'
                             }}>Nhóm/Phòng</Text>
                             <Picker style={{height: 44, width: width * 3 / 4, marginLeft: 8}}
-                                    itemStyle={{color: 'red', height: 44, alignSelf: 'center'}}
+                                    itemStyle={{color: 'red', height: 44}}
                                     selectedValue={this.state.numberPickParty}
                                     onValueChange={(value) => {
                                         this.setState({numberPickParty: value}, function () {
