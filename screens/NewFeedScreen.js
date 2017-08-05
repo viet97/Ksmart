@@ -52,7 +52,7 @@ export default class NewFeedScreen extends React.Component {
         } else {
             return (
                 <Image
-                    style={{margin: 8, width: 60, height: 60, borderRadius: 25}}
+                    style={{margin: 8, width: 60, height: 60, borderRadius: 30}}
                     source={{uri: 'http://jav.ksmart.vn' + url}}
                     // indicator={ProgressBar.Pie}
                 />
