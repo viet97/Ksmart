@@ -26,25 +26,33 @@ import Dialog from '../components/Dialog'
 import orderListData from '../dbcontext/orderListData'
 import AtoZListView from 'react-native-atoz-listview';
 import Search from 'react-native-search-box';
+
 var {height, width} = Dimensions.get('window');
 var GiftedListView = require('react-native-gifted-listview');
 export default class DetailMessageScreen extends Component {
     static navigationOptions = ({navigation}) => ({
-        title: `Nội dung tin nhắn`,
-        headerTintColor: 'white',
-        headerStyle: {
-            backgroundColor: Color.backgroundNewFeed
-        },
-        headerTitleStyle: {
-            alignSelf: 'center'
-        }
+        header: null
     });
+
     render() {
         const {params} = this.props.navigation.state;
         return (
             <View style={{flex: 1}}>
                 <Image source={require('../images/bg.png')}
                        style={{position: 'absolute', top: 0}}/>
+                <View style={styles.titleStyle}>
+                    <Image source={require('../images/bg.png')}
+                           style={{position: 'absolute'}}/>
+                    <TouchableOpacity
+                        onPress={() => this.props.navigation.goBack()}
+                        style={styles.iconStyle}>
+                        <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
+                    </TouchableOpacity>
+                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Thông
+                        tin nhân viên</Text>
+                    <View></View>
+                </View>
+
                 <View style={{flex: 9}}>
                     <View style={{
                         width: width,

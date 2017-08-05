@@ -463,9 +463,6 @@ export default class OrderListScreen extends Component {
 
     showDialog() {
         DialogManager.show({
-            title: 'Bộ lọc',
-            titleStyle: {},
-            titleAlign: 'center',
             animationDuration: 200,
             ScaleAnimation: new ScaleAnimation(),
             children: (

@@ -27,18 +27,13 @@ import TabNavigator from 'react-native-tab-navigator';
 import MapListScreen from "./MapListScreen";
 import MapView from 'react-native-maps';
 import {PagerTabIndicator, IndicatorViewPager, PagerTitleIndicator, PagerDotIndicator} from 'rn-viewpager';
+
 var {width, height} = Dimensions.get('window');
 export default class DetailNhanVien extends React.Component {
     static navigationOptions = ({navigation}) => ({
-        title: `Thông tin nhân viên`,
-        headerTintColor: 'white',
-        headerStyle: {
-            backgroundColor: Color.backgroundNewFeed
-        },
-        headerTitleStyle: {
-            alignSelf: 'center'
-        }
+        header: null
     });
+
     constructor(props) {
         super(props)
         this.state = {
@@ -61,26 +56,35 @@ export default class DetailNhanVien extends React.Component {
     }
 
     render() {
-
-        data = this.state.data
+        var data = this.state.data
         return (
             <View style={{flex: 1}}>
+                <View style={styles.titleStyle}>
+                    <Image source={require('../images/bg.png')}
+                           style={{position: 'absolute'}}/>
+                    <TouchableOpacity
+                        onPress={() => this.props.navigation.goBack()}
+                        style={styles.iconStyle}>
+                        <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
+                    </TouchableOpacity>
+                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Thông
+                        tin nhân viên</Text>
+                    <View></View>
+                </View>
                 <View style={{flex: 4, justifyContent: 'center'}}>
-                    < Image source={require('../images/bg.png')}
-                            style={{position: 'absolute'}}/>
-
-
+                    <Image source={require('../images/bg.png')}
+                           style={{position: 'absolute', top: 0}}/>
                     <Image style={{width: 120, height: 120, borderRadius: 60, alignSelf: 'center'}}
                            source={require('../images/bglogin.jpg')}/>
                     <View style={{flexDirection: 'row', alignSelf: 'center', justifyContent: 'center'}}>
                         {this.isOnline(this.state.datadangtructuyen)}
                         <Text style={{
-                        fontSize: 24,
-                        color: 'white',
-                        textAlign: 'center',
+                            fontSize: 24,
+                            color: 'white',
+                            textAlign: 'center',
                             marginTop: 8,
                             backgroundColor: 'transparent'
-                    }}>{this.state.data.tennhanvien}</Text>
+                        }}>{this.state.data.tennhanvien}</Text>
                     </View>
 
                 </View>
@@ -134,7 +138,7 @@ export default class DetailNhanVien extends React.Component {
                                 style={{flex: 1}}
                                 initialRegion={this.state.region}>
                                 <MapView.Marker.Animated
-                                    coordinate={ {
+                                    coordinate={{
                                         latitude: this.state.region.latitude,
                                         longitude: this.state.region.longitude,
                                         latitudeDelta: 0.0922,
@@ -155,6 +159,7 @@ export default class DetailNhanVien extends React.Component {
     _renderTitleIndicator() {
         return <PagerTitleIndicator titles={['Hồ sơ', 'Vị trí']}/>;
     }
+
     componentDidMount() {
         const {params} = this.props.navigation.state;
         fetch(URlConfig.getLinkDetailNhanVien(params.idNhanVien))

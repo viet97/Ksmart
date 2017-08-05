@@ -3,7 +3,11 @@ import {
     AppRegistry,
     StyleSheet,
     Text,
-    View
+    View,
+    Platform,
+    TouchableOpacity,
+    Image,
+    Dimensions
 } from 'react-native';
 import SplashScreen from './screens/SplashScreen.js'
 import NewFeedScreen from './screens/NewFeedScreen'
@@ -20,7 +24,10 @@ import OnlineChartScreen from "./screens/OnlineChartScreen";
 import ListNhanVienScreen from "./screens/ListNhanVienScreen";
 import DetailNhanVien from "./screens/DetailNhanVien";
 import DetailMessageScreen from "./screens/DetailMessageScreen";
+import Icon1 from 'react-native-vector-icons/Ionicons'
+import Color from './configs/color'
 
+var {height, width} = Dimensions.get('window');
 const Ksmart = StackNavigator({
 
     Splash: {screen: SplashScreen},
@@ -28,9 +35,10 @@ const Ksmart = StackNavigator({
     Login: {screen: LoginScreen},
     Home: {screen: HomeScreen},
     Menu: {screen: MenuScreen},
-    Map: {screen: MapScreen},
+        Map: {screen: MapScreen,},
     DetailNhanVien: {screen: DetailNhanVien},
     DetailMessage: {screen: DetailMessageScreen},
     TypeChart: {screen: ChooseTypeChart}
-});
+    },
+);
 AppRegistry.registerComponent('Ksmart', () => Ksmart);

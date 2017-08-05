@@ -1,24 +1,24 @@
 import React, {Component} from 'react';
 import {
-    AppRegistry, Button,
+    Button,
     StyleSheet,
     View, TabBarIOS, TouchableHighlight, Platform,
-    Text, TouchableOpacity
+    Text, TouchableOpacity,
+    Dimensions,
+    Image
 } from 'react-native';
 import MapView from 'react-native-maps';
 import Icon1 from 'react-native-vector-icons/Ionicons'
 import Color from '../configs/color'
+import * as Toast from "react-native-simple-toast";
+
+var {height, width} = Dimensions.get('window');
+var title = '12312321'
 export default class MapScreen extends Component {
     static navigationOptions = ({navigation}) => ({
-        title: ` ${navigation.state.params.title}`,
-        headerTintColor: 'white',
-        headerStyle: {
-            backgroundColor: Color.backgroundNewFeed
-        },
-        headerTitleStyle: {
-            alignSelf: 'center'
-        }
+        header: null
     });
+
     constructor(props) {
         super(props);
         this.state = {
@@ -61,28 +61,45 @@ export default class MapScreen extends Component {
     }
 
     render() {
+
         const {params} = this.props.navigation.state;
-            return (
-                <View style={{flex: 1}}>
-                    <MapView
-                        style={{flex: 9}}
-                        initialRegion={this.state.region}>
-                        <MapView.Marker.Animated
-                            coordinate={ {
-                                latitude: params.vido,
-                                longitude: params.kinhdo,
-                                latitudeDelta: 0.0922,
-                                longitudeDelta: 0.0421
-                            }}
 
-                        />
-                    </MapView>
-
+        return (
+            <View style={{flex: 1}}>
+                <View style={styles.titleStyle}>
+                    <Image source={require('../images/bg.png')}
+                           style={{position: 'absolute'}}/>
+                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}
+                                      style={styles.iconStyle}>
+                        <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
+                    </TouchableOpacity>
+                    <Text style={{
+                        fontSize: 20,
+                        color: 'white',
+                        alignSelf: 'center',
+                        backgroundColor: 'transparent'
+                    }}>{params.title}</Text>
+                    <View/>
                 </View>
-            );
+                <MapView
+                    style={{flex: 9}}
+                    initialRegion={this.state.region}>
+                    <MapView.Marker.Animated
+                        coordinate={{
+                            latitude: params.vido,
+                            longitude: params.kinhdo,
+                            latitudeDelta: 0.0922,
+                            longitudeDelta: 0.0421
+                        }}
+                    />
+                </MapView>
 
-        }
+            </View>
+        );
+
+    }
 }
+//Header
 var styles = StyleSheet.create({
     tabContent: {
         flex: 1,
