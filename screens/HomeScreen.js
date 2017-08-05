@@ -270,7 +270,7 @@ export default class HomeScreen extends React.Component {
                                     style={{alignSelf: 'center', width: 90}}
                                     onPress={() => this.setState({screenName: "NewFeed"})}>
                                     <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
-                                           source={require('../images/unarchiver-2012.png')}/>
+                                           source={require('../images/thinglist-2013.png')}/>
 
                                     <Animatable.Text animation="slideInLeft" style={styles.titleIconsMenu}>Hoạt
                                         động</Animatable.Text>
@@ -321,7 +321,7 @@ export default class HomeScreen extends React.Component {
                                     style={{alignSelf: 'center', width: 90}}
                                     onPress={() => this.setState({screenName: "Chart"})}>
                                     <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
-                                           source={require('../images/cardiograph-2012.png')}/>
+                                           source={require('../images/moneybook-2011.png')}/>
 
                                     <Animatable.Text animation="flipInY" style={styles.titleIconsMenu}>Biểu
                                         đồ</Animatable.Text>
@@ -343,10 +343,10 @@ export default class HomeScreen extends React.Component {
                                     style={{alignSelf: 'center', width: 90}}
                                     onPress={() => this.setState({screenName: "RealtimeChart"})}>
                                     <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
-                                           source={require('../images/meipai-hottest-short-video-2015.png')}/>
+                                           source={require('../images/turboscan-2015.png')}/>
 
                                     <Animatable.Text animation="bounceIn"
-                                                     style={styles.titleIconsMenu}>Live</Animatable.Text>
+                                                     style={styles.titleIconsMenu}>Online</Animatable.Text>
 
                                 </TouchableOpacity>
                                 <TouchableOpacity
