@@ -1,3 +1,5 @@
+import Toast from "react-native-simple-toast";
+
 export default class ultils {
     static getMoney(n, dp) {
         var e = '', s = e + n, l = s.length, b = n < 0 ? 1 : 0,
@@ -18,6 +20,13 @@ export default class ultils {
                 arrGroupChild.push(item)
             }
         }
+    }
+
+    static getDate(d) {
+        let date = new Date(d);
+        let month = date.getMonth() + 1
+        let dateString = date.getDate() + '-' + month + '-' + date.getFullYear() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
+        return dateString
     }
 
 }

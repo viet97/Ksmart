@@ -156,7 +156,7 @@ export default class NewFeedScreen extends React.Component {
                                     textAlign: 'right',
                                     fontSize: 12,
                                     backgroundColor: 'transparent'
-                                }}>Cập nhật lần cuối lúc: {item.thoigian_hienthi}</Text>
+                                }}>Cập nhật lần cuối: {item.thoigian_hienthi}</Text>
                                 <View style={{flexDirection: 'row'}}>
                                     <View style={{justifyContent: 'center'}}>
                                         {this.getImage(item.anhdaidien)}

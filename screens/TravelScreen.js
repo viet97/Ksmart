@@ -19,6 +19,7 @@ import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import URlConfig from "../configs/url";
 import Toast from 'react-native-simple-toast'
 import DatePicker from 'react-native-datepicker'
+import ultils from "../configs/ultils";
 
 var {height, width} = Dimensions.get('window');
 var NUMBER_ROW_RENDER = 10;
@@ -209,13 +210,13 @@ export default class TravelScreen extends React.Component {
             strVaoDiem = "Chưa vào điểm!"
         } else {
             var diffMins = this.millisToMinutes(item.ThoiGianVaoDiemDuKien, item.ThoiGianVaoDiemThucTe)
-            strVaoDiem = 'Vào điểm lúc: ' + item.ThoiGianVaoDiemThucTe.replace('T', ' ') + ' ' + strVaoDiem;
+            strVaoDiem = 'Vào điểm lúc: ' + ultils.getDate(item.ThoiGianVaoDiemThucTe) + ' ' + strVaoDiem;
         }
         if (item.ThoiGianRaDiemThucTe === '1900-01-01T00:00:00') {
             strRaDiem = "Chưa ra điểm!"
         } else {
             diffMins = this.millisToMinutes(item.ThoiGianRaDiemDuKien, item.ThoiGianRaDiemThucTe)
-            strRaDiem = 'Ra điểm lúc: ' + item.ThoiGianRaDiemThucTe.replace('T', ' ') + ' ' + strRaDiem;
+            strRaDiem = 'Ra điểm lúc: ' + ultils.getDate(item.ThoiGianRaDiemThucTe) + ' ' + strRaDiem;
         }
         return (
             <TouchableOpacity onPress={() => this.props.callback(item.KinhDo, item.ViDo, 'Địa chỉ cửa hàng')}>
@@ -232,7 +233,7 @@ export default class TravelScreen extends React.Component {
                         backgroundColor: 'transparent',
                         fontSize: 12,
                         marginRight: 4
-                    }}>Vào điểm dự kiến: {item.ThoiGianVaoDiemDuKien}</Text>
+                    }}>Vào điểm dự kiến: {ultils.getDate(item.ThoiGianVaoDiemDuKien)}</Text>
 
                     <Text style={{
                         textAlign: 'right',

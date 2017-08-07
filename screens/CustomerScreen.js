@@ -158,7 +158,7 @@ export default class CustomerScreen extends Component {
                                     <Image source={require('../images/bg1.png')}
                                            style={{
                                                width: width - 8,
-                                               height: height / 5
+                                               height: height / 5.5
                                            }}>
                                     <View style={{
                                         flexDirection: 'row',

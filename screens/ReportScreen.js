@@ -15,6 +15,7 @@ import {
 } from "react-native";
 import URlConfig from "../configs/url";
 import Color from '../configs/color'
+import Icon3 from 'react-native-vector-icons/FontAwesome'
 import Icon1 from 'react-native-vector-icons/Ionicons'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import Icon2 from 'react-native-vector-icons/Entypo'
@@ -82,9 +83,7 @@ export default class ReportScreen extends Component {
         this.getReportListFromServer(this.state.dateFrom, this.state.dateTo)
     }
 
-    getdate(date) {
-        return date.replace(T, ' ')
-    }
+
     getReportListFromServer(dateFrom, dateTo) {
         let url = ''
 
@@ -128,12 +127,16 @@ export default class ReportScreen extends Component {
 
                     })
                 } else {
+                    if (!responseJson.status && this.state.numberPickType === 3) {
+                        Toast.show('' + responseJson.msg)
+                    }
                     this.setState({dataRender: []})
                     ALL_LOADED = true
                     this.forceUpdate()
+
                 }
             })
-            .catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'));
+            .catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e));
     }
 
     loadMoreData() {
@@ -160,22 +163,23 @@ export default class ReportScreen extends Component {
 
     renderKhongCoDoanhThu(item) {
         return (
-            <TouchableOpacity onPress={() => Communications.phonecall(item.dienthoai, true)}>
+            <View style={{
+                marginTop: 4, marginBottom: 4, marginLeft: 8, marginRight: 8,
+                borderTopColor: '#227878'
+            }}><Image source={require('../images/bg1.png')}
+                      style={{
+                          width: width - 8,
+                          height: height / 5
+                      }}>
                 <View style={{
-                    marginTop: 4, marginBottom: 4, marginLeft: 8, marginRight: 8,
-                    borderTopColor: '#227878'
-                }}><Image source={require('../images/bg1.png')}
-                          style={{
-                              width: width - 8,
-                              height: height / 6
-                          }}>
-                    <View style={{
-                        flexDirection: 'row',
-                        marginLeft: 8,
-                        marginTop: 8,
-                        marginRight: 8,
-                        marginBottom: 4
-                    }}>
+                    justifyContent: 'space-between',
+                    flexDirection: 'row',
+                    marginLeft: 8,
+                    marginTop: 8,
+                    marginRight: 8,
+                    marginBottom: 4
+                }}>
+                    <View style={{flexDirection: 'row'}}>
                         <Text style={{alignSelf: 'center', backgroundColor: 'transparent'}}>Tên nhân viên:</Text>
                         <Text style={{
                             marginLeft: 8,
@@ -184,39 +188,58 @@ export default class ReportScreen extends Component {
                             backgroundColor: 'transparent'
                         }}>{item.tennhanvien}</Text>
                     </View>
-
-                    <View style={{
-                        flexDirection: 'row',
-                        marginLeft: 8,
-                        marginTop: 4,
-                        marginRight: 8,
-                        marginBottom: 4
-                    }}>
-                        <Text style={{backgroundColor: 'transparent'}}>khách hàng cuối:</Text>
-                        <Text style={{
-                            marginLeft: 8,
-                            backgroundColor: 'transparent'
-                        }}>{item.donhangcuoi_tenkhachhang}</Text>
-                    </View>
-                    <View style={{
-                        flexDirection: 'row',
-                        marginLeft: 8,
-                        marginTop: 4,
-                        marginRight: 8,
-                        marginBottom: 4
-                    }}>
-                        <Text style={{backgroundColor: 'transparent'}}>Đơn hàng cuối lúc:</Text>
-                        <Text style={{marginLeft: 8, backgroundColor: 'transparent'}}>{item.donhangcuoi_thoigian}</Text>
-                    </View>
-                </Image>
+                    <TouchableOpacity onPress={() => Communications.phonecall(item.dienthoai, true)}>
+                        <Icon3 size={24} color="green" name="phone"/>
+                    </TouchableOpacity>
                 </View>
-            </TouchableOpacity>
+
+                <View style={{
+                    flexDirection: 'row',
+                    marginLeft: 8,
+                    marginTop: 4,
+                    marginRight: 8,
+                    marginBottom: 4
+                }}>
+                    <Text style={{backgroundColor: 'transparent'}}>khách hàng cuối:</Text>
+                    <Text style={{
+                        marginLeft: 8,
+                        backgroundColor: 'transparent'
+                    }}>{item.donhangcuoi_tenkhachhang}</Text>
+                </View>
+                <View style={{
+                    flexDirection: 'row',
+                    marginLeft: 8,
+                    marginTop: 4,
+                    marginRight: 8,
+                    marginBottom: 4
+                }}>
+                    <Text style={{backgroundColor: 'transparent'}}>Đơn hàng cuối lúc:</Text>
+                    <Text style={{
+                        marginLeft: 8,
+                        backgroundColor: 'transparent'
+                    }}>{ultils.getDate(item.donhangcuoi_thoigian)}</Text>
+                </View>
+                <View style={{
+
+                    flexDirection: 'row',
+                    marginLeft: 8,
+                    marginTop: 4,
+                    marginRight: 8,
+                    marginBottom: 4
+                }}>
+                    <Text style={{backgroundColor: 'transparent'}}>Tổng tiền: </Text>
+                    <Text style={{
+                        marginLeft: 8,
+                        backgroundColor: 'transparent'
+                    }}>{item.donhangcuoi_tongtien}</Text>
+                </View>
+            </Image>
+            </View>
         )
     }
 
     renderTopDoanhThu(item) {
         return (
-            <TouchableOpacity onPress={() => Communications.phonecall(item.dienthoai, true)}>
                 <View style={{
                     marginTop: 4, marginBottom: 4, marginLeft: 8, marginRight: 8,
                     borderTopColor: '#227878'
@@ -224,22 +247,28 @@ export default class ReportScreen extends Component {
                     <Image source={require('../images/bg1.png')}
                            style={{
                                width: width - 8,
-                               height: height / 5.5
+                               height: height / 6
                            }}>
                         <View style={{
                             flexDirection: 'row',
+                            justifyContent: 'space-between',
                             marginLeft: 8,
                             marginTop: 8,
                             marginRight: 8,
                             marginBottom: 4
                         }}>
-                            <Icon1 style={{backgroundColor: 'transparent'}} size={24} color="black"
-                                   name="ios-people-outline"/>
-                            <Text style={{
-                                marginLeft: 8,
-                                fontSize: 18,
-                                fontWeight: "bold", backgroundColor: 'transparent'
-                            }}>{item.tennhanvien}</Text>
+                            <View style={{flexDirection: 'row'}}>
+                                <Icon1 style={{backgroundColor: 'transparent'}} size={24} color="black"
+                                       name="ios-people-outline"/>
+                                <Text style={{
+                                    marginLeft: 8,
+                                    fontSize: 18,
+                                    fontWeight: "bold", backgroundColor: 'transparent'
+                                }}>{item.tennhanvien}</Text>
+                            </View>
+                            <TouchableOpacity onPress={() => Communications.phonecall(item.dienthoai, true)}>
+                                <Icon3 size={24} color="green" name="phone"/>
+                            </TouchableOpacity>
                         </View>
 
                         <View style={{
@@ -267,7 +296,6 @@ export default class ReportScreen extends Component {
                         </View>
                     </Image>
                 </View>
-            </TouchableOpacity>
         )
     }
 
