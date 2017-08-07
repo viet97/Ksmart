@@ -148,8 +148,8 @@ export default class HomeScreen extends React.Component {
                 }}/>
             case "Customer":
                 return <CustomerScreen
-                    callback={(kinhdo, vido, title) => {
-                        navigate('Map', {title: title, kinhdo: kinhdo, vido: vido})
+                    callback={(kinhdo, vido, title, objCustomer) => {
+                        navigate('DetailCustomer', {title: title, kinhdo: kinhdo, vido: vido, item: objCustomer})
                     }}
                     backToHome={() => {
                         this.setState({screenName: 'Menu'})

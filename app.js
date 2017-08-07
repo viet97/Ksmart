@@ -26,6 +26,7 @@ import DetailNhanVien from "./screens/DetailNhanVien";
 import DetailMessageScreen from "./screens/DetailMessageScreen";
 import Icon1 from 'react-native-vector-icons/Ionicons'
 import Color from './configs/color'
+import DetailCustomer from "./screens/DetailCustomer";
 
 var {height, width} = Dimensions.get('window');
 const Ksmart = StackNavigator({
@@ -38,7 +39,8 @@ const Ksmart = StackNavigator({
         Map: {screen: MapScreen,},
     DetailNhanVien: {screen: DetailNhanVien},
     DetailMessage: {screen: DetailMessageScreen},
-    TypeChart: {screen: ChooseTypeChart}
+    TypeChart: {screen: ChooseTypeChart},
+    DetailCustomer: {screen: DetailCustomer}
     },
 );
 AppRegistry.registerComponent('Ksmart', () => Ksmart);

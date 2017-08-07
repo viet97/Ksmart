@@ -150,7 +150,7 @@ export default class CustomerScreen extends Component {
                         renderItem={({item}) =>
 
                             <TouchableOpacity
-                                onPress={() => this.props.callback(item.KinhDo, item.ViDo, 'Địa chỉ khách hàng')}>
+                                onPress={() => this.props.callback(item.KinhDo, item.ViDo, 'Địa chỉ khách hàng', item)}>
 
                                 <View style={{
                                     marginTop: 4, marginBottom: 4, marginLeft: 4, marginRight: 4,
@@ -259,7 +259,6 @@ export default class CustomerScreen extends Component {
                     marginLeft: 8,
                     marginTop: 8,
                     marginBottom: 4,
-                    marginTop: 4,
                     marginRight: 4
                 }}>
                     <Text style={{fontSize: 18, color: 'white', textAlign: 'center', backgroundColor: "transparent"}}>Tổng
