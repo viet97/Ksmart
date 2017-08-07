@@ -62,13 +62,11 @@ export default class TravelChartScreen extends React.Component {
                         var arr = []
 
 
-                        var time = item['tennhanvien'];
-                        item['name'] = time
+                        var name = item['tennhanvien'];
+                        item['name'] = name
 
                         arr.push(item)
                         dt.push(arr)
-                        // date = item['thoigian'].split('/')[0];
-                        // item['name'] = date
                     }
                     var dem = 0;
                     for (var item in res) {
@@ -85,6 +83,7 @@ export default class TravelChartScreen extends React.Component {
                         })
                     }
                     else this.setState({isEmpty: true})
+                console.log('dt', dt)
                 }
             ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
     }
@@ -139,9 +138,10 @@ export default class TravelChartScreen extends React.Component {
                 orient: 'bottom',
                 label: {
                     fontFamily: 'Arial',
-                    fontSize: 2,
+                    fontSize: 8,
                     fontWeight: true,
-                    fill: '#34495E'
+                    fill: '#34495E',
+                    rotate: 270
                 }
             },
             axisY: {
