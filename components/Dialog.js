@@ -102,7 +102,7 @@ export default class Dialog extends React.Component {
 
                     <View style={{flexDirection: 'column'}}>
 
-                        <Text style={{color: 'white'}}>Từ ngày </Text>
+                        <Text style={{color: 'white', backgroundColor: 'transparent'}}>Từ ngày </Text>
                         <DatePicker
                             date={this.state.dateFrom}
                             mode="date"
@@ -123,7 +123,7 @@ export default class Dialog extends React.Component {
                         />
                     </View>
                     <View style={{flexDirection: 'column'}}>
-                        <Text style={{color: 'white'}}>Đến ngày </Text>
+                        <Text style={{color: 'white', backgroundColor: 'transparent'}}>Đến ngày </Text>
                         <DatePicker
                             date={this.state.dateTo}
                             mode="date"
@@ -144,7 +144,7 @@ export default class Dialog extends React.Component {
                         />
                     </View>
                     <View style={{flexDirection: 'column'}}>
-                        <Text style={{color: 'white'}}>Trạng thái đơn hàng</Text>
+                        <Text style={{color: 'white', backgroundColor: 'transparent'}}>Trạng thái đơn hàng</Text>
                         <Picker style={{height: 88}}
                                 itemStyle={{color: 'red', height: 88}}
                                 selectedValue={this.state.numberPickttdh}
@@ -163,7 +163,7 @@ export default class Dialog extends React.Component {
                         </Picker>
                     </View>
                     <View style={{flexDirection: 'column'}}>
-                        <Text style={{color: 'white'}}>Trạng thái giao hàng</Text>
+                        <Text style={{color: 'white', backgroundColor: 'transparent'}}>Trạng thái giao hàng</Text>
                         <Picker style={{height: 88}}
                                 itemStyle={{color: 'red', height: 88}}
                                 selectedValue={this.state.numberPickttgh}
@@ -181,7 +181,7 @@ export default class Dialog extends React.Component {
                         </Picker>
                     </View>
                     <View style={{flexDirection: 'column', paddingBottom: 16}}>
-                        <Text style={{color: 'white'}}>Trạng thái thanh toán</Text>
+                        <Text style={{color: 'white', backgroundColor: 'transparent'}}>Trạng thái thanh toán</Text>
                         <Picker style={{height: 88}}
                                 itemStyle={{color: 'red', height: 88}}
                                 selectedValue={this.state.numberPicktttt}

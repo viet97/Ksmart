@@ -70,6 +70,7 @@ export default class AboutUsScreen extends React.Component {
                             <Text style={{color: '#3cbdee'}}>{email}</Text>
                         </TouchableOpacity>
                     </View>
+
                 </View>
             </View>
         );
