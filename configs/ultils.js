@@ -25,7 +25,10 @@ export default class ultils {
     static getDate(d) {
         let date = new Date(d);
         let month = date.getMonth() + 1
-        let dateString = date.getDate() + '-' + month + '-' + date.getFullYear() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
+        let day = date.getDate()
+        if (month < 10) month = '0' + month
+        if (day < 10) day = '0' + day
+        let dateString = day + '-' + month + '-' + date.getFullYear() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
         return dateString
     }
 

@@ -23,16 +23,23 @@ export default class AboutUsScreen extends React.Component {
         const email = 'phanmem@lachongmedia.vn';
         return (
             <View style={{flexDirection: 'column', flex: 1}}>
+                <Image source={require('../images/bg.png')}
+                       style={{position: 'absolute', top: 0}}/>
                 <View style={styles.titleStyle}>
+                    <Image source={require('../images/bg.png')}
+                           style={{position: 'absolute'}}/>
                     <TouchableOpacity onPress={() => this.props.backToHome()}
                                       style={styles.iconStyle}>
                         <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
                     </TouchableOpacity>
-                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Về chúng tôi</Text>
-                    <View
-                        style={{backgroundColor: 'transparent', width: 35, height: 35, alignSelf: 'center'}}>
-                    </View>
-
+                    <Text style={{
+                        fontSize: 20,
+                        color: 'white',
+                        alignSelf: 'center',
+                        textAlign: 'center',
+                        backgroundColor: 'transparent',
+                    }}>Liên hệ</Text>
+                    <View/>
                 </View>
                 <View style={{flex: 9, flexDirection: 'column', backgroundColor: 'transparent', margin: 16}}>
                     <Image source={require('../images/logolh.png')}
@@ -46,7 +53,7 @@ export default class AboutUsScreen extends React.Component {
                         <TouchableOpacity onPress={() => {
                             Communications.phonecall(phonenumber, true)
                         }}>
-                            <Text style={{color: '#3cbdee'}}>{phonenumber}</Text>
+                            <Text style={{color: 'white'}}>{phonenumber}</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={{flexDirection: 'row', backgroundColor: 'transparent'}}>
@@ -54,20 +61,20 @@ export default class AboutUsScreen extends React.Component {
                         <TouchableOpacity onPress={() => {
                             Communications.phonecall(hotline, true)
                         }}>
-                            <Text style={{color: '#3cbdee'}}>{hotline}</Text>
+                            <Text style={{color: 'white'}}>{hotline}</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={{flexDirection: 'row', backgroundColor: 'transparent'}}>
                         <Text>Website: </Text>
                         <TouchableOpacity onPress={() => Communications.web('http://ksmart.vn')}>
-                            <Text style={{color: '#3cbdee'}}>http://ksmart.vn</Text>
+                            <Text style={{color: 'white'}}>http://ksmart.vn</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={{flexDirection: 'row', backgroundColor: 'transparent'}}>
                         <Text>Email: </Text>
                         <TouchableOpacity
                             onPress={() => Communications.email([email], null, null, 'My Subject', 'My body text')}>
-                            <Text style={{color: '#3cbdee'}}>{email}</Text>
+                            <Text style={{color: 'white'}}>{email}</Text>
                         </TouchableOpacity>
                     </View>
 
@@ -100,8 +107,7 @@ const styles = StyleSheet.create({
         width: 24,
         height: 24,
         backgroundColor: "transparent",
-        paddingHorizontal: 16,
-        marginTop: (Platform.OS === 'ios') ? 8 : 0
+        marginLeft: 8
     },
     textStyle: {
         fontSize: 18,

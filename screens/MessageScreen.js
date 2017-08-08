@@ -27,6 +27,7 @@ import Dialog from '../components/Dialog'
 import orderListData from '../dbcontext/orderListData'
 import AtoZListView from 'react-native-atoz-listview';
 import Search from 'react-native-search-box';
+import ultils from "../configs/ultils";
 var {height, width} = Dimensions.get('window');
 var GiftedListView = require('react-native-gifted-listview');
 
@@ -221,7 +222,10 @@ export default class OrderListScreen extends Component {
                                         {this.getTenNguoigui(item)}
                                         {this.getNoiDungBenNgoai(item)}
                                         <Text
-                                            style={{marginTop: 4, backgroundColor: 'transparent'}}>{item.NgayGui}</Text>
+                                            style={{
+                                                marginTop: 4,
+                                                backgroundColor: 'transparent'
+                                            }}>{ultils.getDate(item.NgayGui)}</Text>
                                     </View>
                                     <View style={{flex: 1, justifyContent: 'center'}}>
                                         {this.getIconMessage(item)}

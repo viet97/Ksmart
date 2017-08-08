@@ -393,7 +393,13 @@ export default class HomeScreen extends React.Component {
                     flex: 1,
                     elevation: (Platform.OS === 'ios') ? 0 : 15,
                 }}>
-                    <Image source={require('../images/bg.png')}/>
+                    <Image style={{position: 'absolute'}} source={require('../images/bg.png')}/>
+                    <Text style={{
+                        alignSelf: 'center',
+                        textAlign: 'center',
+                        backgroundColor: 'transparent',
+                        fontSize: 18
+                    }}>{URlConfig.OBJLOGIN.tendangnhap} </Text>
                 </View>
 
                 <View style={{paddingTop: 15, flexDirection: 'column', flex: 9}}>
@@ -499,7 +505,7 @@ export default class HomeScreen extends React.Component {
                                                   this.closeControlPanel()
                                               }}>
                                 <IconMaterial size={24} style={styles.iconStyle} color="white" name="info-outline"/>
-                                <Text style={styles.textStyle}>Về chúng tôi</Text>
+                                <Text style={styles.textStyle}>Liên hệ</Text>
                                 <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
                             </TouchableOpacity>
                         </View>
