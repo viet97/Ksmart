@@ -175,7 +175,12 @@ export default class OrderListScreen extends Component {
                         style={styles.indicator}
                         size="large"/>
                 </View>)
-        }
+        } else if (this.state.dataRender.length === 0)
+            return (    <View style={{flex: 9}}>
+                <Text style={{alignSelf: 'center', textAlign: 'center', fontSize: 20, backgroundColor: 'transparent'}}>Không
+                    có dữ liệu</Text>
+
+            </View>)
 
         return (
             <View style={{flex: 9}}>

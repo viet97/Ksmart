@@ -125,7 +125,13 @@ export default class CustomerScreen extends Component {
                         style={styles.indicator}
                         size="large"/>
                 </View>)
-        } else
+        } else if (this.state.dataRender.length === 0)
+            return (    <View style={{flex: 9}}>
+                <Text style={{alignSelf: 'center', textAlign: 'center', fontSize: 20, backgroundColor: 'transparent'}}>Không
+                    có dữ liệu</Text>
+
+            </View>)
+
             return (
                 <View style={{backgroundColor: Color.backGroundFlatList, flex: 9}}>
                     <Image source={require('../images/bg.png')}

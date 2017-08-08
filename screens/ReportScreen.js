@@ -189,7 +189,7 @@ export default class ReportScreen extends Component {
                         }}>{item.tennhanvien}</Text>
                     </View>
                     <TouchableOpacity onPress={() => Communications.phonecall(item.dienthoai, true)}>
-                        <Icon3 size={24} color="green" name="phone"/>
+                        <Icon3 style={{backgroundColor: 'transparent'}} size={24} color="green" name="phone"/>
                     </TouchableOpacity>
                 </View>
 
@@ -267,7 +267,7 @@ export default class ReportScreen extends Component {
                                 }}>{item.tennhanvien}</Text>
                             </View>
                             <TouchableOpacity onPress={() => Communications.phonecall(item.dienthoai, true)}>
-                                <Icon3 size={24} color="green" name="phone"/>
+                                <Icon3 style={{backgroundColor: 'transparent'}} size={24} color="green" name="phone"/>
                             </TouchableOpacity>
                         </View>
 
@@ -390,7 +390,19 @@ export default class ReportScreen extends Component {
                         style={styles.indicator}
                         size="large"/>
                 </View>)
-        }
+        } else if (this.state.dataRender.length === 0)
+            return (
+                <View style={{flex: 9}}>
+                    <Text style={{
+                        alignSelf: 'center',
+                        textAlign: 'center',
+                        fontSize: 20,
+                        backgroundColor: 'transparent'
+                    }}>Không
+                        có dữ liệu</Text>
+
+                </View>
+            )
 
         return (
             <View style={{flex: 9}}>
