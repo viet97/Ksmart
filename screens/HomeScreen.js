@@ -25,6 +25,7 @@ import {
 } from 'react-native';
 import NewFeedScreen from "./NewFeedScreen";
 import ListNhanVienScreen from "./ListNhanVienScreen";
+import Badge from 'react-native-smart-badge'
 import MapScreen from "./MapScreen";
 import {NavigationActions} from "react-navigation";
 import Toast from 'react-native-simple-toast';
@@ -141,7 +142,7 @@ export default class HomeScreen extends React.Component {
                     }}
                 />
             case "Map":
-                return <MapScreen />
+                return <MapScreen/>
             case "Order":
                 return <OrderListScreen backToHome={() => {
                     this.setState({screenName: 'Menu'})
@@ -166,11 +167,11 @@ export default class HomeScreen extends React.Component {
                         this.setState({screenName: 'Menu'})
                     }}/>
             case "DetailMessage":
-                return <DetailMessageScreen />
+                return <DetailMessageScreen/>
             case "Travel":
                 return <TravelScreen
                     goToCustomerPlant={(date) => {
-                            this.setState({screenName: 'CustomerPlant'})
+                        this.setState({screenName: 'CustomerPlant'})
                     }}
                     backToHome={() => {
                         this.setState({screenName: 'Menu'})
@@ -267,7 +268,7 @@ export default class HomeScreen extends React.Component {
                                                  color: 'white'
                                              }}>Menu</Animatable.Text>
 
-                            <View style={{width: 50, height: 50, backgroundColor: 'transparent'}}></View>
+                            <View style={{width: 50, height: 50, backgroundColor: 'transparent'}}/>
                         </View>
 
                         <View style={{flex: 9}}>
@@ -359,8 +360,17 @@ export default class HomeScreen extends React.Component {
                                     style={{alignSelf: 'center', width: 90}}
                                     onPress={() => this.setState({screenName: "Message"})}>
                                     <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
-                                           source={require('../images/webmail-2012.png')}/>
-
+                                           source={require('../images/webmail-2012.png')}
+                                    />
+                                    {() => {
+                                        if (URlConfig.OBJLOGIN.messageUnread !== null && URlConfig.OBJLOGIN.messageUnread !== undefined) {
+                                            return (
+                                                <Badge textStyle={{color: '#fff',}}
+                                                       style={{position: 'absolute', top: 0, right: 8}}>
+                                                    {URlConfig.OBJLOGIN.messageUnread}
+                                                </Badge>)
+                                        }
+                                    }}
                                     <Animatable.Text animation="slideInRight" style={styles.titleIconsMenu}>Tin
                                         nhắn</Animatable.Text>
 
@@ -381,6 +391,7 @@ export default class HomeScreen extends React.Component {
                 duration: 10000,              // Make it take a while
             }
         ).start();
+
     }
 
     sideMenuView() {
@@ -494,7 +505,18 @@ export default class HomeScreen extends React.Component {
                                                   this.closeControlPanel()
                                               }}>
                                 <Icon2 size={24} style={styles.iconStyle} color="white" name="mail"/>
-                                <Text style={styles.textStyle}>Tin nhắn</Text>
+                                <View style={{flexDirection: 'row', backgroundColor: 'transparent'}}>
+                                    <Text style={styles.textStyle}>Tin nhắn</Text>
+                                    {() => {
+                                        if (URlConfig.OBJLOGIN.messageUnread !== null && URlConfig.OBJLOGIN.messageUnread !== undefined) {
+                                            return (
+                                                <Badge textStyle={{color: '#fff',}}
+                                                       style={{marginLeft: 8, backgroundColor: 'red'}}>
+                                                    {URlConfig.OBJLOGIN.messageUnread}
+                                                </Badge>)
+                                        }
+                                    }}
+                                </View>
                                 <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
                             </TouchableOpacity>
                         </View>
@@ -505,7 +527,9 @@ export default class HomeScreen extends React.Component {
                                                   this.closeControlPanel()
                                               }}>
                                 <IconMaterial size={24} style={styles.iconStyle} color="white" name="info-outline"/>
+
                                 <Text style={styles.textStyle}>Liên hệ</Text>
+
                                 <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
                             </TouchableOpacity>
                         </View>
