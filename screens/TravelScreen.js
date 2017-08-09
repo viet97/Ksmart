@@ -87,31 +87,30 @@ export default class TravelScreen extends React.Component {
     }
 
     setDataRender() {
+        let data = this.state.dataFull.slice(0, NUMBER_ROW_RENDER + 10)
+        NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
+        let arr = []
         switch (this.state.numberPickTravel) {
             case 0:
-                this.setState({dataRender: this.state.dataFull})
+                arr = data
                 break;
             case 1:
-                let arr = []
-                for (let item of this.state.dataFull) {
+
+                for (let item of data) {
                     if (item.TrangThai === 0) {
                         arr.push(item)
                     }
                 }
-                this.setState({dataRender: arr});
                 break;
             case 2:
-                arr = [];
-                for (let item of this.state.dataFull) {
+                for (let item of data) {
                     if (item.TrangThai === 1) {
                         arr.push(item)
                     }
                 }
-                this.setState({dataRender: arr});
                 break;
             case 3:
-                arr = []
-                for (let item of this.state.dataFull) {
+                for (let item of data) {
                     let now = new Date();
                     let timeItem = new Date(item.ThoiGianVaoDiemDuKien);
                     let seconds = (timeItem.getTime() - 7 * 3600 * 1000 - now.getTime()) / 1000;
@@ -122,10 +121,10 @@ export default class TravelScreen extends React.Component {
                     }
 
                 }
-                this.setState({dataRender: arr});
                 break;
 
         }
+        this.setState({dataRender: arr})
     }
 
 
@@ -152,8 +151,7 @@ export default class TravelScreen extends React.Component {
     loadMoreData() {
         if (!this.state.onEndReach) {
             this.setState({onEndReach: true})
-            this.setState({dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER + 10)})
-            NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
+            this.setDataRender()
             if (NUMBER_ROW_RENDER > this.state.dataFull.length - 10) {
                 ALL_LOADED = true
                 this.forceUpdate()
