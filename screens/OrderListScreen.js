@@ -348,7 +348,8 @@ export default class OrderListScreen extends Component {
                 <Text style={{alignSelf: 'center', textAlign: 'center', fontSize: 20, backgroundColor: 'transparent'}}>Không
                     có dữ liệu</Text>
 
-            </View>)
+                </View>
+            )
 
         return (
             <View style={{backgroundColor: Color.backGroundFlatList, flex: 9}}>

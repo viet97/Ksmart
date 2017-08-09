@@ -160,14 +160,22 @@ export default class CustomerPlant extends Component {
                                 choseCustomer={(data, checked) => {
                                     var arr = this.state.dataChoose;
                                     if (checked) {
+                                        var i;
+                                        for (i = arr.length - 1; i >= 0; i--) {
+                                            if (arr[i].idkhachhang === data.idkhachhang) {
+                                                arr[i] = data
+                                                break;
+                                            }
+                                        }
+                                        if (i < 0) arr.push(data)
 
-                                        arr.push(data)
                                         this.setState({dataChoose: arr})
                                     } else {
                                         if (arr.length !== 0) {
                                             for (var i = arr.length - 1; i >= 0; i--) {
                                                 if (arr[i].idkhachhang === data.idkhachhang) {
                                                     arr.splice(i, 1);
+                                                    break;
                                                 }
                                             }
                                             this.setState({dataChoose: arr})
@@ -323,7 +331,6 @@ export default class CustomerPlant extends Component {
     }
 
     sendPlantToServer() {
-        console.log('Trước khi send to sever' + this.state.idNhanvien)
         var obj = {
             ngaylapkehoach: this.state.datePlant,
             dulieulapkehoach: this.state.dataChoose,

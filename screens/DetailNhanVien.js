@@ -113,7 +113,7 @@ export default class DetailNhanVien extends React.Component {
                                     <Text style={styles.text2}>1234@gmail.com</Text>
                                     <TouchableOpacity
                                         onPress={() => Communications.email(['123@gmail.com'], null, null, 'My Subject', 'My body text')}>
-                                        <Icon4 size={36} color="yellow" name="mail"/>
+                                        <Icon4 size={24} color="yellow" name="mail"/>
                                     </TouchableOpacity>
                                 </View>
                             </View>
@@ -127,7 +127,7 @@ export default class DetailNhanVien extends React.Component {
                                 }}>
                                     <Text style={styles.text2}>01663616055</Text>
                                     <TouchableOpacity onPress={() => Communications.phonecall('01663616055', true)}>
-                                        <Icon3 size={36} color="green" name="phone"/>
+                                        <Icon3 size={24} color="green" name="phone"/>
                                     </TouchableOpacity>
                                 </View>
                             </View>
@@ -225,7 +225,7 @@ const styles = StyleSheet.create({
         height: 80
     },
     text1: {
-        fontSize: 12, marginTop: 4, marginRight: 8, color: 'red', backgroundColor: 'transparent'
+        fontSize: 12, marginTop: 4, marginRight: 8, color: 'black', backgroundColor: 'transparent'
     },
     text2: {
         fontSize: 18, fontWeight: 'bold', backgroundColor: 'transparent'

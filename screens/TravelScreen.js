@@ -114,8 +114,6 @@ export default class TravelScreen extends React.Component {
                     let now = new Date();
                     let timeItem = new Date(item.ThoiGianVaoDiemDuKien);
                     let seconds = (timeItem.getTime() - 7 * 3600 * 1000 - now.getTime()) / 1000;
-                    console.log('phut', seconds);
-                    console.log(now, timeItem)
                     if (seconds >= 0 && seconds <= TIME_SAP_DEN_GIO) {
                         arr.push(item)
                     }
@@ -207,6 +205,7 @@ export default class TravelScreen extends React.Component {
     }
 
     renderItem(item) {
+        
         var strVaoDiem = '';
         var strRaDiem = '';
         if (item.ThoiGianVaoDiemThucTe === '1900-01-01T00:00:00') {
@@ -231,51 +230,51 @@ export default class TravelScreen extends React.Component {
                                width: width - 8,
                                height: height / 4
                            }}>
-                    <Text style={{
-                        textAlign: 'right',
-                        backgroundColor: 'transparent',
-                        fontSize: 12,
-                        marginRight: 4
-                    }}>Vào điểm dự kiến: {ultils.getDate(item.ThoiGianVaoDiemDuKien)}</Text>
+                        <Text style={{
+                            textAlign: 'right',
+                            backgroundColor: 'transparent',
+                            fontSize: 12,
+                            marginRight: 4
+                        }}>Vào điểm dự kiến: {ultils.getDate(item.ThoiGianVaoDiemDuKien)}</Text>
 
-                    <Text style={{
-                        textAlign: 'right',
-                        backgroundColor: 'transparent',
-                        fontSize: 12,
-                        marginRight: 4
-                    }}>{strVaoDiem}</Text>
-                    <Text style={{
-                        textAlign: 'right',
-                        backgroundColor: 'transparent',
-                        fontSize: 12,
-                        marginRight: 4
-                    }}>{strRaDiem}</Text>
-                    <View style={{flexDirection: 'row'}}>
-                        <View style={{justifyContent: 'center'}}>
-                            {this.getImage(item.anhdaidien === undefined ? '' : item.anhdaidien)}
+                        <Text style={{
+                            textAlign: 'right',
+                            backgroundColor: 'transparent',
+                            fontSize: 12,
+                            marginRight: 4
+                        }}>{strVaoDiem}</Text>
+                        <Text style={{
+                            textAlign: 'right',
+                            backgroundColor: 'transparent',
+                            fontSize: 12,
+                            marginRight: 4
+                        }}>{strRaDiem}</Text>
+                        <View style={{flexDirection: 'row'}}>
+                            <View style={{justifyContent: 'center'}}>
+                                {this.getImage(item.anhdaidien === undefined ? '' : item.anhdaidien)}
+                            </View>
+                            <View style={{flex: 4, margin: 8, justifyContent: 'center'}}>
+                                <Text
+                                    style={{
+                                        fontSize: 18,
+                                        backgroundColor: 'transparent',
+                                        margin: 4
+                                    }}>{item.TenCuaHang}</Text>
+                                <Text
+                                    style={{
+                                        fontSize: 12,
+                                        margin: 4,
+                                        backgroundColor: 'transparent',
+                                    }}>{item.TenNhanVien}</Text>
+                                <Text
+                                    style={{
+                                        fontSize: 13,
+                                        margin: 4,
+                                        color: item.text_color,
+                                        backgroundColor: 'transparent',
+                                    }}>{item.text_color_mota}</Text>
+                            </View>
                         </View>
-                        <View style={{flex: 4, margin: 8, justifyContent: 'center'}}>
-                            <Text
-                                style={{
-                                    fontSize: 18,
-                                    backgroundColor: 'transparent',
-                                    margin: 4
-                                }}>{item.TenCuaHang}</Text>
-                            <Text
-                                style={{
-                                    fontSize: 12,
-                                    margin: 4,
-                                    backgroundColor: 'transparent',
-                                }}>{item.TenNhanVien}</Text>
-                            <Text
-                                style={{
-                                    fontSize: 13,
-                                    margin: 4,
-                                    color: item.text_color,
-                                    backgroundColor: 'transparent',
-                                }}>{item.text_color_mota}</Text>
-                        </View>
-                    </View>
                     </Image>
                 </View>
             </TouchableOpacity>
@@ -287,114 +286,114 @@ export default class TravelScreen extends React.Component {
             return <Picker.Item key={i} value={i} label={s}/>
         });
         return (
-                <View style={{flex: 1}}>
+            <View style={{flex: 1}}>
+                <Image source={require('../images/bg.png')}
+                       style={{position: 'absolute', top: 0}}/>
+                <View style={styles.titleStyle}>
                     <Image source={require('../images/bg.png')}
-                           style={{position: 'absolute', top: 0}}/>
-                    <View style={styles.titleStyle}>
-                        <Image source={require('../images/bg.png')}
-                               style={{position: 'absolute'}}/>
-                        <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
-                        <Text
-                            style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Viếng
-                            thăm</Text>
-                        <TouchableOpacity
-                            onPress={() => this.props.goToCustomerPlant()}
-                            style={{
-                                alignSelf: 'center',
-                                width: 35,
-                                height: 35
-                            }}>
-                            <View style={{width: 50, height: 50, justifyContent: 'center', alignSelf: 'center'}}>
-                                <Text style={{
-                                    color: 'white',
-                                    textAlign: 'center',
-                                    alignSelf: 'center',
-                                    paddingBottom: 8,
-                                    paddingRight: 8,
-                                    backgroundColor: 'transparent'
-                                }}>Thêm</Text>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-
-                    <TouchableOpacity onPress={() => this.props.backToHome()}
-                                      style={{width: 50, height: 50, position: 'absolute'}}/>
-                    <View style={{width: window.width, height: 45, elevation: 5}}>
-                        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                            <DatePicker
-                                style={{marginLeft: 8}}
-                                date={this.state.dateFrom}
-                                mode="date"
-                                placeholder="select date"
-                                format="DD-MM-YYYY"
-
-                                confirmBtnText="Xác nhận"
-                                cancelBtnText="Huỷ bỏ"
-                                customStyles={{
-                                    dateIcon: {},
-                                    dateInput: {
-                                        backgroundColor: 'white',
-                                        borderWidth: 1,
-                                        borderColor: 'gray',
-                                        borderRadius: 4,
-                                    },
-                                }}
-                                onDateChange={(date) => {
-                                    this.ondateChange(date, this.state.dateTo);
-                                }}
-                            />
+                           style={{position: 'absolute'}}/>
+                    <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
+                    <Text
+                        style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Viếng
+                        thăm</Text>
+                    <TouchableOpacity
+                        onPress={() => this.props.goToCustomerPlant()}
+                        style={{
+                            alignSelf: 'center',
+                            width: 35,
+                            height: 35
+                        }}>
+                        <View style={{width: 50, height: 50, justifyContent: 'center', alignSelf: 'center'}}>
                             <Text style={{
+                                color: 'white',
                                 textAlign: 'center',
                                 alignSelf: 'center',
-                                backgroundColor: 'transparent',
-                                color: 'black'
-                            }}>Đến
-                                ngày</Text>
-                            <DatePicker
-                                style={{marginLeft: 8}}
-                                date={this.state.dateTo}
-                                mode="date"
-                                placeholder="select date"
-                                format="DD-MM-YYYY"
-
-                                confirmBtnText="Xác nhận"
-                                cancelBtnText="Huỷ bỏ"
-                                customStyles={{
-                                    dateIcon: {},
-                                    dateInput: {
-                                        backgroundColor: 'white',
-                                        borderWidth: 1,
-                                        borderColor: 'gray',
-                                        borderRadius: 4,
-                                    },
-                                }}
-                                onDateChange={(date) => {
-                                    this.ondateChange(this.state.dateFrom, date);
-                                }}
-                            />
+                                paddingBottom: 8,
+                                paddingRight: 8,
+                                backgroundColor: 'transparent'
+                            }}>Thêm</Text>
                         </View>
-                    </View>
-                    <View style={{width: width, flexDirection: 'row', justifyContent: 'center'}}>
+                    </TouchableOpacity>
+                </View>
+
+                <TouchableOpacity onPress={() => this.props.backToHome()}
+                                  style={{width: 50, height: 50, position: 'absolute'}}/>
+                <View style={{width: window.width, height: 45, elevation: 5}}>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                        <DatePicker
+                            style={{marginLeft: 8}}
+                            date={this.state.dateFrom}
+                            mode="date"
+                            placeholder="select date"
+                            format="DD-MM-YYYY"
+
+                            confirmBtnText="Xác nhận"
+                            cancelBtnText="Huỷ bỏ"
+                            customStyles={{
+                                dateIcon: {},
+                                dateInput: {
+                                    backgroundColor: 'white',
+                                    borderWidth: 1,
+                                    borderColor: 'gray',
+                                    borderRadius: 4,
+                                },
+                            }}
+                            onDateChange={(date) => {
+                                this.ondateChange(date, this.state.dateTo);
+                            }}
+                        />
                         <Text style={{
-                            alignSelf: 'center',
                             textAlign: 'center',
+                            alignSelf: 'center',
                             backgroundColor: 'transparent',
                             color: 'black'
-                        }}>Trạng thái</Text>
-                        <Picker style={{marginLeft: 8, height: 44, width: width / 2, alignSelf: 'center'}}
-                                itemStyle={{height: 44}}
-                                selectedValue={this.state.numberPickTravel}
-                                onValueChange={(value) => {
-                                    this.setState({numberPickTravel: value}, function () {
-                                        this.setDataRender();
-                                    })
-                                }}>
-                            {travelStatusItem}
-                        </Picker>
+                        }}>Đến
+                            ngày</Text>
+                        <DatePicker
+                            style={{marginLeft: 8}}
+                            date={this.state.dateTo}
+                            mode="date"
+                            placeholder="select date"
+                            format="DD-MM-YYYY"
 
+                            confirmBtnText="Xác nhận"
+                            cancelBtnText="Huỷ bỏ"
+                            customStyles={{
+                                dateIcon: {},
+                                dateInput: {
+                                    backgroundColor: 'white',
+                                    borderWidth: 1,
+                                    borderColor: 'gray',
+                                    borderRadius: 4,
+                                },
+                            }}
+                            onDateChange={(date) => {
+                                this.ondateChange(this.state.dateFrom, date);
+                            }}
+                        />
                     </View>
-                    {this.flatListorIndicator()}
                 </View>
+                <View style={{width: width, flexDirection: 'row', justifyContent: 'center'}}>
+                    <Text style={{
+                        alignSelf: 'center',
+                        textAlign: 'center',
+                        backgroundColor: 'transparent',
+                        color: 'black'
+                    }}>Trạng thái</Text>
+                    <Picker style={{marginLeft: 8, height: 44, width: width / 2, alignSelf: 'center'}}
+                            itemStyle={{height: 44}}
+                            selectedValue={this.state.numberPickTravel}
+                            onValueChange={(value) => {
+                                this.setState({numberPickTravel: value}, function () {
+                                    this.setDataRender();
+                                })
+                            }}>
+                        {travelStatusItem}
+                    </Picker>
+
+                </View>
+                {this.flatListorIndicator()}
+            </View>
         )
     }
 

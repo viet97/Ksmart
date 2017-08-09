@@ -20,6 +20,7 @@ import Color from '../configs/color'
 import URlConfig from "../configs/url";
 import Search from "react-native-search-box";
 import {StackNavigator} from 'react-navigation';
+
 var NUMBER_ROW_RENDER_PER_PAGE = 15
 var ALL_LOADED = false
 var SEARCH_STRING = '';
@@ -91,6 +92,7 @@ export default class CustomerScreen extends Component {
             })
             .catch((e) => Toast.show('vui lòng kiểm tra lại đường truyền'))
     }
+
     loadMoreData() {
         if (!this.state.onEndReach) {
             console.log("LOADMORE")
@@ -132,40 +134,40 @@ export default class CustomerScreen extends Component {
 
             </View>)
 
-            return (
-                <View style={{backgroundColor: Color.backGroundFlatList, flex: 9}}>
-                    <Image source={require('../images/bg.png')}
-                           style={{position: 'absolute'}}/>
-                    <FlatList
-                        refreshing={this.state.refreshing}
-                        onRefresh={() => {
-                            this.refreshData()
-                        }}
-                        ListFooterComponent={this.renderFooter}
-                        ref="listview"
-                        onEndReachedThreshold={0.2}
-                        onEndReached={() => {
-                            if (SEARCH_STRING.length === 0)
-                                this.loadMoreData()
-                        }}
-                        onMomentumScrollBegin={() => {
-                            this.setState({onEndReach: false})
-                        }}
-                        extraData={this.state.dataRender}
-                        data={this.state.dataRender}
-                        renderItem={({item}) =>
+        return (
+            <View style={{backgroundColor: Color.backGroundFlatList, flex: 9}}>
+                <Image source={require('../images/bg.png')}
+                       style={{position: 'absolute'}}/>
+                <FlatList
+                    refreshing={this.state.refreshing}
+                    onRefresh={() => {
+                        this.refreshData()
+                    }}
+                    ListFooterComponent={this.renderFooter}
+                    ref="listview"
+                    onEndReachedThreshold={0.2}
+                    onEndReached={() => {
+                        if (SEARCH_STRING.length === 0)
+                            this.loadMoreData()
+                    }}
+                    onMomentumScrollBegin={() => {
+                        this.setState({onEndReach: false})
+                    }}
+                    extraData={this.state.dataRender}
+                    data={this.state.dataRender}
+                    renderItem={({item}) =>
 
-                            <TouchableOpacity
-                                onPress={() => this.props.callback(item.KinhDo, item.ViDo, 'Địa chỉ khách hàng', item)}>
+                        <TouchableOpacity
+                            onPress={() => this.props.callback(item.KinhDo, item.ViDo, 'Địa chỉ khách hàng', item)}>
 
-                                <View style={{
-                                    marginTop: 4, marginBottom: 4, marginLeft: 4, marginRight: 4,
-                                }}>
-                                    <Image source={require('../images/bg1.png')}
-                                           style={{
-                                               width: width - 8,
-                                               height: height / 5.5
-                                           }}>
+                            <View style={{
+                                marginTop: 4, marginBottom: 4, marginLeft: 4, marginRight: 4,
+                            }}>
+                                <Image source={require('../images/bg1.png')}
+                                       style={{
+                                           width: width - 8,
+                                           height: height / 5.5
+                                       }}>
                                     <View style={{
                                         flexDirection: 'row',
                                         marginLeft: 8,
@@ -175,11 +177,13 @@ export default class CustomerScreen extends Component {
                                     }}>
                                         <Icon style={{backgroundColor: 'transparent',}} size={24} color="red"
                                               name="home"/>
-                                        <Text style={{
+                                        <Text numberOfLines={1} style={{
                                             backgroundColor: 'transparent',
                                             marginLeft: 8,
                                             fontSize: 18,
-                                            fontWeight: "bold"
+                                            marginRight: 8,
+                                            fontWeight: "bold",
+                                            marginRight: 20,
                                         }}>{item.TenCuaHang}</Text>
                                     </View>
                                     <View style={{
@@ -191,9 +195,11 @@ export default class CustomerScreen extends Component {
                                     }}>
                                         <Icon1 style={{backgroundColor: 'transparent',}} size={24} color="black"
                                                name="people-outline"/>
-                                        <Text style={{
+                                        <Text numberOfLines={1} style={{
                                             backgroundColor: 'transparent',
-                                            marginLeft: 8
+                                            marginLeft: 8,
+                                            paddingRight: 8,
+                                            marginRight: 20,
                                         }}>{item.tennhomkhachhang}</Text>
                                     </View>
                                     <View style={{
@@ -206,16 +212,22 @@ export default class CustomerScreen extends Component {
                                         <Icon style={{backgroundColor: 'transparent',}} size={24} color="white"
                                               name="location-pin"/>
                                         <Text
-                                            style={{backgroundColor: 'transparent', marginLeft: 8}}>{item.DiaChi}</Text>
+                                            numberOfLines={1}
+                                            style={{
+                                                backgroundColor: 'transparent',
+                                                marginLeft: 8,
+                                                marginRight: 20,
+                                            }}>
+                                            {item.DiaChi}</Text>
                                     </View>
-                                    </Image>
-                                </View>
+                                </Image>
+                            </View>
 
-                            </TouchableOpacity>
+                        </TouchableOpacity>
 
-                        }
-                    />
-                </View>)
+                    }
+                />
+            </View>)
 
     }
 
