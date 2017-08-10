@@ -4,7 +4,7 @@
 
 import React, {Component} from 'react';
 import {
-    View, Dimensions, Text, Picker, StyleSheet, TouchableOpacity, Image, Platform
+    View, Dimensions, Text, Picker, StyleSheet, TouchableOpacity, Image, Platform, FlatList
 } from "react-native";
 import Icon1 from 'react-native-vector-icons/Ionicons'
 import Bar from "react-native-pathjs-charts/src/Bar";
@@ -14,11 +14,15 @@ import DatePicker from "react-native-datepicker";
 import URlConfig from "../configs/url";
 import Color from "../configs/color";
 import Toast from 'react-native-simple-toast'
+import ultils from "../configs/ultils";
+
+let {height, width} = Dimensions.get('window');
 export default class ChartScreen extends React.Component {
     constructor(props) {
         super(props);
         var now = new Date();
         this.state = {
+            refreshing: false,
             isEmpty: true,
             data: [],
             arr: [],
@@ -26,8 +30,30 @@ export default class ChartScreen extends React.Component {
             year: now.getFullYear(),
             montArr: [],
             yearArr: [],
-            keyChart: 'TongTien'
+            keyChart: 'TongTien',
+            type: [],
+            numberTypePick: 0,
+            dataRender: null,
         }
+        this.state.type.push('Dạng chữ')
+        this.state.type.push('Biểu đồ')
+    }
+
+    refreshData() {
+        this.setState({dataRender: null})
+        let month = this.state.month;
+        if (this.state.month < 10) {
+            month = '0' + month;
+        }
+        let url = URlConfig.getChartLink(month + '-' + this.state.year);
+        fetch(url)
+            .then((response) => (response.json()))
+            .then((responseJson) => {
+                if (responseJson.data !== null)
+                    this.setState({
+                        dataRender: responseJson.data
+                    })
+            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e))
     }
 
     setMonthAndYear() {
@@ -56,11 +82,14 @@ export default class ChartScreen extends React.Component {
             month = '0' + month;
         }
         var url = URlConfig.getChartLink(month + '-' + this.state.year);
-        console.log('urlChart', url)
+
         fetch(url)
             .then((response) => (response.json()))
             .then((responseJson) => {
-
+                if (responseJson.data !== null) {
+                    this.setState({
+                        dataRender: responseJson.data
+                    })
                     var res = responseJson.data;
                     var dt = []
 
@@ -77,28 +106,113 @@ export default class ChartScreen extends React.Component {
                         item['name'] = date
 
                     }
-                var dem = 0;
-                for (var item in res) {
-                    if (res[item].TongTien !== 0) {
-                        dem = dem + 1;
-                        break;
+                    var dem = 0;
+                    for (var item in res) {
+                        if (res[item].TongTien !== 0) {
+                            dem = dem + 1;
+                            break;
+                        }
                     }
+                    if (dem > 0) {
+                        this.setState({
+                            data: dt,
+                            arr: res,
+                            isEmpty: false
+                        })
+                    }
+                    else this.setState({isEmpty: true})
                 }
-                if (dem > 0) {
-                    this.setState({
-                        data: dt,
-                        arr: res,
-                        isEmpty: false
-                    })
-                }
-                else this.setState({isEmpty: true})
                 }
             ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
     }
 
-    getChartorNull(options) {
+    renderItem(item) {
+        return (
+            <View style={{
+                marginTop: 4, marginBottom: 4, marginLeft: 8, marginRight: 8,
+                borderTopColor: '#227878'
+            }}><Image source={require('../images/bg1.png')}
+                      style={{
+                          width: width - 8,
+                          height: height / 7
+                      }}>
+                <View style={{
+                    justifyContent: 'space-between',
+                    flexDirection: 'row',
+                    marginLeft: 8,
+                    marginTop: 8,
+                    marginRight: 8,
+                    marginBottom: 4
+                }}>
+                    <View style={{flexDirection: 'row'}}>
+                        <Text style={{alignSelf: 'center', backgroundColor: 'transparent'}}>Ngày: </Text>
+                        <Text style={{
+                            marginLeft: 8,
+                            backgroundColor: 'transparent'
+                        }}>{item.thoigian}</Text>
+                    </View>
+                </View>
+
+                <View style={{
+                    flexDirection: 'row',
+                    marginLeft: 8,
+                    marginTop: 4,
+                    marginRight: 8,
+                    marginBottom: 4
+                }}>
+                    <Text style={{backgroundColor: 'transparent'}}>Số đơn hàng: </Text>
+                    <Text style={{
+                        marginLeft: 8,
+                        backgroundColor: 'transparent'
+                    }}>{item.DonHang}</Text>
+                </View>
+                <View style={{
+                    flexDirection: 'row',
+                    marginLeft: 8,
+                    marginTop: 4,
+                    marginRight: 8,
+                    marginBottom: 4
+                }}>
+                    <Text style={{backgroundColor: 'transparent'}}>Tổng tiền:</Text>
+                    <Text style={{
+                        marginLeft: 8,
+                        backgroundColor: 'transparent'
+                    }}>{ultils.getDate(item.TongTien)}</Text>
+                </View>
+            </Image>
+            </View>
+        )
+    }
+
+    getChartorFlatListorNull(options) {
 
         if (!this.state.isEmpty) {
+            if (this.state.numberTypePick === 0)
+                return (
+                    <View style={{flex: 9}}>
+                        <FlatList
+                            refreshing={this.state.refreshing}
+                            onRefresh={() => {
+                                this.refreshData()
+                            }}
+                            ref="listview"
+                            extraData={this.state.dataRender}
+                            data={this.state.dataRender}
+                            renderItem={({item}) => {
+                                return this.renderItem(item)
+                            }
+                            }
+                        />
+                    </View>
+                )
+            else
+                return (
+                    <View>
+                        <Bar data={this.state.data} options={options} accessorKey={this.state.keyChart}/>
+                        {this.getTitleChart()}
+                    </View>
+                )
+
             return (
                 <View>
                     <Bar data={this.state.data} options={options} accessorKey={this.state.keyChart}/>
@@ -124,8 +238,14 @@ export default class ChartScreen extends React.Component {
         return (<Text style={{margin: 8, textAlign: 'center', backgroundColor: 'transparent'}}>{title}</Text>)
     }
 
+    getTitle() {
+        let title
+        if (this.state.numberTypePick === 0)
+            title = 'Doanh Thu'
+        else title = 'Biểu đồ doanh thu'
+        return title
+    }
     render() {
-        console.log('abcdef', this.state.month, this.state.year)
         let {height, width} = Dimensions.get('window');
         let options = {
             width: width - 40,
@@ -178,6 +298,9 @@ export default class ChartScreen extends React.Component {
         let monthItems = this.state.montArr.map((s, i) => {
             return <Picker.Item key={s} value={s} label={s + ''}/>
         });
+        let type = this.state.type.map((s, i) => {
+            return <Picker.Item key={i} value={i} label={s + ''}/>
+        });
         return (
             <View style={{flex: 1}}>
                 <Image source={require('../images/bg.png')}
@@ -189,7 +312,7 @@ export default class ChartScreen extends React.Component {
                                       style={styles.iconStyle}>
                         <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
                     </TouchableOpacity>
-                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Biểu đồ doanh thu</Text>
+                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>{this.getTitle()}</Text>
                     <TouchableOpacity style={{alignSelf: 'center'}} onPress={() => {
                         this.showDialog();
                     }}>
@@ -208,7 +331,11 @@ export default class ChartScreen extends React.Component {
                                   }}/>
                 <View style={{flexDirection: 'column', flex: 9}}>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', height: 44}}>
-                        <Text style={{alignSelf: 'center', backgroundColor: 'transparent', color: 'white'}}>Tháng</Text>
+                        <Text style={{
+                            alignSelf: 'center',
+                            backgroundColor: 'transparent',
+                            color: 'white'
+                        }}>Tháng</Text>
                         <Picker
                             style={{height: 44, width: 50, alignSelf: 'center'}}
                             itemStyle={{color: 'white', height: 44}}
@@ -218,7 +345,8 @@ export default class ChartScreen extends React.Component {
                             })}>
                             {monthItems}
                         </Picker>
-                        <Text style={{alignSelf: 'center', backgroundColor: 'transparent', color: 'white'}}>Năm</Text>
+                        <Text
+                            style={{alignSelf: 'center', backgroundColor: 'transparent', color: 'white'}}>Năm</Text>
                         <Picker
                             style={{height: 44, width: 73}}
                             itemStyle={{color: 'white', height: 44}}
@@ -228,7 +356,11 @@ export default class ChartScreen extends React.Component {
                             })}>
                             {yearItems}
                         </Picker>
-                        <Text style={{alignSelf: 'center', backgroundColor: 'transparent', color: 'white'}}>Theo</Text>
+                        <Text style={{
+                            alignSelf: 'center',
+                            backgroundColor: 'transparent',
+                            color: 'white'
+                        }}>Theo</Text>
                         <Picker
                             style={{height: 44, width: 110}}
                             itemStyle={{color: 'white', height: 44}}
@@ -238,7 +370,14 @@ export default class ChartScreen extends React.Component {
                             <Picker.Item label="Sản lượng" value="DonHang"/>
                         </Picker>
                     </View>
-                    {this.getChartorNull(options)}
+                    <Picker
+                        style={{height: 44, width: 160}}
+                        itemStyle={{color: 'white', height: 44}}
+                        selectedValue={this.state.numberTypePick}
+                        onValueChange={(itemValue) => this.setState({numberTypePick: itemValue})}>
+                        {type}
+                    </Picker>
+                    {this.getChartorFlatListorNull(options)}
 
                 </View>
             </View>
@@ -301,49 +440,51 @@ export default class ChartScreen extends React.Component {
         )
     }
 }
-const styles = StyleSheet.create({
-    indicator: {
-        alignSelf: 'center',
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: 80
-    },
-    titleStyle: {
-        marginTop: Platform.OS === 'ios' ? 16 : 0,
-        flex: 1,
-        elevation: 15,
-        justifyContent: 'space-between',
-        flexDirection: 'row',
-        backgroundColor: 'transparent'
-    },
-    headerStyle: {
-        elevation: 15, height: this.height / 7
-    },
-    itemSideMenuStyle: {
-        borderBottomWidth: 1,
-        borderBottomColor: 'white',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        margin: 8,
-        paddingBottom: 8
-    }, iconStyle: {
-        alignSelf: 'center',
-        width: 24,
-        height: 24,
-        backgroundColor: "transparent",
-        marginLeft: 8,
-    },
-    textStyle: {
-        fontSize: 18,
-        color: 'white',
-        backgroundColor: 'transparent'
-    },
-    titleIconsMenu: {
-        textAlign: 'center',
-        color: 'white',
-        fontSize: 16,
-        backgroundColor: 'transparent',
-        fontFamily: 'Al Nile'
-    }
-})
+
+const
+    styles = StyleSheet.create({
+        indicator: {
+            alignSelf: 'center',
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: 80
+        },
+        titleStyle: {
+            marginTop: Platform.OS === 'ios' ? 16 : 0,
+            flex: 1,
+            elevation: 15,
+            justifyContent: 'space-between',
+            flexDirection: 'row',
+            backgroundColor: 'transparent'
+        },
+        headerStyle: {
+            elevation: 15, height: this.height / 7
+        },
+        itemSideMenuStyle: {
+            borderBottomWidth: 1,
+            borderBottomColor: 'white',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            margin: 8,
+            paddingBottom: 8
+        }, iconStyle: {
+            alignSelf: 'center',
+            width: 24,
+            height: 24,
+            backgroundColor: "transparent",
+            marginLeft: 8,
+        },
+        textStyle: {
+            fontSize: 18,
+            color: 'white',
+            backgroundColor: 'transparent'
+        },
+        titleIconsMenu: {
+            textAlign: 'center',
+            color: 'white',
+            fontSize: 16,
+            backgroundColor: 'transparent',
+            fontFamily: 'Al Nile'
+        }
+    })
