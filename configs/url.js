@@ -35,6 +35,7 @@ export default class URlConfig {
         return data.urlserver + '/AppBieuDoDoanhThuNhanVien.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idct=' + data.idcongty + '&tungay=' + from + '&denngay=' + to;
     }
 
+
     static getOnlineChartLink(date) {
         // return 'http://jav.ksmart.vn/AppBieuOnlineTrongNgay.aspx?idct=1&idquanly=47&ngay=26-07-2017'
         let data = URlConfig.OBJLOGIN;
@@ -56,8 +57,12 @@ export default class URlConfig {
         let data = URlConfig.OBJLOGIN;
         return data.urlserver + '/AppBaoCaoTrangChu.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&macongty=' + data.idct;
     }
-    static getListNhanVienLink(){
+
+    static getListNhanVienLink(id = '') {
         let data = URlConfig.OBJLOGIN;
+        if (id !== '') {
+            return data.urlserver + '/AppDanhSachNhanVien.aspx?token=' + '&idquanly=' + data.id + '&macongty=' + data.idct + '&idnhom=' + id;
+        }
         return data.urlserver + '/AppDanhSachNhanVien.aspx?token=' + '&idquanly=' + data.id + '&macongty=' + data.idct;
     }
 
