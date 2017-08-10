@@ -208,6 +208,7 @@ export default class ListNhanVienScreen extends React.Component {
                                             style={{
                                                 fontSize: 18, backgroundColor: 'transparent'
                                             }}>{item.tennhanvien}</Text>
+                                        <Text>{item.tendangnhap}</Text>
                                         {this.isOnline(item.dangtructuyen)}
                                     </View>
                                     <TouchableOpacity onPress={() => {

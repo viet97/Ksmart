@@ -28,6 +28,7 @@ import orderListData from '../dbcontext/orderListData'
 import AtoZListView from 'react-native-atoz-listview';
 import Search from 'react-native-search-box';
 import ultils from "../configs/ultils";
+
 var {height, width} = Dimensions.get('window');
 var GiftedListView = require('react-native-gifted-listview');
 
@@ -258,7 +259,10 @@ export default class OrderListScreen extends Component {
                     </TouchableOpacity>
                     <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Tin
                         nhắn</Text>
-                    <View style={{backgroundColor: 'transparent', width: 35, height: 35}}/>
+                    <TouchableOpacity style={{backgroundColor: 'transparent', alignSelf: 'center'}}>
+                        <Icon2 style={{backgroundColor: 'transparent', alignSelf: 'center'}} size={24} color="white"
+                               name="plus"/>
+                    </TouchableOpacity>
                 </View>
                 <TouchableOpacity onPress={() => this.props.backToHome()}
                                   style={{

@@ -4,7 +4,7 @@
 
 import React, {Component} from 'react';
 import {
-    View, Dimensions, Text, Picker, StyleSheet, TouchableOpacity, Image, Platform
+    View, Dimensions, Text, Picker, StyleSheet, TouchableOpacity, Image, Platform, FlatList
 } from "react-native";
 import Icon1 from 'react-native-vector-icons/Ionicons'
 import Bar from "react-native-pathjs-charts/src/Bar";
@@ -13,11 +13,15 @@ import StockLine from "react-native-pathjs-charts/src/StockLine";
 import DatePicker from "react-native-datepicker";
 import URlConfig from "../configs/url";
 import Color from "../configs/color";
-import Toast from'react-native-simple-toast'
+import Toast from 'react-native-simple-toast'
+import ultils from "../configs/ultils";
+
+let {height, width} = Dimensions.get('window');
 export default class OnlineChartScreen extends React.Component {
     static navigationOptions = {
         header: null
     };
+
     constructor(props) {
         super(props);
         var today = new Date();
@@ -34,12 +38,32 @@ export default class OnlineChartScreen extends React.Component {
         today = dd + '-' + mm + '-' + yyyy;
         var now = new Date();
         this.state = {
+            refreshing: false,
             date: today,
             isEmpty: true,
             data: [],
             arr: [],
-            keyChart: 'sonhanvien'
+            keyChart: 'sonhanvien',
+            type: [],
+            numberTypePick: 0,
+            dataRender: null,
         }
+        this.state.type.push('Dạng chữ')
+        this.state.type.push('Biểu đồ')
+    }
+
+    refreshData() {
+        this.setState({dataRender: null})
+
+
+        fetch(URlConfig.getOnlineChartLink(this.state.date))
+            .then((response) => (response.json()))
+            .then((responseJson) => {
+                if (responseJson.data !== null)
+                    this.setState({
+                        dataRender: responseJson.data
+                    })
+            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
     }
 
     componentDidMount() {
@@ -51,15 +75,18 @@ export default class OnlineChartScreen extends React.Component {
         fetch(URlConfig.getOnlineChartLink(this.state.date))
             .then((response) => (response.json()))
             .then((responseJson) => {
-                    console.log(responseJson.data)
-                let res = responseJson.data;
-                let dt = []
+                if (responseJson.data !== null) {
+                    this.setState({
+                        dataRender: responseJson.data
+                    })
+                    let res = responseJson.data;
+                    let dt = []
 
-                for (let item of res) {
-                    let arr = []
+                    for (let item of res) {
+                        let arr = []
 
 
-                    let time = item['gio'];
+                        let time = item['gio'];
                         item['name'] = time
 
                         arr.push(item)
@@ -67,8 +94,8 @@ export default class OnlineChartScreen extends React.Component {
                         // date = item['thoigian'].split('/')[0];
                         // item['name'] = date
                     }
-                let dem = 0;
-                for (let item in res) {
+                    let dem = 0;
+                    for (let item in res) {
                         if (res[item].sonhanvien !== 0) {
                             dem = dem + 1;
                             break;
@@ -83,12 +110,83 @@ export default class OnlineChartScreen extends React.Component {
                     }
                     else this.setState({isEmpty: true})
                 }
+                }
             ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
     }
 
-    getChartorNull(options) {
+    renderItem(item) {
+        return (
+            <View style={{
+                marginTop: 4, marginBottom: 4, marginLeft: 8, marginRight: 8,
+                borderTopColor: '#227878'
+            }}><Image source={require('../images/bg1.png')}
+                      style={{
+                          width: width - 8,
+                          height: height / 8.5
+                      }}>
+                <View style={{
+                    justifyContent: 'space-between',
+                    flexDirection: 'row',
+                    marginLeft: 8,
+                    marginTop: 8,
+                    marginRight: 8,
+                    marginBottom: 4
+                }}>
+                    <View style={{flexDirection: 'row'}}>
+                        <Text style={{alignSelf: 'center', backgroundColor: 'transparent'}}>giờ: </Text>
+                        <Text style={{
+                            marginLeft: 8,
+                            backgroundColor: 'transparent'
+                        }}>{item.gio}</Text>
+                    </View>
+                </View>
 
+                <View style={{
+                    flexDirection: 'row',
+                    marginLeft: 8,
+                    marginTop: 4,
+                    marginRight: 8,
+                    marginBottom: 4
+                }}>
+                    <Text style={{backgroundColor: 'transparent'}}>Số nhân viên online: </Text>
+                    <Text style={{
+                        marginLeft: 8,
+                        backgroundColor: 'transparent'
+                    }}>{item.sonhanvien}</Text>
+                </View>
+
+            </Image>
+            </View>
+        )
+    }
+
+    getChartorFlatListorNull(options) {
         if (!this.state.isEmpty) {
+            if (this.state.numberTypePick === 0)
+                return (
+                    <View style={{flex: 9}}>
+                        <FlatList
+                            refreshing={this.state.refreshing}
+                            onRefresh={() => {
+                                this.refreshData()
+                            }}
+                            ref="listview"
+                            extraData={this.state.dataRender}
+                            data={this.state.dataRender}
+                            renderItem={({item}) => {
+                                return this.renderItem(item)
+                            }
+                            }
+                        />
+                    </View>
+                )
+            else return (
+                <View>
+                    <Bar data={this.state.data} options={options} accessorKey={this.state.keyChart}/>
+                    {this.getTitleChart()}
+                </View>
+            )
+
             return (
                 <View>
                     <Bar data={this.state.data} options={options} accessorKey={this.state.keyChart}/>
@@ -109,6 +207,9 @@ export default class OnlineChartScreen extends React.Component {
     }
 
     render() {
+        let type = this.state.type.map((s, i) => {
+            return <Picker.Item key={i} value={i} label={s + ''}/>
+        });
         var {height, width} = Dimensions.get('window');
         let options = {
             width: width - 40,
@@ -209,7 +310,14 @@ export default class OnlineChartScreen extends React.Component {
                             }}
                         />
                     </View>
-                    {this.getChartorNull(options)}
+                    <Picker
+                        style={{height: 44, width: 160}}
+                        itemStyle={{color: 'white', height: 44}}
+                        selectedValue={this.state.numberTypePick}
+                        onValueChange={(itemValue) => this.setState({numberTypePick: itemValue})}>
+                        {type}
+                    </Picker>
+                    {this.getChartorFlatListorNull(options)}
 
                 </View>
             </View>

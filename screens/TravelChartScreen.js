@@ -4,7 +4,7 @@
 
 import React, {Component} from 'react';
 import {
-    View, Dimensions, Text, Picker, StyleSheet, TouchableOpacity, Image, Platform
+    View, Dimensions, Text, Picker, StyleSheet, TouchableOpacity, Image, Platform, FlatList
 } from "react-native";
 import Icon1 from 'react-native-vector-icons/Ionicons'
 import Bar from "react-native-pathjs-charts/src/Bar";
@@ -14,6 +14,8 @@ import DatePicker from "react-native-datepicker";
 import URlConfig from "../configs/url";
 import Color from "../configs/color";
 import Toast from 'react-native-simple-toast'
+import ultils from "../configs/ultils";
+
 var {height, width} = Dimensions.get('window');
 export default class TravelChartScreen extends React.Component {
     static navigationOptions = {
@@ -36,24 +38,44 @@ export default class TravelChartScreen extends React.Component {
         today = dd + '-' + mm + '-' + yyyy;
         var now = new Date();
         this.state = {
+            refreshing: false,
             dateFrom: today,
             dateTo: today,
             isEmpty: true,
             data: [],
             arr: [],
-            keyChart: 'TongKhachHangViengTham'
+            keyChart: 'TongKhachHangViengTham',
+            type: [],
+            numberTypePick: 0,
+            dataRender: null,
         }
+        this.state.type.push('Dạng chữ')
+        this.state.type.push('Biểu đồ')
     }
 
     componentDidMount() {
         this.getDataChart();
     }
 
+    refreshData() {
+        this.setState({dataRender: null})
+
+        fetch(URlConfig.getTravelChartLink(this.state.dateFrom, this.state.dateTo))
+            .then((response) => (response.json()))
+            .then((responseJson) => {
+                if (responseJson.data !== null)
+                    this.setState({
+                        dataRender: responseJson.data
+                    })
+            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+    }
 
     getDataChart() {
         fetch(URlConfig.getTravelChartLink(this.state.dateFrom, this.state.dateTo))
             .then((response) => (response.json()))
             .then((responseJson) => {
+                if (responseJson.data !== null) {
+                    this.setState({dataRender: responseJson.data})
                     console.log(responseJson.data)
                     var res = responseJson.data;
                     var dt = []
@@ -83,22 +105,87 @@ export default class TravelChartScreen extends React.Component {
                         })
                     }
                     else this.setState({isEmpty: true})
-                console.log('dt', dt)
+                    console.log('dt', dt)
                 }
-            ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+                }
+            ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e))
     }
 
-    getChartorNull(options) {
+    renderItem(item) {
+        return (
+            <View style={{
+                marginTop: 4, marginBottom: 4, marginLeft: 8, marginRight: 8,
+                borderTopColor: '#227878'
+            }}><Image source={require('../images/bg1.png')}
+                      style={{
+                          width: width - 8,
+                          height: height / 8.5
+                      }}>
+                <View style={{
+                    justifyContent: 'space-between',
+                    flexDirection: 'row',
+                    marginLeft: 8,
+                    marginTop: 8,
+                    marginRight: 8,
+                    marginBottom: 4
+                }}>
+                    <View style={{flexDirection: 'row'}}>
+                        <Text style={{alignSelf: 'center', backgroundColor: 'transparent'}}>Tên nhân viên: </Text>
+                        <Text style={{
+                            marginLeft: 8,
+                            backgroundColor: 'transparent'
+                        }}>{item.tennhanvien}</Text>
+                    </View>
+                </View>
+
+                <View style={{
+                    flexDirection: 'row',
+                    marginLeft: 8,
+                    marginTop: 4,
+                    marginRight: 8,
+                    marginBottom: 4
+                }}>
+                    <Text style={{backgroundColor: 'transparent'}}>Số khách hàng viếng thăm: </Text>
+                    <Text style={{
+                        marginLeft: 8,
+                        backgroundColor: 'transparent'
+                    }}>{item.TongKhachHangViengTham}</Text>
+                </View>
+
+            </Image>
+            </View>
+        )
+    }
+
+    getChartorFlatListorNull(options) {
 
         if (!this.state.isEmpty) {
-            return (
-                <View>
-                    <Bar data={this.state.data} options={options} accessorKey={this.state.keyChart}/>
-                    {this.getTitleChart()}
-                </View>
-            )
-        }
-        return (
+            if (this.state.numberTypePick === 0)
+                return (
+                    <View style={{flex: 9}}>
+                        <FlatList
+                            refreshing={this.state.refreshing}
+                            onRefresh={() => {
+                                this.refreshData()
+                            }}
+                            ref="listview"
+                            extraData={this.state.dataRender}
+                            data={this.state.dataRender}
+                            renderItem={({item}) => {
+                                return this.renderItem(item)
+                            }
+                            }
+                        />
+                    </View>
+                )
+            else
+                return (
+                    <View>
+                        <Bar data={this.state.data} options={options} accessorKey={this.state.keyChart}/>
+                        {this.getTitleChart()}
+                    </View>
+                )
+        } else return (
             <Text style={{alignSelf: 'center', textAlign: 'center', fontSize: 20, backgroundColor: 'transparent'}}>Không
                 có dữ liệu</Text>)
 
@@ -159,6 +246,9 @@ export default class TravelChartScreen extends React.Component {
                 }
             }
         }
+        let type = this.state.type.map((s, i) => {
+            return <Picker.Item key={i} value={i} label={s + ''}/>
+        });
         return (
             <View style={{flex: 1}}>
                 <Image source={require('../images/bg.png')}
@@ -235,7 +325,14 @@ export default class TravelChartScreen extends React.Component {
                             }}
                         />
                     </View>
-                    {this.getChartorNull(options)}
+                    <Picker
+                        style={{height: 44, width: 160}}
+                        itemStyle={{color: 'white', height: 44}}
+                        selectedValue={this.state.numberTypePick}
+                        onValueChange={(itemValue) => this.setState({numberTypePick: itemValue})}>
+                        {type}
+                    </Picker>
+                    {this.getChartorFlatListorNull(options)}
 
                 </View>
             </View>

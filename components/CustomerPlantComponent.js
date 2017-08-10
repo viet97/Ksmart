@@ -22,7 +22,9 @@ import URlConfig from "../configs/url";
 import Search from "react-native-search-box";
 import CheckBox from 'react-native-checkbox'
 var {width} = Dimensions.get('window').width;
+
 export default class CustomerPlantComponent extends Component {
+
     constructor(props) {
         super(props)
         this.state = {
@@ -36,7 +38,6 @@ export default class CustomerPlantComponent extends Component {
 
     render() {
         var item = this.props.item;
-
         return (
 
             <View style={{
@@ -70,7 +71,11 @@ export default class CustomerPlantComponent extends Component {
                             underlayColor="transparent"
                             label=''
                             checked={this.state.checkOfCheckBox}
-                            onChange={(checked) => this.chooseCustomer(item)}
+                            onChange={(checked) => {
+                                this.setState({checkOfCheckBox: !this.state.checkOfCheckBox}, function () {
+                                    this.chooseCustomer(item)
+                                })
+                            }}
                         />
                     </View>
                 </View>
@@ -169,7 +174,6 @@ export default class CustomerPlantComponent extends Component {
                 }}>
                     <Text style={{marginLeft: 8, alignSelf: 'center'}}>Ghi chú: </Text>
                     <TextInput
-                        editable={!this.state.checkOfCheckBox}
                         style={{
                             height: 40,
                             flex: 1,
@@ -180,7 +184,9 @@ export default class CustomerPlantComponent extends Component {
                             marginLeft: 32
                         }}
                         onChangeText={(text) => {
-                            this.setState({ghichu: text})
+                            this.setState({ghichu: text}, function () {
+                                this.chooseCustomer(item)
+                            })
 
                         }}
 
@@ -197,7 +203,6 @@ export default class CustomerPlantComponent extends Component {
                     <Text style={{marginLeft: 8, alignSelf: 'center'}}>Việc cần làm: </Text>
 
                     <TextInput
-                        editable={!this.state.checkOfCheckBox}
                         style={{
                             height: 40,
                             flex: 1,
@@ -207,9 +212,9 @@ export default class CustomerPlantComponent extends Component {
                             paddingLeft: 8
                         }}
                         onChangeText={(text) => {
-                            if (!this.state.checkOfCheckBox)
-                                this.setState({vieccanlam: text})
-                            else   Toast.show('Vui lòng bỏ chọn trước khi chỉnh sửa')
+                            this.setState({vieccanlam: text}, function () {
+                                this.chooseCustomer(item)
+                            })
                         }}
                         value={this.state.vieccanlam}
                     />
@@ -233,8 +238,11 @@ export default class CustomerPlantComponent extends Component {
     }
 
     compareTime(time1, time2) {
+
         let timeArr1 = time1.split(":")
         let timeArr2 = time2.split(":")
+        console.log(timeArr1)
+        console.log(timeArr2)
         if (timeArr1[0] > timeArr2[0]) return false
         if (timeArr1[0] === timeArr2[0]) {
             if (timeArr1[1] > timeArr2[1]) return false
@@ -242,27 +250,27 @@ export default class CustomerPlantComponent extends Component {
         return true
     }
     chooseCustomer(item) {
-        this.setState({checkOfCheckBox: !this.state.checkOfCheckBox}, function () {
-            var timeOut = this.state.timeOut + ':00'
+
+        var timeOut = this.state.timeOut + ':00'
             var timeCome = this.state.timeCome + ':00'
             var data = {
                 idkhachhang: item.idcuahang, idnhanvien: this.props.idnhanvien, idkehoach: 0, giovaodukien: timeCome,
                 gioradukien: timeOut, ghichu: this.state.ghichu, vieccanlam: this.state.vieccanlam
             }
             this.props.choseCustomer(data, this.state.checkOfCheckBox)
-        })
 
     }
 
     onDateChange(from, to) {
-        Toast.show(from)
-        if (this.compareTime(from, to) || this.state.timeOut === '00:00') {
-            if (!this.state.checkOfCheckBox)
+        var item = this.props.item;
+        console.log(this.compareTime(from, to))
+        if (this.compareTime(from, to) === true || this.state.timeOut === '00:00') {
                 this.setState({
                     timeOut: to,
                     timeCome: from
+                }, function () {
+                    this.chooseCustomer(item)
                 })
-            else   Toast.show('Vui lòng bỏ chọn trước khi chỉnh sửa')
 
         } else Toast.show('giờ ra điểm nhỏ hơn giờ vào điểm')
     }
