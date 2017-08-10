@@ -191,6 +191,13 @@ export default class TravelChartScreen extends React.Component {
 
     }
 
+    getTitle() {
+        let title
+        if (this.state.numberTypePick === 0)
+            title = 'Tần suất nhân viên viếng thăm'
+        else title = 'Biểu đồ tần suất nhân viên viếng thăm'
+        return title
+    }
     getTitleChart() {
         var b = this.state.keyChart
         title = 'Biểu đồ tần suất nhân viên viếng thăm từ ngày ' + this.state.dateFrom + ' đến ngày ' + this.state.dateTo
@@ -260,8 +267,7 @@ export default class TravelChartScreen extends React.Component {
                                       style={styles.iconStyle}>
                         <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
                     </TouchableOpacity>
-                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Biểu đồ tần suất nhân viên viếng
-                        thăm </Text>
+                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>{this.getTitle()} </Text>
                     <TouchableOpacity style={{alignSelf: 'center'}} onPress={() => {
                         this.showDialog();
                     }}>

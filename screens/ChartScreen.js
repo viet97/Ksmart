@@ -238,6 +238,13 @@ export default class ChartScreen extends React.Component {
         return (<Text style={{margin: 8, textAlign: 'center', backgroundColor: 'transparent'}}>{title}</Text>)
     }
 
+    getTitle() {
+        let title
+        if (this.state.numberTypePick === 0)
+            title = 'Doanh Thu'
+        else title = 'Biểu đồ doanh thu'
+        return title
+    }
     render() {
         let {height, width} = Dimensions.get('window');
         let options = {
@@ -305,7 +312,7 @@ export default class ChartScreen extends React.Component {
                                       style={styles.iconStyle}>
                         <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
                     </TouchableOpacity>
-                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Biểu đồ doanh thu</Text>
+                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>{this.getTitle()}</Text>
                     <TouchableOpacity style={{alignSelf: 'center'}} onPress={() => {
                         this.showDialog();
                     }}>

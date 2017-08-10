@@ -109,6 +109,13 @@ export default class RevenuePerPersonnelScreen extends React.Component {
             )
     }
 
+    getTitle() {
+        let title
+        if (this.state.numberTypePick === 0)
+            title = 'Doanh thu sản lượng \n theo nhân viên'
+        else title = 'Biểu đồ doanh thu sản lượng \n theo nhân viên'
+        return title
+    }
     renderItem(item) {
         return (
             <View style={{
@@ -278,7 +285,7 @@ export default class RevenuePerPersonnelScreen extends React.Component {
                         alignSelf: 'center',
                         textAlign: 'center',
                         backgroundColor: 'transparent',
-                    }}>{'Biểu đồ doanh thu sản lượng \n theo nhân viên'}</Text>
+                    }}>{this.getTitle()}</Text>
                     <TouchableOpacity style={{alignSelf: 'center'}} onPress={() => {
                         this.showDialog();
                     }}>

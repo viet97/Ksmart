@@ -114,6 +114,13 @@ export default class OnlineChartScreen extends React.Component {
             ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
     }
 
+    getTitle() {
+        let title
+        if (this.state.numberTypePick === 0)
+            title = 'Nhân viên online'
+        else title = 'Biểu đồ nhân viên online'
+        return title
+    }
     renderItem(item) {
         return (
             <View style={{
@@ -267,8 +274,12 @@ export default class OnlineChartScreen extends React.Component {
                                       style={styles.iconStyle}>
                         <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
                     </TouchableOpacity>
-                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Biểu
-                        đồ nhân viên online </Text>
+                    <Text style={{
+                        fontSize: 20,
+                        color: 'white',
+                        alignSelf: 'center',
+                        backgroundColor: 'transparent'
+                    }}>{this.getTitle()} </Text>
                     <TouchableOpacity style={{alignSelf: 'center'}} onPress={() => {
                         this.showDialog();
                     }}>
