@@ -496,7 +496,7 @@ export default class HomeScreen extends React.Component {
                                                   this.closeControlPanel()
                                               }}>
                                 <Icon2 size={24} style={styles.iconStyle} color="white" name="laptop"/>
-                                <Text style={styles.textStyle}>Báo cáo online</Text>
+                                <Text style={styles.textStyle}>online</Text>
                                 <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
                             </TouchableOpacity>
                         </View>
