@@ -13,10 +13,12 @@ import {
     ActivityIndicator,
     Platform
 } from "react-native";
+
+import Modal from 'react-native-modalbox';
 import URlConfig from "../configs/url";
 import Color from '../configs/color'
 import Icon1 from 'react-native-vector-icons/Ionicons'
-import Icon from 'react-native-vector-icons/MaterialIcons'
+import {Icon} from "react-native-elements";
 import Icon2 from 'react-native-vector-icons/Entypo'
 import Image from 'react-native-image-progress';
 import Toast from 'react-native-simple-toast'
@@ -259,9 +261,12 @@ export default class OrderListScreen extends Component {
                     </TouchableOpacity>
                     <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Tin
                         nhắn</Text>
-                    <TouchableOpacity style={{backgroundColor: 'transparent', alignSelf: 'center'}}>
+                    <TouchableOpacity style={{backgroundColor: 'transparent', alignSelf: 'center', marginRight: 8}}
+                                      onPress={() => {
+                                          this.refs.modal.open()
+                                      }}>
                         <Icon2 style={{backgroundColor: 'transparent', alignSelf: 'center'}} size={24} color="white"
-                               name="plus"/>
+                               name="new-message"/>
                     </TouchableOpacity>
                 </View>
                 <TouchableOpacity onPress={() => this.props.backToHome()}
@@ -321,6 +326,24 @@ export default class OrderListScreen extends Component {
                     />
                 </View>
                 {this.flatListorIndicator()}
+
+                <Modal
+                    style={[styles.modal, styles.modal1]}
+                    ref={"modal"}
+                    swipeToClose={true}
+                    onClosingState={this.onClosingState}>
+                    <View style={{alignItems: 'flex-end', position: 'absolute', right: 8, top: 0}}>
+                        <TouchableOpacity onPress={() => {
+                            this.refs.modal.close()
+                        }}>
+                            <Icon style={{paddingVertical: 8}} name="x" size={24} color="#EC433E" type="foundation"/>
+
+                        </TouchableOpacity>
+                    </View>
+                    <View style={{justifyContent: 'center', alignItems: 'center', flexDirection: 'row'}}>
+                        <Text>dmdmmd</Text>
+                    </View>
+                </Modal>
             </View>
 
         )
@@ -382,5 +405,12 @@ const styles = StyleSheet.create({
         fontSize: 16,
         backgroundColor: 'transparent',
         fontFamily: 'Al Nile'
-    }
+    },
+    modal: {
+        flexDirection: 'column',
+        paddingHorizontal: 8,
+        marginTop: 32,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
 })

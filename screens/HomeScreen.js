@@ -359,18 +359,19 @@ export default class HomeScreen extends React.Component {
                                 <TouchableOpacity
                                     style={{alignSelf: 'center', width: 90}}
                                     onPress={() => this.setState({screenName: "Message"})}>
-                                    <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
-                                           source={require('../images/webmail-2012.png')}
-                                    />
-                                    {() => {
-                                        if (URlConfig.OBJLOGIN.messageUnread !== null && URlConfig.OBJLOGIN.messageUnread !== undefined && URlConfig.OBJLOGIN.messageUnread > 0) {
-                                            return (
-                                                <Badge textStyle={{color: '#fff',}}
-                                                       style={{position: 'absolute', top: 0, right: 8}}>
-                                                    {URlConfig.OBJLOGIN.messageUnread}
-                                                </Badge>)
-                                        }
+                                    <Image style={{
+                                        width: 60,
+                                        height: 60,
+                                        borderRadius: 10,
+                                        alignSelf: 'center',
+                                        justifyContent: 'flex-end',
+                                        flexDirection: 'row'
                                     }}
+                                           source={require('../images/webmail-2012.png')}
+                                    >
+                                        {this.renderBagde()}
+                                    </Image>
+
                                     <Animatable.Text animation="slideInRight" style={styles.titleIconsMenu}>Tin
                                         nhắn</Animatable.Text>
 
@@ -391,6 +392,7 @@ export default class HomeScreen extends React.Component {
                 duration: 10000,              // Make it take a while
             }
         ).start();
+        console.log('login', URlConfig.OBJLOGIN)
 
     }
 
@@ -507,15 +509,7 @@ export default class HomeScreen extends React.Component {
                                 <Icon2 size={24} style={styles.iconStyle} color="white" name="mail"/>
                                 <View style={{flexDirection: 'row', backgroundColor: 'transparent'}}>
                                     <Text style={styles.textStyle}>Tin nhắn</Text>
-                                    {() => {
-                                        if (URlConfig.OBJLOGIN.messageUnread !== null && URlConfig.OBJLOGIN.messageUnread !== undefined && URlConfig.OBJLOGIN.messageUnread > 0) {
-                                            return (
-                                                <Badge textStyle={{color: '#fff',}}
-                                                       style={{marginLeft: 8, backgroundColor: 'red'}}>
-                                                    {URlConfig.OBJLOGIN.messageUnread}
-                                                </Badge>)
-                                        }
-                                    }}
+                                    {this.renderBagde()}
                                 </View>
                                 <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
                             </TouchableOpacity>
@@ -549,6 +543,29 @@ export default class HomeScreen extends React.Component {
             </View>
 
         )
+    }
+
+    renderBagde() {
+
+        if (URlConfig.OBJLOGIN.messageUnread > 0) {
+            console.log('vao day rrrrr')
+            return (
+                <Badge textStyle={{
+                    color: '#fff',
+                    position: 'absolute',
+                    top: 0,
+                    right: 8,
+                    alignSelf: 'center',
+                    textAlign: 'center'
+                }}
+                       style={{paddingLeft: 4, marginLeft: 8, alignItems: 'center'}}>
+                    {URlConfig.OBJLOGIN.messageUnread}
+                </Badge>)
+        } else {
+            console.log('vao else')
+        }
+
+
     }
 
     logout() {

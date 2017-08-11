@@ -21,7 +21,7 @@ export default class URlConfig {
     static getLoginRouter(username, password, idct) {
         let DeviceInfo = require('react-native-device-info');
         let os = Platform.OS === 'ios' ? 1 : 2;
-        return URlConfig.BASE_URL_APP + '/AppDangNhapQT.aspx?token=' + md5.hex_md5(Date.now()) + '&trangthaigps=1&congty='
+        return URlConfig.BASE_URL_APP + '/AppDangNhapQT_v2.aspx?token=' + md5.hex_md5(Date.now()) + '&trangthaigps=1&congty='
 
             + idct + '&taikhoan=' + username + '&matkhau=' + md5.hex_md5(password) + '&kinhdo=0&vido=0'
             + '&isFakeGPS=1&device=' + DeviceInfo.getSystemName() + '&idpush=' + DeviceInfo.getUniqueID() + '&os=' + os

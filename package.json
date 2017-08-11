@@ -31,6 +31,7 @@
     "react-native-maps": "^0.15.3",
     "react-native-md5": "^1.0.0",
     "react-native-modal-dropdown": "^0.4.4",
+    "react-native-modalbox": "^1.4.2",
     "react-native-pathjs-charts": "0.0.29",
     "react-native-popup-dialog": "^0.9.29",
     "react-native-progress": "^3.3.0",
