@@ -47,9 +47,10 @@ export default class URlConfig {
         let data = URlConfig.OBJLOGIN;
         return data.urlserver + '/AppBieuDoTanSuatViengThamNhanVien.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idct=' + data.idcongty + '&tungay=' + dateFrom + '&denngay=' + dateTo;
     }
-    static getNewFeedLink() {
+
+    static getNewFeedLink(page, keyWord) {
         let data = URlConfig.OBJLOGIN;
-        return data.urlserver + '/AppNewFeed.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&macongty=' + data.idct;
+        return data.urlserver + '/AppNewFeed_v2.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&macongty=' + data.idct + '&page=' + page + '&timkiem=' + keyWord;
     }
 
     static getLinkOnlinePerson() {

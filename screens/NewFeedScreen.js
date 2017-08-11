@@ -20,8 +20,8 @@ import URlConfig from "../configs/url";
 import Toast from 'react-native-simple-toast'
 var SEARCH_STRING = '';
 var {width, height} = Dimensions.get('window');
-var NUMBER_ROW_RENDER = 10
 var ALL_LOADED = false
+let PAGE = 1
 export default class NewFeedScreen extends React.Component {
 
 
@@ -33,15 +33,59 @@ export default class NewFeedScreen extends React.Component {
             dataFull: [],
             dataRender: null,
             onEndReach: true,
-            waiting: false,
-            myText: 'I\'m ready to get swiped!',
-            gestureName: 'none',
+            isEndList: false,
         })
     }
 
+    getDataFromSv() {
+        ALL_LOADED = false
+        this.setState({isEndList: false})
+        this.setState({dataRender: null})
+        PAGE = 1
+        let url = URlConfig.getNewFeedLink(PAGE, SEARCH_STRING)
+        fetch(url)
+            .then((response) => (response.json()))
+            .then((responseJson) => {
+                if (responseJson.status)
+                    this.setState({
+                        dataFull: responseJson.data,
+                        isEndList: responseJson.endlist,
+                        dataRender: responseJson.data
+                    }, function () {
+                        if (this.state.isEndList) {
+                            ALL_LOADED = true
+                            this.forceUpdate()
+                        }
+                    })
+            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+    }
 
-    getImage(url) {
-        if (url.length === 0) {
+    loadMoreDataFromSv() {
+        PAGE = PAGE + 1
+        let url = URlConfig.getNewFeedLink(PAGE, SEARCH_STRING)
+        console.log(url)
+        fetch(url)
+            .then((response) => (response.json()))
+            .then((responseJson) => {
+                let arr = this.state.dataFull
+                arr = arr.concat(responseJson.data)
+                this.setState({
+                    dataFull: arr,
+                    isEndList: responseJson.endlist,
+                    dataRender: arr
+                }, function () {
+                    if (this.state.isEndList) {
+                        ALL_LOADED = true
+                        this.forceUpdate()
+                    }
+                })
+            })
+            .catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+    }
+
+    getImage(urlImage) {
+        console.log(urlImage)
+        if (urlImage === undefined || urlImage.length === 0) {
             return (
 
                 <Image
@@ -53,7 +97,7 @@ export default class NewFeedScreen extends React.Component {
             return (
                 <Image
                     style={{margin: 8, width: 60, height: 60, borderRadius: 30}}
-                    source={{uri: 'http://jav.ksmart.vn' + url}}
+                    source={{uri: 'http://jav.ksmart.vn' + urlImage}}
                     // indicator={ProgressBar.Pie}
                 />
             );
@@ -63,42 +107,17 @@ export default class NewFeedScreen extends React.Component {
     loadMoreData() {
         if (!this.state.onEndReach) {
             this.setState({onEndReach: true})
-            this.setState({
-                dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER + 10),
-                dataSearch: this.state.dataFull.slice(0, NUMBER_ROW_RENDER + 10)
-            })
-            NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
-            if (NUMBER_ROW_RENDER > this.state.dataFull.length - 10) ALL_LOADED = true
+            if (!this.state.isEndList) this.loadMoreDataFromSv()
         }
     }
 
     refreshData() {
-        this.setState({dataRender: null})
-        ALL_LOADED = false
-        NUMBER_ROW_RENDER = 10
-        fetch(URlConfig.getNewFeedLink())
-            .then((response) => (response.json()))
-            .then((responseJson) => {
-                    console.log(responseJson)
-                if (!responseJson.status) {
-                        this.setState({dataFull: responseJson.data}, function () {
-                            console.log(this.state.dataFull)
-                            if (NUMBER_ROW_RENDER > this.state.dataFull.length) ALL_LOADED = true
-                            else ALL_LOADED = false
-                            this.setState({
-                                dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER),
-                                dataSearch: this.state.dataFull.slice(0, NUMBER_ROW_RENDER)
-                            })
-                        })
-                    } else ALL_LOADED = true
-                NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
-                }
-            ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+        this.getDataFromSv()
     }
 
     renderFooter = () => {
-        console.log("Footer")
-        if (ALL_LOADED || this.state.isSearching) return null
+
+        if (ALL_LOADED) return null
         return (
             <View
                 style={{
@@ -121,7 +140,7 @@ export default class NewFeedScreen extends React.Component {
                         style={styles.indicator}
                         size="large"/>
                 </View>)
-        } else if (this.state.dataRender.length === 0)
+        } else if (this.state.dataFull.length === 0 && this.state.isEndList)
             return (    <View style={{flex: 9}}>
                 <Text style={{alignSelf: 'center', textAlign: 'center', fontSize: 20, backgroundColor: 'transparent'}}>Không
                     có dữ liệu</Text>
@@ -140,7 +159,6 @@ export default class NewFeedScreen extends React.Component {
                     ref="listview"
                     onEndReachedThreshold={0.2}
                     onEndReached={() => {
-                        if (SEARCH_STRING.length === 0)
                             this.loadMoreData()
                     }}
                     onMomentumScrollBegin={() => {
@@ -194,31 +212,17 @@ export default class NewFeedScreen extends React.Component {
             var arr = []
             var a = text.toLowerCase()
             SEARCH_STRING = a
-            console.log(a)
-            if (a.length === 0) this.setState({dataRender: this.state.dataSearch})
-            else
-                for (var item in this.state.dataSearch) {
-                    if (a !== SEARCH_STRING) return
-                    console.log(this.state.dataSearch[item])
-                    if (this.state.dataSearch[item].tennhanvien.toLowerCase().search(a) !== -1) {
-                        console.log(this.state.dataSearch[item])
-                        console.log(this.state.dataSearch[item])
-                        arr.push(this.state.dataSearch[item])
-                        console.log(arr)
-                    }
-                }
-
-            if (a.length !== 0) this.setState({dataRender: arr})
-            else this.setState({isSearching: false})
+            this.getDataFromSv()
+            if (SEARCH_STRING === 0)
+                this.setState({isSearching: false})
         });
     }
 
     onCancel() {
         return new Promise((resolve, reject) => {
             resolve();
-            console.log("onCancle")
             SEARCH_STRING = ''
-            this.setState({dataRender: this.state.dataSearch, isSearching: false})
+            this.setState({isSearching: false})
         });
     }
 
@@ -255,25 +259,7 @@ export default class NewFeedScreen extends React.Component {
     }
 
     componentDidMount() {
-        fetch(URlConfig.getNewFeedLink())
-            .then((response) => (response.json()))
-            .then((responseJson) => {
-                    console.log(responseJson)
-                if (!responseJson.status) {
-                        this.setState({dataFull: responseJson.data}, function () {
-                            console.log(this.state.dataFull)
-                            if (NUMBER_ROW_RENDER > this.state.dataFull.length) ALL_LOADED = true
-                            this.setState({
-                                dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER),
-                                dataSearch: this.state.dataFull.slice(0, NUMBER_ROW_RENDER)
-                            })
-
-                        })
-                }
-                else ALL_LOADED = true
-                NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
-                }
-            ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+        this.getDataFromSv()
 
     }
 

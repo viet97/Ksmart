@@ -326,7 +326,11 @@ export default class ListNhanVienScreen extends React.Component {
                                 alignSelf: 'center',
                                 backgroundColor: 'transparent'
                             }}>Danh sách nhân viên</Text>
-                            <View style={{width: 35, height: 35}}/>
+                            <TouchableOpacity style={{alignSelf: 'center'}}
+                                              onPress={() => showDialog()}
+                            >
+                                <Text style={{textAlign: 'center', alignSelf: 'center'}}>Bộ lọc</Text>
+                            </TouchableOpacity>
                         </View>
 
                         <TouchableOpacity onPress={() => this.props.backToHome()}
