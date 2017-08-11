@@ -17,6 +17,8 @@ import {ProgressDialog} from 'react-native-simple-dialogs';
 import DialogManager, {ScaleAnimation, DialogContent} from 'react-native-dialog-component';
 import ModalDropdown from "react-native-modal-dropdown";
 import URlConfig from "../configs/url";
+import {SearchBar} from 'react-native-elements';
+import Search from "react-native-search-box";
 
 export default class DialogCustom extends React.Component {
     constructor(props) {
@@ -27,7 +29,9 @@ export default class DialogCustom extends React.Component {
             listNameGroup: [],
             listNhanVien: [],
             listNameNhanVien: [],
-            nhanVienSelect: ''
+            nhanVienSelect: '',
+            typeChosse: ['Theo phòng ban', 'Tìm kiếm'],
+            idChoose: 0
         }
     }
 
@@ -46,14 +50,49 @@ export default class DialogCustom extends React.Component {
 
     }
 
-    render() {
+    renderSearch() {
+        return (
+            <DialogContent style={{flexDirection: 'column'}}>
+                <Search
+                    ref="search_box"
+                    placeholder="Tìm kiếm"
+                    cancelTitle="Huỷ bỏ"
+                    onChangeText={(text) => {
+                    }}
+                />
+                <View style={{
+                    position: 'absolute',
+                    bottom: 0,
+                    left: 16,
+                    right: 16,
+                    flexDirection: 'row',
+                    justifyContent: 'space-between'
+                }}>
+                    <TouchableOpacity onPress={() => {
+                        DialogManager.dismiss();
+                    }}>
+                        <Text>Huy bo</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => {
+                        DialogManager.dismiss(() => {
+                            this.props.callback(this.state.nhanVienSelect)
+                        });
+                    }}>
+                        <Text>Ap dung</Text>
+                    </TouchableOpacity>
+                </View>
+            </DialogContent>
+        )
+    }
+
+    renderPhongban() {
         return (
             <DialogContent style={{flexDirection: 'column'}}>
                 <View style={{flexDirection: 'column'}}>
                     <Text>Chọn phòng ban: </Text>
                     <ModalDropdown
                         options={this.state.listNameGroup}
-                        style={{borderWidth: 0.4, width: 200, padding: 8, borderRadius: 10}}
+                        style={{borderWidth: 0.4, width: 200, padding: 8, borderRadius: 10, alignItems: 'center'}}
                         defaultValue="- Chọn phòng ban- "
                         onSelect={(idx, value) => this._onSelect(idx, value)}
                         renderRow={this._renderRowGroup.bind(this)}
@@ -64,7 +103,7 @@ export default class DialogCustom extends React.Component {
                     <Text>Chọn nhân viên: </Text>
                     <ModalDropdown
                         options={this.state.listNameNhanVien}
-                        style={{borderWidth: 0.4, width: 200, padding: 8, borderRadius: 10}}
+                        style={{borderWidth: 0.4, width: 200, padding: 8, borderRadius: 10, alignItems: 'center'}}
                         defaultValue="- Chọn nhân viên- "
                         onSelect={(idx, value) => {
                             this.setState({nhanVienSelect: this.state.listNhanVien[idx]})
@@ -95,7 +134,62 @@ export default class DialogCustom extends React.Component {
                     </TouchableOpacity>
                 </View>
             </DialogContent>
-        );
+        )
+    }
+
+    renderSomething() {
+        console.log('rendersomething', this.state.idChoose)
+        if (this.state.idChoose === 0 || this.state.idChoose === '0') {
+            console.log('rendersomething', this.state.idChoose)
+            return this.renderPhongban();
+        } else {
+            return this.renderSearch()
+        }
+
+    }
+
+    render() {
+
+        return (
+            <View>
+                <View style={{marginLeft: 16, alignItems: 'center'}}>
+                    <Text>Chon loai tim kiem</Text>
+                    <ModalDropdown
+                        options={this.state.typeChosse}
+                        style={{borderWidth: 0.4, width: 200, padding: 8, borderRadius: 10, alignItems: 'center'}}
+                        defaultIndex={0}
+                        defaultValue={'Theo phong ban'}
+                        onSelect={(idx, value) => {
+                            this.setState({idChoose: idx}, function () {
+                            })
+
+                        }}
+                        renderRow={this._renderRowChooseSearch.bind(this)}
+
+                    />
+                </View>
+                {this.renderSomething()}
+            </View>
+        )
+    }
+
+    _renderRowChooseSearch(rowData, rowID, highlighted) {
+        let icon = highlighted ? require('../images/heart.png') : require('../images/flower.png');
+        let evenRow = rowID % 2;
+        return (
+            <TouchableHighlight underlayColor='cornflowerblue'>
+                <View style={[styles.dropdown_2_row, {backgroundColor: evenRow ? 'lemonchiffon' : 'white'}]}>
+                    <Image style={styles.dropdown_2_image}
+                           mode='stretch'
+                           source={icon}
+                    />
+                    <Text style={[styles.dropdown_2_row_text, highlighted && {color: 'mediumaquamarine'}]}>
+                        {rowData}
+                    </Text>
+                </View>
+            </TouchableHighlight>
+        )
+
     }
 
     _onSelect(id, value) {
