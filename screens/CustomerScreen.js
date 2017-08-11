@@ -287,7 +287,6 @@ export default class CustomerScreen extends Component {
                     marginLeft: 8,
                     marginTop: 8,
                     marginBottom: 4,
-                    marginTop: 4,
                     marginRight: 4
                 }}>
                     <Search

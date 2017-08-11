@@ -10,13 +10,15 @@ import {
     FlatList,
     Image,
     ActivityIndicator, Platform,
-    Picker, TouchableHighlight
+    Picker, TouchableHighlight, TextInput
 } from 'react-native';
 
 import {ProgressDialog} from 'react-native-simple-dialogs';
 import DialogManager, {ScaleAnimation, DialogContent} from 'react-native-dialog-component';
 import ModalDropdown from "react-native-modal-dropdown";
 import URlConfig from "../configs/url";
+import Search from "react-native-search-box";
+import Toast from "react-native-simple-toast";
 
 export default class DialogCustom extends React.Component {
     constructor(props) {
@@ -24,10 +26,12 @@ export default class DialogCustom extends React.Component {
         this.state = {
             progressVisible: false,
             listGroup: [],
+            positionGroupChoose: -1,
             listNameGroup: [],
             listNhanVien: [],
             listNameNhanVien: [],
-            nhanVienSelect: ''
+            nhanVienSelect: '',
+            textSearch: ''
         }
     }
 
@@ -48,7 +52,7 @@ export default class DialogCustom extends React.Component {
 
     render() {
         return (
-            <DialogContent style={{flexDirection: 'column'}}>
+            <View style={{flexDirection: 'column', marginTop: 48, flex: 1}}>
                 <View style={{flexDirection: 'column'}}>
                     <Text>Chọn phòng ban: </Text>
                     <ModalDropdown
@@ -60,11 +64,31 @@ export default class DialogCustom extends React.Component {
                         renderSeparator={(sectionID, rowID, adjacentRowHighlighted) => this._renderSeparatorGroup(sectionID, rowID, adjacentRowHighlighted)}
                     />
                 </View>
-                <View style={{flexDirection: 'column'}}>
-                    <Text>Chọn nhân viên: </Text>
+                <View style={{flexDirection: 'column', marginTop: 10}}>
+                    <TextInput
+                        ref='textinput'
+                        style={{height: 40, borderColor: 'gray', borderWidth: 0.4, borderRadius: 10, paddingLeft: 8}}
+                        onChangeText={(textSearch) => {
+                            if (this.state.positionGroupChoose === -1 || this.state.positionGroupChoose === '-1') {
+                                Toast.show('Vui long chon phong ban truoc')
+                            } else {
+
+                            }
+                            this.setState({textSearch})
+                        }}
+                        onSubmitEditing={() => {
+                            this.refs.nhanvien.show();
+                        }}
+                        value={this.state.textSearch}
+                        placeholder={'Nhap ten nhan vien'}
+                    />
                     <ModalDropdown
+                        ref="nhanvien"
+                        keyboardShouldPersistTaps='always'
                         options={this.state.listNameNhanVien}
-                        style={{borderWidth: 0.4, width: 200, padding: 8, borderRadius: 10}}
+                        disabled={true}
+                        adjustFrame={style => this._adjustFrame(style)}
+                        style={{borderWidth: 0.4, width: 0, height: 0}}
                         defaultValue="- Chọn nhân viên- "
                         onSelect={(idx, value) => {
                             this.setState({nhanVienSelect: this.state.listNhanVien[idx]})
@@ -94,8 +118,13 @@ export default class DialogCustom extends React.Component {
                         <Text>Ap dung</Text>
                     </TouchableOpacity>
                 </View>
-            </DialogContent>
+            </View>
         );
+    }
+
+    _adjustFrame(style) {
+        style.top -= Dimensions.get('window').height / 2;
+        return style;
     }
 
     _onSelect(id, value) {
@@ -111,7 +140,7 @@ export default class DialogCustom extends React.Component {
                     for (let item of dsnhanvien) {
                         arr.push(item.tennhanvien)
                     }
-                    this.setState({listNhanVien: dsnhanvien, listNameNhanVien: arr})
+                this.setState({listNhanVien: dsnhanvien, listNameNhanVien: arr, positionGroupChoose: id})
                 }
             ).catch((e) => {
             Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại')
