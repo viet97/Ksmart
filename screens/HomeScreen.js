@@ -363,7 +363,7 @@ export default class HomeScreen extends React.Component {
                                            source={require('../images/webmail-2012.png')}
                                     />
                                     {() => {
-                                        if (URlConfig.OBJLOGIN.messageUnread !== null && URlConfig.OBJLOGIN.messageUnread !== undefined) {
+                                        if (URlConfig.OBJLOGIN.messageUnread !== null && URlConfig.OBJLOGIN.messageUnread !== undefined && URlConfig.OBJLOGIN.messageUnread > 0) {
                                             return (
                                                 <Badge textStyle={{color: '#fff',}}
                                                        style={{position: 'absolute', top: 0, right: 8}}>
@@ -508,7 +508,7 @@ export default class HomeScreen extends React.Component {
                                 <View style={{flexDirection: 'row', backgroundColor: 'transparent'}}>
                                     <Text style={styles.textStyle}>Tin nhắn</Text>
                                     {() => {
-                                        if (URlConfig.OBJLOGIN.messageUnread !== null && URlConfig.OBJLOGIN.messageUnread !== undefined) {
+                                        if (URlConfig.OBJLOGIN.messageUnread !== null && URlConfig.OBJLOGIN.messageUnread !== undefined && URlConfig.OBJLOGIN.messageUnread > 0) {
                                             return (
                                                 <Badge textStyle={{color: '#fff',}}
                                                        style={{marginLeft: 8, backgroundColor: 'red'}}>
