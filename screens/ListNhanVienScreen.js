@@ -46,7 +46,13 @@ export default class ListNhanVienScreen extends React.Component {
             dataRender: null,
             onEndReach: true,
             waiting: false,
+            numberPickStatus: 0,
+            dataPickStatus: [],
         })
+        this.state.dataPickStatus.push('Tất cả')
+        this.state.dataPickStatus.push('Đang trực tuyến')
+        this.state.dataPickStatus.push('Đang ngoại tuyến')
+        this.state.dataPickStatus.push('Mất tín hiệu')
     }
 
 
@@ -100,12 +106,11 @@ export default class ListNhanVienScreen extends React.Component {
         if (!this.state.onEndReach) {
 
             this.setState({onEndReach: true})
-            this.setState({
-                dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER + 10),
-                dataSearch: this.state.dataFull.slice(0, NUMBER_ROW_RENDER + 10)
-            })
-            NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
-            if (NUMBER_ROW_RENDER > this.state.dataFull.length - 10) ALL_LOADED = true
+            this.setDataRender()
+            if (NUMBER_ROW_RENDER > this.state.dataFull.length - 10) {
+                ALL_LOADED = true
+                this.forceUpdate()
+            }
         }
     }
 
@@ -124,25 +129,17 @@ export default class ListNhanVienScreen extends React.Component {
     refreshData() {
         this.setState({dataRender: null})
         ALL_LOADED = false
-        NUMBER_ROW_RENDER = 10
+        NUMBER_ROW_RENDER = 0
         fetch(URlConfig.getListNhanVienLink())
             .then((response) => (response.json()))
             .then((responseJson) => {
-
-
                 if (responseJson.status) {
                     var arr = this.fillData(responseJson.dsNhanVien)
                     this.setState({dataFull: arr}, function () {
-                        if (NUMBER_ROW_RENDER > this.state.dataFull.length) ALL_LOADED = true
-                            this.setState({
-                                dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER),
-                                dataSearch: this.state.dataFull.slice(0, NUMBER_ROW_RENDER)
-                            })
-
+                        this.setDataRender()
                     })
                 }
                 else ALL_LOADED = true
-                NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
                 }
             ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
     }
@@ -196,28 +193,28 @@ export default class ListNhanVienScreen extends React.Component {
                                        }}>
                                     <Text style={{textAlign: 'right', fontSize: 12, backgroundColor: 'transparent'}}>
                                         Cập nhật
-                                    lúc {item.thoigiancapnhat}</Text>
-                                <View style={{flexDirection: 'row'}}>
-                                    <View style={{justifyContent: 'center'}}>
-                                        <Image indicator={ProgressBar.Pie}
-                                               style={{margin: 8, width: 60, height: 60, borderRadius: 30}}
-                                               source={require('../images/bglogin.jpg')}/>
+                                        lúc {item.thoigiancapnhat}</Text>
+                                    <View style={{flexDirection: 'row'}}>
+                                        <View style={{justifyContent: 'center'}}>
+                                            <Image indicator={ProgressBar.Pie}
+                                                   style={{margin: 8, width: 60, height: 60, borderRadius: 30}}
+                                                   source={require('../images/bglogin.jpg')}/>
+                                        </View>
+                                        <View style={{flex: 4, margin: 8, justifyContent: 'center'}}>
+                                            <Text
+                                                style={{
+                                                    fontSize: 18, backgroundColor: 'transparent'
+                                                }}>{item.tennhanvien}</Text>
+                                            <Text>{item.tendangnhap}</Text>
+                                            {this.isOnline(item.dangtructuyen)}
+                                        </View>
+                                        <TouchableOpacity onPress={() => {
+                                            this.props.callback(item.KinhDo, item.ViDo, 'Địa điểm Nhân Viên')
+                                        }}>
+                                            <Icon2 style={{backgroundColor: 'transparent'}} size={30} color='red'
+                                                   name="location"/>
+                                        </TouchableOpacity>
                                     </View>
-                                    <View style={{flex: 4, margin: 8, justifyContent: 'center'}}>
-                                        <Text
-                                            style={{
-                                                fontSize: 18, backgroundColor: 'transparent'
-                                            }}>{item.tennhanvien}</Text>
-                                        <Text>{item.tendangnhap}</Text>
-                                        {this.isOnline(item.dangtructuyen)}
-                                    </View>
-                                    <TouchableOpacity onPress={() => {
-                                        this.props.callback(item.KinhDo, item.ViDo, 'Địa điểm Nhân Viên')
-                                    }}>
-                                        <Icon2 style={{backgroundColor: 'transparent'}} size={30} color='red'
-                                               name="location"/>
-                                    </TouchableOpacity>
-                                </View>
                                 </Image>
                             </View>
                         </TouchableOpacity>
@@ -252,6 +249,46 @@ export default class ListNhanVienScreen extends React.Component {
         });
     }
 
+    setDataRender() {
+        let data = this.state.dataFull.slice(0, NUMBER_ROW_RENDER + 10)
+
+        NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
+        let arr = []
+        switch (this.state.numberPickStatus) {
+            case 0:
+
+                arr = data
+                break;
+            case 1:
+
+                for (let item of data) {
+                    if (item.dangtructuyen === 1) {
+                        arr.push(item)
+                    }
+                }
+                break;
+            case 2:
+                for (let item of data) {
+                    if (item.dangtructuyen === 0) {
+                        arr.push(item)
+                    }
+                }
+                break;
+            case 3:
+                for (let item of data) {
+                    if (item.dangtructuyen === 2) {
+                        arr.push(item)
+                    }
+                }
+                console.log('' + arr.length)
+                break;
+
+        }
+
+        this.setState({dataRender: arr})
+
+    }
+
     onCancel() {
         return new Promise((resolve, reject) => {
             resolve();
@@ -262,7 +299,9 @@ export default class ListNhanVienScreen extends React.Component {
     }
 
     render() {
-
+        let NhanVienStatusItem = this.state.dataPickStatus.map((s, i) => {
+            return <Picker.Item key={i} value={i} label={s}/>
+        });
         let partyStatusItem = this.state.partyNhanVienStatus.map((s, i) => {
             return <Picker.Item key={i} value={i} label={s}/>
         });
@@ -309,7 +348,18 @@ export default class ListNhanVienScreen extends React.Component {
                                     }}>
                                 {partyStatusItem}
                             </Picker>
+
                         </View>
+                        <Picker style={{height: 44, width: width * 3 / 4, marginLeft: 8}}
+                                itemStyle={{color: 'red', height: 44}}
+                                selectedValue={this.state.numberPickStatus}
+                                onValueChange={(value) => {
+                                    this.setState({numberPickStatus: value}, function () {
+                                        this.setDataRender()
+                                    })
+                                }}>
+                            {NhanVienStatusItem}
+                        </Picker>
                         <View style={{width: width}}>
                             <Search
                                 placeholder="Tìm kiếm"
@@ -336,21 +386,12 @@ export default class ListNhanVienScreen extends React.Component {
     }
 
     componentDidMount() {
-        console.log('123')
         fetch(URlConfig.getListNhanVienLink())
             .then((response) => (response.json()))
             .then((responseJson) => {
-
                 if (responseJson.status) {
                         this.setState({dataFull: responseJson.dsNhanVien}, function () {
-
-                            if (NUMBER_ROW_RENDER > this.state.dataFull.length) ALL_LOADED = true
-                            this.setState({
-                                dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER),
-                                dataSearch: this.state.dataFull.splice(0, NUMBER_ROW_RENDER)
-                                }
-                            )
-
+                            this.setDataRender()
                         })
                 } else ALL_LOADED = true
                 NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10

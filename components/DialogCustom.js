@@ -27,7 +27,7 @@ export default class DialogCustom extends React.Component {
             listNameGroup: [],
             listNhanVien: [],
             listNameNhanVien: [],
-            nhanVienSelect: {}
+            nhanVienSelect: ''
         }
     }
 
@@ -87,8 +87,9 @@ export default class DialogCustom extends React.Component {
                         <Text>Huy bo</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => {
-                        this.props.callback(this.state.nhanVienSelect);
-                        DialogManager.dismiss();
+                        DialogManager.dismiss(() => {
+                            this.props.callback(this.state.nhanVienSelect.idnhanvien)
+                        });
                     }}>
                         <Text>Ap dung</Text>
                     </TouchableOpacity>

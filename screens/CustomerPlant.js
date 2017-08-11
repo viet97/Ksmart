@@ -29,6 +29,7 @@ var NUMBER_ROW_RENDER_PER_PAGE = 15
 var ALL_LOADED = false
 var SEARCH_STRING = '';
 let PAGE = 0;
+let IDNhanVien = '';
 var {height, width} = Dimensions.get('window');
 export default class CustomerPlant extends Component {
     constructor(props) {
@@ -308,7 +309,7 @@ export default class CustomerPlant extends Component {
                         marginRight: 8
                     }}>Nhân
                         viên:</Text>
-                    <TouchableOpacity onPress={this.showDialogChoosePerson} style={{
+                    <TouchableOpacity onPress={() => this.showDialogChoosePerson()} style={{
                         textAlign: 'center',
                         alignSelf: 'center',
                         backgroundColor: 'transparent',
@@ -330,8 +331,9 @@ export default class CustomerPlant extends Component {
             animationDuration: 200,
             ScaleAnimation: new ScaleAnimation(),
             children: (
-                <DialogCustom callback={(nhanvien) => {
-                    console.log(nhanvien)
+                <DialogCustom
+                    callback={(idnhanvien) => {
+                        this.setState({idNhanvien: idnhanvien})
                 }}/>
             ),
         }, () => {
@@ -354,7 +356,7 @@ export default class CustomerPlant extends Component {
             dulieulapkehoach: this.state.dataChoose,
             idnhanvien: this.state.idNhanvien
         }
-        if (obj.dulieulapkehoach.length === 0) Toast.show('Vui lòng chọn kế hoạch cho nhân viên trước khi lập kế hoạch')
+        if (obj.dulieulapkehoach.length === 0 || this.state.idNhanvien.length === 0) Toast.show('Vui lòng chọn kế hoạch cho nhân viên trước khi lập kế hoạch')
         else
         fetch(URlConfig.getLinkLapKeHoach(obj))
             .then((response) => (response.json()))
@@ -397,7 +399,7 @@ export default class CustomerPlant extends Component {
                     }, function () {
                         for (var item in responseJson.dsNhanVien)
                             arr.push(responseJson.dsNhanVien[item].tennhanvien)
-                        this.setState({NhanVienStatus: arr, idNhanvien: this.state.dataNhanVien[0].idnhanvien})
+                        this.setState({NhanVienStatus: arr})
                     })
 
                 }

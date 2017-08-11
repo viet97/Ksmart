@@ -87,6 +87,8 @@ export default class TravelScreen extends React.Component {
     }
 
     setDataRender() {
+        NUMBER_ROW_RENDER = 0
+
         let data = this.state.dataFull.slice(0, NUMBER_ROW_RENDER + 10)
         NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
         let arr = []
