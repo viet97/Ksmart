@@ -88,7 +88,7 @@ export default class DialogCustom extends React.Component {
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => {
                         DialogManager.dismiss(() => {
-                            this.props.callback(this.state.nhanVienSelect.idnhanvien)
+                            this.props.callback(this.state.nhanVienSelect)
                         });
                     }}>
                         <Text>Ap dung</Text>

@@ -38,7 +38,7 @@ export default class CustomerPlant extends Component {
         var dd = today.getDate();
         var mm = today.getMonth() + 1; //January is 0!
         var yyyy = today.getFullYear();
-
+        console.disableYellowBox = true;
         if (dd < 10) {
             dd = '0' + dd
         }
@@ -65,7 +65,8 @@ export default class CustomerPlant extends Component {
             numberPickNhanVien: 0,
             NhanVienStatus: [],
             dataNhanVien: [],
-            namePerson: '- Chọn nhân viên-'
+            namePerson: '- Chọn nhân viên -'
+            
         }
 
     }
@@ -332,8 +333,8 @@ export default class CustomerPlant extends Component {
             ScaleAnimation: new ScaleAnimation(),
             children: (
                 <DialogCustom
-                    callback={(idnhanvien) => {
-                        this.setState({idNhanvien: idnhanvien})
+                    callback={(nhanvien) => {
+                        this.setState({idNhanvien: nhanvien.idnhanvien, namePerson: nhanvien.tennhanvien})
                 }}/>
             ),
         }, () => {
