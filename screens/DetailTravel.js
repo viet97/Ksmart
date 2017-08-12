@@ -58,6 +58,7 @@ export default class DetailTravel extends React.Component {
     }
 
     render() {
+        const {navigate} = this.props.navigation;
         const {params} = this.props.navigation.state;
         console.log(params.data.ThoiGianVaoDiemDuKien)
         var strVaoDiem = '';
@@ -88,7 +89,26 @@ export default class DetailTravel extends React.Component {
                     </TouchableOpacity>
                     <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Thông
                         tin kế hoạch</Text>
-                    <View></View>
+                    <TouchableOpacity
+                        onPress={() => navigate('EditTravel', {data: params.data})}
+                        style={{
+                            alignSelf: 'center',
+                            width: 36,
+                            height: 36,
+                            backgroundColor: "transparent",
+                            marginLeft: 16,
+                            marginTop: (Platform.OS === 'ios') ? 8 : 0,
+                            marginRight: 8
+                        }}>
+                        <Icon2 style={{
+                            alignSelf: 'center',
+                            width: 24,
+                            height: 24,
+                            backgroundColor: "transparent",
+                            marginLeft: 16,
+                            marginTop: (Platform.OS === 'ios') ? 8 : 0,
+                        }} size={24} color="white" name="edit"/>
+                    </TouchableOpacity>
                 </View>
                 <View style={{
                     marginTop: 4, marginBottom: 4, marginLeft: 8, marginRight: 8,
