@@ -166,7 +166,7 @@ export default class CustomerScreen extends Component {
                                 <Image source={require('../images/bg1.png')}
                                        style={{
                                            width: width - 8,
-                                           height: height / 5.5
+                                           height: height / 4.5
                                        }}>
                                     <View style={{
                                         flexDirection: 'row',
@@ -219,6 +219,24 @@ export default class CustomerScreen extends Component {
                                                 marginRight: 20,
                                             }}>
                                             {item.DiaChi}</Text>
+                                    </View>
+                                    <View style={{
+                                        flexDirection: 'row',
+                                        marginLeft: 8,
+                                        marginTop: 4,
+                                        marginRight: 8,
+                                        marginBottom: 4
+                                    }}>
+                                        <Icon style={{backgroundColor: 'transparent',}} size={24} color="green"
+                                              name="phone"/>
+                                        <Text
+                                            numberOfLines={1}
+                                            style={{
+                                                backgroundColor: 'transparent',
+                                                marginLeft: 8,
+                                                marginRight: 20,
+                                            }}>
+                                            016636160555</Text>
                                     </View>
                                 </Image>
                             </View>
