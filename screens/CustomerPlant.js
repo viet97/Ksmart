@@ -11,12 +11,12 @@ import {
     ActivityIndicator, Platform,
     Picker
 } from 'react-native';
-
+import Modal from 'react-native-modalbox';
 import DialogManager, {ScaleAnimation, DialogContent} from 'react-native-dialog-component';
 import Toast from 'react-native-simple-toast';
 import Image from 'react-native-image-progress';
-import Icon from 'react-native-vector-icons/Entypo'
-import Icon1 from 'react-native-vector-icons/MaterialIcons'
+import Icon1 from 'react-native-vector-icons/Entypo'
+
 import Icon2 from 'react-native-vector-icons/Ionicons'
 import DatePicker from "react-native-datepicker";
 import Color from '../configs/color'
@@ -25,6 +25,7 @@ import Search from "react-native-search-box";
 import CheckBox from 'react-native-checkbox'
 import CustomerPlantComponent from '../components/CustomerPlantComponent'
 import DialogCustom from "../components/DialogCustom";
+import {Icon} from "react-native-elements";
 var NUMBER_ROW_RENDER_PER_PAGE = 15
 var ALL_LOADED = false
 var SEARCH_STRING = '';
@@ -322,24 +323,41 @@ export default class CustomerPlant extends Component {
                     </TouchableOpacity>
                 </View>
                 {this.flatListorIndicator()}
+                <Modal
+                    style={[styles.modal, styles.modal1]}
+                    ref={"modal"}
+                    swipeToClose={true}
+                    onClosingState={this.onClosingState}>
+                    <View style={{alignItems: 'flex-end', position: 'absolute', right: 8, top: 0}}>
+                        <TouchableOpacity onPress={() => {
+                            this.refs.modal.close()
+                        }}>
+                            <Icon style={{paddingVertical: 8}} name="x" size={24} color="#EC433E" type="foundation"/>
+
+                        </TouchableOpacity>
+                    </View>
+                    <DialogCustom callback={() => {
+                    }}/>
+                </Modal>
 
             </View>
         )
     }
 
     showDialogChoosePerson() {
-        DialogManager.show({
-            animationDuration: 200,
-            ScaleAnimation: new ScaleAnimation(),
-            children: (
-                <DialogCustom
-                    callback={(nhanvien) => {
-                        this.setState({idNhanvien: nhanvien.idnhanvien, namePerson: nhanvien.tennhanvien})
-                }}/>
-            ),
-        }, () => {
-            console.log('callback - show');
-        });
+        // DialogManager.show({
+        //     animationDuration: 200,
+        //     ScaleAnimation: new ScaleAnimation(),
+        //     children: (
+        //         <DialogCustom
+        //             callback={(nhanvien) => {
+        //                 this.setState({idNhanvien: nhanvien.idnhanvien, namePerson: nhanvien.tennhanvien})
+        //         }}/>
+        //     ),
+        // }, () => {
+        //     console.log('callback - show');
+        // });
+        this.refs.modal.open()
     }
 
     onCancel() {
@@ -450,5 +468,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         height: 80
-    }
+    },
+    modal: {
+        flexDirection: 'column',
+        paddingHorizontal: 8,
+        marginTop: 32,
+
+    },
 })
