@@ -235,7 +235,7 @@ export default class CustomerScreen extends Component {
                                                 marginLeft: 8,
                                                 marginRight: 20,
                                             }}>
-                                            016636160555</Text>
+                                            {item.DienThoai}</Text>
                                     </View>
                                 </Image>
                             </View>

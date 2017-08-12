@@ -8,7 +8,8 @@ import {
     BackHandler,
     FlatList,
     ActivityIndicator,
-    Platform, Image
+    Platform, Image,
+    ScrollView
 } from 'react-native';
 import Search from 'react-native-search-box';
 import Communications from 'react-native-communications';
@@ -27,6 +28,7 @@ import TabNavigator from 'react-native-tab-navigator';
 import MapListScreen from "./MapListScreen";
 import MapView from 'react-native-maps';
 import {PagerTabIndicator, IndicatorViewPager, PagerTitleIndicator, PagerDotIndicator} from 'rn-viewpager';
+import ultils from "../configs/ultils";
 
 var {width, height} = Dimensions.get('window');
 export default class DetailNhanVien extends React.Component {
@@ -49,9 +51,11 @@ export default class DetailNhanVien extends React.Component {
 
     isOnline(dangtructuyen) {
         if (dangtructuyen === 1)
-            return <Icon2 size={36} color="green" name="controller-record"/>
-        else if (dangtructuyen === 2) return <Icon2 size={36} color="red" name="controller-record"/>
-        else if (dangtructuyen === 0) return <Icon2 size={36} color="gray" name="controller-record"/>
+            return <Icon2 style={{alignSelf: 'center'}} size={24} color="green" name="controller-record"/>
+        else if (dangtructuyen === 2) return <Icon2 style={{alignSelf: 'center'}} size={24} color="red"
+                                                    name="controller-record"/>
+        else if (dangtructuyen === 0) return <Icon2 style={{alignSelf: 'center'}} size={24} color="gray"
+                                                    name="controller-record"/>
 
     }
 
@@ -89,7 +93,8 @@ export default class DetailNhanVien extends React.Component {
                             textAlign: 'center',
                             marginTop: 8,
                             backgroundColor: 'transparent'
-                        }}>{this.state.data.tennhanvien}</Text>
+                        }}> {this.isOnline(this.state.data.dangtructuyen)}
+                            {this.state.data.tennhanvien}</Text>
                     </View>
 
                 </View>
@@ -98,46 +103,71 @@ export default class DetailNhanVien extends React.Component {
                         style={{flex: 1, backgroundColor: 'white'}}
                         indicator={this._renderTitleIndicator()}
                     >
-                        <View>
-                            <View style={styles.viewCover}>
-                                <Text style={styles.text1}>Tên đăng nhập</Text>
-                                <Text style={styles.text2}>{data.tendangnhap}</Text>
-                            </View>
-                            <View style={styles.viewCover}>
-                                <Text style={styles.text1}>Tên đầy đủ</Text>
-                                <Text style={styles.text2}>{data.tennhanvien}</Text>
-                            </View>
-                            <View style={styles.viewCover}>
-                                <Text style={styles.text1}>Email</Text>
-                                <View style={{
-                                    flexDirection: 'row',
-                                    marginTop: 4,
-                                    marginRight: 8,
-                                    justifyContent: 'space-between'
-                                }}>
-                                    <Text style={styles.text2}>1234@gmail.com</Text>
-                                    <TouchableOpacity
-                                        onPress={() => Communications.email(['123@gmail.com'], null, null, 'My Subject', 'My body text')}>
-                                        <Icon4 size={24} color="yellow" name="mail"/>
-                                    </TouchableOpacity>
+                        <ScrollView style={{flex: 1}}>
+                            <View>
+                                <View style={styles.viewCover}>
+                                    <Text style={styles.text1}>Tên đăng nhập</Text>
+                                    <Text style={styles.text2}>{data.tendangnhap}</Text>
+                                </View>
+                                <View style={styles.viewCover}>
+                                    <Text style={styles.text1}>Tên đầy đủ</Text>
+                                    <Text style={styles.text2}>{data.tennhanvien}</Text>
+                                </View>
+                                <View style={styles.viewCover}>
+                                    <Text style={styles.text1}>Địa chỉ</Text>
+                                    <Text style={styles.text2}>{data.DiaChi}</Text>
+                                </View>
+                                <View style={styles.viewCover}>
+                                    <Text style={styles.text1}>Nhóm/Phòng:</Text>
+                                    <Text style={styles.text2}>{data.phongban}</Text>
+                                </View>
+                                <View style={styles.viewCover}>
+                                    <Text style={styles.text1}>Tình trạng pin</Text>
+                                    <Text style={styles.text2}>{data.tinhtrangpin}</Text>
+                                </View>
+                                <View style={styles.viewCover}>
+                                    <Text style={styles.text1}>Cập nhật lần cuối:</Text>
+                                    <Text style={styles.text2}>{data.thoigianguitoadocuoi}</Text>
+                                </View>
+                                <View style={styles.viewCover}>
+                                    <Text style={styles.text1}>Quê quán:</Text>
+                                    <Text style={styles.text2}>{data.QueQuan}</Text>
+                                </View>
+                                <View style={styles.viewCover}>
+                                    <Text style={styles.text1}>Ngày sinh:</Text>
+                                    <Text style={styles.text2}>{ultils.getDate(data.NgaySinh)}</Text>
+                                </View>
+                                <View style={styles.viewCover}>
+                                    <Text style={styles.text1}>Email</Text>
+                                    <View style={{
+                                        flexDirection: 'row',
+                                        marginTop: 4,
+                                        marginRight: 8,
+                                        justifyContent: 'space-between'
+                                    }}>
+                                        <Text style={styles.text2}>1234@gmail.com</Text>
+                                        <TouchableOpacity
+                                            onPress={() => Communications.email(['123@gmail.com'], null, null, 'My Subject', 'My body text')}>
+                                            <Icon4 size={24} color="yellow" name="mail"/>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                                <View style={styles.viewCover}>
+                                    <Text style={styles.text1}>Số điện thoại</Text>
+                                    <View style={{
+                                        flexDirection: 'row',
+                                        marginTop: 4,
+                                        marginRight: 8,
+                                        justifyContent: 'space-between'
+                                    }}>
+                                        <Text style={styles.text2}>01663616055</Text>
+                                        <TouchableOpacity onPress={() => Communications.phonecall('01663616055', true)}>
+                                            <Icon3 size={24} color="green" name="phone"/>
+                                        </TouchableOpacity>
+                                    </View>
                                 </View>
                             </View>
-                            <View style={styles.viewCover}>
-                                <Text style={styles.text1}>Số điện thoại</Text>
-                                <View style={{
-                                    flexDirection: 'row',
-                                    marginTop: 4,
-                                    marginRight: 8,
-                                    justifyContent: 'space-between'
-                                }}>
-                                    <Text style={styles.text2}>01663616055</Text>
-                                    <TouchableOpacity onPress={() => Communications.phonecall('01663616055', true)}>
-                                        <Icon3 size={24} color="green" name="phone"/>
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-                        </View>
-
+                        </ScrollView>
                         <View>
                             <MapView
                                 style={{flex: 1}}
@@ -153,6 +183,7 @@ export default class DetailNhanVien extends React.Component {
                                 />
                             </MapView>
                         </View>
+
                     </IndicatorViewPager>
 
                 </View>
