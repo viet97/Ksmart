@@ -223,7 +223,7 @@ export default class TravelScreen extends React.Component {
             strRaDiem = 'Ra điểm lúc: ' + ultils.getDate(item.ThoiGianRaDiemThucTe) + ' ' + strRaDiem;
         }
         return (
-            <TouchableOpacity onPress={() => this.props.callback(item.KinhDo, item.ViDo, 'Địa chỉ cửa hàng')}>
+            <TouchableOpacity onPress={() => this.props.callback(item)}>
                 <View style={{
                     margin: 4
                 }}>

@@ -176,8 +176,8 @@ export default class HomeScreen extends React.Component {
                     backToHome={() => {
                         this.setState({screenName: 'Menu'})
                     }}
-                    callback={(kinhdo, vido, title) => {
-                        navigate('Map', {title: title, kinhdo: kinhdo, vido: vido})
+                    callback={(data) => {
+                        navigate('DetailTravel', {data: data})
                     }}
                 />
             case "Chart":
