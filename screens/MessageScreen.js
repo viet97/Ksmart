@@ -30,9 +30,9 @@ import orderListData from '../dbcontext/orderListData'
 import AtoZListView from 'react-native-atoz-listview';
 import Search from 'react-native-search-box';
 import ultils from "../configs/ultils";
+import ModalSendMessage from "../components/ModalSendMessage";
 
 var {height, width} = Dimensions.get('window');
-var GiftedListView = require('react-native-gifted-listview');
 
 var NUMBER_ROW_RENDER = 0
 var SEARCH_STRING = '';
@@ -263,7 +263,7 @@ export default class OrderListScreen extends Component {
                         nhắn</Text>
                     <TouchableOpacity style={{backgroundColor: 'transparent', alignSelf: 'center', marginRight: 8}}
                                       onPress={() => {
-                                          this.refs.modal.open()
+                                          this.props.goToSendMessage()
                                       }}>
                         <Icon2 style={{backgroundColor: 'transparent', alignSelf: 'center'}} size={24} color="white"
                                name="new-message"/>
@@ -326,24 +326,6 @@ export default class OrderListScreen extends Component {
                     />
                 </View>
                 {this.flatListorIndicator()}
-
-                <Modal
-                    style={[styles.modal, styles.modal1]}
-                    ref={"modal"}
-                    swipeToClose={true}
-                    onClosingState={this.onClosingState}>
-                    <View style={{alignItems: 'flex-end', position: 'absolute', right: 8, top: 0}}>
-                        <TouchableOpacity onPress={() => {
-                            this.refs.modal.close()
-                        }}>
-                            <Icon style={{paddingVertical: 8}} name="x" size={24} color="#EC433E" type="foundation"/>
-
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{justifyContent: 'center', alignItems: 'center', flexDirection: 'row'}}>
-                        <Text>dmdmmd</Text>
-                    </View>
-                </Modal>
             </View>
 
         )
@@ -411,6 +393,5 @@ const styles = StyleSheet.create({
         paddingHorizontal: 8,
         marginTop: 32,
         justifyContent: 'center',
-        alignItems: 'center'
     },
 })

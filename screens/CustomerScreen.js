@@ -21,7 +21,6 @@ import URlConfig from "../configs/url";
 import Search from "react-native-search-box";
 import {StackNavigator} from 'react-navigation';
 
-var NUMBER_ROW_RENDER_PER_PAGE = 15
 var ALL_LOADED = false
 var SEARCH_STRING = '';
 var PAGE = 0;

@@ -159,10 +159,10 @@ export default class HomeScreen extends React.Component {
                 return <MessageScreen
                     dateFrom={this.state.dateFromForMessage}
                     dateTo={this.state.dateToForMessage}
+                    goToSendMessage={() => navigate('SendMessage')}
                     moveToDetailMessage={(dateFrom, dateTo, nguoigui, thoigian, noidung) => {
                         navigate('DetailMessage', {nguoigui: nguoigui, thoigian: thoigian, noidung: noidung})
-                    }
-                    }
+                    }}
                     backToHome={() => {
                         this.setState({screenName: 'Menu'})
                     }}/>

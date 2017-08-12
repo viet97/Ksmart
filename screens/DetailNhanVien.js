@@ -56,6 +56,7 @@ export default class DetailNhanVien extends React.Component {
     }
 
     render() {
+        const {navigate} = this.props.navigation;
         var data = this.state.data
         return (
             <View style={{flex: 1}}>
@@ -69,7 +70,11 @@ export default class DetailNhanVien extends React.Component {
                     </TouchableOpacity>
                     <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Thông
                         tin nhân viên</Text>
-                    <View></View>
+                    <TouchableOpacity style={{backgroundColor: 'transparent', alignSelf: 'center', marginRight: 8}}
+                                      onPress={() => navigate('SendMessage')}>
+                        <Icon2 style={{backgroundColor: 'transparent', alignSelf: 'center'}} size={24} color="white"
+                               name="new-message"/>
+                    </TouchableOpacity>
                 </View>
                 <View style={{flex: 4, justifyContent: 'center'}}>
                     <Image source={require('../images/bg.png')}
