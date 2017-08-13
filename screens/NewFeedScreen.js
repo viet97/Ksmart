@@ -207,8 +207,6 @@ export default class NewFeedScreen extends React.Component {
         this.setState({isSearching: true})
         return new Promise((resolve, reject) => {
             resolve();
-
-            var arr = []
             var a = text.toLowerCase()
             SEARCH_STRING = a
             this.getDataFromSv()
@@ -221,7 +219,7 @@ export default class NewFeedScreen extends React.Component {
             console.log("onCancle")
             if (SEARCH_STRING.length !== 0) {
                 SEARCH_STRING = ''
-                this.getOrderListFromServer(this.state.filtDialog.dateFrom, this.state.filtDialog.dateTo)
+                this.getDataFromSv()
             }
         });
     }

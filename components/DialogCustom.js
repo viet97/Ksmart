@@ -41,7 +41,8 @@ export default class DialogCustom extends React.Component {
             listNhanVien: [],
             listNameNhanVien: [],
             nhanVienSelect: '',
-            textSearch: ''
+            textSearch: '',
+            idNhanVien: '',
         }
     }
 
@@ -149,8 +150,9 @@ export default class DialogCustom extends React.Component {
 
     render() {
         return (
-            <View style={{flexDirection: 'column', marginTop: 48, flex: 1}}>
-                <View style={{flexDirection: 'column'}}>
+
+            <View style={{flexDirection: 'column', flex: 1}}>
+                <View style={{flexDirection: 'column', flex: 9}}>
                     <Text>Chọn phòng ban: </Text>
                     <ModalDropdown
                         options={this.state.listNameGroup}
@@ -160,11 +162,16 @@ export default class DialogCustom extends React.Component {
                         renderRow={this._renderRowGroup.bind(this)}
                         renderSeparator={(sectionID, rowID, adjacentRowHighlighted) => this._renderSeparatorGroup(sectionID, rowID, adjacentRowHighlighted)}
                     />
-                </View>
-                <View style={{flexDirection: 'column', marginTop: 10}}>
                     <TextInput
                         ref='textinput'
-                        style={{height: 40, borderColor: 'gray', borderWidth: 0.4, borderRadius: 10, paddingLeft: 8}}
+                        style={{
+                            height: 40,
+                            borderColor: 'gray',
+                            borderWidth: 0.4,
+                            borderRadius: 10,
+                            paddingLeft: 8,
+                            marginTop: 10
+                        }}
                         onChangeText={(textSearch) => {
                             if (this.state.positionGroupChoose === -1 || this.state.positionGroupChoose === '-1') {
                                 SEARCH_STRING = textSearch
@@ -212,7 +219,9 @@ export default class DialogCustom extends React.Component {
                         extraData={this.state.dataRender}
                         data={this.state.dataRender}
                         renderItem={({item}) =>
-                            <TouchableOpacity onPress={() => this.setState({
+                            <TouchableOpacity
+
+                                onPress={() => this.setState({
                                 textSearch: item.tennhanvien,
                                 idNhanVien: item.idnhanvien
                             })}>
@@ -235,22 +244,22 @@ export default class DialogCustom extends React.Component {
                     />
                 </View>
                 <View style={{
-                    position: 'absolute',
-                    bottom: 0,
-                    left: 16,
-                    right: 16,
+                    flex: 1,
                     flexDirection: 'row',
                     justifyContent: 'space-between'
                 }}>
-                    <TouchableOpacity onPress={() => {
+                    <TouchableOpacity
+                        style={{paddingLeft: 16}}
+                        onPress={() => {
                         DialogManager.dismiss();
                     }}>
                         <Text>Huy bo</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => {
-                        this.props.callback(id)
+                    <TouchableOpacity
+                        style={{paddingLeft: 16}}
+                        onPress={() => {
                         DialogManager.dismiss(() => {
-                            this.props.callback(this.state.nhanVienSelect)
+                            this.props.callback(this.state.idNhanVien, this.state.textSearch)
                         });
                     }}>
                         <Text>Ap dung</Text>

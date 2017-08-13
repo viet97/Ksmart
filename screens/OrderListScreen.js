@@ -15,15 +15,10 @@ import {
 import URlConfig from "../configs/url";
 import Color from '../configs/color'
 import Icon1 from 'react-native-vector-icons/Ionicons'
-import Icon from 'react-native-vector-icons/MaterialIcons'
 import Icon2 from 'react-native-vector-icons/Entypo'
 import Image from 'react-native-image-progress';
-import ProgressBar from 'react-native-progress/Bar';
 import DialogManager, {ScaleAnimation, DialogContent} from 'react-native-dialog-component';
-import {DialogComponent, SlideAnimation} from 'react-native-dialog-component';
 import Dialog from '../components/Dialog'
-import orderListData from '../dbcontext/orderListData'
-import AtoZListView from 'react-native-atoz-listview';
 import Search from 'react-native-search-box';
 import ultils from "../configs/ultils";
 import Toast from 'react-native-simple-toast'
@@ -483,8 +478,6 @@ export default class OrderListScreen extends Component {
                             this.setState({filtDialog: data}, function () {
                                 if (this.state.filtDialog.status) {
                                     this.getOrderListFromServer(this.state.filtDialog.dateFrom, this.state.filtDialog.dateTo)
-                                    return (<View style={{width: 100, height: 100}}> <ActivityIndicator
-                                        size="large"/></View>)
                                 }
                             })
                         }}/>

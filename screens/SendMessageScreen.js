@@ -13,7 +13,7 @@ import {
     TextInput,
     ScrollView
 } from 'react-native';
-
+import DialogManager, {ScaleAnimation, DialogContent} from 'react-native-dialog-component';
 import Image from 'react-native-image-progress';
 import Icon3 from 'react-native-vector-icons/Entypo'
 import Icon1 from 'react-native-vector-icons/MaterialIcons'
@@ -23,6 +23,7 @@ import Color from '../configs/color'
 import URlConfig from "../configs/url";
 import Search from "react-native-search-box";
 import {Icon} from "react-native-elements";
+import DialogCustom from "../components/DialogCustom";
 
 let {height, width} = Dimensions.get('window')
 export default class ModalSendMessage extends Component {
@@ -34,11 +35,21 @@ export default class ModalSendMessage extends Component {
 
         super(props)
         this.state = {
-            text: ''
+            text: '',
+            title: '',
+            IDNhanVien: '',
+            reciver: '',
         }
     }
 
+    componentDidMount() {
+        const {params} = this.props.navigation.state;
+        if (params !== undefined)
+            this.setState({IDNhanVien: params.data.idnhanvien, reciver: params.data.tennhanvien})
+    }
+
     render() {
+
         return (
             <View style={{flex: 1}}>
                 <Image source={require('../images/bg.png')}
@@ -56,6 +67,27 @@ export default class ModalSendMessage extends Component {
                     <View></View>
                 </View>
                 <View style={{flex: 9}}>
+                    <View style={{marginLeft: 16, marginBottom: 16, marginTop: 16, flexDirection: 'row'}}>
+                        <Text style={{alignSelf: 'center', flex: 1}}>Người nhận: </Text>
+                        <View style={{marginLeft: 8, flexDirection: 'row', backgroundColor: 'white', flex: 5}}>
+                            <TextInput
+                                style={{flex: 1, textAlignVertical: 'bottom'}}
+                                onChangeText={(text) => this.setState({reciver: text})}
+                                value={this.state.reciver}
+                            />
+                            <TouchableOpacity style={{alignSelf: 'center'}} onPress={() => this.showDialog()}>
+                                <Icon3 style={{alignSelf: 'center'}} size={24} color="black" name="add-user"/>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    <View style={{margin: 16}}>
+                        <Text style={{marginBottom: 8}}>Tiêu đề</Text>
+                        <TextInput
+                            style={{height: 44, width: width, backgroundColor: 'white'}}
+                            onChangeText={(text) => this.setState({title: text})}
+                            value={this.state.title}
+                        />
+                    </View>
                     <View style={{flex: 8}}>
                         <Text style={{marginLeft: 16, marginTop: 16, marginBottom: 16}}>
                             Nội dung
@@ -70,6 +102,7 @@ export default class ModalSendMessage extends Component {
                         </ScrollView>
                     </View>
                     <TouchableOpacity
+                        onPress={() => this.sendMessage()}
                         style={{flex: 1, width: width, backgroundColor: 'green', justifyContent: 'center'}}>
                         <Text style={{
                             alignSelf: 'center',
@@ -82,7 +115,37 @@ export default class ModalSendMessage extends Component {
             </View>
         )
     }
+
+    sendMessage() {
+        fetch(URlConfig.getLinkSendMessage(this.state.IDNhanVien, this.state.title, this.state.text))
+            .then((response) => (response.json()))
+            .then((responseJson) => {
+                if (responseJson.status) {
+                    Toast.show('Gửi tin nhắn thành công')
+                    this.props.navigation.goBack()
+                }
+            })
+    }
+
+    showDialog() {
+        DialogManager.show({
+            animationDuration: 200,
+            ScaleAnimation: new ScaleAnimation(),
+            height: height,
+            style: {bottom: 0},
+            children: (
+                <DialogCustom
+                    callback={(id, name) => {
+                        this.setState({IDNhanVien: id, reciver: name})
+                    }}/>
+            ),
+        }, () => {
+            console.log('callback - show');
+        });
+    }
+
 }
+
 const styles = StyleSheet.create({
     indicator: {
         alignSelf: 'center',

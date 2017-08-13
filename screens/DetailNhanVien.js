@@ -75,7 +75,7 @@ export default class DetailNhanVien extends React.Component {
                     <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Thông
                         tin nhân viên</Text>
                     <TouchableOpacity style={{backgroundColor: 'transparent', alignSelf: 'center', marginRight: 8}}
-                                      onPress={() => navigate('SendMessage')}>
+                                      onPress={() => navigate('SendMessage', {data: this.state.data})}>
                         <Icon2 style={{backgroundColor: 'transparent', alignSelf: 'center'}} size={24} color="white"
                                name="new-message"/>
                     </TouchableOpacity>

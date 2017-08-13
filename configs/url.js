@@ -48,6 +48,10 @@ export default class URlConfig {
         return data.urlserver + '/AppBieuDoTanSuatViengThamNhanVien.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idct=' + data.idcongty + '&tungay=' + dateFrom + '&denngay=' + dateTo;
     }
 
+    static getLinkSendMessage(id, tieude, noidung) {
+        let data = URlConfig.OBJLOGIN;
+        return data.urlserver + '/AppGuiTinNhan.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&noidung=' + noidung + '&tieude=' + tieude + '&idnhanvien=' + id + '&loai=quanlyguinhanvien'
+    }
     static getNewFeedLink(page, keyWord) {
         let data = URlConfig.OBJLOGIN;
         return data.urlserver + '/AppNewFeed_v2.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&macongty=' + data.idct + '&page=' + page + '&timkiem=' + keyWord;
@@ -59,12 +63,9 @@ export default class URlConfig {
         return data.urlserver + '/AppBaoCaoTrangChu.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&macongty=' + data.idct;
     }
 
-    static getListNhanVienLink(page, id, keyword) {
+    static getListNhanVienLink() {
         let data = URlConfig.OBJLOGIN;
-        if (id !== null) {
-            return data.urlserver + '/AppDanhSachNhanVien_v2.aspx?token=' + '&idquanly=' + data.id + '&macongty=' + data.idct + '&page=' + page + '&idnhom=' + id + '&timkiem=' + keyword;
-        }
-        return data.urlserver + '/AppDanhSachNhanVien_v2.aspx?token=' + '&idquanly=' + data.id + '&macongty=' + data.idct + '&timkiem=' + keyword + '&page=' + page;
+        return data.urlserver + '/AppDanhSachNhanVien.aspx?token=' + '&idquanly=' + data.id + '&macongty=' + data.idct;
     }
 
     static getLinkOrderList(from, to, page, keyword) {
