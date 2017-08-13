@@ -336,7 +336,8 @@ export default class CustomerPlant extends Component {
 
                         </TouchableOpacity>
                     </View>
-                    <DialogCustom callback={() => {
+                    <DialogCustom callback={(id) => {
+                        this.setState({idNhanvien: id})
                     }}/>
                 </Modal>
 

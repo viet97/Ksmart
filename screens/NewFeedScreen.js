@@ -39,8 +39,7 @@ export default class NewFeedScreen extends React.Component {
 
     getDataFromSv() {
         ALL_LOADED = false
-        this.setState({isEndList: false})
-        this.setState({dataRender: null})
+        this.setState({isEndList: false, dataRender: null})
         PAGE = 1
         let url = URlConfig.getNewFeedLink(PAGE, SEARCH_STRING)
         fetch(url)
@@ -213,16 +212,17 @@ export default class NewFeedScreen extends React.Component {
             var a = text.toLowerCase()
             SEARCH_STRING = a
             this.getDataFromSv()
-            if (SEARCH_STRING === 0)
-                this.setState({isSearching: false})
         });
     }
 
     onCancel() {
         return new Promise((resolve, reject) => {
             resolve();
-            SEARCH_STRING = ''
-            this.setState({isSearching: false})
+            console.log("onCancle")
+            if (SEARCH_STRING.length !== 0) {
+                SEARCH_STRING = ''
+                this.getOrderListFromServer(this.state.filtDialog.dateFrom, this.state.filtDialog.dateTo)
+            }
         });
     }
 
@@ -260,7 +260,6 @@ export default class NewFeedScreen extends React.Component {
 
     componentDidMount() {
         this.getDataFromSv()
-
     }
 
 }

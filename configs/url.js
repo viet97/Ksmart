@@ -59,18 +59,18 @@ export default class URlConfig {
         return data.urlserver + '/AppBaoCaoTrangChu.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&macongty=' + data.idct;
     }
 
-    static getListNhanVienLink(id = '') {
+    static getListNhanVienLink(page, id, keyword) {
         let data = URlConfig.OBJLOGIN;
-        if (id !== '') {
-            return data.urlserver + '/AppDanhSachNhanVien.aspx?token=' + '&idquanly=' + data.id + '&macongty=' + data.idct + '&idnhom=' + id;
+        if (id !== null) {
+            return data.urlserver + '/AppDanhSachNhanVien_v2.aspx?token=' + '&idquanly=' + data.id + '&macongty=' + data.idct + '&page=' + page + '&idnhom=' + id + '&timkiem=' + keyword;
         }
-        return data.urlserver + '/AppDanhSachNhanVien.aspx?token=' + '&idquanly=' + data.id + '&macongty=' + data.idct;
+        return data.urlserver + '/AppDanhSachNhanVien_v2.aspx?token=' + '&idquanly=' + data.id + '&macongty=' + data.idct + '&timkiem=' + keyword + '&page=' + page;
     }
 
-    static getLinkOrderList(from, to) {
+    static getLinkOrderList(from, to, page, keyword) {
         // return 'http://jav.ksmart.vn/AppDanhSachDonHang.aspx?6e22b116f5111220741848ccd290e9e9e60cd16030852326e0ebdcf522be1393&idquanly=47&idct=1&from=01-05-2017&to=10-07-2017&trangthaigps=0'
         let data = URlConfig.OBJLOGIN;
-        return data.urlserver + '/AppDanhSachDonHang.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idct=' + data.idcongty + '&from=' + from + '&to=' + to + '&rangthaigps=0';
+        return data.urlserver + '/AppDanhSachDonHang_v2.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idct=' + data.idcongty + '&from=' + from + '&to=' + to + '&rangthaigps=0&page=' + page + '&timkiem=' + keyword;
     }
 
     static getLinkTravel(dateFrom, dateTo) {
@@ -118,7 +118,7 @@ export default class URlConfig {
 
     static getLinkDetailNhanVien(idnhanvien) {
         let data = URlConfig.OBJLOGIN;
-        return data.urlserver + '/AppChiTietNhanVien.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idct=' + data.idcongty + '&idnhanvien=' + idnhanvien;
+        return data.urlserver + '/AppChiTietNhanVien_v2.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idct=' + data.idcongty + '&idnhanvien=' + idnhanvien;
 
     }
 

@@ -12,6 +12,7 @@ import {
     ActivityIndicator, Platform,
     Picker, TouchableHighlight, TextInput
 } from 'react-native';
+import Icon2 from 'react-native-vector-icons/Entypo'
 
 import {ProgressDialog} from 'react-native-simple-dialogs';
 import DialogManager, {ScaleAnimation, DialogContent} from 'react-native-dialog-component';
@@ -20,10 +21,19 @@ import URlConfig from "../configs/url";
 import Search from "react-native-search-box";
 import Toast from "react-native-simple-toast";
 
+let Page = 1
+let ALL_LOADED = false
+let SEARCH_STRING = ''
+let {width, height} = Dimensions.get('window')
 export default class DialogCustom extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            onEndReach: true,
+            refreshing: false,
+            idNhom: null,
+            dataRender: null,
+            isEndList: false,
             progressVisible: false,
             listGroup: [],
             positionGroupChoose: -1,
@@ -32,6 +42,92 @@ export default class DialogCustom extends React.Component {
             listNameNhanVien: [],
             nhanVienSelect: '',
             textSearch: ''
+        }
+    }
+
+    renderFooter = () => {
+        if (ALL_LOADED) return null
+        return (
+            <View
+                style={{
+                    justifyContent: 'center',
+                    borderColor: "green"
+                }}
+            >
+                <ActivityIndicator animating={true} size="large"/>
+            </View>
+        );
+    };
+
+    getListNhanVienFromSv(id) {
+        Page = 1
+        this.setState({dataRender: null, isEndList: false})
+        fetch(URlConfig.getListNhanVienLink(Page, id, SEARCH_STRING))
+            .then((response) => (response.json()))
+            .then((responseJson) => {
+                if (responseJson.status) {
+                    let arr = []
+                    let dsnhanvien = responseJson.dsNhanVien
+                    for (let item of dsnhanvien) {
+                        arr.push(item.tennhanvien)
+                    }
+                    this.setState({
+                        dataRender: responseJson.dsNhanVien,
+                        isEndList: responseJson.endlist,
+                        listNhanVien: dsnhanvien,
+                        listNameNhanVien: arr,
+                    }, function () {
+                        if (this.state.isEndList) {
+                            ALL_LOADED = true
+                            this.forceUpdate()
+                        }
+                    })
+                } else {
+                    Toast.show('' + 123)
+                    ALL_LOADED = true
+                    this.forceUpdate()
+                }
+
+            })
+            .catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e))
+
+    }
+
+    loadMoreDataFromSv() {
+
+        if (!this.state.onEndReach) {
+            this.setState({onEndReach: true})
+
+            if (!this.state.isEndList) {
+                Page = Page + 1
+                fetch(URlConfig.getListNhanVienLink(Page, this.state.idNhom, SEARCH_STRING))
+                    .then((response) => response.json())
+                    .then((responseJson) => {
+                        if (responseJson.status) {
+                            let arr = []
+                            let dataFull = this.state.listNhanVien
+                            dataFull = dataFull.concat(responseJson.dsNhanVien)
+                            for (let item of dataFull) {
+                                arr.push(item.tennhanvien)
+                            }
+                            this.setState({
+                                dataRender: dataFull,
+                                listNhanVien: dataFull,
+                                listNameNhanVien: arr,
+                                isEndList: responseJson.endlist
+                            }, function () {
+                                if (this.state.isEndList) {
+                                    ALL_LOADED = true
+                                    this.forceUpdate()
+                                }
+                            });
+                        } else {
+                            ALL_LOADED = true
+                            this.forceUpdate()
+                        }
+                    })
+                    .catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'));
+            }
         }
     }
 
@@ -47,6 +143,7 @@ export default class DialogCustom extends React.Component {
                     this.setState({listGroup: responseJson.danhsachnhom, listNameGroup: arr})
                 }
             ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+        this.getListNhanVienFromSv(this.state.idNhom)
 
     }
 
@@ -70,11 +167,13 @@ export default class DialogCustom extends React.Component {
                         style={{height: 40, borderColor: 'gray', borderWidth: 0.4, borderRadius: 10, paddingLeft: 8}}
                         onChangeText={(textSearch) => {
                             if (this.state.positionGroupChoose === -1 || this.state.positionGroupChoose === '-1') {
+                                SEARCH_STRING = textSearch
                                 Toast.show('Vui long chon phong ban truoc')
                             } else {
-
+                                SEARCH_STRING = textSearch
+                                this.getListNhanVienFromSv(this.state.idNhom)
                             }
-                            this.setState({textSearch})
+                            this.setState({textSearch: textSearch})
                         }}
                         onSubmitEditing={() => {
                             this.refs.nhanvien.show();
@@ -96,6 +195,44 @@ export default class DialogCustom extends React.Component {
                         renderRow={this._renderRowNhanVien.bind(this)}
                         renderSeparator={(sectionID, rowID, adjacentRowHighlighted) => this._renderSeparatorNhanVien(sectionID, rowID, adjacentRowHighlighted)}
                     />
+                    <FlatList
+                        ListFooterComponent={this.renderFooter}
+                        refreshing={this.state.refreshing}
+                        onRefresh={() => {
+                            this.getListNhanVienFromSv(this.state.idNhom)
+                        }}
+                        ref="listview"
+                        onEndReachedThreshold={0.2}
+                        onEndReached={() => {
+                            this.loadMoreDataFromSv()
+                        }}
+                        onMomentumScrollBegin={() => {
+                            this.setState({onEndReach: false})
+                        }}
+                        extraData={this.state.dataRender}
+                        data={this.state.dataRender}
+                        renderItem={({item}) =>
+                            <TouchableOpacity onPress={() => this.setState({
+                                textSearch: item.tennhanvien,
+                                idNhanVien: item.idnhanvien
+                            })}>
+                                <View style={{flexDirection: 'row'}}>
+                                    <View style={{justifyContent: 'center'}}>
+                                        <Image
+                                            style={{margin: 8, width: 60, height: 60, borderRadius: 30}}
+                                            source={require('../images/bglogin.jpg')}/>
+                                    </View>
+                                    <View style={{flex: 4, margin: 8, justifyContent: 'center'}}>
+                                        <Text
+                                            style={{
+                                                fontSize: 18, backgroundColor: 'transparent'
+                                            }}>{item.tennhanvien}</Text>
+                                        <Text>{item.tendangnhap}</Text>
+                                    </View>
+                                </View>
+                            </TouchableOpacity>
+                        }
+                    />
                 </View>
                 <View style={{
                     position: 'absolute',
@@ -111,6 +248,7 @@ export default class DialogCustom extends React.Component {
                         <Text>Huy bo</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => {
+                        this.props.callback(id)
                         DialogManager.dismiss(() => {
                             this.props.callback(this.state.nhanVienSelect)
                         });
@@ -130,21 +268,10 @@ export default class DialogCustom extends React.Component {
     _onSelect(id, value) {
         console.log('dmcc', id, value);
         console.log('dmcc', this.state.listGroup[id])
-        let url = URlConfig.getListNhanVienLink(this.state.listGroup[id].ID_Nhom);
-        console.log('url', url)
-        fetch(url)
-            .then((response) => (response.json()))
-            .then((responseJson) => {
-                    let dsnhanvien = responseJson.dsNhanVien;
-                    let arr = []
-                    for (let item of dsnhanvien) {
-                        arr.push(item.tennhanvien)
-                    }
-                this.setState({listNhanVien: dsnhanvien, listNameNhanVien: arr, positionGroupChoose: id})
-                }
-            ).catch((e) => {
-            Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại')
+        this.setState({idNhom: this.state.listGroup[id].ID_Nhom, positionGroupChoose: id}, function () {
+            this.getListNhanVienFromSv(this.state.listGroup[id].ID_Nhom)
         })
+
 
     }
 

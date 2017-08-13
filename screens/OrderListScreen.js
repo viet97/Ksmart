@@ -27,12 +27,12 @@ import AtoZListView from 'react-native-atoz-listview';
 import Search from 'react-native-search-box';
 import ultils from "../configs/ultils";
 import Toast from 'react-native-simple-toast'
-var {height, width} = Dimensions.get('window');
-var GiftedListView = require('react-native-gifted-listview');
 
-var NUMBER_ROW_RENDER = 0
-var SEARCH_STRING = '';
-var ALL_LOADED = false
+var {height, width} = Dimensions.get('window');
+
+let Page = 1
+let SEARCH_STRING = '';
+let ALL_LOADED = false
 export default class OrderListScreen extends Component {
     static navigationOptions = {
         header: null,
@@ -53,6 +53,8 @@ export default class OrderListScreen extends Component {
         }
         today = dd + '-' + mm + '-' + yyyy;
         this.state = {
+            onEndReach: true,
+            isEndList: false,
             ALL_LOADED: false,
             isSearching: false,
             refreshing: false,
@@ -77,28 +79,35 @@ export default class OrderListScreen extends Component {
 
 
     getOrderListFromServer(datef, datet) {
-        this.setState({dataRender: null})
+        Page = 1
         ALL_LOADED = false
-        NUMBER_ROW_RENDER = 10
-        fetch(URlConfig.getLinkOrderList(datef, datet))
+        this.setState({isEndList: false, dataRender: null})
+        fetch(URlConfig.getLinkOrderList(datef, datet, Page, SEARCH_STRING))
             .then((response) => response.json())
             .then((responseJson) => {
                 if (responseJson.status) {
-                    console.log(responseJson)
-
                     this.setState({
-                        orderListDataFull: responseJson.data
+                        orderListDataFull: responseJson.data,
+                        isEndList: responseJson.endlist
                     }, function () {
-                        this.filtData(responseJson.data)
+                        if (this.state.isEndList) {
+                            ALL_LOADED = true
+                            this.forceUpdate()
+                        }
+                        let dataFill = this.filtData(responseJson.data)
+                        this.setState({dataRender: dataFill})
                     });
                 } else {
                     ALL_LOADED = true
-                    NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
+                    this.forceUpdate()
                 }
             })
             .catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'));
     }
 
+    refreshData() {
+        this.getOrderListFromServer(this.state.filtDialog.dateFrom, this.state.filtDialog.dateTo)
+    }
     filtData(data) {
 
         var arr = []
@@ -114,22 +123,43 @@ export default class OrderListScreen extends Component {
                     }
                 }
             }
-        this.setState({orderListDataFilt: arr}, function () {
-            this.setState({
-                    dataRender: this.state.orderListDataFilt.slice(0, NUMBER_ROW_RENDER + 10),
-                    dataSearch: this.state.orderListDataFilt.slice(0, NUMBER_ROW_RENDER + 10)
-                }, function () {
-                    NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
-                    if (NUMBER_ROW_RENDER > this.state.orderListDataFilt.length) {
-                        ALL_LOADED = true
-                        console.log(ALL_LOADED)
-                        this.forceUpdate()
-                    }
-                }
-            )
 
-        })
+        return arr
+    }
 
+    loadMoreDataFromSv() {
+
+        if (!this.state.onEndReach) {
+            this.setState({onEndReach: true})
+
+            if (!this.state.isEndList) {
+                Page = Page + 1
+                fetch(URlConfig.getLinkOrderList(this.state.filtDialog.dateFrom, this.state.filtDialog.dateTo, Page, SEARCH_STRING))
+                    .then((response) => response.json())
+                    .then((responseJson) => {
+                        if (responseJson.status) {
+                            let dataFull = this.state.orderListDataFull
+                            dataFull = dataFull.concat(responseJson.data)
+                            this.setState({
+                                orderListDataFull: dataFull,
+                                isEndList: responseJson.endlist
+                            }, function () {
+                                if (this.state.isEndList) {
+                                    ALL_LOADED = true
+                                    this.forceUpdate()
+                                }
+                                let dataFill = this.filtData(responseJson.data)
+                                let dataRender = this.state.dataRender.concat(dataFill)
+                                this.setState({dataRender: dataRender})
+                            });
+                        } else {
+                            ALL_LOADED = true
+                            this.forceUpdate()
+                        }
+                    })
+                    .catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'));
+            }
+        }
     }
 
 
@@ -260,30 +290,14 @@ export default class OrderListScreen extends Component {
         )
     }
 
-    loadMoreData() {
-
-        if (!this.state.onEndReach) {
-            console.log("LOADMORE")
-            this.setState({onEndReach: true})
-            this.setState({
-                dataRender: this.state.orderListDataFilt.slice(0, NUMBER_ROW_RENDER + 10),
-                dataSearch: this.state.orderListDataFilt.slice(0, NUMBER_ROW_RENDER + 10)
-            })
-
-            NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
-            if (NUMBER_ROW_RENDER > this.state.orderListDataFilt.length - 10) {
-                ALL_LOADED = true
-                this.forceUpdate()
-            }
-        }
-    }
 
     refreshData() {
-        this.getOrderListFromServer(this.state.filtDialog.dateFrom, this.state.filtDialog.dateTo)
+        this.getOrderListFromServer(this.state.filtDialog.dateFrom, this.state.filtDialog.dateTo, Page, SEARCH_STRING)
     }
 
     renderFooter = () => {
-        if (ALL_LOADED || this.state.isSearching) return null
+        Toast.show('' + ALL_LOADED)
+        if (ALL_LOADED) return null
         return (
             <View
                 style={{
@@ -299,26 +313,11 @@ export default class OrderListScreen extends Component {
     onChangeText(text) {
         return new Promise((resolve, reject) => {
             resolve();
-            this.setState({isSearching: true})
             var arr = []
             var a = text.toLowerCase()
             SEARCH_STRING = a
             console.log(a)
-            if (a.length === 0) this.setState({dataRender: this.state.dataSearch})
-            else
-                for (var item in this.state.dataSearch) {
-                    if (a !== SEARCH_STRING) return
-                    console.log(this.state.dataSearch[item])
-                    if (this.state.dataSearch[item].tenkhachhang.toLowerCase().search(a) !== -1) {
-                        console.log(this.state.dataSearch[item])
-                        console.log(this.state.dataSearch[item])
-                        arr.push(this.state.dataSearch[item])
-                        console.log(arr)
-                    }
-                }
-
-            if (a.length !== 0) this.setState({dataRender: arr})
-            else this.setState({isSearching: false})
+            this.getOrderListFromServer(this.state.filtDialog.dateFrom, this.state.filtDialog.dateTo)
         });
     }
 
@@ -326,8 +325,11 @@ export default class OrderListScreen extends Component {
         return new Promise((resolve, reject) => {
             resolve();
             console.log("onCancle")
-            SEARCH_STRING = ''
-            this.setState({dataRender: this.state.dataSearch, isSearching: false})
+            if (SEARCH_STRING.length !== 0) {
+                SEARCH_STRING = ''
+                this.getOrderListFromServer(this.state.filtDialog.dateFrom, this.state.filtDialog.dateTo)
+            }
+
         });
     }
 
@@ -343,10 +345,15 @@ export default class OrderListScreen extends Component {
                         style={styles.indicator}
                         size="large"/>
                 </View>)
-        } else if (this.state.dataRender.length === 0)
+        } else if (this.state.orderListDataFull.length === 0 && this.state.isEndList)
             return (    <View style={{flex: 9}}>
-                <Text style={{alignSelf: 'center', textAlign: 'center', fontSize: 20, backgroundColor: 'transparent'}}>Không
-                    có dữ liệu</Text>
+                    <Text style={{
+                        alignSelf: 'center',
+                        textAlign: 'center',
+                        fontSize: 20,
+                        backgroundColor: 'transparent'
+                    }}>Không
+                        có dữ liệu</Text>
 
                 </View>
             )
@@ -366,8 +373,7 @@ export default class OrderListScreen extends Component {
                     }}
                     onEndReachedThreshold={0.2}
                     onEndReached={() => {
-                        if (SEARCH_STRING.length === 0)
-                            this.loadMoreData()
+                        this.loadMoreDataFromSv()
                     }}
                     onMomentumScrollBegin={() => {
 
@@ -476,7 +482,6 @@ export default class OrderListScreen extends Component {
                         callback={(data) => {
                             this.setState({filtDialog: data}, function () {
                                 if (this.state.filtDialog.status) {
-                                    this.setState({dataRender: null})
                                     this.getOrderListFromServer(this.state.filtDialog.dateFrom, this.state.filtDialog.dateTo)
                                     return (<View style={{width: 100, height: 100}}> <ActivityIndicator
                                         size="large"/></View>)

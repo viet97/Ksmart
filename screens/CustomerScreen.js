@@ -41,8 +41,9 @@ export default class CustomerScreen extends Component {
     }
 
     renderFooter = () => {
+
         console.log("Footer")
-        if (ALL_LOADED || this.state.isSearching) return null
+        if (ALL_LOADED) return null
         return (
             <View
                 style={{
@@ -126,7 +127,7 @@ export default class CustomerScreen extends Component {
                         style={styles.indicator}
                         size="large"/>
                 </View>)
-        } else if (this.state.dataRender.length === 0)
+        } else if (this.state.dataFull.length === 0)
             return (    <View style={{flex: 9}}>
                 <Text style={{alignSelf: 'center', textAlign: 'center', fontSize: 20, backgroundColor: 'transparent'}}>Không
                     có dữ liệu</Text>
@@ -256,11 +257,8 @@ export default class CustomerScreen extends Component {
             console.log("promise")
             var keyword = text.toLowerCase()
             SEARCH_STRING = keyword
-            if (keyword.length !== 0) this.getdataSearch(keyword)
-            else this.setState({
-                dataRender: this.state.dataFull,
-                isSearching: false
-            })
+            this.getdataSearch(keyword)
+
         });
     }
 
@@ -326,8 +324,11 @@ export default class CustomerScreen extends Component {
         return new Promise((resolve, reject) => {
             resolve();
             console.log("onCancle")
-            SEARCH_STRING = ''
-            this.setState({dataRender: this.state.dataFull, isSearching: false})
+            console.log("onCancle")
+            if (SEARCH_STRING.length !== 0) {
+                SEARCH_STRING = ''
+                this.getDataFromSv()
+            }
         });
     }
 
