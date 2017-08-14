@@ -18,9 +18,10 @@ import Color from '../configs/color'
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import URlConfig from "../configs/url";
 import Toast from 'react-native-simple-toast'
-var SEARCH_STRING = '';
-var {width, height} = Dimensions.get('window');
-var ALL_LOADED = false
+
+let SEARCH_STRING = '';
+let {width, height} = Dimensions.get('window');
+let ALL_LOADED = false
 let PAGE = 1
 export default class NewFeedScreen extends React.Component {
 
@@ -60,26 +61,32 @@ export default class NewFeedScreen extends React.Component {
     }
 
     loadMoreDataFromSv() {
-        PAGE = PAGE + 1
-        let url = URlConfig.getNewFeedLink(PAGE, SEARCH_STRING)
-        console.log(url)
-        fetch(url)
-            .then((response) => (response.json()))
-            .then((responseJson) => {
-                let arr = this.state.dataFull
-                arr = arr.concat(responseJson.data)
-                this.setState({
-                    dataFull: arr,
-                    isEndList: responseJson.endlist,
-                    dataRender: arr
-                }, function () {
-                    if (this.state.isEndList) {
-                        ALL_LOADED = true
-                        this.forceUpdate()
-                    }
-                })
-            })
-            .catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+        if (!this.state.onEndReach) {
+            this.setState({onEndReach: true})
+
+            if (!this.state.isEndList) {
+                PAGE = PAGE + 1
+                let url = URlConfig.getNewFeedLink(PAGE, SEARCH_STRING)
+                console.log(url)
+                fetch(url)
+                    .then((response) => (response.json()))
+                    .then((responseJson) => {
+                        let arr = this.state.dataFull
+                        arr = arr.concat(responseJson.data)
+                        this.setState({
+                            dataFull: arr,
+                            isEndList: responseJson.endlist,
+                            dataRender: arr
+                        }, function () {
+                            if (this.state.isEndList) {
+                                ALL_LOADED = true
+                                this.forceUpdate()
+                            }
+                        })
+                    })
+                    .catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+            }
+        }
     }
 
     getImage(urlImage) {
@@ -158,7 +165,7 @@ export default class NewFeedScreen extends React.Component {
                     ref="listview"
                     onEndReachedThreshold={0.2}
                     onEndReached={() => {
-                            this.loadMoreData()
+                        this.loadMoreData()
                     }}
                     onMomentumScrollBegin={() => {
                         this.setState({onEndReach: false})

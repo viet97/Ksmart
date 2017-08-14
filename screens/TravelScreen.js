@@ -21,22 +21,33 @@ import Toast from 'react-native-simple-toast'
 import DatePicker from 'react-native-datepicker'
 import ultils from "../configs/ultils";
 
-var {height, width} = Dimensions.get('window');
-var NUMBER_ROW_RENDER = 10;
-let ALL_LOADED = false;
+let SEARCH_STRING = '';
+let {width, height} = Dimensions.get('window');
+let ALL_LOADED = false
+let PAGE = 1
 const TIME_SAP_DEN_GIO = 10 * 60;//10 phut
 export default class TravelScreen extends React.Component {
 
 
     getDataFromSv() {
-        fetch(URlConfig.getLinkTravel(this.state.dateFrom, this.state.dateTo))
+        ALL_LOADED = false
+        this.setState({isEndList: false, dataRender: null})
+        PAGE = 1
+        fetch(URlConfig.getLinkTravel(this.state.dateFrom, this.state.dateTo, PAGE))
             .then((response) => (response.json()))
             .then((responseJson) => {
                     if (responseJson.status) {
-                        this.setState({dataFull: responseJson.data}, function () {
-                            this.setDataRender();
+                        this.setState({
+                            dataFull: responseJson.data,
+                            isEndList: responseJson.endlist,
+                            dataRender: responseJson.data
+                        }, function () {
+                            if (this.state.isEndList) {
+                                ALL_LOADED = true
+                                this.forceUpdate()
+                            }
                         })
-                    } else Toast.show('đường dẫn sai , vui long liên hệ với admin')
+                    }
                 }
             ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
     }
@@ -58,6 +69,7 @@ export default class TravelScreen extends React.Component {
 
         today = dd + '-' + mm + '-' + yyyy;
         this.state = ({
+            isEndList: false,
             numberPickTravel: 0,
             travelStatus: [],
             refreshing: false,
@@ -66,9 +78,6 @@ export default class TravelScreen extends React.Component {
             dateTo: today,
             dataRender: null,
             onEndReach: true,
-            waiting: false,
-            myText: 'I\'m ready to get swiped!',
-            gestureName: 'none',
             URL: ''
         })
     }
@@ -87,7 +96,6 @@ export default class TravelScreen extends React.Component {
     }
 
     setDataRender() {
-        NUMBER_ROW_RENDER = 0
 
         let data = this.state.dataFull.slice(0, NUMBER_ROW_RENDER + 10)
         NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
@@ -148,21 +156,53 @@ export default class TravelScreen extends React.Component {
         }
     }
 
-    loadMoreData() {
+    loadMoreDataFromSv() {
         if (!this.state.onEndReach) {
             this.setState({onEndReach: true})
-            this.setDataRender()
-            if (NUMBER_ROW_RENDER > this.state.dataFull.length - 10) {
-                ALL_LOADED = true
-                this.forceUpdate()
+
+            if (!this.state.isEndList) {
+                PAGE = PAGE + 1
+                let url = URlConfig.getLinkTravel(this.state.dateFrom, this.state.dateTo, PAGE)
+                console.log(url)
+                fetch(url)
+                    .then((response) => (response.json()))
+                    .then((responseJson) => {
+                        let arr = this.state.dataFull
+                        arr = arr.concat(responseJson.data)
+                        this.setState({
+                            dataFull: arr,
+                            isEndList: responseJson.endlist,
+                            dataRender: arr
+                        }, function () {
+                            if (this.state.isEndList) {
+                                ALL_LOADED = true
+                                this.forceUpdate()
+                            }
+                        })
+                    })
+                    .catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
             }
         }
     }
 
     refreshData() {
-        this.setState({dataRender: null})
         this.getDataFromSv()
     }
+
+    renderFooter = () => {
+
+        if (ALL_LOADED) return null
+        return (
+            <View
+                style={{
+                    justifyContent: 'center',
+                    borderColor: "green"
+                }}
+            >
+                <ActivityIndicator animating={true} size="large"/>
+            </View>
+        );
+    };
 
     flatListorIndicator() {
 
@@ -174,7 +214,7 @@ export default class TravelScreen extends React.Component {
                         style={styles.indicator}
                         size="large"/>
                 </View>)
-        } else if (this.state.dataRender.length === 0)
+        } else if (this.state.dataFull.length === 0 && this.state.isEndList)
             return (    <View style={{flex: 9}}>
                 <Text style={{alignSelf: 'center', textAlign: 'center', fontSize: 20, backgroundColor: 'transparent'}}>Không
                     có dữ liệu</Text>
@@ -185,6 +225,7 @@ export default class TravelScreen extends React.Component {
             <View style={{flex: 9}}>
 
                 <FlatList
+                    ListFooterComponent={this.renderFooter}
                     refreshing={this.state.refreshing}
                     onRefresh={() => {
                         this.refreshData()
@@ -192,7 +233,7 @@ export default class TravelScreen extends React.Component {
                     ref="listview"
                     onEndReachedThreshold={0.2}
                     onEndReached={() => {
-                        this.loadMoreData()
+                        this.loadMoreDataFromSv()
                     }}
                     onMomentumScrollBegin={() => {
                         this.setState({onEndReach: false})
@@ -207,7 +248,7 @@ export default class TravelScreen extends React.Component {
     }
 
     renderItem(item) {
-        
+
         var strVaoDiem = '';
         var strRaDiem = '';
         if (item.ThoiGianVaoDiemThucTe === '1900-01-01T00:00:00') {
@@ -406,7 +447,7 @@ export default class TravelScreen extends React.Component {
             dateTo: dateTo,
             URL: URlConfig.getLinkTravel(dateFrom, dateTo)
         }, function () {
-            this.refreshData()
+            this.getDataFromSv()
         });
 
     }

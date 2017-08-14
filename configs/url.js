@@ -77,10 +77,10 @@ export default class URlConfig {
         return data.urlserver + '/AppDanhSachDonHang_v2.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idct=' + data.idcongty + '&from=' + from + '&to=' + to + '&rangthaigps=0&page=' + page + '&timkiem=' + keyword;
     }
 
-    static getLinkTravel(dateFrom, dateTo) {
+    static getLinkTravel(dateFrom, dateTo, page) {
         //http://jav.ksmart.vn/AppKeHoachDiChuyen_v3.aspx?token=6e22b116f5111220741848ccd290e9e9a281184550a212fd0a896d68f16f236e&idct=1&idquanly=47&from=13-07-2017&to=&00loai=chitietcacngaycokehoach
         let data = URlConfig.OBJLOGIN;
-        return data.urlserver + '/AppKeHoachDiChuyen_v3.aspx?token=' + md5.hex_md5(Date.now()) + '&idct=' + data.idcongty + '&idquanly=' + data.id + '&from=' + dateFrom + '&to=' + dateTo + '&loai=chitietcacngaycokehoach';
+        return data.urlserver + '/AppKeHoachDiChuyen_v4.aspx?token=' + md5.hex_md5(Date.now()) + '&idct=' + data.idcongty + '&idquanly=' + data.id + '&from=' + dateFrom + '&to=' + dateTo + '&loai=chitietcacngaycokehoach&page=' + page;
     }
 
     static getCustomerLink(page) {
