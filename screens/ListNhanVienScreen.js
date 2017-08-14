@@ -80,11 +80,26 @@ export default class ListNhanVienScreen extends React.Component {
 
     isOnline(dangtructuyen) {
         if (dangtructuyen === 1)
-            return <Icon2 style={{backgroundColor: 'transparent'}} size={36} color="green" name="controller-record"/>
-        else if (dangtructuyen === 2) return <Icon2 style={{backgroundColor: 'transparent'}} size={24} color="red"
-                                                    name="controller-record"/>
-        else if (dangtructuyen === 0) return <Icon2 style={{backgroundColor: 'transparent'}} size={24} color="gray"
-                                                    name="controller-record"/>
+            return (
+                <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center'}}>
+                    <Icon2 style={{backgroundColor: 'transparent'}} size={24} color="green"
+                           name="controller-record"/>
+                    <Text style={{alignSelf: 'center'}}>Đang trực tuyến</Text>
+                </View>)
+        else if (dangtructuyen === 2)
+            return (
+                <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center'}}>
+                    <Icon2 style={{backgroundColor: 'transparent'}} size={24} color="red"
+                           name="controller-record"/>
+                    <Text style={{alignSelf: 'center'}}>Mất tín hiệu</Text>
+                </View>)
+        else if (dangtructuyen === 0)
+            return (
+                <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center'}}>
+                    <Icon2 style={{backgroundColor: 'transparent'}} size={24} color="gray"
+                           name="controller-record"/>
+                    <Text style={{alignSelf: 'center'}}>Ngoại tuyến</Text>
+                </View>)
 
     }
 
@@ -259,7 +274,12 @@ export default class ListNhanVienScreen extends React.Component {
                                                    style={{margin: 8, width: 60, height: 60, borderRadius: 30}}
                                                    source={require('../images/bglogin.jpg')}/>
                                         </View>
-                                        <View style={{flex: 4, margin: 8, justifyContent: 'center'}}>
+                                        <View style={{
+                                            flex: 4,
+                                            margin: 8,
+                                            justifyContent: 'center',
+                                            backgroundColor: 'transparent'
+                                        }}>
                                             <Text
                                                 style={{
                                                     fontSize: 18, backgroundColor: 'transparent'
@@ -342,6 +362,7 @@ export default class ListNhanVienScreen extends React.Component {
 
         });
     }
+
     render() {
         let NhanVienStatusItem = this.state.dataPickStatus.map((s, i) => {
             return <Picker.Item key={i} value={i} label={s}/>
@@ -445,15 +466,15 @@ export default class ListNhanVienScreen extends React.Component {
         fetch(URlConfig.getLinkNhomNhanVien())
             .then((response) => (response.json()))
             .then((responseJson) => {
-                    arr = this.state.partyNhanVienStatus
+                arr = this.state.partyNhanVienStatus;
 
-                let dsnhom = {}
+                let dsnhom = {};
                     if (responseJson.status) {
-                        let data = responseJson.danhsachnhom
-                        for (var item in responseJson.danhsachnhom) {
+                        let data = responseJson.danhsachnhom;
+                        for (let item in responseJson.danhsachnhom) {
                             arr.push(data[item].TenNhom)
-                            let a = {IDNhom: data[item].ID_Nhom, IDParent: data[item].ID_PARENT}
-                            dsnhom[data[item].TenNhom] = a
+                            let obj = {IDNhom: data[item].ID_Nhom, IDParent: data[item].ID_PARENT};
+                            dsnhom[data[item].TenNhom] = obj;
                         }
 
                         this.setState({
