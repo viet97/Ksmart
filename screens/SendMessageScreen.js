@@ -126,18 +126,20 @@ export default class ModalSendMessage extends Component {
                     </TouchableOpacity>
                 </View>
                 <View style={{flex: 9}}>
-                    <Text style={{flex: 1, marginTop: 16, marginLeft: 16}}>Người nhận: </Text>
-                    <View style={{marginLeft: 16, flexDirection: 'column'}}>
                         <View style={styles.autocompleteContainer}>
                             <Autocomplete
                                 hideResults={this.state.hideResults}
                                 data={this.state.listNhanVien}
                                 defaultValue={this.state.nameInput}
-                                placeholder="Nhập tên nhân viên"
+                                placeholder="Nhập tên người nhận"
                                 onChangeText={text => {
-                                    this.setState({hideResults: false, receiver: text}, function () {
-                                        this.requestSearch(text)
-                                    })
+                                    if (text.length !== 0) {
+                                        this.setState({hideResults: false, receiver: text}, function () {
+                                            this.requestSearch(text)
+                                        })
+                                    } else {
+                                        this.setState({hideResults: true})
+                                    }
                                 }}
                                 renderItem={(data) => (
                                     <TouchableOpacity
@@ -160,9 +162,7 @@ export default class ModalSendMessage extends Component {
                                 )}
                             />
                         </View>
-
-                    </View>
-                    <View style={{marginLeft: 16, marginTop: 30, backgroundColor: 'transparent'}}>
+                    <View style={{marginLeft: 16, marginTop: 60, backgroundColor: 'transparent'}}>
                         <Text style={{marginBottom: 8}}>Tiêu đề</Text>
                         <TextInput
                             style={{height: 44, width: width, backgroundColor: 'white'}}
@@ -234,6 +234,8 @@ export default class ModalSendMessage extends Component {
 
 const styles = StyleSheet.create({
     autocompleteContainer: {
+        marginTop: 8,
+        marginLeft: 16,
         flex: 1,
         left: 0,
         position: 'absolute',
