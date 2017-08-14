@@ -34,7 +34,7 @@ export default class MapListScreen extends Component {
 
     componentDidMount() {
 
-        fetch(URlConfig.getListNhanVienLink())
+        fetch(URlConfig.getAllNhanVien())
             .then((response) => (response.json()))
             .then((responseJson) => {
                 if (responseJson.status) {

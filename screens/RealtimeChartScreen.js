@@ -46,9 +46,9 @@ export default class RealtimeChartScreen extends React.Component {
 
     getDatafromServer() {
         fetch(URlConfig.getLinkOnlinePerson())
-            .then((response) => response.json())
+            .then((response) => (response.json()))
             .then((responseJson) => {
-                console.log('responjson', responseJson)
+                Toast.show('123213')
                 this.setState({data: responseJson})
             })
             .catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'));

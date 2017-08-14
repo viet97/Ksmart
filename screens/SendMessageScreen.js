@@ -26,6 +26,7 @@ import URlConfig from "../configs/url";
 import Search from "react-native-search-box";
 import {Icon} from "react-native-elements";
 import DialogCustom from "../components/DialogCustom";
+import Autocomplete from "react-native-autocomplete-input";
 
 let {height, width} = Dimensions.get('window')
 export default class ModalSendMessage extends Component {
@@ -37,11 +38,12 @@ export default class ModalSendMessage extends Component {
 
         super(props)
         this.state = {
+            listNhanVien: [],
             text: '',
             title: '',
             IDNhanVien: '',
             receiver: '',
-            listNhanVien: []
+            nameInput: ''
         }
         this.requestSearch.bind(this);
         this.loadAllSearch.bind(this);
@@ -67,14 +69,12 @@ export default class ModalSendMessage extends Component {
         fetch(URlConfig.getListNhanVienLink(page, null, receiver))
             .then((response) => (response.json()))
             .then((responseJson) => {
-                    this.state.listNhanVien.push(...responseJson.dsNhanVien)
+                this.setState({listNhanVien: this.state.listNhanVien.push(...responseJson.dsNhanVien)})
                     if (!responseJson.endlist) {
                         this.loadAllSearch(this.state.receiver, responseJson.nextpage);
-                    } else {
-                        console.log('listttttt: ' + this.state.listNhanVien.length, this.state.listNhanVien)
                     }
                 }
-            ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'));
+            ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e));
 
     }
 
@@ -94,34 +94,36 @@ export default class ModalSendMessage extends Component {
                     <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Soạn
                         tin
                         nhắn</Text>
-                    <View/>
+                    <TouchableOpacity style={{alignSelf: 'center', backgroundColor: 'transparent'}}
+                                      onPress={() => this.showDialog()}>
+                        <Icon3 style={{alignSelf: 'center'}} size={24} color="white" name="add-user"/>
+                    </TouchableOpacity>
                 </View>
                 <View style={{flex: 9}}>
-                    <View style={{
-                        marginLeft: 16,
-                        marginBottom: 16,
-                        marginTop: 16,
-                        flexDirection: 'row',
-                        backgroundColor: 'transparent'
-                    }}>
-                        <Text style={{alignSelf: 'center', flex: 1}}>Người nhận: </Text>
-                        <View style={{marginLeft: 8, flexDirection: 'row', backgroundColor: 'white', flex: 5}}>
-                            <TextInput
-                                style={{flex: 1, textAlignVertical: 'bottom'}}
-                                onChangeText={(text) => {
+                    <Text style={{flex: 1, marginTop: 16, marginLeft: 16}}>Người nhận: </Text>
+                    <View style={{marginLeft: 16, flexDirection: 'column'}}>
+                        <View style={styles.autocompleteContainer}>
+                            <Autocomplete
+                                data={this.state.listNhanVien}
+                                defaultValue={this.state.nameInput}
+                                placeholder="Nhập tên nhân viên"
+                                onChangeText={text => {
                                     this.setState({receiver: text}, function () {
-                                        this.requestSearch(text);
+                                        this.requestSearch(text)
                                     })
                                 }}
-                                value={this.state.receiver}
-                                returnKeyType={'done'}
+                                renderItem={(data) => (
+                                    <TouchableOpacity onPress={() => {
+                                        this.setState({nameInput: data})
+                                    }}>
+                                        <Text>{data.tennhanvien}</Text>
+                                    </TouchableOpacity>
+                                )}
                             />
-                            <TouchableOpacity style={{alignSelf: 'center'}} onPress={() => this.showDialog()}>
-                                <Icon3 style={{alignSelf: 'center'}} size={24} color="black" name="add-user"/>
-                            </TouchableOpacity>
                         </View>
+
                     </View>
-                    <View style={{margin: 16, backgroundColor: 'transparent'}}>
+                    <View style={{marginLeft: 16, marginTop: 30, backgroundColor: 'transparent'}}>
                         <Text style={{marginBottom: 8}}>Tiêu đề</Text>
                         <TextInput
                             style={{height: 44, width: width, backgroundColor: 'white'}}
@@ -192,6 +194,15 @@ export default class ModalSendMessage extends Component {
 }
 
 const styles = StyleSheet.create({
+    autocompleteContainer: {
+        flex: 1,
+        left: 0,
+        position: 'absolute',
+        right: 0,
+        top: 0,
+        zIndex: 1,
+        flexDirection: 'row'
+    },
     indicator: {
         alignSelf: 'center',
         flex: 1,
