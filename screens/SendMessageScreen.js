@@ -11,8 +11,10 @@ import {
     ActivityIndicator,
     Platform,
     TextInput,
-    ScrollView
+    ScrollView,
+
 } from 'react-native';
+import {Keyboard} from 'react-native';
 import DialogManager, {ScaleAnimation, DialogContent} from 'react-native-dialog-component';
 import Image from 'react-native-image-progress';
 import Icon3 from 'react-native-vector-icons/Entypo'
@@ -89,17 +91,20 @@ export default class ModalSendMessage extends Component {
                         />
                     </View>
                     <View style={{flex: 8}}>
-                        <Text style={{marginLeft: 16, marginTop: 16, marginBottom: 16}}>
+                        <Text style={{marginLeft: 16, marginTop: 16, marginBottom: 16, flex: 1}}>
                             Nội dung
                         </Text>
-                        <ScrollView style={{flex: 1, backgroundColor: 'white'}}>
                             <TextInput
                                 multiline={true}
-                                style={{height: height, textAlignVertical: 'top'}}
+                                blurOnSubmit={true}
+                                style={{flex: 10, margin: 8, backgroundColor: 'white', textAlignVertical: 'top'}}
                                 onChangeText={(text) => this.setState({text: text})}
                                 value={this.state.text}
+                                onSubmitEditing={(event) => {
+                                    Keyboard.dismiss();
+                                }}
+                                returnKeyType={'done'}
                             />
-                        </ScrollView>
                     </View>
                     <TouchableOpacity
                         onPress={() => this.sendMessage()}

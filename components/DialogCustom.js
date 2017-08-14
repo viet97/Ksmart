@@ -151,7 +151,7 @@ export default class DialogCustom extends React.Component {
     render() {
         return (
 
-            <View style={{flexDirection: 'column', flex: 1}}>
+            <View style={{flexDirection: 'column', flex: 1, backgroundColor: 'transparent'}}>
                 <View style={{flexDirection: 'column', flex: 9}}>
                     <Text>Chọn phòng ban: </Text>
                     <ModalDropdown
@@ -223,9 +223,9 @@ export default class DialogCustom extends React.Component {
                             <TouchableOpacity
 
                                 onPress={() => this.setState({
-                                textSearch: item.tennhanvien,
-                                idNhanVien: item.idnhanvien
-                            })}>
+                                    textSearch: item.tennhanvien,
+                                    idNhanVien: item.idnhanvien
+                                })}>
                                 <View style={{flexDirection: 'row'}}>
                                     <View style={{justifyContent: 'center'}}>
                                         <Image
@@ -252,17 +252,17 @@ export default class DialogCustom extends React.Component {
                     <TouchableOpacity
                         style={{paddingLeft: 16}}
                         onPress={() => {
-                        DialogManager.dismiss();
-                    }}>
+                            DialogManager.dismiss();
+                        }}>
                         <Text>Huy bo</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={{paddingLeft: 16}}
                         onPress={() => {
-                        DialogManager.dismiss(() => {
-                            this.props.callback(this.state.idNhanVien, this.state.textSearch)
-                        });
-                    }}>
+                            DialogManager.dismiss(() => {
+                                this.props.callback(this.state.idNhanVien, this.state.textSearch)
+                            });
+                        }}>
                         <Text>Ap dung</Text>
                     </TouchableOpacity>
                 </View>
