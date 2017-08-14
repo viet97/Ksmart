@@ -38,6 +38,7 @@ export default class ModalSendMessage extends Component {
 
         super(props)
         this.state = {
+            hideResults: false,
             listNhanVien: [],
             text: '',
             title: '',
@@ -47,6 +48,26 @@ export default class ModalSendMessage extends Component {
         }
         this.requestSearch.bind(this);
         this.loadAllSearch.bind(this);
+    }
+
+    getImage(url) {
+        if (url.length === 0) {
+            return (
+
+                <Image
+                    source={require('../images/bglogin.jpg')}
+                    indicator={ProgressBar.Pie}
+                    style={{margin: 8, width: 60, height: 60, borderRadius: 30}}/>
+            );
+        } else {
+            return (
+                <Image
+
+                    source={{uri: 'http://jav.ksmart.vn' + url}}
+                    indicator={ProgressBar.Pie}
+                    style={{margin: 8, width: 60, height: 60, borderRadius: 30}}/>
+            );
+        }
     }
 
     componentDidMount() {
@@ -61,17 +82,22 @@ export default class ModalSendMessage extends Component {
     }
 
     loadAllSearch(receiver, page = 1) {
-
         if (receiver !== this.state.receiver) {
             return;
         }
+
         console.log('goiii', receiver, page)
         fetch(URlConfig.getListNhanVienLink(page, null, receiver))
             .then((response) => (response.json()))
             .then((responseJson) => {
-                this.setState({listNhanVien: this.state.listNhanVien.push(...responseJson.dsNhanVien)})
+                if (receiver !== this.state.receiver) {
+                    return;
+                }
+                let arr = this.state.listNhanVien
+                arr = arr.concat(responseJson.dsNhanVien)
+                this.setState({listNhanVien: arr})
                     if (!responseJson.endlist) {
-                        this.loadAllSearch(this.state.receiver, responseJson.nextpage);
+                        this.loadAllSearch(receiver, responseJson.nextpage);
                     }
                 }
             ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e));
@@ -104,19 +130,32 @@ export default class ModalSendMessage extends Component {
                     <View style={{marginLeft: 16, flexDirection: 'column'}}>
                         <View style={styles.autocompleteContainer}>
                             <Autocomplete
+                                hideResults={this.state.hideResults}
                                 data={this.state.listNhanVien}
                                 defaultValue={this.state.nameInput}
                                 placeholder="Nhập tên nhân viên"
                                 onChangeText={text => {
-                                    this.setState({receiver: text}, function () {
+                                    this.setState({hideResults: false, receiver: text}, function () {
                                         this.requestSearch(text)
                                     })
                                 }}
                                 renderItem={(data) => (
-                                    <TouchableOpacity onPress={() => {
-                                        this.setState({nameInput: data})
-                                    }}>
-                                        <Text>{data.tennhanvien}</Text>
+                                    <TouchableOpacity
+                                        style={{flexDirection: 'row'}}
+                                        onPress={() => {
+                                            this.setState({
+                                                nameInput: data.tennhanvien,
+                                                IDNhanVien: data.idnhanvien,
+                                                hideResults: true
+                                            })
+                                        }}>
+
+                                        <View style={{justifyContent: 'center'}}>
+                                            <Image
+                                                style={{margin: 8, width: 30, height: 30, borderRadius: 15}}
+                                                source={require('../images/bglogin.jpg')}/>
+                                        </View>
+                                        <Text style={{marginLeft: 16, alignSelf: 'center'}}>{data.tennhanvien}</Text>
                                     </TouchableOpacity>
                                 )}
                             />
