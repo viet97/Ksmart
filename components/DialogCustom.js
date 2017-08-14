@@ -10,7 +10,7 @@ import {
     FlatList,
     Image,
     ActivityIndicator, Platform,
-    Picker, TouchableHighlight, TextInput
+    Picker, TouchableHighlight, TextInput, Keyboard
 } from 'react-native';
 import Icon2 from 'react-native-vector-icons/Entypo'
 
@@ -148,22 +148,29 @@ export default class DialogCustom extends React.Component {
 
     }
 
+    hideKeyboard() {
+        Keyboard.dismiss();
+    }
+
     render() {
+
         return (
 
-            <View style={{flexDirection: 'column', flex: 1, backgroundColor: 'transparent'}}>
+            <View style={{flexDirection: 'column', flex: 1, marginTop: 32, backgroundColor: 'transparent'}}>
                 <View style={{flexDirection: 'column', flex: 9}}>
                     <Text>Chọn phòng ban: </Text>
                     <ModalDropdown
                         options={this.state.listNameGroup}
                         style={{borderWidth: 0.4, width: 200, padding: 8, borderRadius: 10}}
-                        defaultValue="- Chọn phòng ban- "
+                        defaultValue="- Chọn phòng ban -"
                         onSelect={(idx, value) => this._onSelect(idx, value)}
                         renderRow={this._renderRowGroup.bind(this)}
                         renderSeparator={(sectionID, rowID, adjacentRowHighlighted) => this._renderSeparatorGroup(sectionID, rowID, adjacentRowHighlighted)}
                     />
                     <TextInput
                         ref='textinput'
+                        autofocus={false}
+                        returnKeyType={'done'}
                         style={{
                             height: 40,
                             borderColor: 'gray',
@@ -183,25 +190,9 @@ export default class DialogCustom extends React.Component {
                             }
                             this.setState({textSearch: textSearch})
                         }}
-                        onSubmitEditing={() => {
-                            this.refs.nhanvien.show();
-                        }}
+
                         value={this.state.textSearch}
                         placeholder={'Nhap ten nhan vien'}
-                    />
-                    <ModalDropdown
-                        ref="nhanvien"
-                        keyboardShouldPersistTaps='always'
-                        options={this.state.listNameNhanVien}
-                        disabled={true}
-                        adjustFrame={style => this._adjustFrame(style)}
-                        style={{borderWidth: 0.4, width: width, height: 0}}
-                        defaultValue="- Chọn nhân viên- "
-                        onSelect={(idx, value) => {
-                            this.setState({nhanVienSelect: this.state.listNhanVien[idx]})
-                        }}
-                        renderRow={this._renderRowNhanVien.bind(this)}
-                        renderSeparator={(sectionID, rowID, adjacentRowHighlighted) => this._renderSeparatorNhanVien(sectionID, rowID, adjacentRowHighlighted)}
                     />
                     <FlatList
                         ListFooterComponent={this.renderFooter}
@@ -222,10 +213,16 @@ export default class DialogCustom extends React.Component {
                         renderItem={({item}) =>
                             <TouchableOpacity
 
-                                onPress={() => this.setState({
-                                    textSearch: item.tennhanvien,
-                                    idNhanVien: item.idnhanvien
-                                })}>
+                                onPress={() => {
+                                    this.setState({
+                                        textSearch: item.tennhanvien,
+                                        idNhanVien: item.idnhanvien
+                                    });
+                                    DialogManager.dismiss(() => {
+                                        this.props.callback(item.idnhanvien, item.tennhanvien)
+                                    });
+                                }
+                                }>
                                 <View style={{flexDirection: 'row'}}>
                                     <View style={{justifyContent: 'center'}}>
                                         <Image
@@ -243,28 +240,6 @@ export default class DialogCustom extends React.Component {
                             </TouchableOpacity>
                         }
                     />
-                </View>
-                <View style={{
-                    flex: 1,
-                    flexDirection: 'row',
-                    justifyContent: 'space-between'
-                }}>
-                    <TouchableOpacity
-                        style={{paddingLeft: 16}}
-                        onPress={() => {
-                            DialogManager.dismiss();
-                        }}>
-                        <Text>Huy bo</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={{paddingLeft: 16}}
-                        onPress={() => {
-                            DialogManager.dismiss(() => {
-                                this.props.callback(this.state.idNhanVien, this.state.textSearch)
-                            });
-                        }}>
-                        <Text>Ap dung</Text>
-                    </TouchableOpacity>
                 </View>
             </View>
         );

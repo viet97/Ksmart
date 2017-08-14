@@ -63,7 +63,7 @@ export default class URlConfig {
         return data.urlserver + '/AppBaoCaoTrangChu.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&macongty=' + data.idct;
     }
 
-    static getListNhanVienLink(page, id, keyword) {
+    static getListNhanVienLink(page, id, keyword = '') {
         let data = URlConfig.OBJLOGIN;
         if (id !== null) {
             return data.urlserver + '/AppDanhSachNhanVien_v2.aspx?token=' + '&idquanly=' + data.id + '&macongty=' + data.idct + '&page=' + page + '&idnhom=' + id + '&timkiem=' + keyword;

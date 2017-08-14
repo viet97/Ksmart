@@ -40,14 +40,42 @@ export default class ModalSendMessage extends Component {
             text: '',
             title: '',
             IDNhanVien: '',
-            reciver: '',
+            receiver: '',
+            listNhanVien: []
         }
+        this.requestSearch.bind(this);
+        this.loadAllSearch.bind(this);
     }
 
     componentDidMount() {
         const {params} = this.props.navigation.state;
         if (params !== undefined)
-            this.setState({IDNhanVien: params.data.idnhanvien, reciver: params.data.tennhanvien})
+            this.setState({IDNhanVien: params.data.idnhanvien, receiver: params.data.tennhanvien})
+    }
+
+    requestSearch(text) {
+        this.setState({listNhanVien: []});
+        this.loadAllSearch(text);
+    }
+
+    loadAllSearch(receiver, page = 1) {
+
+        if (receiver !== this.state.receiver) {
+            return;
+        }
+        console.log('goiii', receiver, page)
+        fetch(URlConfig.getListNhanVienLink(page, null, receiver))
+            .then((response) => (response.json()))
+            .then((responseJson) => {
+                    this.state.listNhanVien.push(...responseJson.dsNhanVien)
+                    if (!responseJson.endlist) {
+                        this.loadAllSearch(this.state.receiver, responseJson.nextpage);
+                    } else {
+                        console.log('listttttt: ' + this.state.listNhanVien.length, this.state.listNhanVien)
+                    }
+                }
+            ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'));
+
     }
 
     render() {
@@ -66,45 +94,57 @@ export default class ModalSendMessage extends Component {
                     <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Soạn
                         tin
                         nhắn</Text>
-                    <View></View>
+                    <View/>
                 </View>
                 <View style={{flex: 9}}>
-                    <View style={{marginLeft: 16, marginBottom: 16, marginTop: 16, flexDirection: 'row'}}>
+                    <View style={{
+                        marginLeft: 16,
+                        marginBottom: 16,
+                        marginTop: 16,
+                        flexDirection: 'row',
+                        backgroundColor: 'transparent'
+                    }}>
                         <Text style={{alignSelf: 'center', flex: 1}}>Người nhận: </Text>
                         <View style={{marginLeft: 8, flexDirection: 'row', backgroundColor: 'white', flex: 5}}>
                             <TextInput
                                 style={{flex: 1, textAlignVertical: 'bottom'}}
-                                onChangeText={(text) => this.setState({reciver: text})}
-                                value={this.state.reciver}
+                                onChangeText={(text) => {
+                                    this.setState({receiver: text}, function () {
+                                        this.requestSearch(text);
+                                    })
+                                }}
+                                value={this.state.receiver}
+                                returnKeyType={'done'}
                             />
                             <TouchableOpacity style={{alignSelf: 'center'}} onPress={() => this.showDialog()}>
                                 <Icon3 style={{alignSelf: 'center'}} size={24} color="black" name="add-user"/>
                             </TouchableOpacity>
                         </View>
                     </View>
-                    <View style={{margin: 16}}>
+                    <View style={{margin: 16, backgroundColor: 'transparent'}}>
                         <Text style={{marginBottom: 8}}>Tiêu đề</Text>
                         <TextInput
                             style={{height: 44, width: width, backgroundColor: 'white'}}
                             onChangeText={(text) => this.setState({title: text})}
                             value={this.state.title}
+                            returnKeyType={'done'}
                         />
                     </View>
-                    <View style={{flex: 8}}>
+                    <View style={{flex: 8, backgroundColor: 'transparent'}}>
                         <Text style={{marginLeft: 16, marginTop: 16, marginBottom: 16, flex: 1}}>
                             Nội dung
                         </Text>
-                            <TextInput
-                                multiline={true}
-                                blurOnSubmit={true}
-                                style={{flex: 10, margin: 8, backgroundColor: 'white', textAlignVertical: 'top'}}
-                                onChangeText={(text) => this.setState({text: text})}
-                                value={this.state.text}
-                                onSubmitEditing={(event) => {
-                                    Keyboard.dismiss();
-                                }}
-                                returnKeyType={'done'}
-                            />
+                        <TextInput
+                            multiline={true}
+                            blurOnSubmit={true}
+                            style={{flex: 10, margin: 8, backgroundColor: 'white', textAlignVertical: 'top'}}
+                            onChangeText={(text) => this.setState({text: text})}
+                            value={this.state.text}
+                            onSubmitEditing={(event) => {
+                                Keyboard.dismiss();
+                            }}
+                            returnKeyType={'done'}
+                        />
                     </View>
                     <TouchableOpacity
                         onPress={() => this.sendMessage()}
@@ -141,7 +181,7 @@ export default class ModalSendMessage extends Component {
             children: (
                 <DialogCustom
                     callback={(id, name) => {
-                        this.setState({IDNhanVien: id, reciver: name})
+                        this.setState({IDNhanVien: id, receiver: name})
                     }}/>
             ),
         }, () => {
