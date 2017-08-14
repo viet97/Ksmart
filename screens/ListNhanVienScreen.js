@@ -25,18 +25,20 @@ import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import TabNavigator from 'react-native-tab-navigator';
 import MapListScreen from "./MapListScreen";
 
-var NUMBER_ROW_RENDER = 10
-var ALL_LOADED = false
-var SEARCH_STRING = '';
-var {width, height} = Dimensions.get('window');
+let {height, width} = Dimensions.get('window');
+
+let Page = 1
+let SEARCH_STRING = '';
+let ALL_LOADED = false
 export default class ListNhanVienScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = ({
+            idNhom: null,
+            isEndList: false,
             dataPartyNhanVien: [],
             numberPickParty: 0,
             partyNhanVienStatus: [],
-            isSearching: false,
             selectedTab: 'ListNhanVien',
             kinhdo: 0,
             vido: 0,
@@ -88,7 +90,7 @@ export default class ListNhanVienScreen extends React.Component {
 
     renderFooter = () => {
 
-        if (ALL_LOADED || this.state.isSearching) return null
+        if (ALL_LOADED) return null
         return (
             <View
                 style={{
@@ -101,47 +103,105 @@ export default class ListNhanVienScreen extends React.Component {
         );
     };
 
+    getDataFromSv() {
+        Page = 1
+        ALL_LOADED = false
+        this.setState({isEndList: false, dataRender: null})
+        fetch(URlConfig.getListNhanVienLink(Page, this.state.idNhom, SEARCH_STRING))
+            .then((response) => response.json())
+            .then((responseJson) => {
+                if (responseJson.status) {
+                    this.setState({
+                        dataFull: responseJson.dsNhanVien,
+                        isEndList: responseJson.endlist
+                    }, function () {
+                        if (this.state.isEndList) {
+                            ALL_LOADED = true
+                            this.forceUpdate()
+                        }
+                        let dataFill = this.fillData(responseJson.dsNhanVien)
+                        this.setState({dataRender: dataFill}, function () {
+                        })
+                    });
+                } else {
+                    ALL_LOADED = true
+                    this.forceUpdate()
+                }
+            })
+            .catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e));
+    }
 
-    loadMoreData() {
+    loadMoreDataFromSv() {
         if (!this.state.onEndReach) {
-
             this.setState({onEndReach: true})
-            this.setDataRender()
-            if (NUMBER_ROW_RENDER > this.state.dataFull.length - 10) {
-                ALL_LOADED = true
-                this.forceUpdate()
+
+            if (!this.state.isEndList) {
+                Page = Page + 1
+                fetch(URlConfig.getListNhanVienLink(Page, this.state.idNhom, SEARCH_STRING))
+                    .then((response) => response.json())
+                    .then((responseJson) => {
+                        if (responseJson.status) {
+                            let dataFull = this.state.dataFull
+                            dataFull = dataFull.concat(responseJson.dsNhanVien)
+                            this.setState({
+                                dataFull: dataFull,
+                                isEndList: responseJson.endlist
+                            }, function () {
+                                if (this.state.isEndList) {
+                                    ALL_LOADED = true
+                                    this.forceUpdate()
+                                }
+                                let dataFill = this.fillData(responseJson.dsNhanVien)
+                                let dataRender = this.state.dataRender.concat(dataFill)
+                                this.setState({dataRender: dataRender})
+                            });
+                        } else {
+                            ALL_LOADED = true
+                            this.forceUpdate()
+                        }
+                    })
+                    .catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'));
             }
         }
     }
 
     fillData(data) {
-        var status = this.state.numberPickParty
-        var arr = []
-        var idNhom = this.state.dataPartyNhanVien[this.state.partyNhanVienStatus[status]].IDNhom
-        var idParent = this.state.dataPartyNhanVien[this.state.partyNhanVienStatus[status]].IDParent
-        for (var item in data) {
-            if (data[item].TenNhom === this.state.partyNhanVienStatus[status] || status === 0)
-                arr.push(data[item])
+        let arr = []
+        switch (this.state.numberPickStatus) {
+            case 0:
+                arr = data
+                break;
+            case 1:
+
+                for (let item of data) {
+                    if (item.dangtructuyen === 1) {
+                        arr.push(item)
+                    }
+                }
+                break;
+            case 2:
+                for (let item of data) {
+                    if (item.dangtructuyen === 0) {
+                        arr.push(item)
+                    }
+                }
+                break;
+            case 3:
+                for (let item of data) {
+                    if (item.dangtructuyen === 2) {
+                        arr.push(item)
+                    }
+                }
+                console.log('' + arr.length)
+                break;
+
         }
+
         return arr
     }
 
     refreshData() {
-        this.setState({dataRender: null})
-        ALL_LOADED = false
-        NUMBER_ROW_RENDER = 0
-        fetch(URlConfig.getListNhanVienLink())
-            .then((response) => (response.json()))
-            .then((responseJson) => {
-                if (responseJson.status) {
-                    var arr = this.fillData(responseJson.dsNhanVien)
-                    this.setState({dataFull: arr}, function () {
-                        this.setDataRender()
-                    })
-                }
-                else ALL_LOADED = true
-                }
-            ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+        this.getDataFromSv()
     }
 
     flatListorIndicator() {
@@ -154,7 +214,7 @@ export default class ListNhanVienScreen extends React.Component {
                         style={styles.indicator}
                         size="large"/>
                 </View>)
-        } else if (this.state.dataRender.length === 0)
+        } else if (this.state.dataFull.length === 0 && this.state.isEndList)
             return (    <View style={{flex: 9}}>
                 <Text style={{alignSelf: 'center', textAlign: 'center', fontSize: 20, backgroundColor: 'transparent'}}>Không
                     có dữ liệu</Text>
@@ -173,8 +233,7 @@ export default class ListNhanVienScreen extends React.Component {
                     ref="listview"
                     onEndReachedThreshold={0.2}
                     onEndReached={() => {
-                        if (SEARCH_STRING.length === 0)
-                            this.loadMoreData()
+                        this.loadMoreDataFromSv()
                     }}
                     onMomentumScrollBegin={() => {
                         this.setState({onEndReach: false})
@@ -224,35 +283,18 @@ export default class ListNhanVienScreen extends React.Component {
     }
 
     onChangeText(text) {
-        this.setState({isSearching: true})
         return new Promise((resolve, reject) => {
             resolve();
-
             var arr = []
             var a = text.toLowerCase()
             SEARCH_STRING = a
-
-            if (a.length === 0) this.setState({dataRender: this.state.dataSearch})
-            else
-                for (var item in this.state.dataSearch) {
-                    if (a !== SEARCH_STRING) return
-
-                    if (this.state.dataSearch[item].tennhanvien.toLowerCase().search(a) !== -1) {
-
-                        arr.push(this.state.dataSearch[item])
-
-                    }
-                }
-
-            if (a.length !== 0) this.setState({dataRender: arr})
-            else this.setState({isSearching: false})
+            console.log(a)
+            this.getDataFromSv()
         });
     }
 
     setDataRender() {
-        let data = this.state.dataFull.slice(0, NUMBER_ROW_RENDER + 10)
-
-        NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
+        let data = this.state.dataFull
         let arr = []
         switch (this.state.numberPickStatus) {
             case 0:
@@ -285,19 +327,21 @@ export default class ListNhanVienScreen extends React.Component {
 
         }
 
-        this.setState({dataRender: arr})
+        return arr
 
     }
 
     onCancel() {
         return new Promise((resolve, reject) => {
             resolve();
+            console.log("onCancle")
+            if (SEARCH_STRING.length !== 0) {
+                SEARCH_STRING = ''
+                this.getDataFromSv()
+            }
 
-            SEARCH_STRING = ''
-            this.setState({dataRender: this.state.dataSearch, isSearching: false})
         });
     }
-
     render() {
         let NhanVienStatusItem = this.state.dataPickStatus.map((s, i) => {
             return <Picker.Item key={i} value={i} label={s}/>
@@ -346,8 +390,11 @@ export default class ListNhanVienScreen extends React.Component {
                                     itemStyle={{color: 'red', height: 44}}
                                     selectedValue={this.state.numberPickParty}
                                     onValueChange={(value) => {
-                                        this.setState({numberPickParty: value}, function () {
-                                            this.refreshData()
+                                        let idNhom = this.state.dataPartyNhanVien[this.state.partyNhanVienStatus[value]].IDNhom
+
+                                        this.setState({numberPickParty: value, idNhom: idNhom}, function () {
+
+                                            this.getDataFromSv()
                                         })
                                     }}>
                                 {partyStatusItem}
@@ -359,7 +406,8 @@ export default class ListNhanVienScreen extends React.Component {
                                 selectedValue={this.state.numberPickStatus}
                                 onValueChange={(value) => {
                                     this.setState({numberPickStatus: value}, function () {
-                                        this.setDataRender()
+                                        let dataFill = this.fillData(this.state.dataFull)
+                                        this.setState({dataRender: dataFill})
                                     })
                                 }}>
                             {NhanVienStatusItem}
@@ -390,17 +438,7 @@ export default class ListNhanVienScreen extends React.Component {
     }
 
     componentDidMount() {
-        fetch(URlConfig.getListNhanVienLink())
-            .then((response) => (response.json()))
-            .then((responseJson) => {
-                if (responseJson.status) {
-                        this.setState({dataFull: responseJson.dsNhanVien}, function () {
-                            this.setDataRender()
-                        })
-                } else ALL_LOADED = true
-                NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
-                }
-            ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+        this.getDataFromSv()
     }
 
     getNhomNhanVienFromSv() {

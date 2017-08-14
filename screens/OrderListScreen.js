@@ -23,7 +23,7 @@ import Search from 'react-native-search-box';
 import ultils from "../configs/ultils";
 import Toast from 'react-native-simple-toast'
 
-var {height, width} = Dimensions.get('window');
+let {height, width} = Dimensions.get('window');
 
 let Page = 1
 let SEARCH_STRING = '';
@@ -144,7 +144,6 @@ export default class OrderListScreen extends Component {
                                     this.forceUpdate()
                                 }
                                 let dataFill = this.filtData(responseJson.data)
-                                let dataRender = this.state.dataRender.concat(dataFill)
                                 this.setState({dataRender: dataRender})
                             });
                         } else {

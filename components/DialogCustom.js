@@ -173,6 +173,7 @@ export default class DialogCustom extends React.Component {
                             marginTop: 10
                         }}
                         onChangeText={(textSearch) => {
+
                             if (this.state.positionGroupChoose === -1 || this.state.positionGroupChoose === '-1') {
                                 SEARCH_STRING = textSearch
                                 Toast.show('Vui long chon phong ban truoc')
@@ -194,7 +195,7 @@ export default class DialogCustom extends React.Component {
                         options={this.state.listNameNhanVien}
                         disabled={true}
                         adjustFrame={style => this._adjustFrame(style)}
-                        style={{borderWidth: 0.4, width: 0, height: 0}}
+                        style={{borderWidth: 0.4, width: width, height: 0}}
                         defaultValue="- Chọn nhân viên- "
                         onSelect={(idx, value) => {
                             this.setState({nhanVienSelect: this.state.listNhanVien[idx]})
