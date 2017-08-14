@@ -12,6 +12,7 @@
     "react-native": "0.45.1",
     "react-native-animatable": "^1.2.2",
     "react-native-atoz-listview": "0.0.7",
+    "react-native-autocomplete-input": "^3.3.1",
     "react-native-beautiful-image": "^1.0.4",
     "react-native-calendars": "^1.4.0",
     "react-native-card-view": "0.0.3",
