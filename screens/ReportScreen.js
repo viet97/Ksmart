@@ -31,12 +31,10 @@ import Toast from 'react-native-simple-toast';
 import ultils from "../configs/ultils";
 import Communications from 'react-native-communications';
 
-var {height, width} = Dimensions.get('window');
-var GiftedListView = require('react-native-gifted-listview');
-
-var NUMBER_ROW_RENDER = 0
-var SEARCH_STRING = '';
-var ALL_LOADED = false
+let SEARCH_STRING = '';
+let {width, height} = Dimensions.get('window');
+let ALL_LOADED = false
+let PAGE = 1
 export default class ReportScreen extends Component {
     static navigationOptions = {
         header: null,
@@ -57,6 +55,7 @@ export default class ReportScreen extends Component {
         }
         today = dd + '-' + mm + '-' + yyyy;
         this.state = {
+            isEndList: false,
             title: 'Báo cáo doanh thu sản lượng',
             reportStatus: [],
             numberPickType: 0,
@@ -80,86 +79,121 @@ export default class ReportScreen extends Component {
     }
 
     componentDidMount() {
-        this.getReportListFromServer(this.state.dateFrom, this.state.dateTo)
+        this.getReportListFromServer()
     }
 
-
-    getReportListFromServer(dateFrom, dateTo) {
+    getTypeLinkOfReport() {
         let url = ''
 
         switch (this.state.numberPickType) {
             case 0:
-                url = URlConfig.getReportList(dateFrom, dateTo)
+                url = URlConfig.getReportList(this.state.dateFrom, this.state.dateTo, PAGE, SEARCH_STRING)
                 this.setState({title: 'Báo cáo doanh thu sản lượng'})
                 break
             case 1:
-                url = URlConfig.getLinkTopDoanhThu(dateFrom, dateTo, 1)
+                url = URlConfig.getLinkTopDoanhThu(this.state.dateFrom, this.state.dateTo, 1)
                 this.setState({title: '10 nhân viên doanh thu cao nhất'})
                 break
             case 2:
-                url = URlConfig.getLinkTopDoanhThu(dateFrom, dateTo, 2)
+                url = URlConfig.getLinkTopDoanhThu(this.state.dateFrom, this.state.dateTo, 2)
                 this.setState({title: '10 nhân viên doanh thu thấp nhất'})
                 break
             case 3:
-                url = URlConfig.getLinkKhongCoDoanhThu(dateFrom, dateTo)
+                url = URlConfig.getLinkKhongCoDoanhThu(this.state.dateFrom, this.state.dateTo, PAGE, SEARCH_STRING)
                 this.setState({title: 'Nhân viên không có doanh thu'})
                 break
         }
-
-        this.setState({dataRender: null})
-        fetch(url)
-            .then((response) => response.json())
-            .then((responseJson) => {
-
-                console.log(responseJson)
-                if (responseJson.data !== null) {
-
-                    this.setState({
-                        dataFull: responseJson.data
-                    }, function () {
-                        this.setState({dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER + 10)})
-                        if (this.state.dataFull.length === 0 || NUMBER_ROW_RENDER > this.state.dataFull.length) {
-                            ALL_LOADED = true
-                            this.forceUpdate()
-                        }
-                        else ALL_LOADED = false
-                        NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
-
-                    })
-                } else {
-                    if (!responseJson.status && this.state.numberPickType === 3) {
-                        Toast.show('' + responseJson.msg)
-                    }
-                    this.setState({dataRender: []})
-                    ALL_LOADED = true
-                    this.forceUpdate()
-
-                }
-            })
-            .catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e));
+        return url
     }
 
-    loadMoreData() {
+    getReportListFromServer() {
+        ALL_LOADED = false
+        this.setState({isEndList: false, dataRender: null})
+        PAGE = 1
+        let url = this.getTypeLinkOfReport()
+        fetch(url)
+            .then((response) => (response.json()))
+            .then((responseJson) => {
+                if (this.state.numberPickType !== 1 && this.state.numberPickType !== 2) {
+                    if (responseJson.status) {
+                        this.setState({
+                            dataFull: responseJson.data,
+                            isEndList: responseJson.endlist,
+                            dataRender: responseJson.data
+                        }, function () {
+                            if (this.state.isEndList) {
+                                ALL_LOADED = true
+                                this.forceUpdate()
+                            }
+                        })
+                    }
+                } else {
+                    if (!responseJson.status) {
+                        ALL_LOADED = true
+                        let data = ''
+                        if (responseJson.data === null) {
+                            data = []
+                        } else data = responseJson.data
+                        this.setState({dataFull: data, dataRender: data, isEndList: true})
+                    }
+                }
+                }
+            ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+    }
 
+    loadMoreDataFromSv() {
         if (!this.state.onEndReach) {
-            console.log("LOADMORE")
             this.setState({onEndReach: true})
-            this.setState({
-                dataRender: this.state.dataFull.slice(0, NUMBER_ROW_RENDER + 10),
-            })
 
-            NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
-            if (NUMBER_ROW_RENDER > this.state.dataFull.length - 10) {
-                ALL_LOADED = true
-                this.forceUpdate()
+            if (!this.state.isEndList) {
+                PAGE = PAGE + 1
+                let url = this.getTypeLinkOfReport()
+                fetch(url)
+                    .then((response) => (response.json()))
+                    .then((responseJson) => {
+                        let arr = this.state.dataFull
+                        arr = arr.concat(responseJson.data)
+                        this.setState({
+                            dataFull: arr,
+                            isEndList: responseJson.endlist,
+                            dataRender: arr
+                        }, function () {
+                            if (this.state.isEndList) {
+                                ALL_LOADED = true
+                                this.forceUpdate()
+                            }
+                        })
+                    })
+                    .catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
             }
         }
     }
 
     refreshData() {
-        NUMBER_ROW_RENDER = 10
-        this.getReportListFromServer(this.state.dateFrom, this.state.dateTo)
+        this.getReportListFromServer()
     }
+
+    onChangeText(text) {
+        this.setState({isSearching: true})
+        return new Promise((resolve, reject) => {
+            resolve();
+            var a = text.toLowerCase()
+            SEARCH_STRING = a
+            this.getReportListFromServer()
+        });
+    }
+
+    onCancel() {
+        return new Promise((resolve, reject) => {
+            resolve();
+            console.log("onCancle")
+            if (SEARCH_STRING.length !== 0) {
+                SEARCH_STRING = ''
+                this.getReportListFromServer()
+            }
+        });
+    }
+
 
     renderKhongCoDoanhThu(item) {
         return (
@@ -240,62 +274,62 @@ export default class ReportScreen extends Component {
 
     renderTopDoanhThu(item) {
         return (
-                <View style={{
-                    marginTop: 4, marginBottom: 4, marginLeft: 8, marginRight: 8,
-                    borderTopColor: '#227878'
-                }}>
-                    <Image source={require('../images/bg1.png')}
-                           style={{
-                               width: width - 8,
-                               height: height / 6
-                           }}>
-                        <View style={{
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            marginLeft: 8,
-                            marginTop: 8,
-                            marginRight: 8,
-                            marginBottom: 4
-                        }}>
-                            <View style={{flexDirection: 'row'}}>
-                                <Icon1 style={{backgroundColor: 'transparent'}} size={24} color="black"
-                                       name="ios-people-outline"/>
-                                <Text style={{
-                                    marginLeft: 8,
-                                    fontSize: 18,
-                                    fontWeight: "bold", backgroundColor: 'transparent'
-                                }}>{item.tennhanvien}</Text>
-                            </View>
-                            <TouchableOpacity onPress={() => Communications.phonecall(item.dienthoai, true)}>
-                                <Icon3 style={{backgroundColor: 'transparent'}} size={24} color="green" name="phone"/>
-                            </TouchableOpacity>
-                        </View>
-
-                        <View style={{
-                            flexDirection: 'row',
-                            marginLeft: 8,
-                            marginTop: 4,
-                            marginRight: 8,
-                            marginBottom: 4
-                        }}>
-                            <Icon2 style={{backgroundColor: 'transparent'}} size={24} color="black" name="news"/>
-                            <Text style={{marginLeft: 8, backgroundColor: 'transparent'}}>{item.DonHang}</Text>
-                        </View>
-                        <View style={{
-                            flexDirection: 'row',
-                            marginLeft: 8,
-                            marginTop: 4,
-                            marginRight: 8,
-                            marginBottom: 4
-                        }}>
-                            <Icon style={{backgroundColor: 'transparent'}} size={24} color="green" name="attach-money"/>
+            <View style={{
+                marginTop: 4, marginBottom: 4, marginLeft: 8, marginRight: 8,
+                borderTopColor: '#227878'
+            }}>
+                <Image source={require('../images/bg1.png')}
+                       style={{
+                           width: width - 8,
+                           height: height / 6
+                       }}>
+                    <View style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        marginLeft: 8,
+                        marginTop: 8,
+                        marginRight: 8,
+                        marginBottom: 4
+                    }}>
+                        <View style={{flexDirection: 'row'}}>
+                            <Icon1 style={{backgroundColor: 'transparent'}} size={24} color="black"
+                                   name="ios-people-outline"/>
                             <Text style={{
                                 marginLeft: 8,
-                                backgroundColor: 'transparent'
-                            }}>{ultils.getMoney(item.TongTien, 2)}</Text>
+                                fontSize: 18,
+                                fontWeight: "bold", backgroundColor: 'transparent'
+                            }}>{item.tennhanvien}</Text>
                         </View>
-                    </Image>
-                </View>
+                        <TouchableOpacity onPress={() => Communications.phonecall(item.dienthoai, true)}>
+                            <Icon3 style={{backgroundColor: 'transparent'}} size={24} color="green" name="phone"/>
+                        </TouchableOpacity>
+                    </View>
+
+                    <View style={{
+                        flexDirection: 'row',
+                        marginLeft: 8,
+                        marginTop: 4,
+                        marginRight: 8,
+                        marginBottom: 4
+                    }}>
+                        <Icon2 style={{backgroundColor: 'transparent'}} size={24} color="black" name="news"/>
+                        <Text style={{marginLeft: 8, backgroundColor: 'transparent'}}>{item.DonHang}</Text>
+                    </View>
+                    <View style={{
+                        flexDirection: 'row',
+                        marginLeft: 8,
+                        marginTop: 4,
+                        marginRight: 8,
+                        marginBottom: 4
+                    }}>
+                        <Icon style={{backgroundColor: 'transparent'}} size={24} color="green" name="attach-money"/>
+                        <Text style={{
+                            marginLeft: 8,
+                            backgroundColor: 'transparent'
+                        }}>{ultils.getMoney(item.TongTien, 2)}</Text>
+                    </View>
+                </Image>
+            </View>
         )
     }
 
@@ -417,11 +451,9 @@ export default class ReportScreen extends Component {
                     }}
                     onEndReachedThreshold={0.2}
                     onEndReached={() => {
-                        if (SEARCH_STRING.length === 0)
-                            this.loadMoreData()
+                        this.loadMoreDataFromSv()
                     }}
                     onMomentumScrollBegin={() => {
-
                         this.setState({onEndReach: false})
                     }}
                     extraData={this.state.dataRender}
@@ -528,13 +560,23 @@ export default class ReportScreen extends Component {
                             selectedValue={this.state.numberPickType}
                             onValueChange={(value) => {
                                 this.setState({numberPickType: value}, function () {
-                                    this.getReportListFromServer(this.state.dateFrom, this.state.dateTo)
+                                    this.getReportListFromServer()
                                 })
 
 
                             }}>
                         {reportStatusItem}
                     </Picker>
+                    <View style={{width: width}}>
+                        <Search
+                            ref="search_box"
+                            placeholder="Tìm kiếm"
+                            cancelTitle="Huỷ bỏ"
+                            onChangeText={(text) => this.onChangeText(text)}
+                            onCancel={() => this.onCancel()}
+                        />
+                    </View>
+
                 </View>
                 {this.flatListorIndicator()}
             </View>
@@ -548,9 +590,10 @@ export default class ReportScreen extends Component {
         var dTo = String(to);
         dFrom.replace('/', '-');
         dTo.replace('/', '-');
-        this.setState({dateFrom: dFrom})
-        this.setState({dateTo: dTo})
-        this.getReportListFromServer(from, to)
+        this.setState({dateFrom: dFrom, dateTo: dTo}, function () {
+            this.getReportListFromServer()
+        })
+
 
     }
 }
