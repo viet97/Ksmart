@@ -120,7 +120,9 @@ export default class RealtimeChartScreen extends React.Component {
         console.log(conf);
         return conf;
     }
-
+    componentWillUnmount() {
+        timer.clearInterval(this);
+    }
     render() {
 
         return (
@@ -131,7 +133,6 @@ export default class RealtimeChartScreen extends React.Component {
                     <Image source={require('../images/bg.png')}
                            style={{position: 'absolute'}}/>
                     <TouchableOpacity onPress={() => {
-                        timer.clearInterval(this);
                         this.props.backToHome()
                     }}
                                       style={styles.iconStyle}>

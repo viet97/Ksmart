@@ -6,7 +6,7 @@ import {
     AppRegistry, Button,
     StyleSheet,
     Text, Image,
-    View, TabBarIOS, TouchableHighlight, Platform
+    View, TabBarIOS, TouchableHighlight, Platform,TouchableOpacity
 } from 'react-native';
 import Toast from 'react-native-simple-toast'
 import Icon from 'react-native-vector-icons/Entypo';
@@ -14,17 +14,19 @@ import Icon2 from 'react-native-vector-icons/MaterialIcons';
 import MapView from 'react-native-maps';
 import URlConfig from "../configs/url";
 import Color from '../configs/color'
+const default_location={
+    latitude: 20.994953,
+    longitude: 105.8307488,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
+}
 export default class MapListScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            region: {
-                latitude: 20.994953,
-                longitude: 105.8307488,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421,
-            },
-            markers: []
+            region: default_location,
+            markers: [],
+            myRegion:default_location
         }
     }
 
@@ -43,6 +45,27 @@ export default class MapListScreen extends Component {
                     Toast.show(responseJson.msg)
                 }
             }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'));
+
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                this.setState({
+                    myRegion:{
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude,
+                        latitudeDelta: 0.0922,
+                        longitudeDelta: 0.0421,
+                    },
+                    region:{
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude,
+                        latitudeDelta: 0.0922,
+                        longitudeDelta: 0.0421,
+                    }
+                });
+            },
+            (error) => this.setState({ myRegion: default_location }),
+            { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+        );
 
     }
 
@@ -74,19 +97,14 @@ export default class MapListScreen extends Component {
                         </MapView.Marker>
                     ))}
                 </MapView>
-                <TouchableHighlight style={{backgroundColor: 'white'}} onPress={() => {
+                <TouchableOpacity style={{backgroundColor: 'transparent'}} onPress={() => {
                     this.setState({
-                        region: {
-                            latitude: 20.994953,
-                            longitude: 105.8307488,
-                            latitudeDelta: 0.0922,
-                            longitudeDelta: 0.0421,
-                        },
+                        region: this.state.myRegion,
                     })
                 }}>
                     <Icon2 size={24} style={{position: 'absolute', right: 10, bottom: 10}} color="gray"
                            name="my-location"/>
-                </TouchableHighlight>
+                </TouchableOpacity>
             </View>
         );
     }
