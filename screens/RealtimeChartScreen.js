@@ -54,9 +54,6 @@ export default class RealtimeChartScreen extends React.Component {
             .catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'));
     }
 
-    getDataForChar() {
-
-    }
 
     getConfigSmall() {
         var currentdate = new Date();

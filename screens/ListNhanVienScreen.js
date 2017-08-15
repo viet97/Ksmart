@@ -402,7 +402,12 @@ export default class ListNhanVienScreen extends React.Component {
                             <TouchableOpacity style={{alignSelf: 'center'}}
                                               onPress={() => this.showDialog()}
                             >
-                                <Text style={{textAlign: 'center', alignSelf: 'center'}}>Bộ lọc</Text>
+                                <Text style={{
+                                    textAlign: 'center',
+                                    color: 'white',
+                                    alignSelf: 'center',
+                                    backgroundColor: 'transparent'
+                                }}>Bộ lọc</Text>
                             </TouchableOpacity>
                         </View>
 

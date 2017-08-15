@@ -39,9 +39,9 @@ export default class NewFeedScreen extends React.Component {
     }
 
     getDataFromSv() {
-        ALL_LOADED = false
+        ALL_LOADED = false;
         this.setState({isEndList: false, dataRender: null})
-        PAGE = 1
+        PAGE = 1;
         let url = URlConfig.getNewFeedLink(PAGE, SEARCH_STRING)
         fetch(url)
             .then((response) => (response.json()))
