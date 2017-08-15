@@ -9,8 +9,9 @@ import {
     FlatList,
     ActivityIndicator,
     Platform,
-    Picker
+    Picker, TouchableHighlight
 } from 'react-native';
+import ModalDropdown from "react-native-modal-dropdown";
 import Toast from 'react-native-simple-toast';
 import Search from 'react-native-search-box';
 import Image from 'react-native-image-progress';
@@ -24,6 +25,7 @@ import Color from '../configs/color'
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import TabNavigator from 'react-native-tab-navigator';
 import MapListScreen from "./MapListScreen";
+import {Dialog} from 'react-native-simple-dialogs';
 
 let {height, width} = Dimensions.get('window');
 
@@ -50,6 +52,7 @@ export default class ListNhanVienScreen extends React.Component {
             waiting: false,
             numberPickStatus: 0,
             dataPickStatus: [],
+            dialogVisible: false
         })
         this.state.dataPickStatus.push('Tất cả')
         this.state.dataPickStatus.push('Đang trực tuyến')
@@ -84,28 +87,28 @@ export default class ListNhanVienScreen extends React.Component {
                 <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center'}}>
                     <Icon2 style={{backgroundColor: 'transparent'}} size={24} color="green"
                            name="controller-record"/>
-                    <Text style={{alignSelf: 'center'}}>Đang trực tuyến</Text>
+                    <Text style={{alignSelf: 'center', fontSize: 11}}>Đang trực tuyến</Text>
                 </View>)
         else if (dangtructuyen === 2)
             return (
                 <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center'}}>
                     <Icon2 style={{backgroundColor: 'transparent'}} size={24} color="red"
                            name="controller-record"/>
-                    <Text style={{alignSelf: 'center'}}>Mất tín hiệu</Text>
+                    <Text style={{alignSelf: 'center', fontSize: 11}}>Mất tín hiệu</Text>
                 </View>)
         else if (dangtructuyen === 0)
             return (
                 <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center'}}>
                     <Icon2 style={{backgroundColor: 'transparent'}} size={24} color="gray"
                            name="controller-record"/>
-                    <Text style={{alignSelf: 'center'}}>Ngoại tuyến</Text>
+                    <Text style={{alignSelf: 'center', fontSize: 11}}>Ngoại tuyến</Text>
                 </View>)
 
     }
 
     renderFooter = () => {
 
-        if (ALL_LOADED) return null
+        if (ALL_LOADED) return null;
         return (
             <View
                 style={{
@@ -363,6 +366,11 @@ export default class ListNhanVienScreen extends React.Component {
         });
     }
 
+    showDialog() {
+        this.setState({dialogVisible: true})
+
+    }
+
     render() {
         let NhanVienStatusItem = this.state.dataPickStatus.map((s, i) => {
             return <Picker.Item key={i} value={i} label={s}/>
@@ -392,7 +400,7 @@ export default class ListNhanVienScreen extends React.Component {
                                 backgroundColor: 'transparent'
                             }}>Danh sách nhân viên</Text>
                             <TouchableOpacity style={{alignSelf: 'center'}}
-                                              onPress={() => showDialog()}
+                                              onPress={() => this.showDialog()}
                             >
                                 <Text style={{textAlign: 'center', alignSelf: 'center'}}>Bộ lọc</Text>
                             </TouchableOpacity>
@@ -400,39 +408,7 @@ export default class ListNhanVienScreen extends React.Component {
 
                         <TouchableOpacity onPress={() => this.props.backToHome()}
                                           style={{width: 50, height: 50, position: 'absolute'}}/>
-                        <View style={{flexDirection: 'row'}}>
-                            <Text style={{
-                                alignSelf: 'center',
-                                fontSize: 15,
-                                color: 'black',
-                                backgroundColor: 'transparent'
-                            }}>Nhóm/Phòng</Text>
-                            <Picker style={{height: 44, width: width * 3 / 4, marginLeft: 8}}
-                                    itemStyle={{color: 'red', height: 44}}
-                                    selectedValue={this.state.numberPickParty}
-                                    onValueChange={(value) => {
-                                        let idNhom = this.state.dataPartyNhanVien[this.state.partyNhanVienStatus[value]].IDNhom
 
-                                        this.setState({numberPickParty: value, idNhom: idNhom}, function () {
-
-                                            this.getDataFromSv()
-                                        })
-                                    }}>
-                                {partyStatusItem}
-                            </Picker>
-
-                        </View>
-                        <Picker style={{height: 44, width: width * 3 / 4, marginLeft: 8}}
-                                itemStyle={{color: 'red', height: 44}}
-                                selectedValue={this.state.numberPickStatus}
-                                onValueChange={(value) => {
-                                    this.setState({numberPickStatus: value}, function () {
-                                        let dataFill = this.fillData(this.state.dataFull)
-                                        this.setState({dataRender: dataFill})
-                                    })
-                                }}>
-                            {NhanVienStatusItem}
-                        </Picker>
                         <View style={{width: width}}>
                             <Search
                                 placeholder="Tìm kiếm"
@@ -443,6 +419,67 @@ export default class ListNhanVienScreen extends React.Component {
                             />
                         </View>
                         {this.flatListorIndicator()}
+                        <Dialog
+                            visible={this.state.dialogVisible}
+                            title="Bộ lọc nhân viên"
+                            onTouchOutside={() => {
+                                //this.setState({dialogVisible: false})
+                            }}>
+                            <View style={{flexDirection: 'column'}}>
+                                <Text>Chon phong ban</Text>
+                                <ModalDropdown
+                                    options={this.state.partyNhanVienStatus}
+                                    style={{
+                                        borderWidth: 0.4,
+                                        width: 200,
+                                        padding: 8,
+                                        borderRadius: 10,
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        marginBottom: 16,
+                                        marginTop: 4
+                                    }}
+                                    defaultValue={this.state.partyNhanVienStatus[0]}
+                                    defaultIndex={0}
+                                    onSelect={(idx, value) => this._onSelectParty(idx, value)}
+                                    renderRow={this._renderRowStatus.bind(this)}
+                                    renderSeparator={(sectionID, rowID, adjacentRowHighlighted) => this._renderSeparatorParty(sectionID, rowID, adjacentRowHighlighted)}
+                                />
+                                <Text>Chon trang thai</Text>
+                                <ModalDropdown
+                                    options={this.state.dataPickStatus}
+                                    style={{
+                                        borderWidth: 0.4,
+                                        width: 200,
+                                        padding: 8,
+                                        borderRadius: 10,
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        marginTop: 4
+                                    }}
+                                    defaultValue={this.state.dataPickStatus[0]}
+                                    defaultIndex={0}
+                                    onSelect={(idx, value) => this._onSelectStatus(idx, value)}
+                                    renderRow={this._renderRowStatus.bind(this)}
+                                    renderSeparator={(sectionID, rowID, adjacentRowHighlighted) => this._renderSeparatorStatus(sectionID, rowID, adjacentRowHighlighted)}
+                                />
+                                <TouchableOpacity
+                                    style={{
+                                        alignSelf: 'center',
+                                        justifyContent: 'center',
+                                        marginTop: 16,
+                                        width: Dimensions.get('window').width / 4,
+                                        height: 48,
+                                        backgroundColor: 'green'
+                                    }}
+                                    onPress={() => {
+                                        this.setState({dialogVisible: false})
+                                    }}>
+                                    <Text style={{color: 'white', alignSelf: 'center'}}>Ok</Text>
+                                </TouchableOpacity>
+
+                            </View>
+                        </Dialog>
                     </View>
                 </TabNavigator.Item>
                 <TabNavigator.Item
@@ -456,6 +493,56 @@ export default class ListNhanVienScreen extends React.Component {
             </TabNavigator>
 
         )
+    }
+
+    _onSelectParty(id, value) {
+        let idNhom = this.state.dataPartyNhanVien[this.state.partyNhanVienStatus[id]].IDNhom;
+
+        this.setState({numberPickParty: id, idNhom: idNhom}, function () {
+            this.getDataFromSv()
+        })
+    }
+
+    _onSelectStatus(id, value) {
+        console.log('id', id, value);
+        this.setState({numberPickStatus: id}, function () {
+            let dataFill = this.fillData(this.state.dataFull)
+            this.setState({dataRender: dataFill})
+        })
+    }
+
+    _renderRowStatus(rowData, rowID, highlighted) {
+        let icon = highlighted ? require('../images/heart.png') : require('../images/flower.png');
+        let evenRow = rowID % 2;
+        return (
+            <TouchableHighlight underlayColor='cornflowerblue'>
+                <View style={[styles.dropdown_2_row, {backgroundColor: evenRow ? 'lemonchiffon' : 'white'}]}>
+                    <Image style={styles.dropdown_2_image}
+                           mode='stretch'
+                           source={icon}
+                    />
+                    <Text style={[styles.dropdown_2_row_text, highlighted && {color: 'mediumaquamarine'}]}>
+                        {rowData}
+                    </Text>
+                </View>
+            </TouchableHighlight>
+        );
+    }
+
+    _renderSeparatorStatus(sectionID, rowID, adjacentRowHighlighted) {
+        if (rowID === this.state.dataPickStatus.length - 1) return;
+        let key = `spr_${rowID}`;
+        return (<View style={styles.dropdown_2_separator}
+                      key={key}
+        />);
+    }
+
+    _renderSeparatorParty(sectionID, rowID, adjacentRowHighlighted) {
+        if (rowID === this.state.partyNhanVienStatus.length - 1) return;
+        let key = `spr_${rowID}`;
+        return (<View style={styles.dropdown_2_separator}
+                      key={key}
+        />);
     }
 
     componentDidMount() {
@@ -491,6 +578,7 @@ export default class ListNhanVienScreen extends React.Component {
         console.log('13123')
     }
 }
+
 
 const styles = StyleSheet.create({
     titleStyle: {
@@ -534,5 +622,117 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         height: 80
-    }
-})
+    },
+    container: {
+        flex: 1,
+    },
+    row: {
+        flex: 1,
+        flexDirection: 'row',
+    },
+    cell: {
+        flex: 1,
+        borderWidth: StyleSheet.hairlineWidth,
+    },
+    scrollView: {
+        flex: 1,
+    },
+    contentContainer: {
+        height: 500,
+        paddingVertical: 100,
+        paddingLeft: 20,
+    },
+    textButton: {
+        color: 'deepskyblue',
+        borderWidth: StyleSheet.hairlineWidth,
+        borderColor: 'deepskyblue',
+        margin: 2,
+    },
+
+    dropdown_1: {
+        flex: 1,
+        top: 32,
+        left: 8,
+    },
+    dropdown_2: {
+        alignSelf: 'flex-end',
+        width: 150,
+        top: 32,
+        right: 8,
+        borderWidth: 0,
+        borderRadius: 3,
+        backgroundColor: 'cornflowerblue',
+    },
+    dropdown_2_text: {
+        marginVertical: 10,
+        marginHorizontal: 6,
+        fontSize: 18,
+        color: 'white',
+        textAlign: 'center',
+        textAlignVertical: 'center',
+    },
+    dropdown_2_dropdown: {
+        width: 150,
+        height: 300,
+        borderColor: 'cornflowerblue',
+        borderWidth: 2,
+        borderRadius: 3,
+    },
+    dropdown_2_row: {
+        flexDirection: 'row',
+        height: 40,
+        alignItems: 'center',
+    },
+    dropdown_2_image: {
+        marginLeft: 4,
+        width: 30,
+        height: 30,
+    },
+    dropdown_2_row_text: {
+        marginHorizontal: 4,
+        fontSize: 16,
+        color: 'navy',
+        textAlignVertical: 'center',
+    },
+    dropdown_2_separator: {
+        height: 1,
+        backgroundColor: 'cornflowerblue',
+    },
+    dropdown_3: {
+        width: 150,
+        borderColor: 'lightgray',
+        borderWidth: 1,
+        borderRadius: 1,
+    },
+    dropdown_3_dropdownTextStyle: {
+        backgroundColor: '#000',
+        color: '#fff'
+    },
+    dropdown_3_dropdownTextHighlightStyle: {
+        backgroundColor: '#fff',
+        color: '#000'
+    },
+    dropdown_4: {
+        margin: 8,
+        borderColor: 'lightgray',
+        borderWidth: 1,
+        borderRadius: 1,
+    },
+    dropdown_4_dropdown: {
+        width: 100,
+    },
+    dropdown_5: {
+        margin: 8,
+        borderColor: 'lightgray',
+        borderWidth: 1,
+        borderRadius: 1,
+    },
+    dropdown_6: {
+        flex: 1,
+        left: 8,
+    },
+    dropdown_6_image: {
+        width: 40,
+        height: 40,
+    },
+});
