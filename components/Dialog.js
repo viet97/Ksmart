@@ -111,9 +111,11 @@ export default class Dialog extends React.Component {
                             confirmBtnText="Xác nhận"
                             cancelBtnText="Huỷ bỏ"
                             customStyles={{
-                                dateIcon: {},
                                 dateInput: {
-                                    borderColor: 'transparent'
+                                    marginVertical: 4,
+                                    borderColor: 'white',
+                                    borderRadius: 10,
+                                    backgroundColor: 'white'
                                 }
                             }}
                             onDateChange={(date) => {
@@ -133,9 +135,11 @@ export default class Dialog extends React.Component {
                             confirmBtnText="Xác nhận"
                             cancelBtnText="Huỷ bỏ"
                             customStyles={{
-                                dateIcon: {},
                                 dateInput: {
-                                    borderColor: 'transparent'
+                                    marginVertical: 4,
+                                    borderColor: 'white',
+                                    borderRadius: 10,
+                                    backgroundColor: 'white'
                                 }
                             }}
                             onDateChange={(date) => {
