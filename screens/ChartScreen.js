@@ -131,55 +131,56 @@ export default class ChartScreen extends React.Component {
             <View style={{
                 marginTop: 4, marginBottom: 4, marginLeft: 8, marginRight: 8,
                 borderTopColor: '#227878'
-            }}><Image source={require('../images/bg1.png')}
-                      style={{
-                          width: width - 8,
-                          height: height / 7
-                      }}>
-                <View style={{
-                    justifyContent: 'space-between',
-                    flexDirection: 'row',
-                    marginLeft: 8,
-                    marginTop: 8,
-                    marginRight: 8,
-                    marginBottom: 4
-                }}>
-                    <View style={{flexDirection: 'row'}}>
-                        <Text style={{alignSelf: 'center', backgroundColor: 'transparent'}}>Ngày: </Text>
+            }}>
+                <Image source={require('../images/bg1.png')}
+                       style={{
+                           width: width - 16,
+                           height: height / 7
+                       }}>
+                    <View style={{
+                        justifyContent: 'space-between',
+                        flexDirection: 'row',
+                        marginLeft: 8,
+                        marginTop: 8,
+                        marginRight: 8,
+                        marginBottom: 4
+                    }}>
+                        <View style={{flexDirection: 'row'}}>
+                            <Text style={{alignSelf: 'center', backgroundColor: 'transparent'}}>Ngày: </Text>
+                            <Text style={{
+                                marginLeft: 8,
+                                backgroundColor: 'transparent'
+                            }}>{item.thoigian}</Text>
+                        </View>
+                    </View>
+
+                    <View style={{
+                        flexDirection: 'row',
+                        marginLeft: 8,
+                        marginTop: 4,
+                        marginRight: 8,
+                        marginBottom: 4
+                    }}>
+                        <Text style={{backgroundColor: 'transparent'}}>Số đơn hàng: </Text>
                         <Text style={{
                             marginLeft: 8,
                             backgroundColor: 'transparent'
-                        }}>{item.thoigian}</Text>
+                        }}>{item.DonHang}</Text>
                     </View>
-                </View>
-
-                <View style={{
-                    flexDirection: 'row',
-                    marginLeft: 8,
-                    marginTop: 4,
-                    marginRight: 8,
-                    marginBottom: 4
-                }}>
-                    <Text style={{backgroundColor: 'transparent'}}>Số đơn hàng: </Text>
-                    <Text style={{
+                    <View style={{
+                        flexDirection: 'row',
                         marginLeft: 8,
-                        backgroundColor: 'transparent'
-                    }}>{item.DonHang}</Text>
-                </View>
-                <View style={{
-                    flexDirection: 'row',
-                    marginLeft: 8,
-                    marginTop: 4,
-                    marginRight: 8,
-                    marginBottom: 4
-                }}>
-                    <Text style={{backgroundColor: 'transparent'}}>Tổng tiền:</Text>
-                    <Text style={{
-                        marginLeft: 8,
-                        backgroundColor: 'transparent'
-                    }}>{ultils.getMoney(item.TongTien)}</Text>
-                </View>
-            </Image>
+                        marginTop: 4,
+                        marginRight: 8,
+                        marginBottom: 4
+                    }}>
+                        <Text style={{backgroundColor: 'transparent'}}>Tổng tiền:</Text>
+                        <Text style={{
+                            marginLeft: 8,
+                            backgroundColor: 'transparent'
+                        }}>{ultils.getMoney(item.TongTien)}</Text>
+                    </View>
+                </Image>
             </View>
         )
     }
@@ -245,6 +246,7 @@ export default class ChartScreen extends React.Component {
         else title = 'Biểu đồ doanh thu'
         return title
     }
+
     render() {
         let {height, width} = Dimensions.get('window');
         let options = {
