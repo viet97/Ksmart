@@ -177,7 +177,7 @@ export default class ChartScreen extends React.Component {
                     <Text style={{
                         marginLeft: 8,
                         backgroundColor: 'transparent'
-                    }}>{ultils.getDate(item.TongTien)}</Text>
+                    }}>{ultils.getMoney(item.TongTien)}</Text>
                 </View>
             </Image>
             </View>
