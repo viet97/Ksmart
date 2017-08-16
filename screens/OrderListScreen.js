@@ -431,7 +431,7 @@ export default class OrderListScreen extends Component {
                     <Image source={require('../images/bg.png')}
                            style={{position: 'absolute'}}/>
                     <TouchableOpacity onPress={() => this.props.backToHome()}
-                                      style={styles.iconStyle}>
+                                      style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                         <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
                     </TouchableOpacity>
                     <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Danh
@@ -442,16 +442,6 @@ export default class OrderListScreen extends Component {
                         <Text style={{color: 'white', padding: 8, backgroundColor: 'transparent'}}>Bộ lọc</Text>
                     </TouchableOpacity>
                 </View>
-                <TouchableOpacity onPress={() => this.props.backToHome()}
-                                  style={{
-                                      width: 50,
-                                      height: 50,
-                                      position: 'absolute',
-                                      left: 16,
-                                      top: 0,
-                                      right: 0,
-                                      bottom: 0
-                                  }}/>
                 <View style={{width: width}}>
                     <Search
                         ref="search_box"

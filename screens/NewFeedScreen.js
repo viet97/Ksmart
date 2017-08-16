@@ -240,14 +240,16 @@ export default class NewFeedScreen extends React.Component {
                 <View style={styles.titleStyle}>
                     <Image source={require('../images/bg.png')}
                            style={{position: 'absolute'}}/>
-                    <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
+                    <TouchableOpacity onPress={() => this.props.backToHome()}
+                                      style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
+                        <Icon1 style={styles.iconStyle} size={24} color="white"
+                               name="ios-arrow-back"/></TouchableOpacity>
                     <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Hoạt
                         động</Text>
-                    <View style={{backgroundColor: 'transparent', width: 35, height: 35}}></View>
+                    <View style={{backgroundColor: 'transparent', width: 35, height: 35}}/>
                 </View>
 
-                <TouchableOpacity onPress={() => this.props.backToHome()}
-                                  style={{width: 50, height: 50, position: 'absolute'}}/>
+
                 <View style={{width: width}}>
                     <Search
                         ref="search_box"
@@ -274,6 +276,7 @@ const styles = StyleSheet.create({
         elevation: 15,
         justifyContent: 'space-between',
         flexDirection: 'row',
+        alignItems: 'center',
         backgroundColor: Color.backgroundNewFeed,
     },
     headerStyle: {

@@ -7,7 +7,6 @@ import Icon4 from 'react-native-vector-icons/Foundation'
 import React from 'react';
 import Drawer from 'react-native-drawer';
 import {Icon} from 'react-native-elements'
-import Color from '../configs/color'
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import DetailMessageScreen from './DetailMessageScreen'
 import DetailNhanVien from './DetailNhanVien'
@@ -368,12 +367,11 @@ export default class HomeScreen extends React.Component {
                                         flexDirection: 'row'
                                     }}
                                            source={require('../images/webmail-2012.png')}
-                                    >
-                                        {this.renderBagde()}
-                                    </Image>
+                                    />
 
                                     <Animatable.Text animation="slideInRight" style={styles.titleIconsMenu}>Tin
                                         nhắn</Animatable.Text>
+                                    {this.renderBagde()}
 
                                 </TouchableOpacity>
                             </View>
@@ -507,11 +505,9 @@ export default class HomeScreen extends React.Component {
                                                   this.closeControlPanel()
                                               }}>
                                 <Icon2 size={24} style={styles.iconStyle} color="white" name="mail"/>
-                                <View style={{flexDirection: 'row', backgroundColor: 'transparent'}}>
-                                    <Text style={styles.textStyle}>Tin nhắn</Text>
-                                    {this.renderBagde()}
-                                </View>
+                                <Text style={styles.textStyle}>Tin nhắn</Text>
                                 <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
+                                {this.renderBagde()}
                             </TouchableOpacity>
                         </View>
                         <View>
@@ -551,14 +547,13 @@ export default class HomeScreen extends React.Component {
             console.log('vao day rrrrr')
             return (
                 <Badge textStyle={{
-                    color: '#fff',
-                    position: 'absolute',
-                    top: 0,
-                    right: 8,
-                    alignSelf: 'center',
-                    textAlign: 'center'
+                    color: '#fff'
                 }}
-                       style={{paddingLeft: 4, marginLeft: 8, alignItems: 'center'}}>
+                       style={{
+                           position: 'absolute',
+                           top: 0,
+                           right: 12
+                       }}>
                     {URlConfig.OBJLOGIN.messageUnread}
                 </Badge>)
         } else {

@@ -310,16 +310,14 @@ export default class ChartScreen extends React.Component {
                 <View style={styles.titleStyle}>
                     <Image source={require('../images/bg.png')}
                            style={{position: 'absolute'}}/>
-                    <TouchableOpacity onPress={() => this.props.backToChooseTypeChart()}
-                                      style={styles.iconStyle}>
-                        <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
-                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => this.props.backToHome()}
+                                      style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
+                        <Icon1 style={styles.iconStyle} size={24} color="white"
+                               name="ios-arrow-back"/></TouchableOpacity>
                     <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>{this.getTitle()}</Text>
                     <TouchableOpacity style={{alignSelf: 'center'}} onPress={() => {
                         this.showDialog();
-                    }}>
-                        <View></View>
-                    </TouchableOpacity>
+                    }}/>
                 </View>
                 <TouchableOpacity onPress={() => this.props.backToChooseTypeChart()}
                                   style={{

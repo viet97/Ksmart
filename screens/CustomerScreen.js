@@ -263,6 +263,7 @@ export default class CustomerScreen extends Component {
     }
 
     render() {
+
         return (
             <View style={{flex: 1}}>
                 <Image source={require('../images/bg.png')}
@@ -270,23 +271,14 @@ export default class CustomerScreen extends Component {
                 <View style={styles.titleStyle}>
                     <Image source={require('../images/bg.png')}
                            style={{position: 'absolute'}}/>
-                    <TouchableOpacity style={styles.iconStyle} onPress={() => this.props.backToHome()}>
-                        <Icon2 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
-                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => this.props.backToHome()}
+                                      style={{alignItems: 'center', justifyContent: 'center'}}>
+                        <Icon2 style={styles.iconStyle} size={24} color="white"
+                               name="ios-arrow-back"/></TouchableOpacity>
                     <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Thông
                         tin khách hàng</Text>
                     <View style={{width: 35, height: 35}}/>
                 </View>
-                <TouchableOpacity onPress={() => this.props.backToHome()}
-                                  style={{
-                                      width: 50,
-                                      height: 50,
-                                      position: 'absolute',
-                                      left: 16,
-                                      top: 0,
-                                      right: 0,
-                                      bottom: 0
-                                  }}/>
 
                 <View style={{
                     marginLeft: 8,
@@ -312,8 +304,6 @@ export default class CustomerScreen extends Component {
                         onCancel={() => this.onCancel()}
                     />
                 </View>
-                <TouchableOpacity onPress={() => this.props.backToHome()}
-                                  style={{width: 50, height: 50, position: 'absolute'}}/>
                 {this.flatListorIndicator()}
 
             </View>

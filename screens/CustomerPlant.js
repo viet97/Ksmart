@@ -229,9 +229,10 @@ export default class CustomerPlant extends Component {
         return (
             <View style={{flex: 1, backgroundColor: Color.backGroundFlatList}}>
                 <View style={styles.titleStyle}>
-                    <TouchableOpacity style={styles.iconStyle} onPress={() => this.props.backToTravel()}>
-                        <Icon2 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
-                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => this.props.backToHome()}
+                                      style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
+                        <Icon1 style={styles.iconStyle} size={24} color="white"
+                               name="ios-arrow-back"/></TouchableOpacity>
                     <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Lập kế hoạch</Text>
                     <TouchableOpacity
                         onPress={() => {

@@ -56,23 +56,15 @@ export default class ChooseTypeChart extends React.Component {
                 <View style={styles.titleStyle}>
                     <Image source={require('../images/bg.png')}
                            style={{position: 'absolute'}}/>
-                    <TouchableOpacity style={styles.iconStyle} onPress={() => this.props.backToHome()}>
-                        <Icon2 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
-                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => this.props.backToHome()}
+                                      style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
+                        <Icon2 style={styles.iconStyle} size={24} color="white"
+                               name="ios-arrow-back"/></TouchableOpacity>
                     <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Chọn
                         loại biểu đồ</Text>
                     <View style={{width: 35, height: 35}}/>
                 </View>
-                <TouchableOpacity onPress={() => this.props.backToHome()}
-                                  style={{
-                                      width: 50,
-                                      height: 50,
-                                      position: 'absolute',
-                                      left: 16,
-                                      top: 0,
-                                      right: 0,
-                                      bottom: 0
-                                  }}/>
+
                 <View style={{flex: 9, marginTop: 16}}>
                     <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
                         <TouchableOpacity
@@ -162,7 +154,7 @@ const styles = StyleSheet.create({
         height: 35,
         backgroundColor: "transparent",
         marginLeft: 8,
-        marginTop: (Platform.OS === 'ios') ? 4 : 0
+        marginTop: (Platform.OS === 'ios') ? 8 : 0
     }
 
 })

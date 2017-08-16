@@ -48,9 +48,9 @@ export default class DetailMessageScreen extends Component {
                         style={styles.iconStyle}>
                         <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
                     </TouchableOpacity>
-                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Thông
-                        tin nhân viên</Text>
-                    <View></View>
+                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Chi
+                        tiết tin nhắn </Text>
+                    <View/>
                 </View>
 
                 <View style={{flex: 9}}>
