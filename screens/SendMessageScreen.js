@@ -132,6 +132,7 @@ export default class ModalSendMessage extends Component {
                                 data={this.state.listNhanVien}
                                 defaultValue={this.state.nameInput}
                                 placeholder="Nhập tên người nhận"
+                                style={{width: width - 32, paddingLeft: 8, height: 30, backgroundColor: 'white'}}
                                 onChangeText={text => {
                                     if (text.length !== 0) {
                                         this.setState({hideResults: false, receiver: text}, function () {
@@ -162,23 +163,29 @@ export default class ModalSendMessage extends Component {
                                 )}
                             />
                         </View>
-                    <View style={{marginLeft: 16, marginTop: 60, backgroundColor: 'transparent'}}>
+                    <View style={{marginHorizontal: 16, marginTop: 60, backgroundColor: 'transparent'}}>
                         <Text style={{marginBottom: 8}}>Tiêu đề</Text>
                         <TextInput
-                            style={{height: 44, width: width, backgroundColor: 'white'}}
+                            style={{height: 44, width: width - 32, backgroundColor: 'white', paddingLeft: 8}}
                             onChangeText={(text) => this.setState({title: text})}
                             value={this.state.title}
                             returnKeyType={'done'}
                         />
                     </View>
-                    <View style={{flex: 8, backgroundColor: 'transparent'}}>
-                        <Text style={{marginLeft: 16, marginTop: 16, marginBottom: 16, flex: 1}}>
+                    <View style={{flex: 8, backgroundColor: 'transparent', marginHorizontal: 8,}}>
+                        <Text style={{marginTop: 16, marginBottom: 16, flex: 1}}>
                             Nội dung
                         </Text>
                         <TextInput
                             multiline={true}
                             blurOnSubmit={true}
-                            style={{flex: 10, margin: 8, backgroundColor: 'white', textAlignVertical: 'top'}}
+                            style={{
+                                flex: 10,
+                                margin: 8,
+                                backgroundColor: 'white',
+                                textAlignVertical: 'top',
+                                paddingLeft: 8
+                            }}
                             onChangeText={(text) => this.setState({text: text})}
                             value={this.state.text}
                             onSubmitEditing={(event) => {
@@ -222,7 +229,7 @@ export default class ModalSendMessage extends Component {
             children: (
                 <DialogCustom
                     callback={(id, name) => {
-                        this.setState({IDNhanVien: id, receiver: name})
+                        this.setState({IDNhanVien: id, receiver: name, nameInput: name})
                     }}/>
             ),
         }, () => {
