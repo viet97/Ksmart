@@ -15,6 +15,7 @@ import URlConfig from "../configs/url";
 import Color from "../configs/color";
 import Toast from 'react-native-simple-toast'
 import ultils from "../configs/ultils";
+import DoanhThuTheoNVItem from "../components/DoanhThuTheoNVItem";
 
 let {height, width} = Dimensions.get('window');
 export default class RevenuePerPersonnelScreen extends React.Component {
@@ -118,59 +119,9 @@ export default class RevenuePerPersonnelScreen extends React.Component {
     }
     renderItem(item) {
         return (
-            <View style={{
-                marginTop: 4, marginBottom: 4, marginLeft: 8, marginRight: 8,
-                borderTopColor: '#227878'
-            }}><Image source={require('../images/bg1.png')}
-                      style={{
-                          width: width - 8,
-                          height: height / 7
-                      }}>
-                <View style={{
-                    justifyContent: 'space-between',
-                    flexDirection: 'row',
-                    marginLeft: 8,
-                    marginTop: 8,
-                    marginRight: 8,
-                    marginBottom: 4
-                }}>
-                    <View style={{flexDirection: 'row'}}>
-                        <Text style={{alignSelf: 'center', backgroundColor: 'transparent'}}>Nhân viên: </Text>
-                        <Text style={{
-                            marginLeft: 8,
-                            backgroundColor: 'transparent'
-                        }}>{item.tennhanvien}</Text>
-                    </View>
-                </View>
-
-                <View style={{
-                    flexDirection: 'row',
-                    marginLeft: 8,
-                    marginTop: 4,
-                    marginRight: 8,
-                    marginBottom: 4
-                }}>
-                    <Text style={{backgroundColor: 'transparent'}}>Số đơn hàng: </Text>
-                    <Text style={{
-                        marginLeft: 8,
-                        backgroundColor: 'transparent'
-                    }}>{item.DonHang}</Text>
-                </View>
-                <View style={{
-                    flexDirection: 'row',
-                    marginLeft: 8,
-                    marginTop: 4,
-                    marginRight: 8,
-                    marginBottom: 4
-                }}>
-                    <Text style={{backgroundColor: 'transparent'}}>Tổng tiền:</Text>
-                    <Text style={{
-                        marginLeft: 8,
-                        backgroundColor: 'transparent'
-                    }}>{ultils.getDate(item.TongTien)}</Text>
-                </View>
-            </Image>
-            </View>
+            <DoanhThuTheoNVItem
+                data={item}
+            />
         )
     }
 

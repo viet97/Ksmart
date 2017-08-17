@@ -30,6 +30,9 @@ import Search from 'react-native-search-box';
 import Toast from 'react-native-simple-toast';
 import ultils from "../configs/ultils";
 import Communications from 'react-native-communications';
+import DoanhThuReportItem from "../components/DoanhThuReportItem";
+import TopDoanhThuItem from "../components/TopDoanhThuItem";
+import KhongCoDoanhThuItem from "../components/KhongCoDoanhThuItem";
 
 let SEARCH_STRING = '';
 let {width, height} = Dimensions.get('window');
@@ -197,205 +200,27 @@ export default class ReportScreen extends Component {
 
     renderKhongCoDoanhThu(item) {
         return (
-            <View style={{
-                marginTop: 4, marginBottom: 4, marginLeft: 8, marginRight: 8,
-                borderTopColor: '#227878'
-            }}><Image source={require('../images/bg1.png')}
-                      style={{
-                          width: width - 8,
-                          height: height / 5
-                      }}>
-                <View style={{
-                    justifyContent: 'space-between',
-                    flexDirection: 'row',
-                    marginLeft: 8,
-                    marginTop: 8,
-                    marginRight: 8,
-                    marginBottom: 4
-                }}>
-                    <View style={{flexDirection: 'row'}}>
-                        <Text style={{alignSelf: 'center', backgroundColor: 'transparent'}}>Tên nhân viên:</Text>
-                        <Text style={{
-                            marginLeft: 8,
-                            fontSize: 18,
-                            fontWeight: "bold",
-                            backgroundColor: 'transparent'
-                        }}>{item.tennhanvien}</Text>
-                    </View>
-                    <TouchableOpacity onPress={() => Communications.phonecall(item.dienthoai, true)}>
-                        <Icon3 style={{backgroundColor: 'transparent'}} size={24} color="green" name="phone"/>
-                    </TouchableOpacity>
-                </View>
-
-                <View style={{
-                    flexDirection: 'row',
-                    marginLeft: 8,
-                    marginTop: 4,
-                    marginRight: 8,
-                    marginBottom: 4
-                }}>
-                    <Text style={{backgroundColor: 'transparent'}}>khách hàng cuối:</Text>
-                    <Text style={{
-                        marginLeft: 8,
-                        backgroundColor: 'transparent'
-                    }}>{item.donhangcuoi_tenkhachhang}</Text>
-                </View>
-                <View style={{
-                    flexDirection: 'row',
-                    marginLeft: 8,
-                    marginTop: 4,
-                    marginRight: 8,
-                    marginBottom: 4
-                }}>
-                    <Text style={{backgroundColor: 'transparent'}}>Đơn hàng cuối lúc:</Text>
-                    <Text style={{
-                        marginLeft: 8,
-                        backgroundColor: 'transparent'
-                    }}>{ultils.getDate(item.donhangcuoi_thoigian)}</Text>
-                </View>
-                <View style={{
-
-                    flexDirection: 'row',
-                    marginLeft: 8,
-                    marginTop: 4,
-                    marginRight: 8,
-                    marginBottom: 4
-                }}>
-                    <Text style={{backgroundColor: 'transparent'}}>Tổng tiền: </Text>
-                    <Text style={{
-                        marginLeft: 8,
-                        backgroundColor: 'transparent'
-                    }}>{item.donhangcuoi_tongtien}</Text>
-                </View>
-            </Image>
-            </View>
+            <KhongCoDoanhThuItem
+                data={item}
+                call={() => Communications.phonecall(item.dienthoai, true)}
+            />
         )
     }
 
     renderTopDoanhThu(item) {
         return (
-            <View style={{
-                marginTop: 4, marginBottom: 4, marginLeft: 8, marginRight: 8,
-                borderTopColor: '#227878'
-            }}>
-                <Image source={require('../images/bg1.png')}
-                       style={{
-                           width: width - 8,
-                           height: height / 6
-                       }}>
-                    <View style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        marginLeft: 8,
-                        marginTop: 8,
-                        marginRight: 8,
-                        marginBottom: 4
-                    }}>
-                        <View style={{flexDirection: 'row'}}>
-                            <Icon1 style={{backgroundColor: 'transparent'}} size={24} color="black"
-                                   name="ios-people-outline"/>
-                            <Text style={{
-                                marginLeft: 8,
-                                fontSize: 18,
-                                fontWeight: "bold", backgroundColor: 'transparent'
-                            }}>{item.tennhanvien}</Text>
-                        </View>
-                        <TouchableOpacity onPress={() => Communications.phonecall(item.dienthoai, true)}>
-                            <Icon3 style={{backgroundColor: 'transparent'}} size={24} color="green" name="phone"/>
-                        </TouchableOpacity>
-                    </View>
-
-                    <View style={{
-                        flexDirection: 'row',
-                        marginLeft: 8,
-                        marginTop: 4,
-                        marginRight: 8,
-                        marginBottom: 4
-                    }}>
-                        <Icon2 style={{backgroundColor: 'transparent'}} size={24} color="black" name="news"/>
-                        <Text style={{marginLeft: 8, backgroundColor: 'transparent'}}>{item.DonHang}</Text>
-                    </View>
-                    <View style={{
-                        flexDirection: 'row',
-                        marginLeft: 8,
-                        marginTop: 4,
-                        marginRight: 8,
-                        marginBottom: 4
-                    }}>
-                        <Icon style={{backgroundColor: 'transparent'}} size={24} color="green" name="attach-money"/>
-                        <Text style={{
-                            marginLeft: 8,
-                            backgroundColor: 'transparent'
-                        }}>{ultils.getMoney(item.TongTien, 2)}</Text>
-                    </View>
-                </Image>
-            </View>
+            <TopDoanhThuItem
+                data={item}
+                call={() => Communications.phonecall(item.dienthoai, true)}
+            />
         )
     }
 
     renderDoanhThuSanLuong(item) {
         return (
-            <View style={{
-                marginTop: 4, marginBottom: 4, marginLeft: 4, marginRight: 4,
-                borderTopColor: '#227878'
-            }}>
-                <Image source={require('../images/bg1.png')}
-                       style={{
-                           width: width - 8,
-                           height: height / 4.5
-                       }}>
-                    <View style={{
-                        flexDirection: 'row',
-                        marginLeft: 4,
-                        marginTop: 8,
-                        marginRight: 8,
-                        marginBottom: 4
-                    }}>
-                        <Icon1 style={{backgroundColor: 'transparent'}} size={24} color="black"
-                               name="ios-people-outline"/>
-                        <Text style={{
-                            marginLeft: 8,
-                            fontSize: 18,
-                            fontWeight: "bold"
-                            , backgroundColor: 'transparent'
-                        }}>{item.tenkhachhang}</Text>
-                    </View>
-                    <View style={{
-                        flexDirection: 'row',
-                        marginLeft: 8,
-                        marginTop: 4,
-                        marginRight: 8,
-                        marginBottom: 4
-                    }}>
-                        <Icon2 style={{backgroundColor: 'transparent'}} size={24} color="red" name="location-pin"/>
-                        <Text style={{marginLeft: 8, backgroundColor: 'transparent'}}>{item.diachikhachhang}</Text>
-
-                    </View>
-                    <View style={{
-                        flexDirection: 'row',
-                        marginLeft: 8,
-                        marginTop: 4,
-                        marginRight: 8,
-                        marginBottom: 4
-                    }}>
-                        <Icon2 style={{backgroundColor: 'transparent'}} size={24} color="black" name="news"/>
-                        <Text style={{marginLeft: 8, backgroundColor: 'transparent'}}>{item.sodonhang}</Text>
-                    </View>
-                    <View style={{
-                        flexDirection: 'row',
-                        marginLeft: 8,
-                        marginTop: 4,
-                        marginRight: 8,
-                        marginBottom: 4
-                    }}>
-                        <Icon size={24} style={{backgroundColor: 'transparent'}} color="green" name="attach-money"/>
-                        <Text style={{
-                            marginLeft: 8,
-                            backgroundColor: 'transparent'
-                        }}>{ultils.getMoney(item.tongtien, 2)}</Text>
-                    </View>
-                </Image>
-            </View>
+            <DoanhThuReportItem
+                data={item}
+            />
         )
     }
 

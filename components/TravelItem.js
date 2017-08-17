@@ -22,7 +22,7 @@ import DatePicker from 'react-native-datepicker'
 import ultils from "../configs/ultils";
 
 let {width, height} = Dimensions.get('window');
-export default class NewFeedItem extends React.Component {
+export default class TravelItem extends React.Component {
 
     constructor(props) {
         super(props)
@@ -76,15 +76,24 @@ export default class NewFeedItem extends React.Component {
             strRaDiem = 'Ra điểm lúc: ' + ultils.getDate(item.ThoiGianRaDiemThucTe) + ' ' + strRaDiem;
         }
         return (
-            <TouchableOpacity onPress={() => this.props.callback()}>
-                <View style={{
+            <TouchableOpacity
+                onPress={() => this.props.callback()}>
+                <View
+                    onLayout={(e) => {
+                        var {x, y, width, height} = e.nativeEvent.layout;
+                        this.setState({height: height})
+                    }}
+                    style={{
                     margin: 4
                 }}>
                     <Image source={require('../images/bg1.png')}
                            style={{
-                               width: width - 8,
-                               height: height / 4
-                           }}>
+                               height: this.state.height,
+                               flexWrap: 'wrap',
+                               position: 'absolute',
+                               width: width - 8
+
+                           }}/>
                         <Text style={{
                             textAlign: 'right',
                             backgroundColor: 'transparent',
@@ -130,7 +139,6 @@ export default class NewFeedItem extends React.Component {
                                     }}>{item.text_color_mota}</Text>
                             </View>
                         </View>
-                    </Image>
                 </View>
             </TouchableOpacity>
         )
