@@ -20,6 +20,7 @@ import URlConfig from "../configs/url";
 import Toast from 'react-native-simple-toast'
 import DatePicker from 'react-native-datepicker'
 import ultils from "../configs/ultils";
+import TravelItem from "../components/TravelItem";
 
 let SEARCH_STRING = '';
 let {width, height} = Dimensions.get('window');
@@ -241,87 +242,13 @@ export default class TravelScreen extends React.Component {
                     extraData={this.state.dataRender}
                     data={this.state.dataRender}
                     renderItem={({item}) =>
-                        this.renderItem(item)
+                        <TravelItem
+                            data={item}
+                            callback={() => this.props.callback(item)}
+                        />
                     }
                 />
             </View>)
-    }
-
-    renderItem(item) {
-
-        var strVaoDiem = '';
-        var strRaDiem = '';
-        if (item.ThoiGianVaoDiemThucTe === '1900-01-01T00:00:00') {
-            strVaoDiem = "Chưa vào điểm!"
-        } else {
-            var diffMins = this.millisToMinutes(item.ThoiGianVaoDiemDuKien, item.ThoiGianVaoDiemThucTe)
-            strVaoDiem = 'Vào điểm lúc: ' + ultils.getDate(item.ThoiGianVaoDiemThucTe) + ' ' + strVaoDiem;
-        }
-        if (item.ThoiGianRaDiemThucTe === '1900-01-01T00:00:00') {
-            strRaDiem = "Chưa ra điểm!"
-        } else {
-            diffMins = this.millisToMinutes(item.ThoiGianRaDiemDuKien, item.ThoiGianRaDiemThucTe)
-            strRaDiem = 'Ra điểm lúc: ' + ultils.getDate(item.ThoiGianRaDiemThucTe) + ' ' + strRaDiem;
-        }
-        return (
-            <TouchableOpacity onPress={() => this.props.callback(item)}>
-                <View style={{
-                    margin: 4
-                }}>
-                    <Image source={require('../images/bg1.png')}
-                           style={{
-                               width: width - 8,
-                               height: height / 4
-                           }}>
-                        <Text style={{
-                            textAlign: 'right',
-                            backgroundColor: 'transparent',
-                            fontSize: 12,
-                            marginRight: 4
-                        }}>Vào điểm dự kiến: {ultils.getDate(item.ThoiGianVaoDiemDuKien)}</Text>
-
-                        <Text style={{
-                            textAlign: 'right',
-                            backgroundColor: 'transparent',
-                            fontSize: 12,
-                            marginRight: 4
-                        }}>{strVaoDiem}</Text>
-                        <Text style={{
-                            textAlign: 'right',
-                            backgroundColor: 'transparent',
-                            fontSize: 12,
-                            marginRight: 4
-                        }}>{strRaDiem}</Text>
-                        <View style={{flexDirection: 'row'}}>
-                            <View style={{justifyContent: 'center'}}>
-                                {this.getImage(item.anhdaidien === undefined ? '' : item.anhdaidien)}
-                            </View>
-                            <View style={{flex: 4, margin: 8, justifyContent: 'center'}}>
-                                <Text
-                                    style={{
-                                        fontSize: 18,
-                                        backgroundColor: 'transparent',
-                                        margin: 4
-                                    }}>{item.TenCuaHang}</Text>
-                                <Text
-                                    style={{
-                                        fontSize: 12,
-                                        margin: 4,
-                                        backgroundColor: 'transparent',
-                                    }}>{item.TenNhanVien}</Text>
-                                <Text
-                                    style={{
-                                        fontSize: 13,
-                                        margin: 4,
-                                        color: item.text_color,
-                                        backgroundColor: 'transparent',
-                                    }}>{item.text_color_mota}</Text>
-                            </View>
-                        </View>
-                    </Image>
-                </View>
-            </TouchableOpacity>
-        );
     }
 
     render() {
@@ -453,14 +380,6 @@ export default class TravelScreen extends React.Component {
 
     }
 
-
-    millisToMinutes(from, to) {
-        var dateFrom = new Date(from)
-        var dateTo = new Date(to)
-        var millis = dateFrom - dateTo;
-        var minutes = Math.floor(millis / 60000);
-        return minutes;
-    }
 
 }
 const styles = StyleSheet.create({

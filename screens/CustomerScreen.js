@@ -61,7 +61,7 @@ export default class CustomerScreen extends Component {
         PAGE = 0;
         this.setState({dataRender: null})
         ALL_LOADED = false
-        fetch(URlConfig.getCustomerLink(PAGE))
+        fetch(URlConfig.getCustomerLink(PAGE, SEARCH_STRING))
             .then((response) => (response.json()))
             .then((responseJson) => {
                 console.log(responseJson)
@@ -74,9 +74,7 @@ export default class CustomerScreen extends Component {
                     this.setState({
                         customerCount: responseJson.tongsoitem,
                         dataFull: responseJson.data,
-                    }, function () {
-                        if (SEARCH_STRING.length === 0) this.setState({dataRender: responseJson.data})
-                        else this.getdataSearch(SEARCH_STRING)
+                        dataRender: responseJson.data
                     })
 
                 } else ALL_LOADED = true
@@ -87,26 +85,12 @@ export default class CustomerScreen extends Component {
         this.getDataFromSv()
     }
 
-    getdataSearch(keyword) {
-        fetch(URlConfig.getLinkTimKiemKhachHang(keyword))
-            .then((response) => (response.json()))
-            .then((responseJson) => {
-                if (responseJson.status) {
-                    this.setState({dataRender: responseJson.data})
-                    if (responseJson.endlist) {
-                        ALL_LOADED = true
-                        this.forceUpdate()
-                    }
-                }
-            })
-            .catch((e) => Toast.show('vui lòng kiểm tra lại đường truyền'))
-    }
 
     loadMoreData() {
         if (!this.state.onEndReach) {
             console.log("LOADMORE")
             this.setState({onEndReach: true})
-            fetch(URlConfig.getCustomerLink(PAGE))
+            fetch(URlConfig.getCustomerLink(PAGE, SEARCH_STRING))
                 .then((response) => (response.json()))
                 .then((responseJson) => {
                     console.log(responseJson)
@@ -159,7 +143,6 @@ export default class CustomerScreen extends Component {
                     ref="listview"
                     onEndReachedThreshold={0.2}
                     onEndReached={() => {
-                        if (SEARCH_STRING.length === 0)
                             this.loadMoreData()
                     }}
                     onMomentumScrollBegin={() => {
@@ -187,7 +170,7 @@ export default class CustomerScreen extends Component {
             console.log("promise")
             var keyword = text.toLowerCase()
             SEARCH_STRING = keyword
-            this.getdataSearch(keyword)
+            this.getDataFromSv()
 
         });
     }

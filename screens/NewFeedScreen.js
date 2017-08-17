@@ -156,7 +156,8 @@ export default class NewFeedScreen extends React.Component {
                     data={this.state.dataRender}
                     renderItem={({item}) =>
                         <NewFeedItem
-                            data={item}/>
+                            data={item}
+                        />
                     }
                 />
             </View>)
@@ -190,12 +191,15 @@ export default class NewFeedScreen extends React.Component {
                 <Image source={require('../images/bg.png')}
                        style={{position: 'absolute', top: 0}}/>
                 <View style={styles.titleStyle}>
-                    <Image source={require('../images/bg.png')}
-                           style={{position: 'absolute'}}/>
+                    {function () {
+                        if (Platform.OS !== 'ios') return (<Image source={require('../images/bg.png')}
+                                                                  style={{position: 'absolute'}}/>)
+                    }()}
                     <TouchableOpacity onPress={() => this.props.backToHome()}
                                       style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                         <Icon1 style={styles.iconStyle} size={24} color="white"
-                               name="ios-arrow-back"/></TouchableOpacity>
+                               name="ios-arrow-back"/>
+                    </TouchableOpacity>
                     <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Hoạt
                         động</Text>
                     <View style={{backgroundColor: 'transparent', width: 35, height: 35}}/>
@@ -229,7 +233,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: Color.backgroundNewFeed,
     },
     headerStyle: {
         elevation: 15, height: this.height / 7

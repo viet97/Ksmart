@@ -89,9 +89,9 @@ export default class URlConfig {
         return data.urlserver + '/AppKeHoachDiChuyen_v4.aspx?token=' + md5.hex_md5(Date.now()) + '&idct=' + data.idcongty + '&idquanly=' + data.id + '&from=' + dateFrom + '&to=' + dateTo + '&loai=chitietcacngaycokehoach&page=' + page;
     }
 
-    static getCustomerLink(page) {
+    static getCustomerLink(page, keyword) {
         let data = URlConfig.OBJLOGIN;
-        return data.urlserver + '/AppDanhSachCuaHang_v3.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idct=' + data.idcongty + '&lastid=' + page;
+        return data.urlserver + '/AppDanhSachCuaHang_v3.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idct=' + data.idcongty + '&lastid=' + page + '&loctatca=' + keyword;
     }
 
     static getMessageList(from, to) {
@@ -145,8 +145,4 @@ export default class URlConfig {
 
     }
 
-    static getLinkTimKiemKhachHang(keyWord) {
-        let data = URlConfig.OBJLOGIN;
-        return data.urlserver + '/AppDanhSachCuaHang_v3.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idct=' + data.idcongty + '&loctatca=' + keyWord;
-    }
 }
