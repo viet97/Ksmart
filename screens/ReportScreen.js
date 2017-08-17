@@ -487,8 +487,9 @@ export default class ReportScreen extends Component {
                     <Image source={require('../images/bg.png')}
                            style={{position: 'absolute'}}/>
                     <TouchableOpacity onPress={() => this.props.backToHome()}
-                                      style={styles.iconStyle}>
-                        <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
+                                      style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
+                        <Icon1 style={styles.iconStyle} size={24} color="white"
+                               name="ios-arrow-back"/>
                     </TouchableOpacity>
                     <Text style={{
                         fontSize: 20,

@@ -335,7 +335,11 @@ export default class TravelScreen extends React.Component {
                 <View style={styles.titleStyle}>
                     <Image source={require('../images/bg.png')}
                            style={{position: 'absolute'}}/>
-                    <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
+                    <TouchableOpacity onPress={() => this.props.backToHome()}
+                                      style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
+                        <Icon1 style={styles.iconStyle} size={24} color="white"
+                               name="ios-arrow-back"/>
+                    </TouchableOpacity>
                     <Text
                         style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Viếng
                         thăm</Text>
@@ -359,8 +363,6 @@ export default class TravelScreen extends React.Component {
                     </TouchableOpacity>
                 </View>
 
-                <TouchableOpacity onPress={() => this.props.backToHome()}
-                                  style={{width: 50, height: 50, position: 'absolute'}}/>
                 <View style={{width: window.width, height: 45, elevation: 5}}>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                         <DatePicker
@@ -428,7 +430,6 @@ export default class TravelScreen extends React.Component {
                             selectedValue={this.state.numberPickTravel}
                             onValueChange={(value) => {
                                 this.setState({numberPickTravel: value}, function () {
-                                    this.setDataRender();
                                 })
                             }}>
                         {travelStatusItem}

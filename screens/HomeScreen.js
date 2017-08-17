@@ -67,6 +67,7 @@ export default class HomeScreen extends React.Component {
     constructor(props) {
 
         super(props);
+        backcount = 0
         isLoginScreen = false
         var today = new Date();
         var dd = today.getDate();
@@ -642,12 +643,16 @@ const styles = StyleSheet.create({
 BackHandler.addEventListener('hardwareBackPress', function () {
     backcount++
     console.log(isLoginScreen)
-    if (isLoginScreen) return false
+
     if (backcount < 2) {
-        func()
-        console.log("back")
+        if (!isLoginScreen)
+            func()
         Toast.show('Bấm thêm lần nữa để thoát')
         return true
     }
-    else return false
+    else {
+        isLoginScreen = true
+        backcount = 0
+        return false
+    }
 });

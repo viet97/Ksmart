@@ -18,6 +18,7 @@ import Color from '../configs/color'
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import URlConfig from "../configs/url";
 import Toast from 'react-native-simple-toast'
+import NewFeedItem from "../components/NewFeedItem";
 
 let SEARCH_STRING = '';
 let {width, height} = Dimensions.get('window');
@@ -78,6 +79,7 @@ export default class NewFeedScreen extends React.Component {
                             isEndList: responseJson.endlist,
                             dataRender: arr
                         }, function () {
+                            console.log(this.state.dataRender.length)
                             if (this.state.isEndList) {
                                 ALL_LOADED = true
                                 this.forceUpdate()
@@ -89,26 +91,6 @@ export default class NewFeedScreen extends React.Component {
         }
     }
 
-    getImage(urlImage) {
-        console.log(urlImage)
-        if (urlImage === undefined || urlImage.length === 0) {
-            return (
-
-                <Image
-                    source={require('../images/bglogin.jpg')}
-                    // indicator={ProgressBar.Pie}
-                    style={{margin: 8, width: 60, height: 60, borderRadius: 30}}/>
-            );
-        } else {
-            return (
-                <Image
-                    style={{margin: 8, width: 60, height: 60, borderRadius: 30}}
-                    source={{uri: 'http://jav.ksmart.vn' + urlImage}}
-                    // indicator={ProgressBar.Pie}
-                />
-            );
-        }
-    }
 
     loadMoreData() {
         if (!this.state.onEndReach) {
@@ -173,38 +155,8 @@ export default class NewFeedScreen extends React.Component {
                     extraData={this.state.dataRender}
                     data={this.state.dataRender}
                     renderItem={({item}) =>
-                        <View style={{
-                            margin: 4,
-                        }}>
-                            <Image source={require('../images/bg1.png')}
-                                   style={{
-                                       width: width - 8,
-                                       height: height / 6
-                                   }}>
-                                <Text style={{
-                                    textAlign: 'right',
-                                    fontSize: 12,
-                                    backgroundColor: 'transparent'
-                                }}>Cập nhật lần cuối: {item.thoigian_hienthi}</Text>
-                                <View style={{flexDirection: 'row'}}>
-                                    <View style={{justifyContent: 'center'}}>
-                                        {this.getImage(item.anhdaidien)}
-                                    </View>
-                                    <View style={{flex: 4, margin: 8, justifyContent: 'center'}}>
-                                        <Text
-                                            style={{
-                                                fontWeight: 'bold',
-                                                fontSize: 18,
-                                                backgroundColor: 'transparent'
-                                            }}>{item.tennhanvien}</Text>
-                                        <Text style={{
-                                            fontSize: 13,
-                                            backgroundColor: 'transparent'
-                                        }}> {item.tenloai}</Text>
-                                    </View>
-                                </View>
-                            </Image>
-                        </View>
+                        <NewFeedItem
+                            data={item}/>
                     }
                 />
             </View>)

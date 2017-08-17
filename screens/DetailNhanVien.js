@@ -69,7 +69,7 @@ export default class DetailNhanVien extends React.Component {
                            style={{position: 'absolute'}}/>
                     <TouchableOpacity
                         onPress={() => this.props.navigation.goBack()}
-                        style={styles.iconStyle}>
+                        style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                         <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
                     </TouchableOpacity>
                     <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Thông
@@ -84,7 +84,7 @@ export default class DetailNhanVien extends React.Component {
                     <Image source={require('../images/bg.png')}
                            style={{position: 'absolute', top: 0}}/>
                     <Image style={{width: 120, height: 120, borderRadius: 60, alignSelf: 'center'}}
-                           source={require('../images/bglogin.jpg')}/>
+                           source={{uri: data.AnhDaiDien}}/>
                     <View style={{flexDirection: 'row', alignSelf: 'center', justifyContent: 'center'}}>
                         {this.isOnline(this.state.datadangtructuyen)}
                         <Text style={{

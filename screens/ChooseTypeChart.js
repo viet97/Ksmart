@@ -149,9 +149,8 @@ const styles = StyleSheet.create({
         fontFamily: 'Al Nile'
     },
     iconStyle: {
+
         alignSelf: 'center',
-        width: 35,
-        height: 35,
         backgroundColor: "transparent",
         marginLeft: 8,
         marginTop: (Platform.OS === 'ios') ? 8 : 0

@@ -22,6 +22,7 @@ import Dialog from '../components/Dialog'
 import Search from 'react-native-search-box';
 import ultils from "../configs/ultils";
 import Toast from 'react-native-simple-toast'
+import OrderListItem from "../components/OrderListItem";
 
 let {height, width} = Dimensions.get('window');
 
@@ -103,6 +104,7 @@ export default class OrderListScreen extends Component {
     refreshData() {
         this.getOrderListFromServer(this.state.filtDialog.dateFrom, this.state.filtDialog.dateTo)
     }
+
     filtData(data) {
 
         var arr = []
@@ -161,136 +163,12 @@ export default class OrderListScreen extends Component {
         this.getOrderListFromServer(this.state.filtDialog.dateFrom, this.state.filtDialog.dateTo)
     }
 
-
-    getGiaoHangHoacThanhToan(rowData) {
-        var colorGH;
-        var colorTT;
-        switch (rowData.trangthaithanhtoan) {
-            case 1:
-                colorTT = 'red'
-                break
-            case 2:
-                colorTT = 'yellow'
-                break
-            case 3:
-                colorTT = 'darkyellow'
-                break
-            case 4:
-                colorTT = 'green'
-                break
-        }
-        switch (rowData.trangthaigiaohang) {
-            case 1:
-                colorGH = 'red'
-                break
-            case 2:
-                colorGH = 'yellow'
-                break
-            case 4:
-                colorGH = 'green'
-                break
-        }
-        return (
-            <View style={{flexDirection: 'row', flex: 1, margin: 8}}>
-                <View style={{
-                    paddingBottom: 8,
-                    paddingTop: 8,
-                    flexDirection: 'row',
-                    backgroundColor: 'white',
-                    marginRight: 4,
-                    width: width / 2 - 12,
-                    justifyContent: 'center'
-                }}>
-                    <Icon2 style={{alignSelf: 'center', marginRight: 8}} size={12} color={colorGH}
-                           name="controller-record"/>
-                    <Text style={{
-                        fontSize: 15,
-                        fontWeight: "bold",
-                        backgroundColor: 'transparent',
-                        alignSelf: 'center',
-                        textAlign: 'center',
-                        color: colorGH,
-                    }}>{URlConfig.OBJLOGIN.ttgh[rowData.trangthaigiaohang]}</Text>
-                </View>
-                <View style={{
-                    paddingBottom: 8,
-                    paddingTop: 8,
-                    flexDirection: 'row',
-                    backgroundColor: 'white',
-                    marginLeft: 4,
-                    width: width / 2 - 12,
-                    justifyContent: 'center'
-
-                }}>
-                    <Icon2 style={{alignSelf: 'center', marginRight: 8}} size={12} color={colorTT}
-                           name="controller-record"/>
-                    <Text style={{
-                        fontSize: 15,
-                        fontWeight: "bold",
-                        backgroundColor: 'transparent',
-                        textAlign: 'center',
-                        alignSelf: 'center',
-                        color: colorTT,
-                    }}>{URlConfig.OBJLOGIN.tttt[rowData.trangthaithanhtoan]}</Text>
-                </View>
-            </View>
-        );
-    }
-
-    getInfoKhachHang(rowData) {
-        var color;
-        switch (rowData.trangthaidonhang) {
-            case 1:
-                color = URlConfig.OBJLOGIN.color[1]
-                break;
-            case 2:
-                color = URlConfig.OBJLOGIN.color[2]
-                break;
-            case 3:
-                color = URlConfig.OBJLOGIN.color[3]
-                break;
-            case 4:
-                color = URlConfig.OBJLOGIN.color[4]
-                break;
-            case 5:
-                color = URlConfig.OBJLOGIN.color[5]
-                break;
-            case 9:
-                color = URlConfig.OBJLOGIN.color[9]
-                break;
-            case 12:
-                color = URlConfig.OBJLOGIN.color[12]
-                break;
-            case 13:
-                color = URlConfig.OBJLOGIN.color[13]
-                break;
-            case 24:
-                color = URlConfig.OBJLOGIN.color[24]
-                break;
-        }
-        let info = URlConfig.OBJLOGIN.ttdh[rowData.trangthaidonhang]
-        return (
-            <View style={{
-                paddingTop: 8,
-                paddingBottom: 8,
-                backgroundColor: color,
-                marginLeft: 4,
-                width: width / 2 - 12,
-                justifyContent: 'center'
-            }}>
-                <Text numberOfLines={1}
-                      style={{textAlign: 'center', width: width / 2 - 20, paddingLeft: 4}}>{info}</Text>
-            </View>
-        )
-    }
-
-
     refreshData() {
         this.getOrderListFromServer(this.state.filtDialog.dateFrom, this.state.filtDialog.dateTo, Page, SEARCH_STRING)
     }
 
     renderFooter = () => {
-        Toast.show('' + ALL_LOADED)
+
         if (ALL_LOADED) return null
         return (
             <View
@@ -376,46 +254,9 @@ export default class OrderListScreen extends Component {
                     extraData={this.state.dataRender}
                     data={this.state.dataRender}
                     renderItem={({item}) =>
-                        <View
-                            style={{
-                                margin: 4,
-                            }}>
-                            <Image source={require('../images/bg1.png')}
-                                   style={{
-                                       width: width - 8,
-                                       height: height / 4.5
-                                   }}>
-                                <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 8}}>
-                                    <Text numberOfLines={1} style={{
-                                        fontWeight: "bold",
-                                        fontSize: 18,
-                                        backgroundColor: 'transparent'
-                                    }}>MĐH {item.mathamchieu} </Text>
-                                    <Text numberOfLines={1} style={{
-                                        fontSize: 18,
-                                        backgroundColor: 'transparent'
-                                    }}>{ultils.getMoney(item.tongtien, 2)} </Text>
-                                </View>
-                                <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 8}}>
-                                    <View style={{flex: 1, marginRight: 4}}>
-                                        <Text numberOfLines={1} style={{
-                                            fontSize: 17,
-                                            backgroundColor: 'transparent'
-                                        }}>{item.tenkhachhang} </Text>
-                                        <Text numberOfLines={1} style={{
-                                            fontSize: 10,
-                                            backgroundColor: 'transparent'
-                                        }}>{item.thoigianlapdon} </Text>
-                                    </View>
-                                    <View style={{flex: 1}}>
-                                        {this.getInfoKhachHang(item)}
-                                    </View>
-                                </View>
-                                {this.getGiaoHangHoacThanhToan(item)}
-                            </Image>
-
-
-                        </View>
+                        <OrderListItem
+                            data={item}
+                        />
                     }
                 />
             </View>)

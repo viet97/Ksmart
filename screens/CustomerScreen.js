@@ -20,6 +20,7 @@ import Color from '../configs/color'
 import URlConfig from "../configs/url";
 import Search from "react-native-search-box";
 import {StackNavigator} from 'react-navigation';
+import CustomerItem from "../components/CustomerItem";
 
 var ALL_LOADED = false
 var SEARCH_STRING = '';
@@ -66,7 +67,10 @@ export default class CustomerScreen extends Component {
                 console.log(responseJson)
                 if (responseJson.status) {
                     PAGE = responseJson.lastid
-                    if (responseJson.endlist) ALL_LOADED = true
+                    if (responseJson.endlist) {
+                        ALL_LOADED = true
+                        this.forceUpdate()
+                    }
                     this.setState({
                         customerCount: responseJson.tongsoitem,
                         dataFull: responseJson.data,
@@ -87,8 +91,13 @@ export default class CustomerScreen extends Component {
         fetch(URlConfig.getLinkTimKiemKhachHang(keyword))
             .then((response) => (response.json()))
             .then((responseJson) => {
-                if (responseJson.status)
+                if (responseJson.status) {
                     this.setState({dataRender: responseJson.data})
+                    if (responseJson.endlist) {
+                        ALL_LOADED = true
+                        this.forceUpdate()
+                    }
+                }
             })
             .catch((e) => Toast.show('vui lòng kiểm tra lại đường truyền'))
     }
@@ -102,7 +111,10 @@ export default class CustomerScreen extends Component {
                 .then((responseJson) => {
                     console.log(responseJson)
                     if (responseJson.status) {
-                        if (responseJson.endlist) ALL_LOADED = true
+                        if (responseJson.endlist) {
+                            ALL_LOADED = true
+                            this.forceUpdate()
+                        }
                         PAGE = responseJson.lastid
                         var arr = this.state.dataRender.concat(responseJson.data)
                         this.setState({
@@ -157,92 +169,10 @@ export default class CustomerScreen extends Component {
                     data={this.state.dataRender}
                     renderItem={({item}) =>
 
-                        <TouchableOpacity
-                            onPress={() => this.props.callback(item.KinhDo, item.ViDo, 'Địa chỉ khách hàng', item)}>
-
-                            <View style={{
-                                marginTop: 4, marginBottom: 4, marginLeft: 4, marginRight: 4,
-                            }}>
-                                <Image source={require('../images/bg1.png')}
-                                       style={{
-                                           width: width - 8,
-                                           height: height / 4.5
-                                       }}>
-                                    <View style={{
-                                        flexDirection: 'row',
-                                        marginLeft: 8,
-                                        marginTop: 8,
-                                        marginRight: 8,
-                                        marginBottom: 4
-                                    }}>
-                                        <Icon style={{backgroundColor: 'transparent',}} size={24} color="red"
-                                              name="home"/>
-                                        <Text numberOfLines={1} style={{
-                                            backgroundColor: 'transparent',
-                                            marginLeft: 8,
-                                            fontSize: 18,
-                                            marginRight: 8,
-                                            fontWeight: "bold",
-                                            marginRight: 20,
-                                        }}>{item.TenCuaHang}</Text>
-                                    </View>
-                                    <View style={{
-                                        flexDirection: 'row',
-                                        marginLeft: 8,
-                                        marginTop: 4,
-                                        marginRight: 8,
-                                        marginBottom: 4
-                                    }}>
-                                        <Icon1 style={{backgroundColor: 'transparent',}} size={24} color="black"
-                                               name="people-outline"/>
-                                        <Text numberOfLines={1} style={{
-                                            backgroundColor: 'transparent',
-                                            marginLeft: 8,
-                                            paddingRight: 8,
-                                            marginRight: 20,
-                                        }}>{item.tennhomkhachhang}</Text>
-                                    </View>
-                                    <View style={{
-                                        flexDirection: 'row',
-                                        marginLeft: 8,
-                                        marginTop: 4,
-                                        marginRight: 8,
-                                        marginBottom: 4
-                                    }}>
-                                        <Icon style={{backgroundColor: 'transparent',}} size={24} color="white"
-                                              name="location-pin"/>
-                                        <Text
-                                            numberOfLines={1}
-                                            style={{
-                                                backgroundColor: 'transparent',
-                                                marginLeft: 8,
-                                                marginRight: 20,
-                                            }}>
-                                            {item.DiaChi}</Text>
-                                    </View>
-                                    <View style={{
-                                        flexDirection: 'row',
-                                        marginLeft: 8,
-                                        marginTop: 4,
-                                        marginRight: 8,
-                                        marginBottom: 4
-                                    }}>
-                                        <Icon style={{backgroundColor: 'transparent',}} size={24} color="green"
-                                              name="phone"/>
-                                        <Text
-                                            numberOfLines={1}
-                                            style={{
-                                                backgroundColor: 'transparent',
-                                                marginLeft: 8,
-                                                marginRight: 20,
-                                            }}>
-                                            {item.DienThoai}</Text>
-                                    </View>
-                                </Image>
-                            </View>
-
-                        </TouchableOpacity>
-
+                        <CustomerItem
+                            data={item}
+                            callback={() => this.props.callback(item.KinhDo, item.ViDo, 'Địa chỉ khách hàng', item)}
+                        />
                     }
                 />
             </View>)

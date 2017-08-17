@@ -132,7 +132,7 @@ export default class ModalSendMessage extends Component {
                                 data={this.state.listNhanVien}
                                 defaultValue={this.state.nameInput}
                                 placeholder="Nhập tên người nhận"
-                                style={{width: width - 32, paddingLeft: 8, height: 30, backgroundColor: 'white'}}
+                                style={{width: width - 32, paddingLeft: 8, height: 40, backgroundColor: 'white'}}
                                 onChangeText={text => {
                                     if (text.length !== 0) {
                                         this.setState({hideResults: false, receiver: text}, function () {

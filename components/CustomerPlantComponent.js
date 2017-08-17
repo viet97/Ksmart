@@ -226,23 +226,17 @@ export default class CustomerPlantComponent extends Component {
     }
 
     checkTime(time) {
-        currentDate = new Date()
-        currentTime = currentDate.getHours() + ":" + currentDate.getMinutes()
-        let currentArr = currentTime.split(":")
-        let timeArr = time.split(":")
-        if (currentArr[0] > timeArr[0]) return false
-        if (currentArr[0] === timeArr[0]) {
-            if (currentArr[1] > timeArr[1]) return false
-        }
-        return true
+        console.log(typeof time)
+        let currentDate = new Date();
+        let dateInput = currentDate.setHours(0, 0, 0, 0);
+        return true;
     }
 
     compareTime(time1, time2) {
 
         let timeArr1 = time1.split(":")
         let timeArr2 = time2.split(":")
-        console.log(timeArr1)
-        console.log(timeArr2)
+
         if (timeArr1[0] > timeArr2[0]) return false
         if (timeArr1[0] === timeArr2[0]) {
             if (timeArr1[1] > timeArr2[1]) return false
@@ -264,7 +258,8 @@ export default class CustomerPlantComponent extends Component {
     onDateChange(from, to) {
         var item = this.props.item;
         console.log(this.compareTime(from, to))
-        if (this.compareTime(from, to) === true || this.state.timeOut === '00:00') {
+        if (this.compareTime(from, to) === true || this.state.timeCome === '00:00') {
+            console.log(this.compareTime(from, to))
                 this.setState({
                     timeOut: to,
                     timeCome: from
