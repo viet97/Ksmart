@@ -164,6 +164,7 @@ export default class CustomerPlant extends Component {
                         data={this.state.dataRender}
                         renderItem={({item}) =>
                             <CustomerPlantComponent
+                                date={this.state.datePlant}
                                 idcuahang={item.idcuahang}
                                 idnhanvien={this.state.idNhanvien}
                                 item={item}

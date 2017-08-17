@@ -226,10 +226,20 @@ export default class CustomerPlantComponent extends Component {
     }
 
     checkTime(time) {
-        console.log(typeof time)
+        console.log(typeof time);
         let currentDate = new Date();
-        let dateInput = currentDate.setHours(0, 0, 0, 0);
-        return true;
+
+        console.log(this.props.date + ' ' + time + ':00')
+        var moment = require('moment')
+        var dateInput = moment(this.props.date + ' ' + time + ':00', 'DD-MM-YYYY HH:mm:ss').toDate();
+        if (dateInput.getTime() - currentDate.getTime() > 0) {
+            console.log('return', true);
+            return true;
+        }
+        else {
+            console.log('return', false);
+            return false
+        }
     }
 
     compareTime(time1, time2) {
