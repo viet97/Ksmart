@@ -157,4 +157,4 @@ const styles = StyleSheet.create({
         marginTop: (Platform.OS === 'ios') ? 8 : 0
     }
 
-})
+});

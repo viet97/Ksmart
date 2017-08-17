@@ -85,12 +85,12 @@ export default class TravelScreen extends React.Component {
 
     componentWillMount() {
 
-        var arr = []
-        arr.push('Tất cả')
-        arr.push('Chưa vào điểm')
-        arr.push('Đã vào điểm')
+        let arr = [];
+        arr.push('Tất cả');
+        arr.push('Chưa vào điểm');
+        arr.push('Đã vào điểm');
         arr.push('Sắp đến giờ');
-        this.setState({travelStatus: arr})
+        this.setState({travelStatus: arr});
 
         this.getDataFromSv()
     }

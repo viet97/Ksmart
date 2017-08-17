@@ -498,16 +498,7 @@ export default class ReportScreen extends Component {
                     }}>{this.state.title}</Text>
                     <View style={{backgroundColor: 'transparent', width: 35, height: 35}}/>
                 </View>
-                <TouchableOpacity onPress={() => this.props.backToHome()}
-                                  style={{
-                                      width: 50,
-                                      height: 50,
-                                      position: 'absolute',
-                                      left: 16,
-                                      top: 0,
-                                      right: 0,
-                                      bottom: 0
-                                  }}/>
+
                 <View>
                     <View style={{width: width, flexDirection: 'row', justifyContent: 'space-between'}}>
                         <DatePicker
