@@ -164,7 +164,7 @@ export default class OrderListScreen extends Component {
     }
 
     refreshData() {
-        this.getOrderListFromServer(this.state.filtDialog.dateFrom, this.state.filtDialog.dateTo, Page, SEARCH_STRING)
+        this.getOrderListFromServer(this.state.filtDialog.dateFrom, this.state.filtDialog.dateTo)
     }
 
     renderFooter = () => {

@@ -15,6 +15,7 @@ import URlConfig from "../configs/url";
 import Color from "../configs/color";
 import Toast from 'react-native-simple-toast'
 import ultils from "../configs/ultils";
+import ModalDropdownCustom from "../components/ModalDropdownCustom";
 
 let {height, width} = Dimensions.get('window');
 export default class OnlineChartScreen extends React.Component {
@@ -321,13 +322,13 @@ export default class OnlineChartScreen extends React.Component {
                             }}
                         />
                     </View>
-                    <Picker
-                        style={{height: 44, width: 160}}
-                        itemStyle={{color: 'white', height: 44}}
-                        selectedValue={this.state.numberTypePick}
-                        onValueChange={(itemValue) => this.setState({numberTypePick: itemValue})}>
-                        {type}
-                    </Picker>
+                    <ModalDropdownCustom
+                        data={this.state.type}
+                        defaultValue={this.state.type[0]}
+                        onSelect={(idx, value) => {
+                            this.setState({numberTypePick: idx})
+                        }}
+                    />
                     {this.getChartorFlatListorNull(options)}
 
                 </View>

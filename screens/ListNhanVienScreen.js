@@ -336,7 +336,8 @@ export default class ListNhanVienScreen extends React.Component {
                         </View>
 
 
-                        <View style={{width: width}}>
+                        <View
+                            style={{width: width}}>
                             <Search
                                 placeholder="Tìm kiếm"
                                 cancelTitle="Huỷ bỏ"

@@ -33,6 +33,7 @@ import Communications from 'react-native-communications';
 import DoanhThuReportItem from "../components/DoanhThuReportItem";
 import TopDoanhThuItem from "../components/TopDoanhThuItem";
 import KhongCoDoanhThuItem from "../components/KhongCoDoanhThuItem";
+import ModalDropdownCustom from "../components/ModalDropdownCustom";
 
 let SEARCH_STRING = '';
 let {width, height} = Dimensions.get('window');
@@ -87,21 +88,27 @@ export default class ReportScreen extends Component {
 
     getTypeLinkOfReport() {
         let url = ''
+        console.log('link type', this.state.numberPickType)
+        let status = this.state.numberPickType
+        switch (status) {
 
-        switch (this.state.numberPickType) {
             case 0:
+                console.log('0')
                 url = URlConfig.getReportList(this.state.dateFrom, this.state.dateTo, PAGE, SEARCH_STRING)
                 this.setState({title: 'Báo cáo doanh thu sản lượng'})
                 break
             case 1:
+                console.log('1')
                 url = URlConfig.getLinkTopDoanhThu(this.state.dateFrom, this.state.dateTo, 1)
                 this.setState({title: '10 nhân viên doanh thu cao nhất'})
                 break
             case 2:
+                console.log('2')
                 url = URlConfig.getLinkTopDoanhThu(this.state.dateFrom, this.state.dateTo, 2)
                 this.setState({title: '10 nhân viên doanh thu thấp nhất'})
                 break
             case 3:
+                console.log('3')
                 url = URlConfig.getLinkKhongCoDoanhThu(this.state.dateFrom, this.state.dateTo, PAGE, SEARCH_STRING)
                 this.setState({title: 'Nhân viên không có doanh thu'})
                 break
@@ -141,7 +148,7 @@ export default class ReportScreen extends Component {
                     }
                 }
                 }
-            ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+            ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e))
     }
 
     loadMoreDataFromSv() {
@@ -372,18 +379,15 @@ export default class ReportScreen extends Component {
                             }}
                         />
                     </View>
-                    <Picker style={{height: 44, width: width, paddingTop: 4}}
-                            itemStyle={{color: 'red', height: 44}}
-                            selectedValue={this.state.numberPickType}
-                            onValueChange={(value) => {
-                                this.setState({numberPickType: value}, function () {
-                                    this.getReportListFromServer()
-                                })
-
-
-                            }}>
-                        {reportStatusItem}
-                    </Picker>
+                    <ModalDropdownCustom
+                        data={this.state.reportStatus}
+                        defaultValue={this.state.reportStatus[0]}
+                        onSelect={(idx, value) => {
+                            this.setState({numberPickType: idx}, function () {
+                                this.getReportListFromServer()
+                            })
+                        }}
+                    />
                     <View style={{width: width}}>
                         <Search
                             ref="search_box"

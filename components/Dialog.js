@@ -5,7 +5,7 @@ import React, {Component} from 'react'
 import DatePicker from 'react-native-datepicker'
 import {
     Text, View, StyleSheet, TouchableOpacity, Dimensions, Button, Picker, ScrollView,
-    TextInput
+    TextInput, TouchableHighlight
 } from "react-native";
 import URlConfig from "../configs/url";
 import Color from '../configs/color'
@@ -18,6 +18,8 @@ import {DialogComponent, SlideAnimation} from 'react-native-dialog-component';
 import {TextInputLayout} from "rn-textinputlayout";
 import orderListData from '../dbcontext/orderListData'
 import DataTemp from "./DataTemp";
+import ModalDropdownCustom from "./ModalDropdownCustom";
+import Toast from "react-native-simple-toast";
 
 export default class Dialog extends React.Component {
     constructor(props) {
@@ -84,15 +86,6 @@ export default class Dialog extends React.Component {
     }
 
     render() {
-        let orderStatusItems = this.state.orderStatus.map((s, i) => {
-            return <Picker.Item key={i} value={i} label={s}/>
-        });
-        let shipStatusItems = this.state.shipStatus.map((s, i) => {
-            return <Picker.Item key={i} value={i} label={s}/>
-        });
-        let payStatusItems = this.state.payStatus.map((s, i) => {
-            return <Picker.Item key={i} value={i} label={s}/>
-        });
         return (
             <DialogContent>
                 <Image source={require('../images/bg.png')}
@@ -149,62 +142,35 @@ export default class Dialog extends React.Component {
                     </View>
                     <View style={{flexDirection: 'column'}}>
                         <Text style={{color: 'white', backgroundColor: 'transparent'}}>Trạng thái đơn hàng</Text>
-                        <Picker style={{height: 88}}
-                                itemStyle={{color: 'red', height: 88}}
-                                selectedValue={this.state.numberPickttdh}
-                                onValueChange={(value) => {
-                                    if (value === 0) {
-                                        orderListData.pickttdh = 'Tất cả'
-                                    }
-                                    else {
-                                        orderListData.pickttdh = this.state.orderStatus[value]
-                                    }
-                                    orderListData.numberPickttdh = value
-                                    this.setState({numberPickttdh: value})
-                                    console.log(orderListData.numberPickttdh)
-                                }}>
-                            {orderStatusItems}
-                        </Picker>
+                        <ModalDropdownCustom
+                            defaultValue={this.state.orderStatus[this.state.numberPickttdh]}
+                            data={this.state.orderStatus}
+                            onSelect={(idx, value) => {
+                                this.onSelectTrangthai(idx, value)
+                            }}
+                        />
                     </View>
                     <View style={{flexDirection: 'column'}}>
+
                         <Text style={{color: 'white', backgroundColor: 'transparent'}}>Trạng thái giao hàng</Text>
-                        <Picker style={{height: 88}}
-                                itemStyle={{color: 'red', height: 88}}
-                                selectedValue={this.state.numberPickttgh}
-                                onValueChange={(value) => {
-                                    if (value === 0) {
-                                        orderListData.pickttgh = 'Tất cả'
-                                    }
-                                    else
-                                        orderListData.pickttgh = this.state.shipStatus[value]
-                                    orderListData.numberPickttgh = value
-                                    this.setState({numberPickttgh: value})
-                                    console.log(orderListData.numberPickttgh)
-                                }}>
-                            {shipStatusItems}
-                        </Picker>
+                        <ModalDropdownCustom
+                            defaultValue={this.state.shipStatus[this.state.numberPickttgh]}
+                            data={this.state.shipStatus}
+                            onSelect={(idx, value) => {
+                                this.onSelectGiaoHang(idx, value)
+                            }}
+                        />
+
                     </View>
                     <View style={{flexDirection: 'column', paddingBottom: 16}}>
                         <Text style={{color: 'white', backgroundColor: 'transparent'}}>Trạng thái thanh toán</Text>
-                        <Picker style={{height: 88}}
-                                itemStyle={{color: 'red', height: 88}}
-                                selectedValue={this.state.numberPicktttt}
-                                onValueChange={(value) => {
-
-                                    console.log(value)
-                                    if (value === 0) {
-                                        orderListData.picktttt = 'Tất cả'
-                                    }
-                                    else {
-                                        orderListData.picktttt = this.state.payStatus[value]
-                                    }
-                                    orderListData.numberPicktttt = value
-                                    this.setState({numberPicktttt: value})
-                                    console.log(orderListData.numberPicktttt)
-                                }}>
-                            {payStatusItems}
-                        </Picker>
-
+                        <ModalDropdownCustom
+                            defaultValue={this.state.payStatus[this.state.numberPicktttt]}
+                            data={this.state.payStatus}
+                            onSelect={(idx, value) => {
+                                this.onSelectThanhToan(idx, value)
+                            }}
+                        />
                     </View>
                 </ScrollView>
 
@@ -274,6 +240,41 @@ export default class Dialog extends React.Component {
                 </View>
             </DialogContent>
         );
+    }
+
+    onSelectThanhToan(idx, value) {
+        if (idx === 0) {
+            orderListData.picktttt = 'Tất cả'
+        }
+        else {
+            orderListData.picktttt = this.state.payStatus[idx]
+        }
+        orderListData.numberPicktttt = idx
+        this.setState({numberPicktttt: idx})
+    }
+
+    onSelectGiaoHang(idx, value) {
+        if (idx === 0) {
+            orderListData.pickttgh = 'Tất cả'
+        }
+        else
+            orderListData.pickttgh = this.state.shipStatus[idx]
+        orderListData.numberPickttgh = idx
+        this.setState({numberPickttgh: idx}, function () {
+            console.log(this.state.numberPickttgh)
+        })
+    }
+
+    onSelectTrangthai(idx, value) {
+        if (idx === 0) {
+            orderListData.pickttdh = 'Tất cả'
+        }
+        else {
+            orderListData.pickttdh = this.state.orderStatus[idx]
+        }
+        orderListData.numberPickttdh = idx
+        this.setState({numberPickttdh: idx})
+        console.log(orderListData.numberPickttdh)
     }
 
     ondateChange(from, to) {

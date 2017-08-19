@@ -21,6 +21,7 @@ import Toast from 'react-native-simple-toast'
 import DatePicker from 'react-native-datepicker'
 import ultils from "../configs/ultils";
 import TravelItem from "../components/TravelItem";
+import ModalDropdownCustom from "../components/ModalDropdownCustom";
 
 let SEARCH_STRING = '';
 let {width, height} = Dimensions.get('window');
@@ -352,16 +353,13 @@ export default class TravelScreen extends React.Component {
                         backgroundColor: 'transparent',
                         color: 'black'
                     }}>Trạng thái</Text>
-                    <Picker style={{marginLeft: 8, height: 44, width: width / 2, alignSelf: 'center'}}
-                            itemStyle={{height: 44}}
-                            selectedValue={this.state.numberPickTravel}
-                            onValueChange={(value) => {
-                                this.setState({numberPickTravel: value}, function () {
-                                })
-                            }}>
-                        {travelStatusItem}
-                    </Picker>
-
+                    <ModalDropdownCustom
+                        data={this.state.travelStatus}
+                        defaultValue={this.state.travelStatus[0]}
+                        onSelect={(idx, value) =>
+                            this.setState({numberPickTravel: idx})
+                        }
+                    />
                 </View>
                 {this.flatListorIndicator()}
             </View>
