@@ -84,22 +84,14 @@ export default class DetailTravel extends React.Component {
                            style={{position: 'absolute'}}/>
                     <TouchableOpacity
                         onPress={() => this.props.navigation.goBack()}
-                        style={styles.iconStyle}>
+                        style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                         <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
                     </TouchableOpacity>
                     <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Thông
                         tin kế hoạch</Text>
                     <TouchableOpacity
                         onPress={() => navigate('EditTravel', {data: params.data})}
-                        style={{
-                            alignSelf: 'center',
-                            width: 36,
-                            height: 36,
-                            backgroundColor: "transparent",
-                            marginLeft: 16,
-                            marginTop: (Platform.OS === 'ios') ? 8 : 0,
-                            marginRight: 8
-                        }}>
+                        style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                         <Icon2 style={{
                             alignSelf: 'center',
                             width: 24,

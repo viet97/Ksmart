@@ -129,11 +129,17 @@ export default class NewFeedScreen extends React.Component {
                         size="large"/>
                 </View>)
         } else if (this.state.dataFull.length === 0 && this.state.isEndList)
-            return (    <View style={{flex: 9}}>
-                <Text style={{alignSelf: 'center', textAlign: 'center', fontSize: 20, backgroundColor: 'transparent'}}>Không
-                    có dữ liệu</Text>
+            return (
+                <View style={{flex: 9}}>
+                    <Text style={{
+                        alignSelf: 'center',
+                        textAlign: 'center',
+                        fontSize: 20,
+                        backgroundColor: 'transparent'
+                    }}>Không có dữ liệu</Text>
 
-            </View>)
+                </View>
+            )
 
         return (
             <View style={{flex: 9}}>
