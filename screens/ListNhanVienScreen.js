@@ -9,7 +9,7 @@ import {
     FlatList,
     ActivityIndicator,
     Platform,
-    Picker, TouchableHighlight
+    Picker, TouchableHighlight, ScrollView
 } from 'react-native';
 import ModalDropdown from "react-native-modal-dropdown";
 import Toast from 'react-native-simple-toast';
@@ -27,6 +27,7 @@ import TabNavigator from 'react-native-tab-navigator';
 import MapListScreen from "./MapListScreen";
 import {Dialog} from 'react-native-simple-dialogs';
 import PTRView from 'react-native-pull-to-refresh'
+
 let {height, width} = Dimensions.get('window');
 
 let Page = 1
@@ -430,86 +431,118 @@ export default class ListNhanVienScreen extends React.Component {
                         </View>
                         <Dialog
                             visible={this.state.dialogVisible}
-                            title="Bộ lọc nhân viên"
+                            dialogStyle={{borderBottomLeftRadius: 10, borderBottomRightRadius: 10}}
+
                         >
-                            <View style={{flexDirection: 'column'}}>
-                                <Text>Chon phong ban</Text>
-                                <ModalDropdown
-                                    options={this.state.partyNhanVienStatus}
-                                    style={{
-                                        borderWidth: 0.4,
-                                        width: 200,
-                                        padding: 8,
-                                        borderRadius: 10,
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        marginBottom: 16,
-                                        marginTop: 4
-                                    }}
-                                    defaultValue={this.state.partyNhanVienStatus[pickParty]}
-                                    defaultIndex={Number(pickParty)}
-                                    onSelect={(idx, value) => this._onSelectParty(idx, value)}
-                                    renderRow={this._renderRowStatus.bind(this)}
-                                    renderSeparator={(sectionID, rowID, adjacentRowHighlighted) => this._renderSeparatorParty(sectionID, rowID, adjacentRowHighlighted)}
-                                />
-                                <Text>Chon trang thai</Text>
-                                <ModalDropdown
-                                    options={this.state.dataPickStatus}
-                                    style={{
-                                        borderWidth: 0.4,
-                                        width: 200,
-                                        padding: 8,
-                                        borderRadius: 10,
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        marginTop: 4
-                                    }}
-                                    defaultValue={this.state.dataPickStatus[pickStatus]}
-                                    defaultIndex={Number(pickParty)}
-                                    onSelect={(idx, value) => this._onSelectStatus(idx, value)}
-                                    renderRow={this._renderRowStatus.bind(this)}
-                                    renderSeparator={(sectionID, rowID, adjacentRowHighlighted) => this._renderSeparatorStatus(sectionID, rowID, adjacentRowHighlighted)}
-                                />
-                                <View style={{flexDirection: 'row', marginTop: 16}}>
-                                    <TouchableOpacity
+                            <ScrollView>
+                                <View style={{
+                                    flexDirection: 'column',
+                                    paddingBottom: 100,
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    backgroundColor: 'transparent',
+                                }}>
+                                    <View style={{position: 'absolute', top: 0, right: 0, left: 0, bottom: 46}}>
+                                        <Image source={require('../images/bg.png')} resizeMode='cover'
+                                        />
+                                    </View>
+
+                                    <Text style={{color: 'white'}}>Chon phong ban</Text>
+                                    <ModalDropdown
+                                        options={this.state.partyNhanVienStatus}
                                         style={{
-                                            alignSelf: 'center',
+                                            borderWidth: 0.4,
+                                            width: 200,
+                                            padding: 8,
+                                            borderRadius: 10,
                                             justifyContent: 'center',
-                                            marginRight: 16,
-                                            width: Dimensions.get('window').width / 4,
-                                            height: 48,
-                                            backgroundColor: 'green'
+                                            alignItems: 'center',
+                                            marginBottom: 16,
+                                            marginTop: 4
                                         }}
-                                        onPress={() => {
-                                            this.setState({
-                                                dialogVisible: false,
-                                                numberPickParty: pickParty,
-                                                idNhom: id_nhom,
-                                                numberPickStatus: pickStatus
-                                            }, function () {
-                                                this.getDataFromSv();
-                                                let dataFill = this.fillData(this.state.dataFull)
-                                                this.setState({dataRender: dataFill})
-                                                console.log('OK', this.state.numberPickStatus, this.state.numberPickParty);
-                                            })
-                                        }}>
-                                        <Text style={{color: 'white', alignSelf: 'center'}}>Ok</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity
+                                        textStyle={{color: 'white'}}
+                                        defaultValue={this.state.partyNhanVienStatus[pickParty]}
+                                        defaultIndex={Number(pickParty)}
+                                        onSelect={(idx, value) => this._onSelectParty(idx, value)}
+                                        renderRow={this._renderRowStatus.bind(this)}
+                                        renderSeparator={(sectionID, rowID, adjacentRowHighlighted) => this._renderSeparatorParty(sectionID, rowID, adjacentRowHighlighted)}
+                                    />
+                                    <Text style={{color: 'white'}}>Chon trang thai</Text>
+                                    <ModalDropdown
+                                        options={this.state.dataPickStatus}
                                         style={{
-                                            alignSelf: 'center',
+                                            borderWidth: 0.4,
+                                            width: 200,
+                                            padding: 8,
+                                            borderRadius: 10,
                                             justifyContent: 'center',
-                                            width: Dimensions.get('window').width / 4,
-                                            height: 48,
-                                            backgroundColor: 'green'
+                                            alignItems: 'center',
+                                            marginTop: 4
                                         }}
-                                        onPress={() => {
-                                            this.setState({dialogVisible: false});
-                                            console.log('Huỷ bỏ ', this.state.numberPickStatus, this.state.numberPickParty);
-                                        }}>
-                                        <Text style={{color: 'white', alignSelf: 'center'}}>Cancle</Text>
-                                    </TouchableOpacity>
+                                        textStyle={{color: 'white'}}
+                                        defaultValue={this.state.dataPickStatus[pickStatus]}
+                                        defaultIndex={Number(pickParty)}
+                                        onSelect={(idx, value) => this._onSelectStatus(idx, value)}
+                                        renderRow={this._renderRowStatus.bind(this)}
+                                        renderSeparator={(sectionID, rowID, adjacentRowHighlighted) => this._renderSeparatorStatus(sectionID, rowID, adjacentRowHighlighted)}
+                                    />
+
+
                                 </View>
+                            </ScrollView>
+                            <View style={{
+                                flexDirection: 'row',
+                                flex: 1,
+                                position: 'absolute',
+                                left: 0,
+                                right: 0,
+                                bottom: 0,
+                                backgroundColor: '#123'
+                            }}>
+                                <TouchableOpacity
+                                    style={{
+                                        flex: 1,
+                                        alignSelf: 'center',
+                                        justifyContent: 'center',
+                                        backgroundColor: '#e8e8e8',
+                                        borderRightWidth: 0.5,
+                                        borderColor: 'white',
+                                        height: 46,
+                                    }}
+                                    onPress={() => {
+                                        this.setState({dialogVisible: false});
+                                        console.log('Huỷ bỏ ', this.state.numberPickStatus, this.state.numberPickParty);
+                                    }}>
+                                    <Text style={{color: '#6a5aff', alignSelf: 'center'}}>Cancle</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={{
+                                        alignSelf: 'center',
+                                        justifyContent: 'center',
+                                        flex: 1,
+                                        backgroundColor: '#e8e8e8',
+                                        borderColor: 'white',
+                                        height: 46
+                                    }}
+                                    onPress={() => {
+                                        this.setState({
+                                            dialogVisible: false,
+                                            numberPickParty: pickParty,
+                                            idNhom: id_nhom,
+                                            numberPickStatus: pickStatus
+                                        }, function () {
+                                            this.getDataFromSv();
+                                            let dataFill = this.fillData(this.state.dataFull)
+                                            this.setState({dataRender: dataFill})
+                                            console.log('OK', this.state.numberPickStatus, this.state.numberPickParty);
+                                        })
+                                    }}>
+                                    <Text style={{
+                                        color: '#6a5aff',
+                                        alignSelf: 'center',
+                                        fontWeight: 'bold'
+                                    }}>Ok</Text>
+                                </TouchableOpacity>
 
                             </View>
                         </Dialog>
