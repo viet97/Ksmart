@@ -148,8 +148,8 @@ export default class OrderListScreen extends Component {
                                     ALL_LOADED = true
                                     this.forceUpdate()
                                 }
-                                let dataFill = this.filtData(responseJson.data)
-                                this.setState({dataRender: dataRender})
+                                let dataFill = this.filtData(dataFull)
+                                this.setState({dataRender: dataFill})
                             });
                         } else {
                             ALL_LOADED = true
