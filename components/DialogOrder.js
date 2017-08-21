@@ -95,151 +95,98 @@ export default class DialogOrder extends React.Component {
                    style={{position: 'absolute', top: -30, left: -30}}/>
         )
     }
+
     render() {
         return (
             <View style={{backgroundColor: 'transparent'}}>
                 <View>
-                <ScrollView style={{flexDirection: 'column'}}
-                            keyboardShouldPersistTaps="always">
-                    <Image source={require('../images/bg.png')}
-                           style={{position: 'absolute', bottom: 0, right: 0, left: 0, top: 0}}/>
-                    <View style={{flexDirection: 'column', marginBottom: 8}}>
+                    <ScrollView style={{flexDirection: 'column'}}
+                                keyboardShouldPersistTaps="always">
+                        <Image source={require('../images/bg.png')}
+                               style={{position: 'absolute', bottom: 0, right: 0, left: 0, top: 0}}/>
+                        <View style={{flexDirection: 'column', marginBottom: 8}}>
 
-                        <Text style={{color: 'white', backgroundColor: 'transparent', marginBottom: 8}}>Từ ngày </Text>
-                        <DatePicker
-                            date={this.state.dateFrom}
-                            mode="date"
-                            placeholder="select date"
-                            format="DD-MM-YYYY"
-                            confirmBtnText="Xác nhận"
-                            cancelBtnText="Huỷ bỏ"
-                            customStyles={{
-                                dateInput: {
-                                    marginVertical: 4,
-                                    borderColor: 'white',
-                                    borderRadius: 10,
-                                    backgroundColor: 'white'
-                                }
-                            }}
-                            onDateChange={(date) => {
+                            <Text style={{color: 'white', backgroundColor: 'transparent', marginBottom: 8}}>Từ
+                                ngày </Text>
+                            <DatePicker
+                                date={this.state.dateFrom}
+                                mode="date"
+                                placeholder="select date"
+                                format="DD-MM-YYYY"
+                                confirmBtnText="Xác nhận"
+                                cancelBtnText="Huỷ bỏ"
+                                customStyles={{
+                                    dateInput: {
+                                        marginVertical: 4,
+                                        borderColor: 'white',
+                                        borderRadius: 10,
+                                        backgroundColor: 'white'
+                                    }
+                                }}
+                                onDateChange={(date) => {
 
-                                this.ondateChange(date, this.state.dateTo);
-                            }}
-                        />
-                    </View>
-                    <View style={{flexDirection: 'column', marginBottom: 8}}>
-                        <Text style={{color: 'white', backgroundColor: 'transparent', marginBottom: 8}}>Đến ngày </Text>
-                        <DatePicker
-                            date={this.state.dateTo}
-                            mode="date"
-                            placeholder="select date"
-                            format="DD-MM-YYYY"
+                                    this.ondateChange(date, this.state.dateTo);
+                                }}
+                            />
+                        </View>
+                        <View style={{flexDirection: 'column', marginBottom: 8}}>
+                            <Text style={{color: 'white', backgroundColor: 'transparent', marginBottom: 8}}>Đến
+                                ngày </Text>
+                            <DatePicker
+                                date={this.state.dateTo}
+                                mode="date"
+                                placeholder="select date"
+                                format="DD-MM-YYYY"
 
-                            confirmBtnText="Xác nhận"
-                            cancelBtnText="Huỷ bỏ"
-                            customStyles={{
-                                dateInput: {
-                                    marginVertical: 4,
-                                    borderColor: 'white',
-                                    borderRadius: 10,
-                                    backgroundColor: 'white'
-                                }
-                            }}
-                            onDateChange={(date) => {
-                                this.ondateChange(this.state.dateFrom, date);
-                            }}
-                        />
-                    </View>
-                    <View style={{flexDirection: 'column', marginBottom: 8}}>
-                        <Text style={{color: 'white', backgroundColor: 'transparent'}}>Trạng thái đơn hàng</Text>
-                        <ModalDropdownCustom
-                            defaultValue={this.state.orderStatus[this.state.numberPickttdh]}
-                            data={this.state.orderStatus}
-                            onSelect={(idx, value) => {
-                                this.onSelectTrangthai(idx, value)
-                            }}
-                        />
-                    </View>
-                    <View style={{flexDirection: 'column', marginBottom: 8}}>
+                                confirmBtnText="Xác nhận"
+                                cancelBtnText="Huỷ bỏ"
+                                customStyles={{
+                                    dateInput: {
+                                        marginVertical: 4,
+                                        borderColor: 'white',
+                                        borderRadius: 10,
+                                        backgroundColor: 'white'
+                                    }
+                                }}
+                                onDateChange={(date) => {
+                                    this.ondateChange(this.state.dateFrom, date);
+                                }}
+                            />
+                        </View>
+                        <View style={{flexDirection: 'column', marginBottom: 8}}>
+                            <Text style={{color: 'white', backgroundColor: 'transparent'}}>Trạng thái đơn hàng</Text>
+                            <ModalDropdownCustom
+                                defaultValue={this.state.orderStatus[this.state.numberPickttdh]}
+                                data={this.state.orderStatus}
+                                onSelect={(idx, value) => {
+                                    this.onSelectTrangthai(idx, value)
+                                }}
+                            />
+                        </View>
+                        <View style={{flexDirection: 'column', marginBottom: 8}}>
 
-                        <Text style={{color: 'white', backgroundColor: 'transparent'}}>Trạng thái giao hàng</Text>
-                        <ModalDropdownCustom
-                            defaultValue={this.state.shipStatus[this.state.numberPickttgh]}
-                            data={this.state.shipStatus}
-                            onSelect={(idx, value) => {
-                                this.onSelectGiaoHang(idx, value)
-                            }}
-                        />
+                            <Text style={{color: 'white', backgroundColor: 'transparent'}}>Trạng thái giao hàng</Text>
+                            <ModalDropdownCustom
+                                defaultValue={this.state.shipStatus[this.state.numberPickttgh]}
+                                data={this.state.shipStatus}
+                                onSelect={(idx, value) => {
+                                    this.onSelectGiaoHang(idx, value)
+                                }}
+                            />
 
-                    </View>
-                    <View style={{flexDirection: 'column', paddingBottom: 16}}>
-                        <Text style={{color: 'white', backgroundColor: 'transparent'}}>Trạng thái thanh toán</Text>
-                        <ModalDropdownCustom
-                            defaultValue={this.state.payStatus[this.state.numberPicktttt]}
-                            data={this.state.payStatus}
-                            onSelect={(idx, value) => {
-                                this.onSelectThanhToan(idx, value)
-                            }}
-                        />
-                    </View>
-                </ScrollView>
+                        </View>
+                        <View style={{flexDirection: 'column', paddingBottom: 16}}>
+                            <Text style={{color: 'white', backgroundColor: 'transparent'}}>Trạng thái thanh toán</Text>
+                            <ModalDropdownCustom
+                                defaultValue={this.state.payStatus[this.state.numberPicktttt]}
+                                data={this.state.payStatus}
+                                onSelect={(idx, value) => {
+                                    this.onSelectThanhToan(idx, value)
+                                }}
+                            />
+                        </View>
+                    </ScrollView>
 
-                <View style={{
-                    marginLeft: 16,
-                    marginRight: 16,
-                    backgroundColor: 'transparent',
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                }}>
-
-                    <TouchableOpacity style={{alignItems: 'center', backgroundColor: 'transparent', height: 36}}
-                                      onPress={() => {
-                                              this.props.callback({
-                                                  'status': false,
-                                                  numberPicktttt: this.props.deFaultData.numberPicktttt,
-                                                  numberPickttgh: this.props.deFaultData.numberPickttgh,
-                                                  numberPickttdh: this.props.deFaultData.numberPickttdh,
-                                                  dateFrom: this.props.deFaultData.dateFrom,
-                                                  dateTo: this.props.deFaultData.dateTo
-                                              });
-                                      }}>
-                        <Text style={{
-                            color: 'white',
-                            backgroundColor: 'transparent',
-                            padding: 8,
-                            fontSize: 16,
-                            alignSelf: 'center'
-                        }}>Huỷ bỏ</Text>
-                    </TouchableOpacity>
-                    <View style={{width: 5, height: 5}}/>
-
-                    <TouchableOpacity style={{alignItems: 'center', backgroundColor: 'transparent', height: 36}}
-                                      onPress={() => {
-                                              var dFrom = String(this.state.dateFrom);
-                                              var dTo = String(this.state.dateTo);
-                                              dFrom.replace('/', '-');
-                                              dTo.replace('/', '-');
-                                              this.props.callback({
-                                                  'status': true,
-                                                  numberPicktttt: this.state.numberPicktttt,
-                                                  numberPickttgh: this.state.numberPickttgh,
-                                                  numberPickttdh: this.state.numberPickttdh,
-                                                  dateFrom: dFrom,
-                                                  dateTo: dTo
-                                              });
-                                      }}>
-
-                        <Text style={{
-                            color: 'white',
-                            backgroundColor: 'transparent',
-                            padding: 8,
-                            fontSize: 16,
-                            alignSelf: 'center'
-                        }}>Áp
-                            dụng</Text>
-
-                    </TouchableOpacity>
-                </View>
                 </View>
             </View>
         );

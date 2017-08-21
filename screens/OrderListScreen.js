@@ -299,7 +299,7 @@ export default class OrderListScreen extends Component {
                 <ConfirmDialog
                     visible={this.state.dialogVisible}
                     positiveButton={{
-                        title: "YES",
+                        title: "Áp dụng",
                         onPress: () => {
 
                             var dialogState = this.refs.dialogOrder.state;
@@ -326,7 +326,7 @@ export default class OrderListScreen extends Component {
                         }
                     }}
                     negativeButton={{
-                        title: "NO",
+                        title: "Huỷ bỏ",
                         onPress: () => alert("No touched!")
                     }}
                 >
