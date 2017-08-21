@@ -104,7 +104,12 @@ export default class DialogOrder extends React.Component {
                                 keyboardShouldPersistTaps="always">
                         <Image source={require('../images/bg.png')}
                                style={{position: 'absolute', bottom: 0, right: 0, left: 0, top: 0}}/>
-                        <View style={{flexDirection: 'column', marginBottom: 8}}>
+                        <View style={{
+                            flexDirection: 'column',
+                            marginBottom: 8,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}>
 
                             <Text style={{color: 'white', backgroundColor: 'transparent', marginBottom: 8}}>Từ
                                 ngày </Text>
@@ -129,7 +134,12 @@ export default class DialogOrder extends React.Component {
                                 }}
                             />
                         </View>
-                        <View style={{flexDirection: 'column', marginBottom: 8}}>
+                        <View style={{
+                            flexDirection: 'column',
+                            marginBottom: 8,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}>
                             <Text style={{color: 'white', backgroundColor: 'transparent', marginBottom: 8}}>Đến
                                 ngày </Text>
                             <DatePicker
@@ -153,7 +163,12 @@ export default class DialogOrder extends React.Component {
                                 }}
                             />
                         </View>
-                        <View style={{flexDirection: 'column', marginBottom: 8}}>
+                        <View style={{
+                            flexDirection: 'column',
+                            marginBottom: 8,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}>
                             <Text style={{color: 'white', backgroundColor: 'transparent'}}>Trạng thái đơn hàng</Text>
                             <ModalDropdownCustom
                                 defaultValue={this.state.orderStatus[this.state.numberPickttdh]}
@@ -163,7 +178,12 @@ export default class DialogOrder extends React.Component {
                                 }}
                             />
                         </View>
-                        <View style={{flexDirection: 'column', marginBottom: 8}}>
+                        <View style={{
+                            flexDirection: 'column',
+                            marginBottom: 8,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}>
 
                             <Text style={{color: 'white', backgroundColor: 'transparent'}}>Trạng thái giao hàng</Text>
                             <ModalDropdownCustom
@@ -175,7 +195,12 @@ export default class DialogOrder extends React.Component {
                             />
 
                         </View>
-                        <View style={{flexDirection: 'column', paddingBottom: 16}}>
+                        <View style={{
+                            flexDirection: 'column',
+                            paddingBottom: 16,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}>
                             <Text style={{color: 'white', backgroundColor: 'transparent'}}>Trạng thái thanh toán</Text>
                             <ModalDropdownCustom
                                 defaultValue={this.state.payStatus[this.state.numberPicktttt]}

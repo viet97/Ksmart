@@ -327,7 +327,7 @@ export default class OrderListScreen extends Component {
                     }}
                     negativeButton={{
                         title: "Huỷ bỏ",
-                        onPress: () => alert("No touched!")
+                        onPress: () => this.setState({dialogVisible: false})
                     }}
                 >
                     <DialogOrder
