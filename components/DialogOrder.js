@@ -88,7 +88,7 @@ export default class DialogOrder extends React.Component {
         if (Platform.OS === 'ios')
             return (
                 <Image source={require('../images/bg.png')}
-                       style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0}}/>
+                       style={{position: 'absolute'}}/>
             )
         return (
             <Image source={require('../images/bg.png')}
@@ -97,11 +97,12 @@ export default class DialogOrder extends React.Component {
     }
     render() {
         return (
-            <View>
-                {this.getImageBackground()}
+            <View style={{backgroundColor: 'transparent'}}>
+                <View>
                 <ScrollView style={{flexDirection: 'column'}}
                             keyboardShouldPersistTaps="always">
-
+                    <Image source={require('../images/bg.png')}
+                           style={{position: 'absolute', bottom: 0, right: 0, left: 0, top: 0}}/>
                     <View style={{flexDirection: 'column', marginBottom: 8}}>
 
                         <Text style={{color: 'white', backgroundColor: 'transparent', marginBottom: 8}}>Từ ngày </Text>
@@ -208,8 +209,7 @@ export default class DialogOrder extends React.Component {
                             padding: 8,
                             fontSize: 16,
                             alignSelf: 'center'
-                        }}>Huỷ
-                            bỏ</Text>
+                        }}>Huỷ bỏ</Text>
                     </TouchableOpacity>
                     <View style={{width: 5, height: 5}}/>
 
@@ -239,6 +239,7 @@ export default class DialogOrder extends React.Component {
                             dụng</Text>
 
                     </TouchableOpacity>
+                </View>
                 </View>
             </View>
         );

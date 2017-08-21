@@ -24,7 +24,7 @@ import ultils from "../configs/ultils";
 import Toast from 'react-native-simple-toast'
 import OrderListItem from "../components/OrderListItem";
 import PTRView from 'react-native-pull-to-refresh'
-import {Dialog} from 'react-native-simple-dialogs';
+import {ConfirmDialog} from 'react-native-simple-dialogs';
 
 let {height, width} = Dimensions.get('window');
 
@@ -133,7 +133,7 @@ export default class OrderListScreen extends Component {
             this.setState({onEndReach: true})
 
             if (!this.state.isEndList) {
-                Page = Page + 1
+                Page = Page + 1;
                 fetch(URlConfig.getLinkOrderList(this.state.filtDialog.dateFrom, this.state.filtDialog.dateTo, Page, SEARCH_STRING))
                     .then((response) => response.json())
                     .then((responseJson) => {
@@ -296,10 +296,42 @@ export default class OrderListScreen extends Component {
                         {this.flatListorIndicator()}
                     </PTRView>
                 </View>
-                <Dialog
+                <ConfirmDialog
                     visible={this.state.dialogVisible}
+                    positiveButton={{
+                        title: "YES",
+                        onPress: () => {
+
+                            var dialogState = this.refs.dialogOrder.state;
+                            var dFrom = String(dialogState.dateFrom);
+                            var dTo = String(dialogState.dateTo);
+                            dFrom.replace('/', '-');
+                            dTo.replace('/', '-');
+
+                            let data = {
+                                'status': true,
+                                numberPicktttt: dialogState.numberPicktttt,
+                                numberPickttgh: dialogState.numberPickttgh,
+                                numberPickttdh: dialogState.numberPickttdh,
+                                dateFrom: dFrom,
+                                dateTo: dTo
+                            };
+                            console.log('data', data);
+                            this.setState({filtDialog: data}, function () {
+                                this.setState({dialogVisible: false})
+                                if (this.state.filtDialog.status) {
+                                    this.getOrderListFromServer(this.state.filtDialog.dateFrom, this.state.filtDialog.dateTo)
+                                }
+                            })
+                        }
+                    }}
+                    negativeButton={{
+                        title: "NO",
+                        onPress: () => alert("No touched!")
+                    }}
                 >
                     <DialogOrder
+                        ref="dialogOrder"
                         deFaultData={this.state.filtDialog}
                         callback={(data) => {
                             this.setState({filtDialog: data}, function () {
@@ -309,7 +341,8 @@ export default class OrderListScreen extends Component {
                                 }
                             })
                         }}/>
-                </Dialog>
+
+                </ConfirmDialog>
             </View>
 
         )

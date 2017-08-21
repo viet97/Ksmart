@@ -198,6 +198,7 @@ export default class LoginScreen extends React.Component {
                 <ProgressDialog
                     visible={this.state.progressVisible}
                     title=""
+                    activityIndicatorStyle={{padding: 24}}
                     message="Đang đăng nhập"
                 />
 
