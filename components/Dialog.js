@@ -90,12 +90,12 @@ export default class Dialog extends React.Component {
             <DialogContent>
                 <Image source={require('../images/bg.png')}
                        style={{position: 'absolute', top: 0, bottom: 0, right: 0, left: 0}}/>
-                <ScrollView style={{flexDirection: 'column', height: Dimensions.get('window').height - 100}}
+                <ScrollView style={{flexDirection: 'column'}}
                             keyboardShouldPersistTaps="always">
 
-                    <View style={{flexDirection: 'column'}}>
+                    <View style={{flexDirection: 'column', marginBottom: 8}}>
 
-                        <Text style={{color: 'white', backgroundColor: 'transparent'}}>Từ ngày </Text>
+                        <Text style={{color: 'white', backgroundColor: 'transparent', marginBottom: 8}}>Từ ngày </Text>
                         <DatePicker
                             date={this.state.dateFrom}
                             mode="date"
@@ -117,8 +117,8 @@ export default class Dialog extends React.Component {
                             }}
                         />
                     </View>
-                    <View style={{flexDirection: 'column'}}>
-                        <Text style={{color: 'white', backgroundColor: 'transparent'}}>Đến ngày </Text>
+                    <View style={{flexDirection: 'column', marginBottom: 8}}>
+                        <Text style={{color: 'white', backgroundColor: 'transparent', marginBottom: 8}}>Đến ngày </Text>
                         <DatePicker
                             date={this.state.dateTo}
                             mode="date"
@@ -140,7 +140,7 @@ export default class Dialog extends React.Component {
                             }}
                         />
                     </View>
-                    <View style={{flexDirection: 'column'}}>
+                    <View style={{flexDirection: 'column', marginBottom: 8}}>
                         <Text style={{color: 'white', backgroundColor: 'transparent'}}>Trạng thái đơn hàng</Text>
                         <ModalDropdownCustom
                             defaultValue={this.state.orderStatus[this.state.numberPickttdh]}
@@ -150,7 +150,7 @@ export default class Dialog extends React.Component {
                             }}
                         />
                     </View>
-                    <View style={{flexDirection: 'column'}}>
+                    <View style={{flexDirection: 'column', marginBottom: 8}}>
 
                         <Text style={{color: 'white', backgroundColor: 'transparent'}}>Trạng thái giao hàng</Text>
                         <ModalDropdownCustom
@@ -175,14 +175,11 @@ export default class Dialog extends React.Component {
                 </ScrollView>
 
                 <View style={{
-                    position: 'absolute',
-                    left: 16,
+                    marginLeft: 16,
+                    marginRight: 16,
                     backgroundColor: 'transparent',
-                    bottom: 32,
-                    borderRadius: 5,
                     flexDirection: 'row',
                     justifyContent: 'space-between',
-                    width: Dimensions.get('window').width - 32
                 }}>
 
                     <TouchableOpacity style={{alignItems: 'center', backgroundColor: 'transparent', height: 36}}
