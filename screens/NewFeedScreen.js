@@ -94,10 +94,7 @@ export default class NewFeedScreen extends React.Component {
 
 
     loadMoreData() {
-        if (!this.state.onEndReach) {
-            this.setState({onEndReach: true})
-            if (!this.state.isEndList) this.loadMoreDataFromSv()
-        }
+        this.loadMoreDataFromSv()
     }
 
     refreshData() {
@@ -146,6 +143,7 @@ export default class NewFeedScreen extends React.Component {
             <View style={{flex: 9}}>
 
                 <FlatList
+                    style={{flex: 1}}
                     ListFooterComponent={this.renderFooter}
                     ref="listview"
                     onEndReachedThreshold={0.2}
@@ -220,14 +218,7 @@ export default class NewFeedScreen extends React.Component {
                         onCancel={() => this.onCancel()}
                     />
                 </View>
-                <View
-                    style={{flex: 9}}>
-                    <PTRView
-                        onRefresh={() => this.refreshData()}
-                    >
-                        {this.flatListorIndicator()}
-                    </PTRView>
-                </View>
+                {this.flatListorIndicator()}
             </View>
 
         )

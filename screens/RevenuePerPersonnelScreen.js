@@ -309,15 +309,7 @@ export default class RevenuePerPersonnelScreen extends React.Component {
                             this.setState({numberTypePick: idx})
                         }}
                     />
-                    <View
-                        style={{flex: 9}}>
-                        <PTRView
-                            onRefresh={() => this.refreshData()}
-                        >
-                            {this.getChartorFlatListorNull(options)}
-                        </PTRView>
-                    </View>
-
+                    {this.getChartorFlatListorNull(options)}
                 </View>
             </View>
         )

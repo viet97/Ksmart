@@ -421,14 +421,7 @@ export default class ListNhanVienScreen extends React.Component {
                                 onCancel={() => this.onCancel()}
                             />
                         </View>
-                        <View
-                            style={{flex: 9}}>
-                            <PTRView
-                                onRefresh={() => this.refreshData()}
-                            >
-                                {this.flatListorIndicator()}
-                            </PTRView>
-                        </View>
+                        {this.flatListorIndicator()}
                         <Dialog
                             visible={this.state.dialogVisible}
                             dialogStyle={{borderBottomLeftRadius: 10, borderBottomRightRadius: 10}}

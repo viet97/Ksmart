@@ -210,15 +210,7 @@ export default class CustomerScreen extends Component {
                         onCancel={() => this.onCancel()}
                     />
                 </View>
-                <View
-                    style={{flex: 9}}>
-                    <PTRView
-                        onRefresh={() => this.refreshData()}
-                    >
-                        {this.flatListorIndicator()}
-                    </PTRView>
-                </View>
-
+                {this.flatListorIndicator()}
             </View>
         )
     }

@@ -156,7 +156,7 @@ export default class OrderListScreen extends Component {
                             this.forceUpdate()
                         }
                     })
-                    .catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'));
+                    .catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e));
             }
         }
     }
@@ -288,14 +288,7 @@ export default class OrderListScreen extends Component {
                         onCancel={() => this.onCancel()}
                     />
                 </View>
-                <View
-                    style={{flex: 9}}>
-                    <PTRView
-                        onRefresh={() => this.refreshData()}
-                    >
-                        {this.flatListorIndicator()}
-                    </PTRView>
-                </View>
+                {this.flatListorIndicator()}
                 <ConfirmDialog
                     visible={this.state.dialogVisible}
                     positiveButton={{

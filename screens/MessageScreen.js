@@ -322,15 +322,7 @@ export default class OrderListScreen extends Component {
                         }}
                     />
                 </View>
-                <View
-                    style={{flex: 9}}>
-                    <PTRView
-                        onRefresh={() => this.refreshData()}
-                    >
-                        {this.flatListorIndicator()}
-                    </PTRView>
-                </View>
-
+                {this.flatListorIndicator()}
             </View>
 
         )

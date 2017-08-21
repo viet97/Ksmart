@@ -335,14 +335,9 @@ export default class TravelChartScreen extends React.Component {
                             this.setState({numberTypePick: idx})
                         }}
                     />
-                    <View
-                        style={{flex: 9}}>
-                        <PTRView
-                            onRefresh={() => this.refreshData()}
-                        >
                             {this.getChartorFlatListorNull(options)}
-                        </PTRView>
-                    </View>
+
+
                 </View>
             </View>
         )

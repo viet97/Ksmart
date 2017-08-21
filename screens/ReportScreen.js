@@ -395,14 +395,7 @@ export default class ReportScreen extends Component {
                     </View>
 
                 </View>
-                <View
-                    style={{flex: 9}}>
-                    <PTRView
-                        onRefresh={() => this.refreshData()}
-                    >
-                        {this.flatListorIndicator()}
-                    </PTRView>
-                </View>
+                {this.flatListorIndicator()}
             </View>
 
         )
