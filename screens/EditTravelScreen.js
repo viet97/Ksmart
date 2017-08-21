@@ -86,7 +86,7 @@ export default class DetailTravel extends React.Component {
                             justifyContent: 'center',
                             backgroundColor: 'transparent'
                         }}>
-                        <Text style={{color: 'white', paddingRight: 8, paddingTop: 4}}>OK</Text>
+                        <Text style={{color: 'white', paddingRight: 8, paddingTop: 8}}>OK</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={{
@@ -101,7 +101,6 @@ export default class DetailTravel extends React.Component {
                         marginBottom: 4
                     }}>
                         <Text style={{
-                            alignSelf: 'center',
                             backgroundColor: 'transparent',
                             fontSize: 16,
                             alignSelf: 'center'

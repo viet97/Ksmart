@@ -249,9 +249,7 @@ export default class TravelScreen extends React.Component {
     }
 
     render() {
-        let travelStatusItem = this.state.travelStatus.map((s, i) => {
-            return <Picker.Item key={i} value={i} label={s}/>
-        });
+
         return (
             <View style={{flex: 1}}>
                 <Image source={require('../images/bg.png')}
@@ -347,7 +345,7 @@ export default class TravelScreen extends React.Component {
                         alignSelf: 'center',
                         textAlign: 'center',
                         backgroundColor: 'transparent',
-                        color: 'black'
+                        color: 'black', marginRight: 8
                     }}>Trạng thái</Text>
                     <ModalDropdownCustom
                         data={this.state.travelStatus}

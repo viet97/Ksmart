@@ -31,8 +31,13 @@ let {height, width} = Dimensions.get('window');
 
 let Page = 1
 let SEARCH_STRING = '';
-let ALL_LOADED = false
+let ALL_LOADED = false;
+let pickStatus = 0;
+let pickParty = 0;
+let id_nhom = 0;
+
 export default class ListNhanVienScreen extends React.Component {
+
     constructor(props) {
         super(props)
         this.state = ({
@@ -52,7 +57,7 @@ export default class ListNhanVienScreen extends React.Component {
             waiting: false,
             numberPickStatus: 0,
             dataPickStatus: [],
-            dialogVisible: false
+            dialogVisible: false,
         })
         this.state.dataPickStatus.push('Tất cả')
         this.state.dataPickStatus.push('Đang trực tuyến')
@@ -368,12 +373,7 @@ export default class ListNhanVienScreen extends React.Component {
     }
 
     render() {
-        let NhanVienStatusItem = this.state.dataPickStatus.map((s, i) => {
-            return <Picker.Item key={i} value={i} label={s}/>
-        });
-        let partyStatusItem = this.state.partyNhanVienStatus.map((s, i) => {
-            return <Picker.Item key={i} value={i} label={s}/>
-        });
+
         return (
             <TabNavigator>
                 <TabNavigator.Item
@@ -446,8 +446,8 @@ export default class ListNhanVienScreen extends React.Component {
                                         marginBottom: 16,
                                         marginTop: 4
                                     }}
-                                    defaultValue={this.state.partyNhanVienStatus[0]}
-                                    defaultIndex={0}
+                                    defaultValue={this.state.partyNhanVienStatus[pickParty]}
+                                    defaultIndex={Number(pickParty)}
                                     onSelect={(idx, value) => this._onSelectParty(idx, value)}
                                     renderRow={this._renderRowStatus.bind(this)}
                                     renderSeparator={(sectionID, rowID, adjacentRowHighlighted) => this._renderSeparatorParty(sectionID, rowID, adjacentRowHighlighted)}
@@ -464,26 +464,53 @@ export default class ListNhanVienScreen extends React.Component {
                                         alignItems: 'center',
                                         marginTop: 4
                                     }}
-                                    defaultValue={this.state.dataPickStatus[0]}
-                                    defaultIndex={0}
+                                    defaultValue={this.state.dataPickStatus[pickStatus]}
+                                    defaultIndex={Number(pickParty)}
                                     onSelect={(idx, value) => this._onSelectStatus(idx, value)}
                                     renderRow={this._renderRowStatus.bind(this)}
                                     renderSeparator={(sectionID, rowID, adjacentRowHighlighted) => this._renderSeparatorStatus(sectionID, rowID, adjacentRowHighlighted)}
                                 />
-                                <TouchableOpacity
-                                    style={{
-                                        alignSelf: 'center',
-                                        justifyContent: 'center',
-                                        marginTop: 16,
-                                        width: Dimensions.get('window').width / 4,
-                                        height: 48,
-                                        backgroundColor: 'green'
-                                    }}
-                                    onPress={() => {
-                                        this.setState({dialogVisible: false})
-                                    }}>
-                                    <Text style={{color: 'white', alignSelf: 'center'}}>Ok</Text>
-                                </TouchableOpacity>
+                                <View style={{flexDirection: 'row'}}>
+                                    <TouchableOpacity
+                                        style={{
+                                            alignSelf: 'center',
+                                            justifyContent: 'center',
+                                            marginTop: 16,
+                                            width: Dimensions.get('window').width / 4,
+                                            height: 48,
+                                            backgroundColor: 'green'
+                                        }}
+                                        onPress={() => {
+                                            this.setState({
+                                                dialogVisible: false,
+                                                numberPickParty: pickParty,
+                                                idNhom: id_nhom,
+                                                numberPickStatus: pickStatus
+                                            }, function () {
+                                                this.getDataFromSv();
+                                                let dataFill = this.fillData(this.state.dataFull)
+                                                this.setState({dataRender: dataFill})
+                                                console.log('OK', this.state.numberPickStatus, this.state.numberPickParty);
+                                            })
+                                        }}>
+                                        <Text style={{color: 'white', alignSelf: 'center'}}>Ok</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        style={{
+                                            alignSelf: 'center',
+                                            justifyContent: 'center',
+                                            marginTop: 16,
+                                            width: Dimensions.get('window').width / 4,
+                                            height: 48,
+                                            backgroundColor: 'green'
+                                        }}
+                                        onPress={() => {
+                                            this.setState({dialogVisible: false});
+                                            console.log('Huỷ bỏ ', this.state.numberPickStatus, this.state.numberPickParty);
+                                        }}>
+                                        <Text style={{color: 'white', alignSelf: 'center'}}>Cancle</Text>
+                                    </TouchableOpacity>
+                                </View>
 
                             </View>
                         </Dialog>
@@ -503,19 +530,20 @@ export default class ListNhanVienScreen extends React.Component {
     }
 
     _onSelectParty(id, value) {
-        let idNhom = this.state.dataPartyNhanVien[this.state.partyNhanVienStatus[id]].IDNhom;
-
-        this.setState({numberPickParty: id, idNhom: idNhom}, function () {
-            this.getDataFromSv()
-        })
+        id_nhom = this.state.dataPartyNhanVien[this.state.partyNhanVienStatus[id]].IDNhom;
+        pickParty = id;
+        // this.setState({numberPickParty: id, idNhom: idNhom}, function () {
+        //     this.getDataFromSv()
+        // })
     }
 
     _onSelectStatus(id, value) {
         console.log('id', id, value);
-        this.setState({numberPickStatus: id}, function () {
-            let dataFill = this.fillData(this.state.dataFull)
-            this.setState({dataRender: dataFill})
-        })
+        pickStatus = id;
+        // this.setState({numberPickStatus: id}, function () {
+        //     let dataFill = this.fillData(this.state.dataFull)
+        //     this.setState({dataRender: dataFill})
+        // })
     }
 
     _renderRowStatus(rowData, rowID, highlighted) {

@@ -35,7 +35,7 @@ export default class ModalDropdownCustom extends Component {
                     borderRadius: 10,
                     justifyContent: 'center',
                     alignItems: 'center',
-                    marginTop: 4
+                    marginTop: 4, backgroundColor: 'transparent'
                 }}
                 defaultValue={this.props.defaultValue}
                 defaultIndex={0}
@@ -51,8 +51,6 @@ export default class ModalDropdownCustom extends Component {
     }
 
     _renderRowStatus(rowData, rowID, highlighted) {
-        let icon = highlighted ? require('../images/heart.png') : require('../images/flower.png');
-        let evenRow = rowID % 2;
         return (
             <TouchableHighlight underlayColor='cornflowerblue'>
                 <View style={[styles.dropdown_2_row, {backgroundColor: 'white'}]}>

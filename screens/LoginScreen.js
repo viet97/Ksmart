@@ -80,7 +80,7 @@ export default class LoginScreen extends React.Component {
     componentDidMount() {
         let realm = new Realm();
         let login = realm.objects('LoginSave');
-        console.log('didMount')
+        console.log('didMount', login)
         if (login.length !== 0) {
             var loginOBJ = login[0];
             this.setState({

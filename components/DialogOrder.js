@@ -5,7 +5,7 @@ import React, {Component} from 'react'
 import DatePicker from 'react-native-datepicker'
 import {
     Text, View, StyleSheet, TouchableOpacity, Dimensions, Button, Picker, ScrollView,
-    TextInput, TouchableHighlight
+    TextInput, TouchableHighlight, Platform
 } from "react-native";
 import URlConfig from "../configs/url";
 import Color from '../configs/color'
@@ -84,11 +84,21 @@ export default class DialogOrder extends React.Component {
         })
     }
 
+    getImageBackground() {
+        if (Platform.OS === 'ios')
+            return (
+                <Image source={require('../images/bg.png')}
+                       style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0}}/>
+            )
+        return (
+            <Image source={require('../images/bg.png')}
+                   style={{position: 'absolute', top: -30, left: -30}}/>
+        )
+    }
     render() {
         return (
             <View>
-                <Image source={require('../images/bg.png')}
-                       style={{position: 'absolute', top: -30, left: -30}}/>
+                {this.getImageBackground()}
                 <ScrollView style={{flexDirection: 'column'}}
                             keyboardShouldPersistTaps="always">
 

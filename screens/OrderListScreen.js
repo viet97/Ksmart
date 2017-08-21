@@ -365,4 +365,4 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         fontFamily: 'Al Nile'
     }
-})
+});
