@@ -21,7 +21,7 @@ import URlConfig from "../configs/url";
 import Search from "react-native-search-box";
 import {StackNavigator} from 'react-navigation';
 import CustomerItem from "../components/CustomerItem";
-
+import PTRView from 'react-native-pull-to-refresh'
 var ALL_LOADED = false
 var SEARCH_STRING = '';
 var PAGE = 0;
@@ -115,9 +115,7 @@ export default class CustomerScreen extends Component {
     flatListorIndicator() {
         if (!this.state.dataRender) {
             return (
-                <View style={{backgroundColor: Color.backGroundFlatList, flex: 9}}>
-                    <Image source={require('../images/bg.png')}
-                           style={{position: 'absolute'}}/>
+                <View style={{flex: 9}}>
                     <ActivityIndicator
                         animating={true}
                         style={styles.indicator}
@@ -131,14 +129,9 @@ export default class CustomerScreen extends Component {
             </View>)
 
         return (
-            <View style={{backgroundColor: Color.backGroundFlatList, flex: 9}}>
-                <Image source={require('../images/bg.png')}
-                       style={{position: 'absolute'}}/>
+            <View style={{flex: 9}}>
+
                 <FlatList
-                    refreshing={this.state.refreshing}
-                    onRefresh={() => {
-                        this.refreshData()
-                    }}
                     ListFooterComponent={this.renderFooter}
                     ref="listview"
                     onEndReachedThreshold={0.2}
@@ -217,7 +210,14 @@ export default class CustomerScreen extends Component {
                         onCancel={() => this.onCancel()}
                     />
                 </View>
-                {this.flatListorIndicator()}
+                <View
+                    style={{flex: 9}}>
+                    <PTRView
+                        onRefresh={() => this.refreshData()}
+                    >
+                        {this.flatListorIndicator()}
+                    </PTRView>
+                </View>
 
             </View>
         )

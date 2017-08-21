@@ -13,7 +13,7 @@ import {
     ActivityIndicator,
     Platform
 } from "react-native";
-
+import PTRView from 'react-native-pull-to-refresh'
 import Modal from 'react-native-modalbox';
 import URlConfig from "../configs/url";
 import Color from '../configs/color'
@@ -179,7 +179,8 @@ export default class OrderListScreen extends Component {
                         size="large"/>
                 </View>)
         } else if (this.state.dataRender.length === 0)
-            return (    <View style={{flex: 9}}>
+            return (
+                <View style={{flex: 9}}>
                 <Text style={{alignSelf: 'center', textAlign: 'center', fontSize: 20, backgroundColor: 'transparent'}}>Không
                     có dữ liệu</Text>
 
@@ -191,10 +192,6 @@ export default class OrderListScreen extends Component {
                     ListFooterComponent={this.renderFooter}
                     ref={(listV) => {
                         this.listV = listV
-                    }}
-                    refreshing={this.state.refreshing}
-                    onRefresh={() => {
-                        this.refreshData()
                     }}
                     onEndReachedThreshold={0.2}
                     onEndReached={() => {
@@ -325,7 +322,15 @@ export default class OrderListScreen extends Component {
                         }}
                     />
                 </View>
-                {this.flatListorIndicator()}
+                <View
+                    style={{flex: 9}}>
+                    <PTRView
+                        onRefresh={() => this.refreshData()}
+                    >
+                        {this.flatListorIndicator()}
+                    </PTRView>
+                </View>
+
             </View>
 
         )

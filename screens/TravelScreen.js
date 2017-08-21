@@ -22,7 +22,7 @@ import DatePicker from 'react-native-datepicker'
 import ultils from "../configs/ultils";
 import TravelItem from "../components/TravelItem";
 import ModalDropdownCustom from "../components/ModalDropdownCustom";
-
+import PTRView from 'react-native-pull-to-refresh'
 let SEARCH_STRING = '';
 let {width, height} = Dimensions.get('window');
 let ALL_LOADED = false
@@ -228,10 +228,6 @@ export default class TravelScreen extends React.Component {
 
                 <FlatList
                     ListFooterComponent={this.renderFooter}
-                    refreshing={this.state.refreshing}
-                    onRefresh={() => {
-                        this.refreshData()
-                    }}
                     ref="listview"
                     onEndReachedThreshold={0.2}
                     onEndReached={() => {
@@ -361,7 +357,14 @@ export default class TravelScreen extends React.Component {
                         }
                     />
                 </View>
-                {this.flatListorIndicator()}
+                <View
+                    style={{flex: 9}}>
+                    <PTRView
+                        onRefresh={() => this.refreshData()}
+                    >
+                        {this.flatListorIndicator()}
+                    </PTRView>
+                </View>
             </View>
         )
     }

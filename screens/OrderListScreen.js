@@ -23,7 +23,7 @@ import Search from 'react-native-search-box';
 import ultils from "../configs/ultils";
 import Toast from 'react-native-simple-toast'
 import OrderListItem from "../components/OrderListItem";
-
+import PTRView from 'react-native-pull-to-refresh'
 let {height, width} = Dimensions.get('window');
 
 let Page = 1
@@ -209,16 +209,15 @@ export default class OrderListScreen extends Component {
 
         if (!this.state.dataRender) {
             return (
-                <View style={{backgroundColor: Color.backGroundFlatList, flex: 9}}>
-                    <Image source={require('../images/bg.png')}
-                           style={{position: 'absolute'}}/>
+                <View style={{flex: 9}}>
                     <ActivityIndicator
                         animating={true}
                         style={styles.indicator}
                         size="large"/>
                 </View>)
         } else if (this.state.orderListDataFull.length === 0 && this.state.isEndList)
-            return (    <View style={{flex: 9}}>
+            return (
+                <View style={{flex: 9}}>
                     <Text style={{
                         alignSelf: 'center',
                         textAlign: 'center',
@@ -231,17 +230,11 @@ export default class OrderListScreen extends Component {
             )
 
         return (
-            <View style={{backgroundColor: Color.backGroundFlatList, flex: 9}}>
-                <Image source={require('../images/bg.png')}
-                       style={{position: 'absolute'}}/>
+            <View style={{flex: 9}}>
                 <FlatList
                     ListFooterComponent={this.renderFooter}
                     ref={(listV) => {
                         this.listV = listV
-                    }}
-                    refreshing={this.state.refreshing}
-                    onRefresh={() => {
-                        this.refreshData()
                     }}
                     onEndReachedThreshold={0.2}
                     onEndReached={() => {
@@ -292,7 +285,14 @@ export default class OrderListScreen extends Component {
                         onCancel={() => this.onCancel()}
                     />
                 </View>
-                {this.flatListorIndicator()}
+                <View
+                    style={{flex: 9}}>
+                    <PTRView
+                        onRefresh={() => this.refreshData()}
+                    >
+                        {this.flatListorIndicator()}
+                    </PTRView>
+                </View>
             </View>
 
         )

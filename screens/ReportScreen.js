@@ -34,7 +34,7 @@ import DoanhThuReportItem from "../components/DoanhThuReportItem";
 import TopDoanhThuItem from "../components/TopDoanhThuItem";
 import KhongCoDoanhThuItem from "../components/KhongCoDoanhThuItem";
 import ModalDropdownCustom from "../components/ModalDropdownCustom";
-
+import PTRView from 'react-native-pull-to-refresh'
 let SEARCH_STRING = '';
 let {width, height} = Dimensions.get('window');
 let ALL_LOADED = false
@@ -277,10 +277,6 @@ export default class ReportScreen extends Component {
                     ref={(listV) => {
                         this.listV = listV
                     }}
-                    refreshing={this.state.refreshing}
-                    onRefresh={() => {
-                        this.refreshData()
-                    }}
                     onEndReachedThreshold={0.2}
                     onEndReached={() => {
                         this.loadMoreDataFromSv()
@@ -399,7 +395,14 @@ export default class ReportScreen extends Component {
                     </View>
 
                 </View>
-                {this.flatListorIndicator()}
+                <View
+                    style={{flex: 9}}>
+                    <PTRView
+                        onRefresh={() => this.refreshData()}
+                    >
+                        {this.flatListorIndicator()}
+                    </PTRView>
+                </View>
             </View>
 
         )

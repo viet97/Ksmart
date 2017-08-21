@@ -19,6 +19,7 @@ import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import URlConfig from "../configs/url";
 import Toast from 'react-native-simple-toast'
 import NewFeedItem from "../components/NewFeedItem";
+import PTRView from 'react-native-pull-to-refresh';
 
 let SEARCH_STRING = '';
 let {width, height} = Dimensions.get('window');
@@ -146,10 +147,6 @@ export default class NewFeedScreen extends React.Component {
 
                 <FlatList
                     ListFooterComponent={this.renderFooter}
-                    refreshing={this.state.refreshing}
-                    onRefresh={() => {
-                        this.refreshData()
-                    }}
                     ref="listview"
                     onEndReachedThreshold={0.2}
                     onEndReached={() => {
@@ -193,7 +190,8 @@ export default class NewFeedScreen extends React.Component {
     render() {
         return (
 
-            <View style={{flex: 1}}>
+            <View
+                style={{flex: 1}}>
                 <Image source={require('../images/bg.png')}
                        style={{position: 'absolute', top: 0}}/>
                 <View style={styles.titleStyle}>
@@ -206,7 +204,8 @@ export default class NewFeedScreen extends React.Component {
                         <Icon1 style={styles.iconStyle} size={24} color="white"
                                name="ios-arrow-back"/>
                     </TouchableOpacity>
-                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Hoạt
+                    <Text
+                        style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Hoạt
                         động</Text>
                     <View style={{backgroundColor: 'transparent', width: 35, height: 35}}/>
                 </View>
@@ -221,7 +220,14 @@ export default class NewFeedScreen extends React.Component {
                         onCancel={() => this.onCancel()}
                     />
                 </View>
-                {this.flatListorIndicator()}
+                <View
+                    style={{flex: 9}}>
+                    <PTRView
+                        onRefresh={() => this.refreshData()}
+                    >
+                        {this.flatListorIndicator()}
+                    </PTRView>
+                </View>
             </View>
 
         )

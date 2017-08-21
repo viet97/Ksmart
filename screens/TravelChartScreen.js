@@ -16,7 +16,7 @@ import Color from "../configs/color";
 import Toast from 'react-native-simple-toast'
 import ultils from "../configs/ultils";
 import ModalDropdownCustom from "../components/ModalDropdownCustom";
-
+import PTRView from 'react-native-pull-to-refresh'
 var {height, width} = Dimensions.get('window');
 export default class TravelChartScreen extends React.Component {
     static navigationOptions = {
@@ -165,10 +165,6 @@ export default class TravelChartScreen extends React.Component {
                 return (
                     <View style={{flex: 9}}>
                         <FlatList
-                            refreshing={this.state.refreshing}
-                            onRefresh={() => {
-                                this.refreshData()
-                            }}
                             ref="listview"
                             extraData={this.state.dataRender}
                             data={this.state.dataRender}
@@ -339,7 +335,14 @@ export default class TravelChartScreen extends React.Component {
                             this.setState({numberTypePick: idx})
                         }}
                     />
-                    {this.getChartorFlatListorNull(options)}
+                    <View
+                        style={{flex: 9}}>
+                        <PTRView
+                            onRefresh={() => this.refreshData()}
+                        >
+                            {this.getChartorFlatListorNull(options)}
+                        </PTRView>
+                    </View>
                 </View>
             </View>
         )

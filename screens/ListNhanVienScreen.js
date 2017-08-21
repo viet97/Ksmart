@@ -9,7 +9,7 @@ import {
     FlatList,
     ActivityIndicator,
     Platform,
-    Picker, TouchableHighlight,
+    Picker, TouchableHighlight
 } from 'react-native';
 import ModalDropdown from "react-native-modal-dropdown";
 import Toast from 'react-native-simple-toast';
@@ -26,11 +26,10 @@ import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import TabNavigator from 'react-native-tab-navigator';
 import MapListScreen from "./MapListScreen";
 import {Dialog} from 'react-native-simple-dialogs';
-import ListNhanVienItem from "../components/ListNhanVienItem";
-
+import PTRView from 'react-native-pull-to-refresh'
 let {height, width} = Dimensions.get('window');
 
-let Page = 1;
+let Page = 1
 let SEARCH_STRING = '';
 let ALL_LOADED = false
 export default class ListNhanVienScreen extends React.Component {
@@ -53,8 +52,7 @@ export default class ListNhanVienScreen extends React.Component {
             waiting: false,
             numberPickStatus: 0,
             dataPickStatus: [],
-            dialogVisible: false,
-            heightImage: 30,
+            dialogVisible: false
         })
         this.state.dataPickStatus.push('Tất cả')
         this.state.dataPickStatus.push('Đang trực tuyến')
@@ -62,6 +60,51 @@ export default class ListNhanVienScreen extends React.Component {
         this.state.dataPickStatus.push('Mất tín hiệu')
     }
 
+
+    getImage(url) {
+        if (url.length === 0) {
+            return (
+
+                <Image
+                    source={require('../images/bglogin.jpg')}
+                    indicator={ProgressBar.Pie}
+                    style={{margin: 8, width: 60, height: 60, borderRadius: 30}}/>
+            );
+        } else {
+            return (
+                <Image
+
+                    source={{uri: 'http://jav.ksmart.vn' + url}}
+                    indicator={ProgressBar.Pie}
+                    style={{margin: 8, width: 60, height: 60, borderRadius: 30}}/>
+            );
+        }
+    }
+
+    isOnline(dangtructuyen) {
+        if (dangtructuyen === 1)
+            return (
+                <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center'}}>
+                    <Icon2 style={{backgroundColor: 'transparent'}} size={24} color="green"
+                           name="controller-record"/>
+                    <Text style={{alignSelf: 'center', fontSize: 11}}>Đang trực tuyến</Text>
+                </View>)
+        else if (dangtructuyen === 2)
+            return (
+                <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center'}}>
+                    <Icon2 style={{backgroundColor: 'transparent'}} size={24} color="red"
+                           name="controller-record"/>
+                    <Text style={{alignSelf: 'center', fontSize: 11}}>Mất tín hiệu</Text>
+                </View>)
+        else if (dangtructuyen === 0)
+            return (
+                <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center'}}>
+                    <Icon2 style={{backgroundColor: 'transparent'}} size={24} color="gray"
+                           name="controller-record"/>
+                    <Text style={{alignSelf: 'center', fontSize: 11}}>Ngoại tuyến</Text>
+                </View>)
+
+    }
 
     renderFooter = () => {
 
@@ -194,16 +237,12 @@ export default class ListNhanVienScreen extends React.Component {
                 <Text style={{alignSelf: 'center', textAlign: 'center', fontSize: 20, backgroundColor: 'transparent'}}>Không
                     có dữ liệu</Text>
 
-            </View>);
+            </View>)
 
         return (
             <View style={{flex: 9}}>
 
                 <FlatList
-                    refreshing={this.state.refreshing}
-                    onRefresh={() => {
-                        this.refreshData()
-                    }}
                     ListFooterComponent={this.renderFooter}
                     ref="listview"
                     onEndReachedThreshold={0.2}
@@ -216,15 +255,51 @@ export default class ListNhanVienScreen extends React.Component {
                     extraData={this.state.dataRender}
                     data={this.state.dataRender}
                     renderItem={({item}) =>
-                        <ListNhanVienItem
-                            callback={() => this.props.callback(item.KinhDo, item.ViDo, 'Địa điểm Nhân Viên')}
-                            goToDetailNhanVien={() => this.props.goToDetailNhanVien(item.idnhanvien)}
-                            data={item}/>
+                        <TouchableOpacity onPress={() => this.props.goToDetailNhanVien(item.idnhanvien)}>
+                            <View style={{
+                                margin: 4
+                            }}>
+                                <Image source={require('../images/bg1.png')}
+                                       style={{
+                                           width: width - 8,
+                                           height: height / 6
+                                       }}>
+                                    <Text style={{textAlign: 'right', fontSize: 12, backgroundColor: 'transparent'}}>
+                                        Cập nhật
+                                        lúc {item.thoigiancapnhat}</Text>
+                                    <View style={{flexDirection: 'row'}}>
+                                        <View style={{justifyContent: 'center'}}>
+                                            <Image indicator={ProgressBar.Pie}
+                                                   style={{margin: 8, width: 60, height: 60, borderRadius: 30}}
+                                                   source={require('../images/bglogin.jpg')}/>
+                                        </View>
+                                        <View style={{
+                                            flex: 4,
+                                            margin: 8,
+                                            justifyContent: 'center',
+                                            backgroundColor: 'transparent'
+                                        }}>
+                                            <Text
+                                                style={{
+                                                    fontSize: 18, backgroundColor: 'transparent'
+                                                }}>{item.tennhanvien}</Text>
+                                            <Text>{item.tendangnhap}</Text>
+                                            {this.isOnline(item.dangtructuyen)}
+                                        </View>
+                                        <TouchableOpacity onPress={() => {
+                                            this.props.callback(item.KinhDo, item.ViDo, 'Địa điểm Nhân Viên')
+                                        }}>
+                                            <Icon2 style={{backgroundColor: 'transparent'}} size={30} color='red'
+                                                   name="location"/>
+                                        </TouchableOpacity>
+                                    </View>
+                                </Image>
+                            </View>
+                        </TouchableOpacity>
                     }
                 />
             </View>)
     }
-
 
     onChangeText(text) {
         return new Promise((resolve, reject) => {
@@ -336,8 +411,7 @@ export default class ListNhanVienScreen extends React.Component {
                         </View>
 
 
-                        <View
-                            style={{width: width}}>
+                        <View style={{width: width}}>
                             <Search
                                 placeholder="Tìm kiếm"
                                 cancelTitle="Huỷ bỏ"
@@ -346,7 +420,14 @@ export default class ListNhanVienScreen extends React.Component {
                                 onCancel={() => this.onCancel()}
                             />
                         </View>
-                        {this.flatListorIndicator()}
+                        <View
+                            style={{flex: 9}}>
+                            <PTRView
+                                onRefresh={() => this.refreshData()}
+                            >
+                                {this.flatListorIndicator()}
+                            </PTRView>
+                        </View>
                         <Dialog
                             visible={this.state.dialogVisible}
                             title="Bộ lọc nhân viên"
@@ -515,6 +596,7 @@ const styles = StyleSheet.create({
         elevation: 15,
         justifyContent: 'space-between',
         flexDirection: 'row',
+        backgroundColor: Color.backgroundNewFeed,
     },
     headerStyle: {
         elevation: 15, height: this.height / 7
