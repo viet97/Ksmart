@@ -470,12 +470,12 @@ export default class ListNhanVienScreen extends React.Component {
                                     renderRow={this._renderRowStatus.bind(this)}
                                     renderSeparator={(sectionID, rowID, adjacentRowHighlighted) => this._renderSeparatorStatus(sectionID, rowID, adjacentRowHighlighted)}
                                 />
-                                <View style={{flexDirection: 'row'}}>
+                                <View style={{flexDirection: 'row', marginTop: 16}}>
                                     <TouchableOpacity
                                         style={{
                                             alignSelf: 'center',
                                             justifyContent: 'center',
-                                            marginTop: 16,
+                                            marginRight: 16,
                                             width: Dimensions.get('window').width / 4,
                                             height: 48,
                                             backgroundColor: 'green'
@@ -499,7 +499,6 @@ export default class ListNhanVienScreen extends React.Component {
                                         style={{
                                             alignSelf: 'center',
                                             justifyContent: 'center',
-                                            marginTop: 16,
                                             width: Dimensions.get('window').width / 4,
                                             height: 48,
                                             backgroundColor: 'green'
