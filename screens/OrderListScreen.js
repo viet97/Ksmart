@@ -18,12 +18,14 @@ import Icon1 from 'react-native-vector-icons/Ionicons'
 import Icon2 from 'react-native-vector-icons/Entypo'
 import Image from 'react-native-image-progress';
 import DialogManager, {ScaleAnimation, DialogContent} from 'react-native-dialog-component';
-import Dialog from '../components/Dialog'
+import DialogOrder from '../components/DialogOrder'
 import Search from 'react-native-search-box';
 import ultils from "../configs/ultils";
 import Toast from 'react-native-simple-toast'
 import OrderListItem from "../components/OrderListItem";
 import PTRView from 'react-native-pull-to-refresh'
+import {Dialog} from 'react-native-simple-dialogs';
+
 let {height, width} = Dimensions.get('window');
 
 let Page = 1
@@ -49,6 +51,7 @@ export default class OrderListScreen extends Component {
         }
         today = dd + '-' + mm + '-' + yyyy;
         this.state = {
+            dialogVisible: false,
             onEndReach: true,
             isEndList: false,
             ALL_LOADED: false,
@@ -293,28 +296,27 @@ export default class OrderListScreen extends Component {
                         {this.flatListorIndicator()}
                     </PTRView>
                 </View>
+                <Dialog
+                    visible={this.state.dialogVisible}
+                >
+                    <DialogOrder
+                        deFaultData={this.state.filtDialog}
+                        callback={(data) => {
+                            this.setState({filtDialog: data}, function () {
+                                this.setState({dialogVisible: false})
+                                if (this.state.filtDialog.status) {
+                                    this.getOrderListFromServer(this.state.filtDialog.dateFrom, this.state.filtDialog.dateTo)
+                                }
+                            })
+                        }}/>
+                </Dialog>
             </View>
 
         )
     }
 
     showDialog() {
-        DialogManager.show({
-            animationDuration: 200,
-            ScaleAnimation: new ScaleAnimation(),
-            children: (
-                <Dialog deFaultData={this.state.filtDialog}
-                        callback={(data) => {
-                            this.setState({filtDialog: data}, function () {
-                                if (this.state.filtDialog.status) {
-                                    this.getOrderListFromServer(this.state.filtDialog.dateFrom, this.state.filtDialog.dateTo)
-                                }
-                            })
-                        }}/>
-            ),
-        }, () => {
-            console.log('callback - show');
-        });
+        this.setState({dialogVisible: true})
     }
 }
 const styles = StyleSheet.create({

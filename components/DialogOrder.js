@@ -21,7 +21,7 @@ import DataTemp from "./DataTemp";
 import ModalDropdownCustom from "./ModalDropdownCustom";
 import Toast from "react-native-simple-toast";
 
-export default class Dialog extends React.Component {
+export default class DialogOrder extends React.Component {
     constructor(props) {
         super(props);
         var today = new Date();
@@ -38,7 +38,6 @@ export default class Dialog extends React.Component {
         }
 
         today = dd + '/' + mm + '/' + yyyy;
-        console.log('Ngay truyen sang la: ' + this.props.deFaultData.dateFrom)
         this.state = {
             numberPicktttt: this.props.deFaultData.numberPicktttt,
             numberPickttgh: this.props.deFaultData.numberPickttgh,
@@ -87,9 +86,9 @@ export default class Dialog extends React.Component {
 
     render() {
         return (
-            <DialogContent>
+            <View>
                 <Image source={require('../images/bg.png')}
-                       style={{position: 'absolute', top: 0, bottom: 0, right: 0, left: 0}}/>
+                       style={{position: 'absolute', top: -30, left: -30}}/>
                 <ScrollView style={{flexDirection: 'column'}}
                             keyboardShouldPersistTaps="always">
 
@@ -184,7 +183,6 @@ export default class Dialog extends React.Component {
 
                     <TouchableOpacity style={{alignItems: 'center', backgroundColor: 'transparent', height: 36}}
                                       onPress={() => {
-                                          DialogManager.dismiss(() => {
                                               this.props.callback({
                                                   'status': false,
                                                   numberPicktttt: this.props.deFaultData.numberPicktttt,
@@ -192,8 +190,7 @@ export default class Dialog extends React.Component {
                                                   numberPickttdh: this.props.deFaultData.numberPickttdh,
                                                   dateFrom: this.props.deFaultData.dateFrom,
                                                   dateTo: this.props.deFaultData.dateTo
-                                              })
-                                          });
+                                              });
                                       }}>
                         <Text style={{
                             color: 'white',
@@ -208,7 +205,6 @@ export default class Dialog extends React.Component {
 
                     <TouchableOpacity style={{alignItems: 'center', backgroundColor: 'transparent', height: 36}}
                                       onPress={() => {
-                                          DialogManager.dismiss(() => {
                                               var dFrom = String(this.state.dateFrom);
                                               var dTo = String(this.state.dateTo);
                                               dFrom.replace('/', '-');
@@ -221,7 +217,6 @@ export default class Dialog extends React.Component {
                                                   dateFrom: dFrom,
                                                   dateTo: dTo
                                               });
-                                          });
                                       }}>
 
                         <Text style={{
@@ -235,7 +230,7 @@ export default class Dialog extends React.Component {
 
                     </TouchableOpacity>
                 </View>
-            </DialogContent>
+            </View>
         );
     }
 

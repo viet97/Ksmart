@@ -18,7 +18,7 @@ import Icon1 from 'react-native-vector-icons/Ionicons'
 import Icon2 from 'react-native-vector-icons/Entypo'
 import Image from 'react-native-image-progress';
 import DialogManager, {ScaleAnimation, DialogContent} from 'react-native-dialog-component';
-import Dialog from '../components/Dialog'
+import Dialog from './DialogOrder'
 import Search from 'react-native-search-box';
 import ultils from "../configs/ultils";
 import Toast from 'react-native-simple-toast'

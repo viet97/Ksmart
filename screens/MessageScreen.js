@@ -25,7 +25,7 @@ import Toast from 'react-native-simple-toast'
 import ProgressBar from 'react-native-progress/Bar';
 import DialogManager, {ScaleAnimation, DialogContent} from 'react-native-dialog-component';
 import {DialogComponent, SlideAnimation} from 'react-native-dialog-component';
-import Dialog from '../components/Dialog'
+import Dialog from '../components/DialogOrder'
 import orderListData from '../dbcontext/orderListData'
 import AtoZListView from 'react-native-atoz-listview';
 import Search from 'react-native-search-box';

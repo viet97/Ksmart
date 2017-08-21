@@ -431,9 +431,7 @@ export default class ListNhanVienScreen extends React.Component {
                         <Dialog
                             visible={this.state.dialogVisible}
                             title="Bộ lọc nhân viên"
-                            onTouchOutside={() => {
-                                //this.setState({dialogVisible: false})
-                            }}>
+                        >
                             <View style={{flexDirection: 'column'}}>
                                 <Text>Chon phong ban</Text>
                                 <ModalDropdown
