@@ -12,19 +12,18 @@ import {
     ActivityIndicator, Platform,
     Picker, TouchableHighlight, TextInput, Keyboard
 } from 'react-native';
-import Icon2 from 'react-native-vector-icons/Entypo'
+import {Icon} from 'react-native-elements';
 
 import {ProgressDialog} from 'react-native-simple-dialogs';
 import DialogManager, {ScaleAnimation, DialogContent} from 'react-native-dialog-component';
 import ModalDropdown from "react-native-modal-dropdown";
 import URlConfig from "../configs/url";
-import Search from "react-native-search-box";
 import Toast from "react-native-simple-toast";
 
-let Page = 1
-let ALL_LOADED = false
-let SEARCH_STRING = ''
-let {width, height} = Dimensions.get('window')
+let Page = 1;
+let ALL_LOADED = false;
+let SEARCH_STRING = '';
+let {width, height} = Dimensions.get('window');
 export default class DialogCustom extends React.Component {
     constructor(props) {
         super(props);
@@ -61,7 +60,7 @@ export default class DialogCustom extends React.Component {
     };
 
     getListNhanVienFromSv(id) {
-        Page = 1
+        Page = 1;
         this.setState({dataRender: null, isEndList: false})
         fetch(URlConfig.getListNhanVienLink(Page, id, SEARCH_STRING))
             .then((response) => (response.json()))
@@ -156,8 +155,13 @@ export default class DialogCustom extends React.Component {
 
         return (
 
-            <View style={{flexDirection: 'column', flex: 1, marginTop: 32, backgroundColor: 'transparent'}}>
-                <View style={{flexDirection: 'column', flex: 9}}>
+            <View style={{flexDirection: 'column', flex: 1, marginBottom: 16, backgroundColor: 'transparent'}}>
+                <TouchableOpacity style={{position: 'absolute', right: 8, top: 8, padding: 32}} onPress={() => {
+                    DialogManager.dismiss();
+                }}>
+                    <Icon name="x" type="foundation" size={24} color="red"/>
+                </TouchableOpacity>
+                <View style={{flexDirection: 'column', flex: 9, marginTop: 16}}>
                     <Text>Chọn phòng ban: </Text>
                     <ModalDropdown
                         options={this.state.listNameGroup}

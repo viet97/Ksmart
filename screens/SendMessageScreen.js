@@ -118,9 +118,8 @@ export default class ModalSendMessage extends Component {
                         <Icon2 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
                     </TouchableOpacity>
                     <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Soạn
-                        tin
-                        nhắn</Text>
-                    <TouchableOpacity style={{alignSelf: 'center', backgroundColor: 'transparent'}}
+                        tin nhắn</Text>
+                    <TouchableOpacity style={{alignSelf: 'center', backgroundColor: 'transparent', marginRight: 16}}
                                       onPress={() => this.showDialog()}>
                         <Icon3 style={{alignSelf: 'center'}} size={24} color="white" name="add-user"/>
                     </TouchableOpacity>
@@ -224,8 +223,7 @@ export default class ModalSendMessage extends Component {
         DialogManager.show({
             animationDuration: 200,
             ScaleAnimation: new ScaleAnimation(),
-            height: height,
-            style: {bottom: 0},
+            height: height - 32,
             children: (
                 <DialogCustom
                     callback={(id, name) => {
@@ -246,7 +244,7 @@ const styles = StyleSheet.create({
         flex: 1,
         left: 0,
         position: 'absolute',
-        right: 0,
+        right: 16,
         top: 0,
         zIndex: 1,
         flexDirection: 'row'
