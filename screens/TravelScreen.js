@@ -23,6 +23,7 @@ import ultils from "../configs/ultils";
 import TravelItem from "../components/TravelItem";
 import ModalDropdownCustom from "../components/ModalDropdownCustom";
 import PTRView from 'react-native-pull-to-refresh'
+
 let SEARCH_STRING = '';
 let {width, height} = Dimensions.get('window');
 let ALL_LOADED = false
@@ -129,10 +130,8 @@ export default class TravelScreen extends React.Component {
                     if (seconds >= 0 && seconds <= TIME_SAP_DEN_GIO) {
                         arr.push(item)
                     }
-
                 }
                 break;
-
         }
         this.setState({dataRender: arr})
     }
@@ -242,6 +241,7 @@ export default class TravelScreen extends React.Component {
                         <TravelItem
                             data={item}
                             callback={() => this.props.callback(item)}
+
                         />
                     }
                 />

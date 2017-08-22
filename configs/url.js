@@ -146,4 +146,9 @@ export default class URlConfig {
 
     }
 
+    static getLinkDeleteTravel(idkehoach) {
+        let data = URlConfig.OBJLOGIN;
+        return data.urlserver + '/AppXoaKeHoachDiChuyen.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idct=' + data.idcongty + '&idkehoach=' + idkehoach;
+    }
+
 }

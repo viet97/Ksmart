@@ -9,6 +9,8 @@ import {
     Platform,
     Picker
 } from 'react-native';
+import Swipeout from 'react-native-swipeout';
+import ActionButton from 'react-native-action-button';
 import Image from 'react-native-image-progress';
 import ProgressBar from 'react-native-progress/Bar';
 import Icon from 'react-native-vector-icons/MaterialIcons'
@@ -20,6 +22,7 @@ import URlConfig from "../configs/url";
 import Toast from 'react-native-simple-toast'
 import DatePicker from 'react-native-datepicker'
 import ultils from "../configs/ultils";
+import {ConfirmDialog} from 'react-native-simple-dialogs'
 
 let {width, height} = Dimensions.get('window');
 export default class TravelItem extends React.Component {
@@ -27,8 +30,11 @@ export default class TravelItem extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            height: 0
+            height: 0,
+            dialogVisible: false,
+            closeSwipe: false,
         }
+        this.deleteClick = this.deleteClick.bind(this)
     }
 
     getImage(url) {
@@ -51,6 +57,10 @@ export default class TravelItem extends React.Component {
         }
     }
 
+    deleteClick() {
+        this.setState({dialogVisible: true, closeSwipe: !this.state.closeSwipe})
+    }
+
     millisToMinutes(from, to) {
         var dateFrom = new Date(from)
         var dateTo = new Date(to)
@@ -60,7 +70,8 @@ export default class TravelItem extends React.Component {
     }
 
     render() {
-        let item = this.props.data
+        let item = this.props.data;
+        console.log('item1', item);
         var strVaoDiem = '';
         var strRaDiem = '';
         if (item.ThoiGianVaoDiemThucTe === '1900-01-01T00:00:00') {
@@ -75,25 +86,42 @@ export default class TravelItem extends React.Component {
             diffMins = this.millisToMinutes(item.ThoiGianRaDiemDuKien, item.ThoiGianRaDiemThucTe)
             strRaDiem = 'Ra điểm lúc: ' + ultils.getDate(item.ThoiGianRaDiemThucTe) + ' ' + strRaDiem;
         }
+        var swipeoutBtns = [
+            {
+                backgroundColor: 'green',
+                text: 'Sửa',
+                onPress: function () {
+                    console.log('click')
+                },
+                buttonWidth: 60
+            },
+            {
+                backgroundColor: 'red',
+                text: 'Xoá',
+                onPress: this.deleteClick,
+                buttonWidth: 60
+            },
+        ];
         return (
-            <TouchableOpacity
-                onPress={() => this.props.callback()}>
-                <View
-                    onLayout={(e) => {
-                        var {x, y, width, height} = e.nativeEvent.layout;
-                        this.setState({height: height})
-                    }}
-                    style={{
-                    margin: 4
-                }}>
-                    <Image source={require('../images/bg1.png')}
-                           style={{
-                               height: this.state.height,
-                               flexWrap: 'wrap',
-                               position: 'absolute',
-                               width: width - 8
+            <Swipeout right={swipeoutBtns} style={{backgroundColor: 'transparent'}} close={this.state.closeSwipe}>
+                <TouchableOpacity
+                    onPress={() => this.props.callback()}>
+                    <View
+                        onLayout={(e) => {
+                            var {x, y, width, height} = e.nativeEvent.layout;
+                            this.setState({height: height})
+                        }}
+                        style={{
+                            margin: 4
+                        }}>
+                        <Image source={require('../images/bg1.png')}
+                               style={{
+                                   height: this.state.height,
+                                   flexWrap: 'wrap',
+                                   position: 'absolute',
+                                   width: width - 8
 
-                           }}/>
+                               }}/>
                         <Text style={{
                             textAlign: 'right',
                             backgroundColor: 'transparent',
@@ -139,8 +167,40 @@ export default class TravelItem extends React.Component {
                                     }}>{item.text_color_mota}</Text>
                             </View>
                         </View>
-                </View>
-            </TouchableOpacity>
+                    </View>
+                </TouchableOpacity>
+                <ConfirmDialog
+                    title={"Xoá " + item.TenCuaHang}
+                    message={"Xoá lịch này?"}
+                    visible={this.state.dialogVisible}
+                    onTouchOutside={() => this.setState({dialogVisible: false})}
+                    positiveButton={{
+                        title: "Đồng ý",
+                        onPress: () => {
+                            this.setState({dialogVisible: false});
+                            fetch(URlConfig.getLinkDeleteTravel(item.IDKeHoach))
+                                .then((response) => response.json())
+                                .then((responseJson) => {
+                                    console.log('url', URlConfig.getLinkDeleteTravel(item.IDKeHoach))
+                                    if (responseJson.status) {
+                                        Toast.show('Xoá thành công!')
+                                    } else {
+                                        Toast.show('Xoá thất bại!')
+                                    }
+                                })
+                                .catch((error) => {
+                                    Toast.show('Lỗi mạng, thử lại sau, mã lỗi:' + error)
+                                });
+                        }
+                    }}
+                    negativeButton={{
+                        title: "Huỷ bỏ",
+                        onPress: () => {
+                            this.setState({dialogVisible: false})
+                        }
+                    }}
+                />
+            </Swipeout>
         )
     }
 }
