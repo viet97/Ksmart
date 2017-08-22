@@ -63,13 +63,14 @@ export default class URlConfig {
         return data.urlserver + '/AppBaoCaoTrangChu.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&macongty=' + data.idct;
     }
 
-    static getListNhanVienLink(page, id, keyword = '', loctrangthai = 0) {
-        loctrangthai -= 1;
+    static getListNhanVienLink(page, id, keyword = '', loctrangthai = -1) {
+
         let data = URlConfig.OBJLOGIN;
-        if (id !== null) {
-            return data.urlserver + '/AppDanhSachNhanVien_v2.aspx?token=' + '&idquanly=' + data.id + '&macongty=' + data.idct + '&page=' + page + '&idnhom=' + id + '&timkiem=' + keyword + '&loctrangthai=' + loctrangthai;
-        }
-        return data.urlserver + '/AppDanhSachNhanVien_v2.aspx?token=' + '&idquanly=' + data.id + '&macongty=' + data.idct + '&timkiem=' + keyword + '&page=' + page;
+        let trangthai = ''
+        let idnhom = ''
+        if (loctrangthai !== -1) trangthai = '&loctrangthai=' + loctrangthai
+        if (id !== null) idnhom = '&idnhom=' + id
+        return data.urlserver + '/AppDanhSachNhanVien_v2.aspx?token=' + '&idquanly=' + data.id + '&macongty=' + data.idct + '&timkiem=' + keyword + idnhom + trangthai + '&page=' + page;
     }
 
     static getAllNhanVien() {

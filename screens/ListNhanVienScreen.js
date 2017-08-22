@@ -35,8 +35,8 @@ let SEARCH_STRING = '';
 let ALL_LOADED = false;
 let pickStatus = 0;
 let pickParty = 0;
-let id_nhom = 0;
-
+let id_nhom = null;
+let status = -1;
 export default class ListNhanVienScreen extends React.Component {
 
     constructor(props) {
@@ -131,7 +131,7 @@ export default class ListNhanVienScreen extends React.Component {
         Page = 1;
         ALL_LOADED = false;
         this.setState({isEndList: false, dataRender: null})
-        fetch(URlConfig.getListNhanVienLink(Page, this.state.idNhom, SEARCH_STRING, this.state.numberPickStatus))
+        fetch(URlConfig.getListNhanVienLink(Page, id_nhom, SEARCH_STRING, status))
             .then((response) => response.json())
             .then((responseJson) => {
                 if (responseJson.status) {
@@ -143,8 +143,7 @@ export default class ListNhanVienScreen extends React.Component {
                             ALL_LOADED = true
                             this.forceUpdate()
                         }
-                        let dataFill = this.fillData(responseJson.dsNhanVien)
-                        this.setState({dataRender: dataFill}, function () {
+                        this.setState({dataRender: this.state.dataFull}, function () {
                         })
                     });
                 } else {
@@ -161,7 +160,7 @@ export default class ListNhanVienScreen extends React.Component {
 
             if (!this.state.isEndList) {
                 Page = Page + 1
-                fetch(URlConfig.getListNhanVienLink(Page, this.state.idNhom, SEARCH_STRING, this.state.numberPickStatus))
+                fetch(URlConfig.getListNhanVienLink(Page, id_nhom, SEARCH_STRING, status))
                     .then((response) => response.json())
                     .then((responseJson) => {
                         if (responseJson.status) {
@@ -175,9 +174,8 @@ export default class ListNhanVienScreen extends React.Component {
                                     ALL_LOADED = true
                                     this.forceUpdate()
                                 }
-                                let dataFill = this.fillData(responseJson.dsNhanVien)
-                                let dataRender = this.state.dataRender.concat(dataFill)
-                                this.setState({dataRender: dataRender})
+
+                                this.setState({dataRender: this.state.dataFull})
                             });
                         } else {
                             ALL_LOADED = true
@@ -529,9 +527,7 @@ export default class ListNhanVienScreen extends React.Component {
                                             numberPickStatus: pickStatus
                                         }, function () {
                                             this.getDataFromSv();
-                                            let dataFill = this.fillData(this.state.dataFull);
-                                            this.setState({dataRender: dataFill})
-                                            console.log('OK', this.state.numberPickStatus, this.state.numberPickParty);
+
                                         })
                                     }}>
                                     <Text style={{
@@ -561,7 +557,6 @@ export default class ListNhanVienScreen extends React.Component {
     _onSelectParty(id, value) {
         id_nhom = this.state.dataPartyNhanVien[this.state.partyNhanVienStatus[id]].IDNhom;
         pickParty = id;
-        console.log('nhom', id)
 
         // this.setState({numberPickParty: id, idNhom: idNhom}, function () {
         //     this.getDataFromSv()
@@ -571,10 +566,21 @@ export default class ListNhanVienScreen extends React.Component {
     _onSelectStatus(id, value) {
         console.log('trangthai', id);
         pickStatus = id;
-        // this.setState({numberPickStatus: id}, function () {
-        //     let dataFill = this.fillData(this.state.dataFull)
-        //     this.setState({dataRender: dataFill})
-        // })
+        switch (id) {
+            case '0':
+                status = -1
+                break
+            case '1':
+                status = 0
+                break
+            case '2':
+                status = 1
+                break
+            case '3':
+                status = 2
+                break
+        }
+
     }
 
     _renderRowStatus(rowData, rowID, highlighted) {
