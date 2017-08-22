@@ -9,7 +9,7 @@ import {
     FlatList,
     ActivityIndicator,
     Platform,
-    Picker, TouchableHighlight, ScrollView
+    Picker, TouchableHighlight, ScrollView, RefreshControl
 } from 'react-native';
 import ModalDropdown from "react-native-modal-dropdown";
 import Toast from 'react-native-simple-toast';
@@ -60,10 +60,10 @@ export default class ListNhanVienScreen extends React.Component {
             dataPickStatus: [],
             dialogVisible: false,
         })
-        this.state.dataPickStatus.push('Tất cả')
-        this.state.dataPickStatus.push('Đang trực tuyến')
-        this.state.dataPickStatus.push('Đang ngoại tuyến')
-        this.state.dataPickStatus.push('Mất tín hiệu')
+        this.state.dataPickStatus.push('Tất cả');
+        this.state.dataPickStatus.push('Đang ngoại tuyến');
+        this.state.dataPickStatus.push('Đang trực tuyến');
+        this.state.dataPickStatus.push('Mất tín hiệu');
     }
 
 
@@ -128,10 +128,10 @@ export default class ListNhanVienScreen extends React.Component {
     };
 
     getDataFromSv() {
-        Page = 1
-        ALL_LOADED = false
+        Page = 1;
+        ALL_LOADED = false;
         this.setState({isEndList: false, dataRender: null})
-        fetch(URlConfig.getListNhanVienLink(Page, this.state.idNhom, SEARCH_STRING))
+        fetch(URlConfig.getListNhanVienLink(Page, this.state.idNhom, SEARCH_STRING, this.state.numberPickStatus))
             .then((response) => response.json())
             .then((responseJson) => {
                 if (responseJson.status) {
@@ -161,7 +161,7 @@ export default class ListNhanVienScreen extends React.Component {
 
             if (!this.state.isEndList) {
                 Page = Page + 1
-                fetch(URlConfig.getListNhanVienLink(Page, this.state.idNhom, SEARCH_STRING))
+                fetch(URlConfig.getListNhanVienLink(Page, this.state.idNhom, SEARCH_STRING, this.state.numberPickStatus))
                     .then((response) => response.json())
                     .then((responseJson) => {
                         if (responseJson.status) {
@@ -190,10 +190,10 @@ export default class ListNhanVienScreen extends React.Component {
     }
 
     fillData(data) {
-        let arr = []
+        let arr = [];
         switch (this.state.numberPickStatus) {
             case 0:
-                arr = data
+                arr = data;
                 break;
             case 1:
 
@@ -255,6 +255,10 @@ export default class ListNhanVienScreen extends React.Component {
                     onEndReached={() => {
                         this.loadMoreDataFromSv()
                     }}
+                    refreshing={this.state.refreshing}
+                    onRefresh={() => {
+                        this.refreshData()
+                    }}
                     onMomentumScrollBegin={() => {
                         this.setState({onEndReach: false})
                     }}
@@ -311,7 +315,7 @@ export default class ListNhanVienScreen extends React.Component {
         return new Promise((resolve, reject) => {
             resolve();
             var arr = []
-            var a = text.toLowerCase()
+            var a = text.toLowerCase();
             SEARCH_STRING = a
             console.log(a)
             this.getDataFromSv()
@@ -370,7 +374,6 @@ export default class ListNhanVienScreen extends React.Component {
 
     showDialog() {
         this.setState({dialogVisible: true})
-
     }
 
     render() {
@@ -384,6 +387,7 @@ export default class ListNhanVienScreen extends React.Component {
                     renderSelectedIcon={() => <Icon1 size={24} color="green" name="ios-people-outline"/>}
                     onPress={() => this.setState({selectedTab: 'ListNhanVien'})}>
                     <View style={{flex: 1}}>
+
                         <Image source={require('../images/bg.png')}
                                style={{position: 'absolute', top: 0}}/>
                         <View style={styles.titleStyle}>
@@ -525,7 +529,7 @@ export default class ListNhanVienScreen extends React.Component {
                                             numberPickStatus: pickStatus
                                         }, function () {
                                             this.getDataFromSv();
-                                            let dataFill = this.fillData(this.state.dataFull)
+                                            let dataFill = this.fillData(this.state.dataFull);
                                             this.setState({dataRender: dataFill})
                                             console.log('OK', this.state.numberPickStatus, this.state.numberPickParty);
                                         })
@@ -557,13 +561,15 @@ export default class ListNhanVienScreen extends React.Component {
     _onSelectParty(id, value) {
         id_nhom = this.state.dataPartyNhanVien[this.state.partyNhanVienStatus[id]].IDNhom;
         pickParty = id;
+        console.log('nhom', id)
+
         // this.setState({numberPickParty: id, idNhom: idNhom}, function () {
         //     this.getDataFromSv()
         // })
     }
 
     _onSelectStatus(id, value) {
-        console.log('id', id, value);
+        console.log('trangthai', id);
         pickStatus = id;
         // this.setState({numberPickStatus: id}, function () {
         //     let dataFill = this.fillData(this.state.dataFull)
