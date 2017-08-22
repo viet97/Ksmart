@@ -16,7 +16,7 @@ import Color from "../configs/color";
 import Toast from 'react-native-simple-toast'
 import ultils from "../configs/ultils";
 import ModalDropdownCustom from "../components/ModalDropdownCustom";
-import PTRView from 'react-native-pull-to-refresh'
+import {ProgressDialog} from 'react-native-simple-dialogs'
 let {height, width} = Dimensions.get('window');
 export default class ChartScreen extends React.Component {
     constructor(props) {
@@ -35,6 +35,7 @@ export default class ChartScreen extends React.Component {
             type: [],
             numberTypePick: 0,
             dataRender: null,
+            progressVisible: false
         }
         this.state.type.push('Dạng chữ')
         this.state.type.push('Biểu đồ')
@@ -47,14 +48,20 @@ export default class ChartScreen extends React.Component {
             month = '0' + month;
         }
         let url = URlConfig.getChartLink(month + '-' + this.state.year);
+        this.setState({progressVisible: true})
         fetch(url)
             .then((response) => (response.json()))
             .then((responseJson) => {
                 if (responseJson.data !== null)
                     this.setState({
-                        dataRender: responseJson.data
+                        dataRender: responseJson.data,
+                        progressVisible: false
+
                     })
-            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e))
+            }).catch((e) => {
+            this.setState({progressVisible: false});
+            Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e)
+        })
     }
 
     setMonthAndYear() {
@@ -65,7 +72,6 @@ export default class ChartScreen extends React.Component {
         for (var i = YEART_START; i < YEAR_END; i++) {
             yearList.push(i)
         }
-
         this.setState({
             montArr: monthList,
             yearArr: yearList,
@@ -83,7 +89,7 @@ export default class ChartScreen extends React.Component {
             month = '0' + month;
         }
         var url = URlConfig.getChartLink(month + '-' + this.state.year);
-
+        this.setState({progressVisible: true})
         fetch(url)
             .then((response) => (response.json()))
             .then((responseJson) => {
@@ -118,13 +124,17 @@ export default class ChartScreen extends React.Component {
                         this.setState({
                             data: dt,
                             arr: res,
-                            isEmpty: false
+                            isEmpty: false,
+                            progressVisible: false
                         })
                     }
-                    else this.setState({isEmpty: true})
+                    else this.setState({isEmpty: true, progressVisible: false})
                 }
                 }
-            ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+            ).catch((e) => {
+            this.setState({progressVisible: false});
+            Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại')
+        })
     }
 
     renderItem(item) {
@@ -367,6 +377,12 @@ export default class ChartScreen extends React.Component {
                     />
                     {this.getChartorFlatListorNull(options)}
                 </View>
+                <ProgressDialog
+                    visible={this.state.progressVisible}
+                    title=""
+                    activityIndicatorStyle={{padding: 24}}
+                    message="Đang tải"
+                />
             </View>
         )
 

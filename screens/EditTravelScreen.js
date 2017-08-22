@@ -80,6 +80,8 @@ export default class DetailTravel extends React.Component {
                     <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Chỉnh
                         sửa kế hoạch</Text>
                     <TouchableOpacity
+                        onPress={() => {
+                        }}
                         style={{
                             padding: 8,
                             alignItems: 'center',
@@ -119,7 +121,6 @@ export default class DetailTravel extends React.Component {
                                 this.setState({tennhanvien: text})
 
                             }}
-
                             value={this.state.tennhanvien}
                         />
                     </View>
