@@ -77,14 +77,12 @@ export default class TravelItem extends React.Component {
         if (item.ThoiGianVaoDiemThucTe === '1900-01-01T00:00:00') {
             strVaoDiem = "Chưa vào điểm!"
         } else {
-            var diffMins = this.millisToMinutes(item.ThoiGianVaoDiemDuKien, item.ThoiGianVaoDiemThucTe)
-            strVaoDiem = 'Vào điểm lúc: ' + ultils.getDate(item.ThoiGianVaoDiemThucTe) + ' ' + strVaoDiem;
+            strVaoDiem = 'Vào điểm lúc: ' + item.ThoiGianVaoDiemThucTe.replace('T', ' ');
         }
         if (item.ThoiGianRaDiemThucTe === '1900-01-01T00:00:00') {
             strRaDiem = "Chưa ra điểm!"
         } else {
-            diffMins = this.millisToMinutes(item.ThoiGianRaDiemDuKien, item.ThoiGianRaDiemThucTe)
-            strRaDiem = 'Ra điểm lúc: ' + ultils.getDate(item.ThoiGianRaDiemThucTe) + ' ' + strRaDiem;
+            strRaDiem = 'Ra điểm lúc: ' + item.ThoiGianRaDiemThucTe.replace('T', ' ');
         }
         var swipeoutBtns = [
             {
@@ -127,7 +125,7 @@ export default class TravelItem extends React.Component {
                             backgroundColor: 'transparent',
                             fontSize: 12,
                             marginRight: 4
-                        }}>Vào điểm dự kiến: {ultils.getDate(item.ThoiGianVaoDiemDuKien)}</Text>
+                        }}>Vào điểm dự kiến: {item.ThoiGianVaoDiemDuKien.replace('T', ' ')}</Text>
 
                         <Text style={{
                             textAlign: 'right',

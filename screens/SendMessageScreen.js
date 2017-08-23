@@ -93,9 +93,9 @@ export default class ModalSendMessage extends Component {
                 if (receiver !== this.state.receiver) {
                     return;
                 }
-                let arr = this.state.listNhanVien
-                arr = arr.concat(responseJson.dsNhanVien)
-                this.setState({listNhanVien: arr})
+                let arr = this.state.listNhanVien;
+                arr = arr.concat(responseJson.dsNhanVien);
+                this.setState({listNhanVien: arr});
                     if (!responseJson.endlist) {
                         this.loadAllSearch(receiver, responseJson.nextpage);
                     }
@@ -127,7 +127,7 @@ export default class ModalSendMessage extends Component {
                 <View style={{flex: 9}}>
                         <View style={styles.autocompleteContainer}>
                             <Autocomplete
-                                hideResults={this.state.hideResults}
+                                hideResults={this.state.hideResultsReceiver}
                                 data={this.state.listNhanVien}
                                 defaultValue={this.state.nameInput}
                                 placeholder="Nhập tên người nhận"
@@ -213,7 +213,7 @@ export default class ModalSendMessage extends Component {
             .then((response) => (response.json()))
             .then((responseJson) => {
                 if (responseJson.status) {
-                    Toast.show('Gửi tin nhắn thành công')
+                    Toast.show('Gửi tin nhắn thành công');
                     this.props.navigation.goBack()
                 }
             })

@@ -241,7 +241,7 @@ export default class TravelScreen extends React.Component {
                         <TravelItem
                             data={item}
                             callback={() => this.props.callback(item)}
-
+                            backToTravel={() => this.props.backToTravel()}
                         />
                     }
                 />

@@ -37,7 +37,6 @@ export default class URlConfig {
 
 
     static getOnlineChartLink(date) {
-        // return 'http://jav.ksmart.vn/AppBieuOnlineTrongNgay.aspx?idct=1&idquanly=47&ngay=26-07-2017'
         let data = URlConfig.OBJLOGIN;
         return data.urlserver + '/AppBieuOnlineTrongNgay.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idct=' + data.idcongty + '&ngay=' + date;
     }
@@ -91,7 +90,7 @@ export default class URlConfig {
         return data.urlserver + '/AppKeHoachDiChuyen_v4.aspx?token=' + md5.hex_md5(Date.now()) + '&idct=' + data.idcongty + '&idquanly=' + data.id + '&from=' + dateFrom + '&to=' + dateTo + '&loai=chitietcacngaycokehoach&page=' + page;
     }
 
-    static getCustomerLink(page, keyword) {
+    static getCustomerLink(page, keyword = '') {
         let data = URlConfig.OBJLOGIN;
         return data.urlserver + '/AppDanhSachCuaHang_v3.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idct=' + data.idcongty + '&lastid=' + page + '&loctatca=' + keyword;
     }
@@ -150,6 +149,12 @@ export default class URlConfig {
     static getLinkDeleteTravel(idkehoach) {
         let data = URlConfig.OBJLOGIN;
         return data.urlserver + '/AppXoaKeHoachDiChuyen.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idct=' + data.idcongty + '&idkehoach=' + idkehoach;
+    }
+
+    static getLinkEditTravel(obj) {
+        ///AppSuaKeHoachDiChuyen.aspx?token=abc&idct=1&idquanly=47&dulieukehoach=%7B"idkehoach"%20%3A%205231%2C%20"idnhanvien"%20%3A%20317%2C%20"idkhachhang"%20%3A%202864%2C%20"thoigiandukien"%20%3A%20"18%2F08%2F2017%2012%3A12%3A12"%2C%20"thoigiancheckoutdukien"%20%3A%20"18%2F08%2F2017%2012%3A12%3A12"%7D
+        let data = URlConfig.OBJLOGIN;
+        return data.urlserver + '/AppSuaKeHoachDiChuyen.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idct=' + data.idcongty + '&dulieukehoach=' + encodeURI(JSON.stringify(obj));
     }
 
 }

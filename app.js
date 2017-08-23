@@ -30,6 +30,7 @@ import DetailCustomer from "./screens/DetailCustomer";
 import DetailTravel from "./screens/DetailTravel";
 import SendMessageScreen from "./screens/SendMessageScreen";
 import EditTravelScreen from "./screens/EditTravelScreen";
+import TravelScreen from "./screens/TravelScreen";
 
 var {height, width} = Dimensions.get('window');
 const Ksmart = StackNavigator({

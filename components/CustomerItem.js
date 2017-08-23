@@ -31,7 +31,7 @@ export default class NewFeedItem extends React.Component {
     }
 
     render() {
-        let item = this.props.data
+        let item = this.props.data;
         return (
 
             <TouchableOpacity

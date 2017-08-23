@@ -7,66 +7,83 @@ import {
     Dimensions,
     BackHandler,
     FlatList,
-    ActivityIndicator,
+    ActivityIndicator, Keyboard,
     Platform, Image,
     TextInput
 } from 'react-native';
+import Modal from 'react-native-modalbox';
 import Search from 'react-native-search-box';
 import Communications from 'react-native-communications';
 import ProgressBar from 'react-native-progress/Bar';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import Icon1 from 'react-native-vector-icons/Ionicons'
 import URlConfig from "../configs/url";
-import Icon2 from 'react-native-vector-icons/Entypo'
-import Icon3 from 'react-native-vector-icons/FontAwesome'
-import Icon4 from 'react-native-vector-icons/Foundation'
 import React from 'react';
 import Color from '../configs/color'
 import Toast from 'react-native-simple-toast'
-import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
-import TabNavigator from 'react-native-tab-navigator';
-import MapListScreen from "./MapListScreen";
-import MapView from 'react-native-maps';
-import {PagerTabIndicator, IndicatorViewPager, PagerTitleIndicator, PagerDotIndicator} from 'rn-viewpager';
-import MapScreen from "./MapScreen";
-import ultils from "../configs/ultils";
 import DatePicker from "react-native-datepicker";
+import Autocomplete from "react-native-autocomplete-input";
+import CustomerScreen from "./CustomerScreen";
+import ChooseTypeChart from "./ChooseTypeChart";
+import ChooseCustomerScreen from "./ChooseCustomerScreen";
 
-var {width, height} = Dimensions.get('window');
-export default class DetailTravel extends React.Component {
+export default class EditTravelScreen extends React.Component {
     static navigationOptions = ({navigation}) => ({
         header: null
     });
 
     constructor(props) {
 
-        var today = new Date();
-        var dd = today.getDate();
-        var mm = today.getMonth() + 1; //January is 0!
-        var yyyy = today.getFullYear();
-        if (dd < 10) {
-            dd = '0' + dd
-        }
 
-        if (mm < 10) {
-            mm = '0' + mm
-        }
-        today = dd + '-' + mm + '-' + yyyy;
         super(props)
         this.state = {
+            idnhanvien: null,
+            idkehoach: null,
+            idkhachhang: null,
             tennhanvien: '',
             tenkhachhang: '',
-            dateCome: today,
-            dateOut: today,
-            timeCome: '00:00',
-            timeOut: '00:00'
+            dateCome: '',
+            dateOut: '',
+            hideResultsReceiver: true,
+            hideResultsCustomer: true,
+            listNhanVien: [],
+            listKhachHang: [],
+            customerSelect: null,
+            personSelect: null
         }
     }
 
+    requestSearch(text) {
+        this.setState({listNhanVien: []});
+        this.loadAllSearch(text);
+    }
+
+    loadAllSearch(receiver, page = 1) {
+        if (receiver !== this.state.receiver) {
+            return;
+        }
+        fetch(URlConfig.getListNhanVienLink(page, null, receiver))
+            .then((response) => (response.json()))
+            .then((responseJson) => {
+                    if (receiver !== this.state.receiver) {
+                        return;
+                    }
+                    let arr = this.state.listNhanVien;
+                    arr = arr.concat(responseJson.dsNhanVien);
+                    this.setState({listNhanVien: arr});
+                    if (!responseJson.endlist) {
+                        this.loadAllSearch(receiver, responseJson.nextpage);
+                    }
+                }
+            ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e));
+    }
+
+
     render() {
         const {params} = this.props.navigation.state;
+        const {navigate} = this.props.navigation;
         return (
-            <View style={{flex: 1}}>
+            <View style={{flex: 1, backgroundColor: 'transparent'}}>
                 <Image source={require('../images/bg.png')}
                        style={{position: 'absolute', top: 0}}/>
                 <View style={styles.titleStyle}>
@@ -81,6 +98,33 @@ export default class DetailTravel extends React.Component {
                         sửa kế hoạch</Text>
                     <TouchableOpacity
                         onPress={() => {
+                            let moment = require('moment')
+                            let date1 = moment(this.state.dateCome, 'DD-MM-YYYY HH:mm:ss').toDate();
+                            let date2 = moment(this.state.dateOut, 'DD-MM-YYYY HH:mm:ss').toDate();
+                            let now = new Date();
+                            if (date1.getTime() - date2.getTime() >= 0 || date1.getTime() - now.getTime() < 0) {
+                                Toast.show("Thời gian vào điểm phải trước ra điểm và sau thời điểm hiện tại , vui lòng thử lại!")
+                            }
+                            else {
+                                let obj = {
+                                    idkehoach: this.state.idkehoach,
+                                    idnhanvien: this.state.idnhanvien,
+                                    idkhachhang: this.state.idkhachhang,
+                                    thoigiandukien: this.state.dateCome,
+                                    thoigiancheckoutdukien: this.state.dateOut
+                                };
+                                fetch(URlConfig.getLinkEditTravel(obj))
+                                    .then((response) => (response.json()))
+                                    .then((responseJson) => {
+                                            if (responseJson.status) {
+                                                Toast.show('Sửa thành công!')
+                                                console.log('fuck', obj)
+                                            } else {
+                                                Toast.show('Sửa thất bại,vui lòng thử lại!')
+                                            }
+                                        }
+                                    ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+                            }
                         }}
                         style={{
                             padding: 8,
@@ -95,134 +139,70 @@ export default class DetailTravel extends React.Component {
                     marginTop: 4, marginBottom: 4, marginLeft: 8, marginRight: 8,
                     flex: 9
                 }}>
-                    <View style={{
-                        flexDirection: 'row',
-                        marginLeft: 8,
-                        marginTop: 8,
-                        marginRight: 8,
-                        marginBottom: 4
-                    }}>
-                        <Text style={{
-                            backgroundColor: 'transparent',
-                            fontSize: 16,
-                            alignSelf: 'center'
-                        }}>Tên nhân viên: </Text>
-                        <TextInput
-                            style={{
-                                height: 40,
-                                flex: 1,
-                                borderColor: 'gray',
-                                borderWidth: 1,
-                                backgroundColor: 'white',
-                                paddingLeft: 8,
-                                marginLeft: 32
-                            }}
-                            onChangeText={(text) => {
-                                this.setState({tennhanvien: text})
+                    <Text>Tên nhân viên</Text>
+                    <Autocomplete
+                        hideResults={this.state.hideResultsReceiver}
+                        data={this.state.listNhanVien}
+                        defaultValue={this.state.tennhanvien}
+                        placeholder="Nhập tên nhân viên"
+                        style={{
+                            width: Dimensions.get('window').width,
+                            paddingLeft: 8,
+                            height: 40,
+                            backgroundColor: 'white'
+                        }}
+                        onChangeText={text => {
+                            if (text.length !== 0) {
+                                this.setState({
+                                    hideResultsCustomer: true,
+                                    hideResultsReceiver: false,
+                                    receiver: text
+                                }, function () {
+                                    this.requestSearch(text);
+                                })
+                            } else {
+                                this.setState({hideResultsReceiver: true})
+                            }
+                        }}
+                        renderItem={(data) => (
+                            <TouchableOpacity
+                                style={{flexDirection: 'row'}}
+                                onPress={() => {
+                                    console.log('dyyd', data)
+                                    this.setState({
+                                        nameInput: data.tennhanvien,
+                                        tennhanvien: data.tennhanvien,
+                                        idnhanvien: data.idnhanvien,
+                                        hideResultsReceiver: true,
+                                        personSelect: data
+                                    });
+                                    Keyboard.dismiss();
+                                }}>
 
-                            }}
-                            value={this.state.tennhanvien}
-                        />
-                    </View>
-
-                    <View style={{
-                        flexDirection: 'row',
-                        marginLeft: 8,
-                        marginTop: 4,
-                        marginRight: 8,
-                        marginBottom: 4
-                    }}>
-                        <Text style={{backgroundColor: 'transparent', fontSize: 16, alignSelf: 'center'}}>Tên khách
-                            hàng: </Text>
-                        <TextInput
-                            style={{
-                                height: 40,
-                                flex: 1,
-                                borderColor: 'gray',
-                                borderWidth: 1,
-                                backgroundColor: 'white',
-                                paddingLeft: 8,
-                                marginLeft: 18
-                            }}
-                            onChangeText={(text) => {
-                                this.setState({tenkhachhang: text})
-
-                            }}
-
-                            value={this.state.tenkhachhang}
-                        />
-                    </View>
-                    <View style={{
-                        flexDirection: 'row',
-                        marginLeft: 8,
-                        marginTop: 4,
-                        marginRight: 8,
-                        marginBottom: 4
-                    }}>
-                        <Text style={{backgroundColor: 'transparent', fontSize: 16}}>Vào điểm dự kiến:</Text>
-
-                    </View>
-                    <View style={{
-                        flexDirection: 'row',
-                        marginLeft: 8,
-                        marginTop: 4,
-                        marginRight: 8,
-                        marginBottom: 4
-                    }}>
-                        <Text style={{backgroundColor: 'transparent', alignSelf: 'center'}}>Ngày: </Text>
-                        <DatePicker
-                            style={{marginLeft: 8}}
-                            date={this.state.dateCome}
-                            mode="date"
-                            placeholder="select date"
-                            format="DD-MM-YYYY"
-
-                            confirmBtnText="Xác nhận"
-                            cancelBtnText="Huỷ bỏ"
-                            customStyles={{
-                                dateIcon: {},
-                                dateInput: {
-                                    backgroundColor: 'white',
-                                    borderWidth: 1,
-                                    borderColor: 'gray',
-                                    borderRadius: 4,
-                                },
-                            }}
-                            onDateChange={(date) => {
-                                this.setState({dateCome: date})
-                            }}
-                        />
-                    </View>
-                    <View style={{
-                        flexDirection: 'row',
-                        marginLeft: 8,
-                        marginTop: 4,
-                        marginRight: 8,
-                        marginBottom: 4
-                    }}>
-                        <Text style={{backgroundColor: 'transparent', fontSize: 16, alignSelf: 'center'}}>Giờ: </Text>
-                        <DatePicker
-                            style={{marginLeft: 14}}
-                            date={this.state.timeCome}
-                            mode="time"
-                            placeholder="select date"
-                            format="HH:mm"
-                            confirmBtnText="Xác nhận"
-                            cancelBtnText="Huỷ bỏ"
-                            customStyles={{
-                                dateIcon: {},
-                                dateInput: {
-                                    backgroundColor: 'white',
-                                    borderWidth: 1,
-                                    borderColor: 'gray',
-                                    borderRadius: 4,
-                                },
-                            }}
-                            onDateChange={(time) => {
-                                this.setState({timeCome: time})
-                            }}
-                        />
-                    </View>
+                                <View style={{justifyContent: 'center'}}>
+                                    <Image
+                                        style={{margin: 8, width: 30, height: 30, borderRadius: 15}}
+                                        source={require('../images/bglogin.jpg')}/>
+                                </View>
+                                <Text style={{marginLeft: 16, alignSelf: 'center'}}>{data.tennhanvien}</Text>
+                            </TouchableOpacity>
+                        )}
+                    />
+                    <Text>Tên cửa hàng</Text>
+                    <TextInput
+                        style={{
+                            width: Dimensions.get('window').width,
+                            paddingLeft: 8,
+                            height: 40,
+                            backgroundColor: 'white'
+                        }}
+                        value={this.state.tenkhachhang}
+                        onFocus={() => {
+                            console.log('abc');
+                            Keyboard.dismiss();
+                            this.refs.modal.open()
+                        }}
+                    />
                     <View style={{
                         flexDirection: 'row',
                         marginLeft: 8,
@@ -241,14 +221,13 @@ export default class DetailTravel extends React.Component {
                         marginRight: 8,
                         marginBottom: 4
                     }}>
-                        <Text style={{backgroundColor: 'transparent', alignSelf: 'center'}}>Ngày: </Text>
-                        <DatePicker
-                            style={{marginLeft: 8}}
-                            date={this.state.dateOut}
-                            mode="date"
-                            placeholder="select date"
-                            format="DD-MM-YYYY"
 
+                        <Text style={{backgroundColor: 'transparent', alignSelf: 'center'}}>Thời gian: </Text>
+                        <DatePicker
+                            style={{marginLeft: 8, width: 120}}
+                            date={this.state.dateCome}
+                            mode="datetime"
+                            format="DD-MM-YYYY HH:mm:ss"
                             confirmBtnText="Xác nhận"
                             cancelBtnText="Huỷ bỏ"
                             customStyles={{
@@ -257,13 +236,25 @@ export default class DetailTravel extends React.Component {
                                     backgroundColor: 'white',
                                     borderWidth: 1,
                                     borderColor: 'gray',
-                                    borderRadius: 4,
+                                    borderRadius: 4, width: 120
                                 },
                             }}
                             onDateChange={(date) => {
-                                this.setState({dateOut: date})
+                                this.setState({dateCome: date})
                             }}
                         />
+                    </View>
+
+                    <View style={{
+                        flexDirection: 'row',
+                        marginLeft: 8,
+                        marginTop: 4,
+                        marginRight: 8,
+                        marginBottom: 4
+                    }}>
+                        <Text style={{backgroundColor: 'transparent', fontSize: 16, alignSelf: 'center'}}>Ra điểm dự
+                            kiến:</Text>
+
                     </View>
                     <View style={{
                         flexDirection: 'row',
@@ -272,13 +263,12 @@ export default class DetailTravel extends React.Component {
                         marginRight: 8,
                         marginBottom: 4
                     }}>
-                        <Text style={{backgroundColor: 'transparent', fontSize: 16, alignSelf: 'center'}}>Giờ: </Text>
+                        <Text style={{backgroundColor: 'transparent', alignSelf: 'center'}}>Thời gian: </Text>
                         <DatePicker
-                            style={{marginLeft: 14}}
-                            date={this.state.timeOut}
-                            mode="time"
-                            placeholder="select date"
-                            format="HH:mm"
+                            style={{marginLeft: 8, width: 120}}
+                            date={this.state.dateOut}
+                            mode="datetime"
+                            format="DD-MM-YYYY HH:mm:ss"
                             confirmBtnText="Xác nhận"
                             cancelBtnText="Huỷ bỏ"
                             customStyles={{
@@ -287,16 +277,34 @@ export default class DetailTravel extends React.Component {
                                     backgroundColor: 'white',
                                     borderWidth: 1,
                                     borderColor: 'gray',
-                                    borderRadius: 4,
+                                    borderRadius: 4, width: 120,
                                 },
                             }}
-                            onDateChange={(time) => {
-                                this.setState({timeOut: time})
+                            onDateChange={(date) => {
+                                this.setState({dateOut: date})
                             }}
                         />
                     </View>
-
                 </View>
+                <Modal
+                    style={{marginTop: 16}}
+                    ref={"modal"}
+                    swipeToClose={true}>
+                    <ChooseCustomerScreen
+                        callback={(item) => {
+                            console.log('item', item);
+                            this.setState({
+                                customerSelect: item,
+                                tenkhachhang: item.TenCuaHang,
+                                idkhachhang: item.idcuahang
+                            });
+                            this.refs.modal.close();
+                        }}
+                        backClick={() => {
+                            this.refs.modal.close()
+                        }}
+                    />
+                </Modal>
             </View>
         )
     }
@@ -313,7 +321,12 @@ export default class DetailTravel extends React.Component {
         const {params} = this.props.navigation.state;
         this.setState({
             tennhanvien: params.data.TenNhanVien,
-            tenkhachhang: params.data.TenCuaHang
+            tenkhachhang: params.data.TenCuaHang,
+            idnhanvien: params.data.IDNhanVien,
+            idkhachhang: params.data.IDCuaHang,
+            idkehoach: params.data.IDKeHoach,
+            dateCome: params.data.ThoiGianVaoDiemDuKien.replace('T', ' '),
+            dateOut: params.data.ThoiGianRaDiemDuKien.replace('T', ' ')
         })
     }
 }
@@ -378,5 +391,6 @@ const styles = StyleSheet.create({
     },
     item: {
         margin: 3,
-    }
+    },
+
 })

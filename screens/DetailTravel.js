@@ -67,13 +67,13 @@ export default class DetailTravel extends React.Component {
             strVaoDiem = "Chưa vào điểm!"
         } else {
             var diffMins = this.millisToMinutes(params.data.ThoiGianVaoDiemDuKien, params.data.ThoiGianVaoDiemThucTe)
-            strVaoDiem = 'Vào điểm lúc: ' + ultils.getDate(params.data.ThoiGianVaoDiemThucTe) + ' ' + strVaoDiem;
+            strVaoDiem = 'Vào điểm lúc: ' + params.data.ThoiGianVaoDiemThucTe.replace('T', ' ')
         }
         if (params.data.ThoiGianRaDiemThucTe === '1900-01-01T00:00:00') {
             strRaDiem = "Chưa ra điểm!"
         } else {
             diffMins = this.millisToMinutes(params.data.ThoiGianRaDiemDuKien, params.data.ThoiGianRaDiemThucTe)
-            strRaDiem = 'Ra điểm lúc: ' + ultils.getDate(params.data.ThoiGianRaDiemThucTe) + ' ' + strRaDiem;
+            strRaDiem = 'Ra điểm lúc: ' + params.data.ThoiGianRaDiemThucTe.replace('T', ' ')
         }
         return (
             <View style={{flex: 1}}>
@@ -146,7 +146,7 @@ export default class DetailTravel extends React.Component {
                         <Text style={{
                             marginLeft: 8,
                             backgroundColor: 'transparent'
-                        }}>{ultils.getDate(params.data.ThoiGianVaoDiemDuKien)}</Text>
+                        }}>{params.data.ThoiGianVaoDiemDuKien.replace('T', ' ')}</Text>
                     </View>
                     <View style={{
                         flexDirection: 'row',

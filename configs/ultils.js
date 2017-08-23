@@ -35,7 +35,7 @@ export default class ultils {
         if (month < 10) month = '0' + month
         if (day < 10) day = '0' + day
         let dateString = day + '-' + month + '-' + date.getFullYear() + ' ' + hours + ':' + minutes + ':' + seconds
-        return dateString
+        return dateString;
     }
 
 }

@@ -179,6 +179,7 @@ export default class HomeScreen extends React.Component {
                     callback={(data) => {
                         navigate('DetailTravel', {data: data})
                     }}
+
                 />
             case "Chart":
                 return <ChooseTypeChart

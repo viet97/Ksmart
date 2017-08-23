@@ -22,11 +22,12 @@ import Search from "react-native-search-box";
 import {StackNavigator} from 'react-navigation';
 import CustomerItem from "../components/CustomerItem";
 import PTRView from 'react-native-pull-to-refresh'
+
 var ALL_LOADED = false
 var SEARCH_STRING = '';
 var PAGE = 0;
 var {height, width} = Dimensions.get('window');
-export default class CustomerScreen extends Component {
+export default class ChooseCustomerScreen extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -136,7 +137,7 @@ export default class CustomerScreen extends Component {
                     ref="listview"
                     onEndReachedThreshold={0.2}
                     onEndReached={() => {
-                            this.loadMoreData()
+                        this.loadMoreData()
                     }}
                     onMomentumScrollBegin={() => {
                         this.setState({onEndReach: false})
@@ -147,7 +148,7 @@ export default class CustomerScreen extends Component {
 
                         <CustomerItem
                             data={item}
-                            callback={() => this.props.callback(item.KinhDo, item.ViDo, 'Địa chỉ khách hàng', item)}
+                            callback={() => this.props.callback(item)}
                         />
                     }
                 />
@@ -177,12 +178,12 @@ export default class CustomerScreen extends Component {
                 <View style={styles.titleStyle}>
                     <Image source={require('../images/bg.png')}
                            style={{position: 'absolute'}}/>
-                    <TouchableOpacity onPress={() => this.props.backToHome()}
+                    <TouchableOpacity onPress={() => this.props.backClick()}
                                       style={{alignItems: 'center', justifyContent: 'center'}}>
                         <Icon2 style={styles.iconStyle} size={24} color="white"
                                name="ios-arrow-back"/></TouchableOpacity>
-                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Thông
-                        tin khách hàng</Text>
+                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Chọn
+                        khách hàng</Text>
                     <View style={{width: 35, height: 35}}/>
                 </View>
 
