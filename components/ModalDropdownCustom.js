@@ -16,12 +16,17 @@ import {TextInputLayout} from "rn-textinputlayout";
 import orderListData from '../dbcontext/orderListData'
 import DataTemp from "./DataTemp";
 import ModalDropdown from "react-native-modal-dropdown";
+import Toast from "react-native-simple-toast";
 
+let width;
 export default class ModalDropdownCustom extends Component {
 
     constructor(props) {
         super(props)
         this.onSelect = this.props.onSelect.bind(this);
+        this.state = {
+            width: 0,
+        }
     }
 
     render() {
@@ -30,7 +35,7 @@ export default class ModalDropdownCustom extends Component {
                 options={this.props.data}
                 style={{
                     borderWidth: 0.4,
-                    width: 200,
+                    width: this.state.width,
                     padding: 8,
                     borderRadius: 10,
                     justifyContent: 'center',
@@ -50,6 +55,11 @@ export default class ModalDropdownCustom extends Component {
         )
     }
 
+    componentDidMount() {
+        if (this.props.width !== undefined)
+            this.setState({width: this.props.width})
+        else this.setState({width: 200})
+    }
     _renderRowStatus(rowData, rowID, highlighted) {
         return (
             <TouchableHighlight underlayColor='cornflowerblue'>

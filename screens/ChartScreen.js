@@ -33,10 +33,14 @@ export default class ChartScreen extends React.Component {
             yearArr: [],
             keyChart: 'TongTien',
             type: [],
+            keyChartArr: [],
             numberTypePick: 0,
             dataRender: null,
             progressVisible: false
         }
+        this.state.keyChartArr.push('Doanh thu')
+        this.state.keyChartArr.push('Sản lượng')
+
         this.state.type.push('Dạng chữ')
         this.state.type.push('Biểu đồ')
     }
@@ -306,9 +310,7 @@ export default class ChartScreen extends React.Component {
         let yearItems = this.state.yearArr.map((s, i) => {
             return <Picker.Item key={s} value={s} label={s + ''}/>
         });
-        let monthItems = this.state.montArr.map((s, i) => {
-            return <Picker.Item key={s} value={s} label={s + ''}/>
-        });
+
         let type = this.state.type.map((s, i) => {
             return <Picker.Item key={i} value={i} label={s + ''}/>
         });
@@ -336,39 +338,44 @@ export default class ChartScreen extends React.Component {
                             backgroundColor: 'transparent',
                             color: 'white'
                         }}>Tháng</Text>
-                        <Picker
-                            style={{height: 44, width: 50, alignSelf: 'center'}}
-                            itemStyle={{color: 'white', height: 44}}
-                            selectedValue={this.state.month}
-                            onValueChange={(itemValue) => this.setState({month: itemValue}, function () {
+                        <ModalDropdownCustom
+                            width={40}
+                            data={this.state.montArr}
+                            defaultValue={this.state.month}
+                            onSelect={(idx, value) => this.setState({month: value}, function () {
                                 this.getDataChart();
                             })}>
-                            {monthItems}
-                        </Picker>
+
+                        </ModalDropdownCustom>
                         <Text
                             style={{alignSelf: 'center', backgroundColor: 'transparent', color: 'white'}}>Năm</Text>
-                        <Picker
-                            style={{height: 44, width: 73}}
-                            itemStyle={{color: 'white', height: 44}}
-                            selectedValue={this.state.year}
-                            onValueChange={(itemValue) => this.setState({year: itemValue}, function () {
+                        <ModalDropdownCustom
+                            width={60}
+                            data={this.state.yearArr}
+                            defaultValue={this.state.year}
+                            onSelect={(idx, value) => this.setState({year: value}, function () {
                                 this.getDataChart();
                             })}>
-                            {yearItems}
-                        </Picker>
+                        </ModalDropdownCustom>
                         <Text style={{
                             alignSelf: 'center',
                             backgroundColor: 'transparent',
                             color: 'white'
                         }}>Theo</Text>
-                        <Picker
-                            style={{height: 44, width: 110}}
-                            itemStyle={{color: 'white', height: 44}}
-                            selectedValue={this.state.keyChart}
-                            onValueChange={(itemValue) => this.setState({keyChart: itemValue})}>
-                            <Picker.Item label="Doanh thu" value="TongTien"/>
-                            <Picker.Item label="Sản lượng" value="DonHang"/>
-                        </Picker>
+                        <ModalDropdownCustom
+                            width={100}
+                            data={this.state.keyChartArr}
+                            defaultValue={this.state.keyChartArr[0]}
+                            onSelect={(idx, value) => {
+                                let key = ''
+                                if (idx === 0) {
+                                    key = 'TongTien'
+                                }
+                                else key = 'DonHang'
+                                this.setState({keyChart: key})
+                            }}>
+
+                        </ModalDropdownCustom>
                     </View>
                     <ModalDropdownCustom
                         data={this.state.type}

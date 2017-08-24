@@ -548,7 +548,7 @@ export default class ListNhanVienScreen extends React.Component {
                     renderIcon={() => <Icon2 size={24} color="black" name="location"/>}
                     renderSelectedIcon={() => <Icon2 size={24} color="green" name="location"/>}
                     onPress={() => this.setState({selectedTab: 'MapForAllLocation'})}>
-                    <MapListScreen/>
+                    <MapListScreen backToHome={() => this.props.backToHome()}/>
                 </TabNavigator.Item>
             </TabNavigator>
 

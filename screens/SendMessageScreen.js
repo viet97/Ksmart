@@ -73,7 +73,11 @@ export default class ModalSendMessage extends Component {
     componentDidMount() {
         const {params} = this.props.navigation.state;
         if (params !== undefined)
-            this.setState({IDNhanVien: params.data.idnhanvien, receiver: params.data.tennhanvien})
+            this.setState({
+                IDNhanVien: params.data.idnhanvien,
+                receiver: params.data.tennhanvien,
+                nameInput: params.data.tennhanvien
+            })
     }
 
     requestSearch(text) {
