@@ -34,9 +34,7 @@ export default class EditTravelScreen extends React.Component {
     });
 
     constructor(props) {
-
-
-        super(props)
+        super(props);
         this.state = {
             idnhanvien: null,
             idkehoach: null,
@@ -50,8 +48,10 @@ export default class EditTravelScreen extends React.Component {
             listNhanVien: [],
             listKhachHang: [],
             customerSelect: null,
-            personSelect: null
+            personSelect: null,
+            showHeader: true,
         }
+        this.renderHeader = this.renderHeader.bind(this);
     }
 
     requestSearch(text) {
@@ -79,14 +79,9 @@ export default class EditTravelScreen extends React.Component {
             ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e));
     }
 
-
-    render() {
-        const {params} = this.props.navigation.state;
-        const {navigate} = this.props.navigation;
-        return (
-            <View style={{flex: 1, backgroundColor: 'transparent'}}>
-                <Image source={require('../images/bg.png')}
-                       style={{position: 'absolute', top: 0}}/>
+    renderHeader() {
+        if (Platform.OS === 'ios') {
+            return (
                 <View style={styles.titleStyle}>
                     <Image source={require('../images/bg.png')}
                            style={{position: 'absolute'}}/>
@@ -103,7 +98,9 @@ export default class EditTravelScreen extends React.Component {
                             let date1 = moment(this.state.dateCome, 'DD-MM-YYYY HH:mm:ss').toDate();
                             let date2 = moment(this.state.dateOut, 'DD-MM-YYYY HH:mm:ss').toDate();
                             let now = new Date();
-                            if (date1.getTime() - date2.getTime() >= 0 || date1.getTime() - now.getTime() < 0) {
+                            if (this.state.dateComeReal !== '1900-01-01T00:00:00') {
+                                Toast.show('Kế hoạch đã vào điểm, bạn không thể chỉnh sửa')
+                            } else if (date1.getTime() - date2.getTime() >= 0 || date1.getTime() - now.getTime() < 0) {
                                 Toast.show("Thời gian vào điểm phải trước ra điểm và sau thời điểm hiện tại , vui lòng thử lại!")
                             }
                             else {
@@ -148,6 +145,88 @@ export default class EditTravelScreen extends React.Component {
                         <Text style={{color: 'white', paddingRight: 8, paddingTop: 8}}>OK</Text>
                     </TouchableOpacity>
                 </View>
+            )
+        } else if (this.state.showHeader) {
+            console.log('vaooooo')
+            return (
+                <View style={styles.titleStyle}>
+                    <Image source={require('../images/bg.png')}
+                           style={{position: 'absolute'}}/>
+                    <TouchableOpacity
+                        onPress={() => this.props.navigation.goBack()}
+                        style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
+                        <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
+                    </TouchableOpacity>
+                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Chỉnh
+                        sửa kế hoạch</Text>
+                    <TouchableOpacity
+                        onPress={() => {
+                            let moment = require('moment')
+                            let date1 = moment(this.state.dateCome, 'DD-MM-YYYY HH:mm:ss').toDate();
+                            let date2 = moment(this.state.dateOut, 'DD-MM-YYYY HH:mm:ss').toDate();
+                            let now = new Date();
+                            if (this.state.dateComeReal !== '1900-01-01T00:00:00') {
+                                Toast.show('Kế hoạch đã vào điểm, bạn không thể chỉnh sửa')
+                            } else if (date1.getTime() - date2.getTime() >= 0 || date1.getTime() - now.getTime() < 0) {
+                                Toast.show("Thời gian vào điểm phải trước ra điểm và sau thời điểm hiện tại , vui lòng thử lại!")
+                            }
+                            else {
+                                let obj = {
+                                    idkehoach: this.state.idkehoach,
+                                    idnhanvien: this.state.idnhanvien,
+                                    idkhachhang: this.state.idkhachhang,
+                                    thoigiandukien: this.state.dateCome,
+                                    thoigiancheckoutdukien: this.state.dateOut
+                                };
+                                fetch(URlConfig.getLinkEditTravel(obj))
+                                    .then((response) => (response.json()))
+                                    .then((responseJson) => {
+                                            if (responseJson.status) {
+                                                Toast.show('Sửa thành công!')
+                                                const {navigate} = this.props.navigation
+                                                this.props
+                                                    .navigation
+                                                    .dispatch(NavigationActions.reset(
+                                                        {
+                                                            index: 0,
+                                                            actions: [
+                                                                NavigationActions.navigate({
+                                                                    routeName: 'Home',
+                                                                    params: {name: 'Travel'}
+                                                                })
+                                                            ]
+                                                        }));
+                                            } else {
+                                                Toast.show('Sửa thất bại,vui lòng thử lại!')
+                                            }
+                                        }
+                                    ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+                            }
+                        }}
+                        style={{
+                            padding: 8,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            backgroundColor: 'transparent'
+                        }}>
+                        <Text style={{color: 'white', paddingRight: 8, paddingTop: 8}}>OK</Text>
+                    </TouchableOpacity>
+                </View>
+            )
+        }
+        console.log('vaooooo1', this.state.showHeader)
+    }
+
+
+    render() {
+        const {params} = this.props.navigation.state;
+        const {navigate} = this.props.navigation;
+        return (
+            <View style={{flex: 1, backgroundColor: 'transparent'}}>
+                <Image source={require('../images/bg.png')}
+                       style={{position: 'absolute', top: 0}}/>
+
+                {this.renderHeader()}
                 <View style={{
                     marginTop: 4, marginBottom: 4, marginLeft: 8, marginRight: 8,
                     flex: 9
@@ -204,20 +283,23 @@ export default class EditTravelScreen extends React.Component {
                         />
                     </View>
                     <Text style={{marginTop: 60}}>Tên cửa hàng</Text>
-                    <TextInput
-                        style={{
-                            width: Dimensions.get('window').width,
-                            paddingLeft: 8,
-                            height: 40,
-                            backgroundColor: 'white'
-                        }}
-                        value={this.state.tenkhachhang}
-                        onFocus={() => {
-                            console.log('abc');
-                            Keyboard.dismiss();
-                            this.refs.modal.open()
-                        }}
-                    />
+                    <TouchableOpacity style={{
+                        width: Platform.OS === 'ios' ? Dimensions.get('window').width : Dimensions.get('window').width - 16,
+                        height: 40,
+                        backgroundColor: 'white',
+                        justifyContent: 'center',
+                        paddingLeft: 16
+                    }}
+                                      onPress={() => {
+                                          console.log('abc');
+                                          Keyboard.dismiss();
+                                          this.setState({showHeader: false})
+                                          this.refs.modal.open()
+                                      }}
+                    >
+                        <Text style={{fontSize: 16}}>{this.state.tenkhachhang}</Text>
+                    </TouchableOpacity>
+
                     <View style={{
                         flexDirection: 'row',
                         marginLeft: 8,
@@ -225,7 +307,7 @@ export default class EditTravelScreen extends React.Component {
                         marginRight: 8,
                         marginBottom: 4
                     }}>
-                        <Text style={{backgroundColor: 'transparent', fontSize: 16, alignSelf: 'center'}}>Ra điểm dự
+                        <Text style={{backgroundColor: 'transparent', fontSize: 16, alignSelf: 'center'}}>Vào điểm dự
                             kiến:</Text>
 
                     </View>
@@ -242,7 +324,7 @@ export default class EditTravelScreen extends React.Component {
                             style={{marginLeft: 8, width: 120}}
                             date={this.state.dateCome}
                             mode="datetime"
-                            format="DD-MM-YYYY HH:mm:ss"
+                            format="YYYY-MM-DD HH:mm:ss"
                             confirmBtnText="Xác nhận"
                             cancelBtnText="Huỷ bỏ"
                             customStyles={{
@@ -283,7 +365,7 @@ export default class EditTravelScreen extends React.Component {
                             style={{marginLeft: 8, width: 120}}
                             date={this.state.dateOut}
                             mode="datetime"
-                            format="DD-MM-YYYY HH:mm:ss"
+                            format="YYYY-MM-DD HH:mm:ss"
                             confirmBtnText="Xác nhận"
                             cancelBtnText="Huỷ bỏ"
                             customStyles={{
@@ -304,6 +386,12 @@ export default class EditTravelScreen extends React.Component {
                 <Modal
                     style={{marginTop: 16}}
                     ref={"modal"}
+                    onOpened={() => {
+                        this.setState({showHeader: false})
+                    }}
+                    onClosed={() => {
+                        this.setState({showHeader: true})
+                    }}
                     swipeToClose={true}>
                     <ChooseCustomerScreen
                         callback={(item) => {
@@ -313,9 +401,11 @@ export default class EditTravelScreen extends React.Component {
                                 tenkhachhang: item.TenCuaHang,
                                 idkhachhang: item.idcuahang
                             });
+                            this.setState({showHeader: true})
                             this.refs.modal.close();
                         }}
                         backClick={() => {
+                            this.setState({showHeader: true})
                             this.refs.modal.close()
                         }}
                     />
@@ -334,15 +424,20 @@ export default class EditTravelScreen extends React.Component {
 
     componentDidMount() {
         const {params} = this.props.navigation.state;
+        console.log('paramsss', params.data)
         this.setState({
-            tennhanvien: params.data.TenNhanVien,
-            tenkhachhang: params.data.TenCuaHang,
-            idnhanvien: params.data.IDNhanVien,
-            idkhachhang: params.data.IDCuaHang,
-            idkehoach: params.data.IDKeHoach,
-            dateCome: params.data.ThoiGianVaoDiemDuKien.replace('T', ' '),
-            dateOut: params.data.ThoiGianRaDiemDuKien.replace('T', ' ')
-        })
+                tennhanvien: params.data.TenNhanVien,
+                tenkhachhang: params.data.TenCuaHang,
+                idnhanvien: params.data.IDNhanVien,
+                idkhachhang: params.data.IDCuaHang,
+                idkehoach: params.data.IDKeHoach,
+                dateCome: params.data.ThoiGianVaoDiemDuKien.replace('T', ' '),
+                dateOut: params.data.ThoiGianRaDiemDuKien.replace('T', ' '),
+                dateComeReal: params.data.ThoiGianVaoDiemThucTe
+            },
+            function () {
+                console.log('dmdmdmdmd', this.state.dateCome, this.state.dateOut)
+            })
     }
 }
 

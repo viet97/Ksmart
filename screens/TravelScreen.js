@@ -354,6 +354,7 @@ export default class TravelScreen extends React.Component {
                         onSelect={(idx, value) =>
                             this.setState({numberPickTravel: idx})
                         }
+
                     />
                 </View>
                 {this.flatListorIndicator()}

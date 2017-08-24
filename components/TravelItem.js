@@ -34,7 +34,8 @@ export default class TravelItem extends React.Component {
             dialogVisible: false,
             closeSwipe: false,
         }
-        this.deleteClick = this.deleteClick.bind(this)
+        this.deleteClick = this.deleteClick.bind(this);
+        this.editClick = this.editClick.bind(this)
     }
 
     getImage(url) {
@@ -58,15 +59,12 @@ export default class TravelItem extends React.Component {
     }
 
     deleteClick() {
-        this.setState({dialogVisible: true, closeSwipe: !this.state.closeSwipe}, function () {
-            this.props.refreshData()
-        })
+        this.setState({dialogVisible: true, closeSwipe: !this.state.closeSwipe})
 
     }
 
     editClick() {
-        this.props.callback()
-
+        this.props.callback();
     }
 
     millisToMinutes(from, to) {
@@ -97,9 +95,7 @@ export default class TravelItem extends React.Component {
                 backgroundColor: 'green',
                 text: 'Sửa',
                 onPress: this.editClick,
-                onPress: function () {
-                    console.log('click')
-                },
+
                 buttonWidth: 60
             },
             {
@@ -190,7 +186,9 @@ export default class TravelItem extends React.Component {
                                 .then((responseJson) => {
                                     console.log('url', URlConfig.getLinkDeleteTravel(item.IDKeHoach))
                                     if (responseJson.status) {
+
                                         Toast.show('Xoá thành công!')
+                                        this.props.refreshData();
                                     } else {
                                         Toast.show('Xoá thất bại!')
                                     }
