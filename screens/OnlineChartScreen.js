@@ -176,6 +176,9 @@ export default class OnlineChartScreen extends React.Component {
                         <FlatList
 
                             ref="listview"
+                            refreshing={this.state.refreshing}
+                            onRefresh={() => this.refreshData()}
+
                             extraData={this.state.dataRender}
                             data={this.state.dataRender}
                             renderItem={({item}) => {

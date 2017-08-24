@@ -141,6 +141,8 @@ export default class CustomerScreen extends Component {
                     onMomentumScrollBegin={() => {
                         this.setState({onEndReach: false})
                     }}
+                    refreshing={this.state.refreshing}
+                    onRefresh={() => this.refreshData()}
                     extraData={this.state.dataRender}
                     data={this.state.dataRender}
                     renderItem={({item}) =>
@@ -178,7 +180,7 @@ export default class CustomerScreen extends Component {
                     <Image source={require('../images/bg.png')}
                            style={{position: 'absolute'}}/>
                     <TouchableOpacity onPress={() => this.props.backToHome()}
-                                      style={{alignItems: 'center', justifyContent: 'center'}}>
+                                      style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                         <Icon2 style={styles.iconStyle} size={24} color="white"
                                name="ios-arrow-back"/></TouchableOpacity>
                     <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Thông
@@ -236,9 +238,9 @@ const styles = StyleSheet.create({
         marginTop: Platform.OS === 'ios' ? 16 : 0,
         flex: 1,
         elevation: 15,
+        padding: 8,
         justifyContent: 'space-between',
-        flexDirection: 'row',
-        backgroundColor: Color.backgroundNewFeed,
+        flexDirection: 'row'
     },
     headerStyle: {
         elevation: 15, height: this.height / 7
@@ -252,8 +254,6 @@ const styles = StyleSheet.create({
         paddingBottom: 8
     }, iconStyle: {
         alignSelf: 'center',
-        width: 35,
-        height: 35,
         backgroundColor: "transparent",
         marginLeft: 8,
         marginTop: (Platform.OS === 'ios') ? 4 : 0

@@ -247,6 +247,8 @@ export default class OrderListScreen extends Component {
 
                         this.setState({onEndReach: false})
                     }}
+                    refreshing={this.state.refreshing}
+                    onRefresh={() => this.refreshData()}
                     extraData={this.state.dataRender}
                     data={this.state.dataRender}
                     renderItem={({item}) =>
@@ -359,7 +361,6 @@ const styles = StyleSheet.create({
         elevation: 15,
         justifyContent: 'space-between',
         flexDirection: 'row',
-        backgroundColor: Color.backgroundNewFeed,
     },
     headerStyle: {
         elevation: 15, height: this.height / 7

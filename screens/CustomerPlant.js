@@ -148,6 +148,8 @@ export default class CustomerPlant extends Component {
                         keyExtractor={(item, index) => {
                             item.key = index
                         }}
+                        refreshing={this.state.refreshing}
+                        onRefresh={() => this.refreshData()}
                         ListFooterComponent={this.renderFooter}
                         onEndReachedThreshold={0.2}
                         onEndReached={() => {

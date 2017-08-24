@@ -11,6 +11,7 @@ import {
     Platform, Image,
     TextInput
 } from 'react-native';
+import {NavigationActions} from "react-navigation";
 import Modal from 'react-native-modalbox';
 import Search from 'react-native-search-box';
 import Communications from 'react-native-communications';
@@ -118,7 +119,19 @@ export default class EditTravelScreen extends React.Component {
                                     .then((responseJson) => {
                                             if (responseJson.status) {
                                                 Toast.show('Sửa thành công!')
-                                                console.log('fuck', obj)
+                                                const {navigate} = this.props.navigation
+                                                this.props
+                                                    .navigation
+                                                    .dispatch(NavigationActions.reset(
+                                                        {
+                                                            index: 0,
+                                                            actions: [
+                                                                NavigationActions.navigate({
+                                                                    routeName: 'Home',
+                                                                    params: {name: 'Travel'}
+                                                                })
+                                                            ]
+                                                        }));
                                             } else {
                                                 Toast.show('Sửa thất bại,vui lòng thử lại!')
                                             }
@@ -140,55 +153,57 @@ export default class EditTravelScreen extends React.Component {
                     flex: 9
                 }}>
                     <Text>Tên nhân viên</Text>
-                    <Autocomplete
-                        hideResults={this.state.hideResultsReceiver}
-                        data={this.state.listNhanVien}
-                        defaultValue={this.state.tennhanvien}
-                        placeholder="Nhập tên nhân viên"
-                        style={{
-                            width: Dimensions.get('window').width,
-                            paddingLeft: 8,
-                            height: 40,
-                            backgroundColor: 'white'
-                        }}
-                        onChangeText={text => {
-                            if (text.length !== 0) {
-                                this.setState({
-                                    hideResultsCustomer: true,
-                                    hideResultsReceiver: false,
-                                    receiver: text
-                                }, function () {
-                                    this.requestSearch(text);
-                                })
-                            } else {
-                                this.setState({hideResultsReceiver: true})
-                            }
-                        }}
-                        renderItem={(data) => (
-                            <TouchableOpacity
-                                style={{flexDirection: 'row'}}
-                                onPress={() => {
-                                    console.log('dyyd', data)
+                    <View style={styles.autocompleteContainer}>
+                        <Autocomplete
+                            hideResults={this.state.hideResultsReceiver}
+                            data={this.state.listNhanVien}
+                            defaultValue={this.state.tennhanvien}
+                            placeholder="Nhập tên nhân viên"
+                            style={{
+                                width: Dimensions.get('window').width,
+                                paddingLeft: 8,
+                                height: 40,
+                                backgroundColor: 'white'
+                            }}
+                            onChangeText={text => {
+                                if (text.length !== 0) {
                                     this.setState({
-                                        nameInput: data.tennhanvien,
-                                        tennhanvien: data.tennhanvien,
-                                        idnhanvien: data.idnhanvien,
-                                        hideResultsReceiver: true,
-                                        personSelect: data
-                                    });
-                                    Keyboard.dismiss();
-                                }}>
+                                        hideResultsCustomer: true,
+                                        hideResultsReceiver: false,
+                                        receiver: text
+                                    }, function () {
+                                        this.requestSearch(text);
+                                    })
+                                } else {
+                                    this.setState({hideResultsReceiver: true})
+                                }
+                            }}
+                            renderItem={(data) => (
+                                <TouchableOpacity
+                                    style={{flexDirection: 'row'}}
+                                    onPress={() => {
+                                        console.log('dyyd', data)
+                                        this.setState({
+                                            nameInput: data.tennhanvien,
+                                            tennhanvien: data.tennhanvien,
+                                            idnhanvien: data.idnhanvien,
+                                            hideResultsReceiver: true,
+                                            personSelect: data
+                                        });
+                                        Keyboard.dismiss();
+                                    }}>
 
-                                <View style={{justifyContent: 'center'}}>
-                                    <Image
-                                        style={{margin: 8, width: 30, height: 30, borderRadius: 15}}
-                                        source={require('../images/bglogin.jpg')}/>
-                                </View>
-                                <Text style={{marginLeft: 16, alignSelf: 'center'}}>{data.tennhanvien}</Text>
-                            </TouchableOpacity>
-                        )}
-                    />
-                    <Text>Tên cửa hàng</Text>
+                                    <View style={{justifyContent: 'center'}}>
+                                        <Image
+                                            style={{margin: 8, width: 30, height: 30, borderRadius: 15}}
+                                            source={require('../images/bglogin.jpg')}/>
+                                    </View>
+                                    <Text style={{marginLeft: 16, alignSelf: 'center'}}>{data.tennhanvien}</Text>
+                                </TouchableOpacity>
+                            )}
+                        />
+                    </View>
+                    <Text style={{marginTop: 60}}>Tên cửa hàng</Text>
                     <TextInput
                         style={{
                             width: Dimensions.get('window').width,
@@ -332,13 +347,21 @@ export default class EditTravelScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
+    autocompleteContainer: {
+        marginTop: 16,
+        flex: 1,
+        left: 0,
+        position: 'absolute',
+        top: 0,
+        zIndex: 1,
+        flexDirection: 'row'
+    },
     titleStyle: {
         marginTop: Platform.OS === 'ios' ? 16 : 0,
         flex: 1,
         elevation: 15,
         justifyContent: 'space-between',
         flexDirection: 'row',
-        backgroundColor: Color.backgroundNewFeed,
     },
     headerStyle: {
         elevation: 15, height: this.height / 7

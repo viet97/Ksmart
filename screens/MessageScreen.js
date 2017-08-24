@@ -202,6 +202,8 @@ export default class OrderListScreen extends Component {
 
                         this.setState({onEndReach: false})
                     }}
+                    refreshing={this.state.refreshing}
+                    onRefresh={() => this.refreshData()}
                     extraData={this.state.dataRender}
                     data={this.state.dataRender}
                     renderItem={({item}) =>

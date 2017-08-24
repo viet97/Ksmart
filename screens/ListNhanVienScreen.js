@@ -260,6 +260,7 @@ export default class ListNhanVienScreen extends React.Component {
                     onMomentumScrollBegin={() => {
                         this.setState({onEndReach: false})
                     }}
+
                     extraData={this.state.dataRender}
                     data={this.state.dataRender}
                     renderItem={({item}) =>

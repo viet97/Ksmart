@@ -239,6 +239,7 @@ export default class TravelScreen extends React.Component {
                     data={this.state.dataRender}
                     renderItem={({item}) =>
                         <TravelItem
+                            refreshData={() => this.refreshData()}
                             data={item}
                             callback={() => this.props.callback(item)}
                             backToTravel={() => this.props.backToTravel()}

@@ -67,6 +67,8 @@ export default class HomeScreen extends React.Component {
     constructor(props) {
 
         super(props);
+        const {params} = this.props.navigation.state
+
         backcount = 0
         isLoginScreen = false
         var today = new Date();
@@ -385,6 +387,9 @@ export default class HomeScreen extends React.Component {
     }
 
     componentDidMount() {
+        const {params} = this.props.navigation.state
+        if (params !== undefined)
+            this.setState({screenName: params.name})
         Animated.timing(                  // Animate over time
             this.state.fadeAnim,            // The animated value to drive
             {

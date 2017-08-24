@@ -58,7 +58,15 @@ export default class TravelItem extends React.Component {
     }
 
     deleteClick() {
-        this.setState({dialogVisible: true, closeSwipe: !this.state.closeSwipe})
+        this.setState({dialogVisible: true, closeSwipe: !this.state.closeSwipe}, function () {
+            this.props.refreshData()
+        })
+
+    }
+
+    editClick() {
+        this.props.callback()
+
     }
 
     millisToMinutes(from, to) {
@@ -88,6 +96,7 @@ export default class TravelItem extends React.Component {
             {
                 backgroundColor: 'green',
                 text: 'Sửa',
+                onPress: this.editClick,
                 onPress: function () {
                     console.log('click')
                 },

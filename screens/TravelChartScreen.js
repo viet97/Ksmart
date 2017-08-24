@@ -166,6 +166,8 @@ export default class TravelChartScreen extends React.Component {
                     <View style={{flex: 9}}>
                         <FlatList
                             ref="listview"
+                            refreshing={this.state.refreshing}
+                            onRefresh={() => this.refreshData()}
                             extraData={this.state.dataRender}
                             data={this.state.dataRender}
                             renderItem={({item}) => {

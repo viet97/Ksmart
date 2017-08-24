@@ -284,6 +284,8 @@ export default class ReportScreen extends Component {
                     onMomentumScrollBegin={() => {
                         this.setState({onEndReach: false})
                     }}
+                    refreshing={this.state.refreshing}
+                    onRefresh={() => this.refreshData()}
                     extraData={this.state.dataRender}
                     data={this.state.dataRender}
                     renderItem={({item}) => {
