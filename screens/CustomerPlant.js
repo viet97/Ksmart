@@ -328,8 +328,10 @@ export default class CustomerPlant extends Component {
 
                         </TouchableOpacity>
                     </View>
-                    <DialogCustom callback={(id) => {
-                        this.setState({idNhanvien: id})
+                    <DialogCustom closeModal={() => {
+                        this.refs.modal.close()
+                    }} callback={(id, tennhanvien) => {
+                        this.setState({idNhanvien: id, namePerson: tennhanvien})
                     }}/>
                 </Modal>
 
@@ -369,6 +371,7 @@ export default class CustomerPlant extends Component {
             dulieulapkehoach: this.state.dataChoose,
             idnhanvien: this.state.idNhanvien
         }
+        console.log(obj);
         if (obj.dulieulapkehoach.length === 0 || this.state.idNhanvien.length === 0) Toast.show('Vui lòng chọn kế hoạch cho nhân viên trước khi lập kế hoạch')
         else
         fetch(URlConfig.getLinkLapKeHoach(obj))
