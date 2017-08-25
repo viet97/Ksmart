@@ -26,6 +26,7 @@ import CheckBox from 'react-native-checkbox'
 import CustomerPlantComponent from '../components/CustomerPlantComponent'
 import DialogCustom from "../components/DialogCustom";
 import {Icon} from "react-native-elements";
+
 var NUMBER_ROW_RENDER_PER_PAGE = 15
 var ALL_LOADED = false
 var SEARCH_STRING = '';
@@ -67,7 +68,7 @@ export default class CustomerPlant extends Component {
             NhanVienStatus: [],
             dataNhanVien: [],
             namePerson: '- Chọn nhân viên -'
-            
+
         }
 
     }
@@ -141,59 +142,71 @@ export default class CustomerPlant extends Component {
                         style={styles.indicator}
                         size="large"/>
                 </View>)
-        } else
+        } else if (this.state.dataFull.length === 0)
             return (
-                <View style={{backgroundColor: Color.backGroundFlatList, flex: 9}}>
-                    <FlatList
-                        keyExtractor={(item, index) => {
-                            item.key = index
-                        }}
-                        refreshing={this.state.refreshing}
-                        onRefresh={() => this.refreshData()}
-                        ListFooterComponent={this.renderFooter}
-                        onEndReachedThreshold={0.2}
-                        onEndReached={() => {
-                            this.loadMoreData()
-                        }}
-                        onMomentumScrollBegin={() => {
-                            this.setState({onEndReach: false})
-                        }}
-                        extraData={this.state.dataRender}
-                        data={this.state.dataRender}
-                        renderItem={({item}) =>
-                            <CustomerPlantComponent
-                                date={this.state.datePlant}
-                                idcuahang={item.idcuahang}
-                                idnhanvien={this.state.idNhanvien}
-                                item={item}
-                                choseCustomer={(data, checked) => {
-                                    var arr = this.state.dataChoose;
-                                    if (checked) {
-                                        var i;
-                                        for (i = arr.length - 1; i >= 0; i--) {
+                <View style={{flex: 9}}>
+                    <Text style={{
+                        alignSelf: 'center',
+                        textAlign: 'center',
+                        fontSize: 20,
+                        backgroundColor: 'transparent'
+                    }}>Không có dữ liệu</Text>
+
+                </View>
+            )
+
+        return (
+            <View style={{backgroundColor: Color.backGroundFlatList, flex: 9}}>
+                <FlatList
+                    keyExtractor={(item, index) => {
+                        item.key = index
+                    }}
+                    refreshing={this.state.refreshing}
+                    onRefresh={() => this.refreshData()}
+                    ListFooterComponent={this.renderFooter}
+                    onEndReachedThreshold={0.2}
+                    onEndReached={() => {
+                        this.loadMoreData()
+                    }}
+                    onMomentumScrollBegin={() => {
+                        this.setState({onEndReach: false})
+                    }}
+                    extraData={this.state.dataRender}
+                    data={this.state.dataRender}
+                    renderItem={({item}) =>
+                        <CustomerPlantComponent
+                            date={this.state.datePlant}
+                            idcuahang={item.idcuahang}
+                            idnhanvien={this.state.idNhanvien}
+                            item={item}
+                            choseCustomer={(data, checked) => {
+                                var arr = this.state.dataChoose;
+                                if (checked) {
+                                    var i;
+                                    for (i = arr.length - 1; i >= 0; i--) {
+                                        if (arr[i].idkhachhang === data.idkhachhang) {
+                                            arr[i] = data
+                                            break;
+                                        }
+                                    }
+                                    if (i < 0) arr.push(data)
+
+                                    this.setState({dataChoose: arr})
+                                } else {
+                                    if (arr.length !== 0) {
+                                        for (var i = arr.length - 1; i >= 0; i--) {
                                             if (arr[i].idkhachhang === data.idkhachhang) {
-                                                arr[i] = data
+                                                arr.splice(i, 1);
                                                 break;
                                             }
                                         }
-                                        if (i < 0) arr.push(data)
-
                                         this.setState({dataChoose: arr})
-                                    } else {
-                                        if (arr.length !== 0) {
-                                            for (var i = arr.length - 1; i >= 0; i--) {
-                                                if (arr[i].idkhachhang === data.idkhachhang) {
-                                                    arr.splice(i, 1);
-                                                    break;
-                                                }
-                                            }
-                                            this.setState({dataChoose: arr})
-                                        }
                                     }
-                                }}/>
-                        }
-                    />
-                </View>)
+                                }
+                            }}/>
+                    }
+                />
+            </View>)
 
     }
 
@@ -204,18 +217,24 @@ export default class CustomerPlant extends Component {
         fetch(URlConfig.getCustomerLink(PAGE, SEARCH_STRING))
             .then((response) => (response.json()))
             .then((responseJson) => {
-                if (responseJson.endlist) ALL_LOADED = true
+                if (responseJson.endlist || responseJson.data.length === 0) {
+                    ALL_LOADED = true
+                    this.forceUpdate()
+
+                }
                 if (responseJson.status) {
                     this.setState({
                         dataRender: responseJson.data,
-                        dataSearch: responseJson.data
+                        dataFull: responseJson.data
                     })
-
-
+                } else {
+                    ALL_LOADED = true
+                    this.forceUpdate()
                 }
             }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
 
     }
+
     onChangeText(text) {
 
         return new Promise((resolve, reject) => {
@@ -316,7 +335,7 @@ export default class CustomerPlant extends Component {
                 </View>
                 {this.flatListorIndicator()}
                 <Modal
-                    style={[styles.modal, styles.modal1]}
+                    style={[styles.modal]}
                     ref={"modal"}
                     swipeToClose={true}
                     onClosingState={this.onClosingState}>
@@ -374,23 +393,22 @@ export default class CustomerPlant extends Component {
         console.log(obj);
         if (obj.dulieulapkehoach.length === 0 || this.state.idNhanvien.length === 0) Toast.show('Vui lòng chọn kế hoạch cho nhân viên trước khi lập kế hoạch')
         else
-        fetch(URlConfig.getLinkLapKeHoach(obj))
-            .then((response) => (response.json()))
-            .then((responseJson) => {
-                console.log(responseJson)
-                if (responseJson.status) {
-                    if (responseJson.listkehoachmoi.length !== 0)
-                        Toast.show('Lập kế hoạch thành công')
-                    else
-                        Toast.show('Kế hoạch đã bị trùng , vui lòng thử lại')
-                    this.props.backToTravel()
-                }
-            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+            fetch(URlConfig.getLinkLapKeHoach(obj))
+                .then((response) => (response.json()))
+                .then((responseJson) => {
+                    console.log(responseJson)
+                    if (responseJson.status) {
+                        if (responseJson.listkehoachmoi.length !== 0)
+                            Toast.show('Lập kế hoạch thành công')
+                        else
+                            Toast.show('Kế hoạch đã bị trùng , vui lòng thử lại')
+                        this.props.backToTravel()
+                    }
+                }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
 
     }
 
     componentDidMount() {
-        ALL_LOADED = false
         SEARCH_STRING = ''
         this.getDataFromSv()
 
@@ -439,6 +457,7 @@ const styles = StyleSheet.create({
         height: 80
     },
     modal: {
+        flex: 1,
         flexDirection: 'column',
         paddingHorizontal: 8,
         marginTop: 32,

@@ -78,7 +78,11 @@ export default class CustomerScreen extends Component {
                         dataRender: responseJson.data
                     })
 
-                } else ALL_LOADED = true
+                } else {
+                    this.setState({dataRender: []})
+                    ALL_LOADED = true
+                    this.forceUpdate()
+                }
             }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
     }
 
