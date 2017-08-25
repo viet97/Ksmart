@@ -74,7 +74,7 @@ export default class CustomerPlant extends Component {
 
     renderFooter = () => {
 
-        if (ALL_LOADED || this.state.isSearching) return null
+        if (ALL_LOADED) return null
         return (
             <View
                 style={{
@@ -91,7 +91,7 @@ export default class CustomerPlant extends Component {
         PAGE = 0;
         this.setState({dataRender: null})
         ALL_LOADED = false
-        fetch(URlConfig.getCustomerLink(PAGE))
+        fetch(URlConfig.getCustomerLink(PAGE, SEARCH_STRING))
             .then((response) => (response.json()))
             .then((responseJson) => {
                 if (responseJson.status) {
@@ -113,7 +113,7 @@ export default class CustomerPlant extends Component {
         if (!this.state.onEndReach) {
 
             this.setState({onEndReach: true})
-            fetch(URlConfig.getCustomerLink(PAGE))
+            fetch(URlConfig.getCustomerLink(PAGE, SEARCH_STRING))
                 .then((response) => (response.json()))
                 .then((responseJson) => {
 
@@ -197,28 +197,32 @@ export default class CustomerPlant extends Component {
 
     }
 
+    getDataFromSv() {
+        ALL_LOADED = false
+        this.setState({dataRender: null})
+        PAGE = 0
+        fetch(URlConfig.getCustomerLink(PAGE, SEARCH_STRING))
+            .then((response) => (response.json()))
+            .then((responseJson) => {
+                if (responseJson.endlist) ALL_LOADED = true
+                if (responseJson.status) {
+                    this.setState({
+                        dataRender: responseJson.data,
+                        dataSearch: responseJson.data
+                    })
+
+
+                }
+            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+
+    }
     onChangeText(text) {
-        this.setState({isSearching: true})
 
         return new Promise((resolve, reject) => {
             resolve();
-
-            var arr = []
-            var a = text.toLowerCase()
-            SEARCH_STRING = a
-
-            if (a.length === 0) this.setState({dataRender: this.state.dataSearch})
-            else
-                for (var item in this.state.dataSearch) {
-                    if (a !== SEARCH_STRING) return
-
-                    if (this.state.dataSearch[item].TenCuaHang.toLowerCase().search(a) !== -1) {
-                        arr.push(this.state.dataSearch[item])
-                    }
-                }
-
-            if (a.length !== 0) this.setState({dataRender: arr})
-            else this.setState({isSearching: false})
+            var keyWord = text.toLowerCase()
+            SEARCH_STRING = keyWord
+            this.getDataFromSv()
         });
     }
 
@@ -310,14 +314,7 @@ export default class CustomerPlant extends Component {
                         <Text>{this.state.namePerson}</Text>
                     </TouchableOpacity>
                 </View>
-                <View
-                    style={{flex: 9}}>
-                    <PTRView
-                        onRefresh={() => this.refreshData()}
-                    >
-                        {this.flatListorIndicator()}
-                    </PTRView>
-                </View>
+                {this.flatListorIndicator()}
                 <Modal
                     style={[styles.modal, styles.modal1]}
                     ref={"modal"}
@@ -359,9 +356,10 @@ export default class CustomerPlant extends Component {
     onCancel() {
         return new Promise((resolve, reject) => {
             resolve();
-
-            SEARCH_STRING = ''
-            this.setState({dataRender: this.state.dataSearch, isSearching: false})
+            if (SEARCH_STRING.length !== 0) {
+                SEARCH_STRING = ''
+                this.getDataFromSv()
+            }
         });
     }
 
@@ -390,19 +388,8 @@ export default class CustomerPlant extends Component {
 
     componentDidMount() {
         ALL_LOADED = false
-        fetch(URlConfig.getCustomerLink(PAGE, SEARCH_STRING))
-            .then((response) => (response.json()))
-            .then((responseJson) => {
-                if (responseJson.endlist) ALL_LOADED = true
-                if (responseJson.status) {
-                    this.setState({
-                        dataRender: responseJson.data,
-                        dataSearch: responseJson.data
-                    })
-
-
-                }
-            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+        SEARCH_STRING = ''
+        this.getDataFromSv()
 
     }
 }

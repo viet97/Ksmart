@@ -131,7 +131,7 @@ export default class ModalSendMessage extends Component {
                 <View style={{flex: 9}}>
                         <View style={styles.autocompleteContainer}>
                             <Autocomplete
-                                hideResults={this.state.hideResultsReceiver}
+                                hideResults={this.state.hideResults}
                                 data={this.state.listNhanVien}
                                 defaultValue={this.state.nameInput}
                                 placeholder="Nhập tên người nhận"

@@ -227,6 +227,7 @@ export default class NewFeedScreen extends React.Component {
     }
 
     componentDidMount() {
+        SEARCH_STRING = ''
         this.getDataFromSv()
     }
 
