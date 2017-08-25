@@ -19,10 +19,8 @@ import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import URlConfig from "../configs/url";
 import Toast from 'react-native-simple-toast'
 import DatePicker from 'react-native-datepicker'
-import ultils from "../configs/ultils";
 import TravelItem from "../components/TravelItem";
 import ModalDropdownCustom from "../components/ModalDropdownCustom";
-import PTRView from 'react-native-pull-to-refresh'
 
 let SEARCH_STRING = '';
 let {width, height} = Dimensions.get('window');
@@ -162,9 +160,9 @@ export default class TravelScreen extends React.Component {
             this.setState({onEndReach: true})
 
             if (!this.state.isEndList) {
-                PAGE = PAGE + 1
+                PAGE = PAGE + 1;
                 let url = URlConfig.getLinkTravel(this.state.dateFrom, this.state.dateTo, PAGE)
-                console.log(url)
+                console.log(url);
                 fetch(url)
                     .then((response) => (response.json()))
                     .then((responseJson) => {
@@ -353,6 +351,7 @@ export default class TravelScreen extends React.Component {
                         defaultValue={this.state.travelStatus[0]}
                         onSelect={(idx, value) =>
                             this.setState({numberPickTravel: idx})
+
                         }
 
                     />

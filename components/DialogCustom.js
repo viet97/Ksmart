@@ -10,16 +10,15 @@ import {
     FlatList,
     Image,
     ActivityIndicator, Platform,
-    Picker, TouchableHighlight, TextInput, Keyboard
+    Picker, TouchableHighlight, TextInput
 } from 'react-native';
-import {Icon} from 'react-native-elements';
 
 import {ProgressDialog} from 'react-native-simple-dialogs';
 import DialogManager, {ScaleAnimation, DialogContent} from 'react-native-dialog-component';
 import ModalDropdown from "react-native-modal-dropdown";
 import URlConfig from "../configs/url";
+import Search from "react-native-search-box";
 import Toast from "react-native-simple-toast";
-
 let Page = 1;
 let ALL_LOADED = false;
 let SEARCH_STRING = '';
@@ -45,6 +44,21 @@ export default class DialogCustom extends React.Component {
         }
     }
 
+    componentWillMount() {
+        fetch(URlConfig.getLinkNhomNhanVien())
+            .then((response) => (response.json()))
+            .then((responseJson) => {
+                    let dsnhom = responseJson.danhsachnhom;
+                    let arr = []
+                    for (let item of dsnhom) {
+                        arr.push(item.TenHienThi_NhanVien)
+                    }
+                    this.setState({listGroup: responseJson.danhsachnhom, listNameGroup: arr})
+                }
+            ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+        this.getListNhanVienFromSv(this.state.idNhom)
+    }
+
     renderFooter = () => {
         if (ALL_LOADED) return null
         return (
@@ -58,6 +72,7 @@ export default class DialogCustom extends React.Component {
             </View>
         );
     };
+
 
     getListNhanVienFromSv(id) {
         Page = 1;
@@ -131,120 +146,99 @@ export default class DialogCustom extends React.Component {
         }
     }
 
-    componentWillMount() {
-        fetch(URlConfig.getLinkNhomNhanVien())
-            .then((response) => (response.json()))
-            .then((responseJson) => {
-                    let dsnhom = responseJson.danhsachnhom;
-                    let arr = []
-                    for (let item of dsnhom) {
-                        arr.push(item.TenHienThi_NhanVien)
-                    }
-                    this.setState({listGroup: responseJson.danhsachnhom, listNameGroup: arr})
-                }
-            ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
-        this.getListNhanVienFromSv(this.state.idNhom)
-
-    }
-
-    hideKeyboard() {
-        Keyboard.dismiss();
-    }
-
     render() {
-
         return (
-
-            <View style={{flexDirection: 'column', flex: 1, marginBottom: 16, backgroundColor: 'transparent'}}>
-                <TouchableOpacity style={{position: 'absolute', right: 8, top: 8, padding: 32}} onPress={() => {
-                    DialogManager.dismiss();
-                }}>
-                    <Icon name="x" type="foundation" size={24} color="red"/>
-                </TouchableOpacity>
-                <View style={{flexDirection: 'column', flex: 9, marginTop: 16}}>
+            <View style={{flexDirection: 'column', marginTop: 48, flex: 1}}>
+                <View style={{flexDirection: 'column'}}>
                     <Text>Chọn phòng ban: </Text>
                     <ModalDropdown
                         options={this.state.listNameGroup}
                         style={{borderWidth: 0.4, width: 200, padding: 8, borderRadius: 10}}
-                        defaultValue="- Chọn phòng ban -"
+                        defaultValue="- Chọn phòng ban- "
                         onSelect={(idx, value) => this._onSelect(idx, value)}
                         renderRow={this._renderRowGroup.bind(this)}
                         renderSeparator={(sectionID, rowID, adjacentRowHighlighted) => this._renderSeparatorGroup(sectionID, rowID, adjacentRowHighlighted)}
                     />
+                </View>
+                <View style={{flexDirection: 'column', marginTop: 10}}>
                     <TextInput
                         ref='textinput'
-                        autofocus={false}
-                        returnKeyType={'done'}
-                        style={{
-                            height: 40,
-                            borderColor: 'gray',
-                            borderWidth: 0.4,
-                            borderRadius: 10,
-                            paddingLeft: 8,
-                            marginTop: 10
-                        }}
+                        style={{height: 40, borderColor: 'gray', borderWidth: 0.4, borderRadius: 10, paddingLeft: 8}}
                         onChangeText={(textSearch) => {
-
                             if (this.state.positionGroupChoose === -1 || this.state.positionGroupChoose === '-1') {
-                                SEARCH_STRING = textSearch
                                 Toast.show('Vui long chon phong ban truoc')
                             } else {
-                                SEARCH_STRING = textSearch
-                                this.getListNhanVienFromSv(this.state.idNhom)
-                            }
-                            this.setState({textSearch: textSearch})
-                        }}
 
+                            }
+                            this.setState({textSearch})
+                        }}
+                        onSubmitEditing={() => {
+                            this.refs.nhanvien.show();
+                        }}
                         value={this.state.textSearch}
                         placeholder={'Nhap ten nhan vien'}
                     />
-                    <FlatList
-                        ListFooterComponent={this.renderFooter}
-                        refreshing={this.state.refreshing}
-                        onRefresh={() => {
-                            this.getListNhanVienFromSv(this.state.idNhom)
+                    <ModalDropdown
+                        ref="nhanvien"
+                        keyboardShouldPersistTaps='always'
+                        options={this.state.listNameNhanVien}
+                        disabled={true}
+                        adjustFrame={style => this._adjustFrame(style)}
+                        style={{borderWidth: 0.4, width: 0, height: 0}}
+                        defaultValue="- Chọn nhân viên- "
+                        onSelect={(idx, value) => {
+                            this.setState({nhanVienSelect: this.state.listNhanVien[idx]})
                         }}
-                        ref="listview"
-                        onEndReachedThreshold={0.2}
-                        onEndReached={() => {
-                            this.loadMoreDataFromSv()
-                        }}
-                        onMomentumScrollBegin={() => {
-                            this.setState({onEndReach: false})
-                        }}
-                        extraData={this.state.dataRender}
-                        data={this.state.dataRender}
-                        renderItem={({item}) =>
-                            <TouchableOpacity
-
-                                onPress={() => {
-                                    this.setState({
-                                        textSearch: item.tennhanvien,
-                                        idNhanVien: item.idnhanvien
-                                    });
-                                    DialogManager.dismiss(() => {
-                                        this.props.callback(item.idnhanvien, item.tennhanvien)
-                                    });
-                                }
-                                }>
-                                <View style={{flexDirection: 'row'}}>
-                                    <View style={{justifyContent: 'center'}}>
-                                        <Image
-                                            style={{margin: 8, width: 60, height: 60, borderRadius: 30}}
-                                            source={require('../images/bglogin.jpg')}/>
-                                    </View>
-                                    <View style={{flex: 4, margin: 8, justifyContent: 'center'}}>
-                                        <Text
-                                            style={{
-                                                fontSize: 18, backgroundColor: 'transparent'
-                                            }}>{item.tennhanvien}</Text>
-                                        <Text>{item.tendangnhap}</Text>
-                                    </View>
-                                </View>
-                            </TouchableOpacity>
-                        }
+                        renderRow={this._renderRowNhanVien.bind(this)}
+                        renderSeparator={(sectionID, rowID, adjacentRowHighlighted) => this._renderSeparatorNhanVien(sectionID, rowID, adjacentRowHighlighted)}
                     />
                 </View>
+                <FlatList
+                    ListFooterComponent={this.renderFooter}
+                    refreshing={this.state.refreshing}
+                    onRefresh={() => {
+                        this.getListNhanVienFromSv(this.state.idNhom)
+                    }}
+                    ref="listview"
+                    onEndReachedThreshold={0.2}
+                    onEndReached={() => {
+                        this.loadMoreDataFromSv()
+                    }}
+                    onMomentumScrollBegin={() => {
+                        this.setState({onEndReach: false})
+                    }}
+                    extraData={this.state.dataRender}
+                    data={this.state.dataRender}
+                    renderItem={({item}) =>
+                        <TouchableOpacity
+
+                            onPress={() => {
+                                this.setState({
+                                    textSearch: item.tennhanvien,
+                                    idNhanVien: item.idnhanvien
+                                });
+                                DialogManager.dismiss(() => {
+                                    this.props.callback(item.idnhanvien, item.tennhanvien)
+                                });
+                            }
+                            }>
+                            <View style={{flexDirection: 'row'}}>
+                                <View style={{justifyContent: 'center'}}>
+                                    <Image
+                                        style={{margin: 8, width: 60, height: 60, borderRadius: 30}}
+                                        source={require('../images/bglogin.jpg')}/>
+                                </View>
+                                <View style={{flex: 4, margin: 8, justifyContent: 'center'}}>
+                                    <Text
+                                        style={{
+                                            fontSize: 18, backgroundColor: 'transparent'
+                                        }}>{item.tennhanvien}</Text>
+                                    <Text>{item.tendangnhap}</Text>
+                                </View>
+                            </View>
+                        </TouchableOpacity>
+                    }
+                />
             </View>
         );
     }
@@ -260,7 +254,6 @@ export default class DialogCustom extends React.Component {
         this.setState({idNhom: this.state.listGroup[id].ID_Nhom, positionGroupChoose: id}, function () {
             this.getListNhanVienFromSv(this.state.listGroup[id].ID_Nhom)
         })
-
 
     }
 

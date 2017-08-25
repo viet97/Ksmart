@@ -16,7 +16,7 @@ import DialogManager, {ScaleAnimation, DialogContent} from 'react-native-dialog-
 import Toast from 'react-native-simple-toast';
 import Image from 'react-native-image-progress';
 import Icon1 from 'react-native-vector-icons/Entypo'
-import PTRView from 'react-native-pull-to-refresh'
+
 import Icon2 from 'react-native-vector-icons/Ionicons'
 import DatePicker from "react-native-datepicker";
 import Color from '../configs/color'
@@ -67,7 +67,7 @@ export default class CustomerPlant extends Component {
             NhanVienStatus: [],
             dataNhanVien: [],
             namePerson: '- Chọn nhân viên -'
-            
+
         }
 
     }
@@ -94,13 +94,13 @@ export default class CustomerPlant extends Component {
         fetch(URlConfig.getCustomerLink(PAGE))
             .then((response) => (response.json()))
             .then((responseJson) => {
+
+
                 if (responseJson.status) {
                     if (responseJson.endlist) ALL_LOADED = true
                     this.setState({
                         dataRender: responseJson.data,
                         dataSearch: responseJson.data
-                    }, function () {
-
                     })
 
                 } else ALL_LOADED = true
@@ -145,11 +145,13 @@ export default class CustomerPlant extends Component {
             return (
                 <View style={{backgroundColor: Color.backGroundFlatList, flex: 9}}>
                     <FlatList
+                        refreshing={this.state.refreshing}
+                        onRefresh={() => {
+                            this.refreshData()
+                        }}
                         keyExtractor={(item, index) => {
                             item.key = index
                         }}
-                        refreshing={this.state.refreshing}
-                        onRefresh={() => this.refreshData()}
                         ListFooterComponent={this.renderFooter}
                         onEndReachedThreshold={0.2}
                         onEndReached={() => {
@@ -162,7 +164,6 @@ export default class CustomerPlant extends Component {
                         data={this.state.dataRender}
                         renderItem={({item}) =>
                             <CustomerPlantComponent
-                                date={this.state.datePlant}
                                 idcuahang={item.idcuahang}
                                 idnhanvien={this.state.idNhanvien}
                                 item={item}
@@ -228,10 +229,9 @@ export default class CustomerPlant extends Component {
         return (
             <View style={{flex: 1, backgroundColor: Color.backGroundFlatList}}>
                 <View style={styles.titleStyle}>
-                    <TouchableOpacity onPress={() => this.props.backToTravel()}
-                                      style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
-                        <Icon2 style={styles.iconStyle} size={24} color="white"
-                               name="ios-arrow-back"/></TouchableOpacity>
+                    <TouchableOpacity style={styles.iconStyle} onPress={() => this.props.backToTravel()}>
+                        <Icon2 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
+                    </TouchableOpacity>
                     <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Lập kế hoạch</Text>
                     <TouchableOpacity
                         onPress={() => {
@@ -241,6 +241,18 @@ export default class CustomerPlant extends Component {
                         <Text style={{color: 'white', paddingRight: 8, paddingTop: 4}}>OK</Text>
                     </TouchableOpacity>
                 </View>
+                <TouchableOpacity onPress={() => this.props.backToTravel()}
+                                  style={{
+                                      width: 50,
+                                      height: 50,
+                                      position: 'absolute',
+                                      left: 16,
+                                      top: 0,
+                                      right: 0,
+                                      bottom: 0
+                                  }}/>
+
+
                 <View style={{
                     marginLeft: 8,
                     marginTop: 8,
@@ -310,14 +322,7 @@ export default class CustomerPlant extends Component {
                         <Text>{this.state.namePerson}</Text>
                     </TouchableOpacity>
                 </View>
-                <View
-                    style={{flex: 9}}>
-                    <PTRView
-                        onRefresh={() => this.refreshData()}
-                    >
-                        {this.flatListorIndicator()}
-                    </PTRView>
-                </View>
+                {this.flatListorIndicator()}
                 <Modal
                     style={[styles.modal, styles.modal1]}
                     ref={"modal"}
@@ -331,8 +336,7 @@ export default class CustomerPlant extends Component {
 
                         </TouchableOpacity>
                     </View>
-                    <DialogCustom callback={(id) => {
-                        this.setState({idNhanvien: id})
+                    <DialogCustom callback={() => {
                     }}/>
                 </Modal>
 
@@ -373,26 +377,27 @@ export default class CustomerPlant extends Component {
         }
         if (obj.dulieulapkehoach.length === 0 || this.state.idNhanvien.length === 0) Toast.show('Vui lòng chọn kế hoạch cho nhân viên trước khi lập kế hoạch')
         else
-        fetch(URlConfig.getLinkLapKeHoach(obj))
-            .then((response) => (response.json()))
-            .then((responseJson) => {
-                console.log(responseJson)
-                if (responseJson.status) {
-                    if (responseJson.listkehoachmoi.length !== 0)
-                        Toast.show('Lập kế hoạch thành công')
-                    else
-                        Toast.show('Kế hoạch đã bị trùng , vui lòng thử lại')
-                    this.props.backToTravel()
-                }
-            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+            fetch(URlConfig.getLinkLapKeHoach(obj))
+                .then((response) => (response.json()))
+                .then((responseJson) => {
+                    console.log(responseJson)
+                    if (responseJson.status) {
+                        if (responseJson.listkehoachmoi.length !== 0)
+                            Toast.show('Lập kế hoạch thành công')
+                        else
+                            Toast.show('Kế hoạch đã bị trùng , vui lòng thử lại')
+                        this.props.backToTravel()
+                    }
+                }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
 
     }
 
     componentDidMount() {
         ALL_LOADED = false
-        fetch(URlConfig.getCustomerLink(PAGE, SEARCH_STRING))
+        fetch(URlConfig.getCustomerLink(PAGE))
             .then((response) => (response.json()))
             .then((responseJson) => {
+                console.log(responseJson.data.length)
                 if (responseJson.endlist) ALL_LOADED = true
                 if (responseJson.status) {
                     this.setState({
@@ -403,7 +408,21 @@ export default class CustomerPlant extends Component {
 
                 }
             }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+        fetch(URlConfig.getListNhanVienLink())
+            .then((response) => (response.json()))
+            .then((responseJson) => {
+                if (responseJson.status) {
+                    var arr = []
+                    this.setState({
+                        dataNhanVien: responseJson.dsNhanVien
+                    }, function () {
+                        for (var item in responseJson.dsNhanVien)
+                            arr.push(responseJson.dsNhanVien[item].tennhanvien)
+                        this.setState({NhanVienStatus: arr})
+                    })
 
+                }
+            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
     }
 }
 const styles = StyleSheet.create({
@@ -428,6 +447,8 @@ const styles = StyleSheet.create({
         paddingBottom: 8
     }, iconStyle: {
         alignSelf: 'center',
+        width: 35,
+        height: 35,
         backgroundColor: "transparent",
         marginLeft: 16,
         marginTop: (Platform.OS === 'ios') ? 8 : 0
