@@ -16,7 +16,7 @@ import DialogManager, {ScaleAnimation, DialogContent} from 'react-native-dialog-
 import Toast from 'react-native-simple-toast';
 import Image from 'react-native-image-progress';
 import Icon1 from 'react-native-vector-icons/Entypo'
-
+import PTRView from 'react-native-pull-to-refresh'
 import Icon2 from 'react-native-vector-icons/Ionicons'
 import DatePicker from "react-native-datepicker";
 import Color from '../configs/color'
@@ -67,14 +67,14 @@ export default class CustomerPlant extends Component {
             NhanVienStatus: [],
             dataNhanVien: [],
             namePerson: '- Chọn nhân viên -'
-
+            
         }
 
     }
 
     renderFooter = () => {
 
-        if (ALL_LOADED || this.state.isSearching) return null
+        if (ALL_LOADED) return null
         return (
             <View
                 style={{
@@ -91,16 +91,16 @@ export default class CustomerPlant extends Component {
         PAGE = 0;
         this.setState({dataRender: null})
         ALL_LOADED = false
-        fetch(URlConfig.getCustomerLink(PAGE))
+        fetch(URlConfig.getCustomerLink(PAGE, SEARCH_STRING))
             .then((response) => (response.json()))
             .then((responseJson) => {
-
-
                 if (responseJson.status) {
                     if (responseJson.endlist) ALL_LOADED = true
                     this.setState({
                         dataRender: responseJson.data,
                         dataSearch: responseJson.data
+                    }, function () {
+
                     })
 
                 } else ALL_LOADED = true
@@ -113,7 +113,7 @@ export default class CustomerPlant extends Component {
         if (!this.state.onEndReach) {
 
             this.setState({onEndReach: true})
-            fetch(URlConfig.getCustomerLink(PAGE))
+            fetch(URlConfig.getCustomerLink(PAGE, SEARCH_STRING))
                 .then((response) => (response.json()))
                 .then((responseJson) => {
 
@@ -145,13 +145,11 @@ export default class CustomerPlant extends Component {
             return (
                 <View style={{backgroundColor: Color.backGroundFlatList, flex: 9}}>
                     <FlatList
-                        refreshing={this.state.refreshing}
-                        onRefresh={() => {
-                            this.refreshData()
-                        }}
                         keyExtractor={(item, index) => {
                             item.key = index
                         }}
+                        refreshing={this.state.refreshing}
+                        onRefresh={() => this.refreshData()}
                         ListFooterComponent={this.renderFooter}
                         onEndReachedThreshold={0.2}
                         onEndReached={() => {
@@ -164,6 +162,7 @@ export default class CustomerPlant extends Component {
                         data={this.state.dataRender}
                         renderItem={({item}) =>
                             <CustomerPlantComponent
+                                date={this.state.datePlant}
                                 idcuahang={item.idcuahang}
                                 idnhanvien={this.state.idNhanvien}
                                 item={item}
@@ -198,28 +197,32 @@ export default class CustomerPlant extends Component {
 
     }
 
+    getDataFromSv() {
+        ALL_LOADED = false
+        this.setState({dataRender: null})
+        PAGE = 0
+        fetch(URlConfig.getCustomerLink(PAGE, SEARCH_STRING))
+            .then((response) => (response.json()))
+            .then((responseJson) => {
+                if (responseJson.endlist) ALL_LOADED = true
+                if (responseJson.status) {
+                    this.setState({
+                        dataRender: responseJson.data,
+                        dataSearch: responseJson.data
+                    })
+
+
+                }
+            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+
+    }
     onChangeText(text) {
-        this.setState({isSearching: true})
 
         return new Promise((resolve, reject) => {
             resolve();
-
-            var arr = []
-            var a = text.toLowerCase()
-            SEARCH_STRING = a
-
-            if (a.length === 0) this.setState({dataRender: this.state.dataSearch})
-            else
-                for (var item in this.state.dataSearch) {
-                    if (a !== SEARCH_STRING) return
-
-                    if (this.state.dataSearch[item].TenCuaHang.toLowerCase().search(a) !== -1) {
-                        arr.push(this.state.dataSearch[item])
-                    }
-                }
-
-            if (a.length !== 0) this.setState({dataRender: arr})
-            else this.setState({isSearching: false})
+            var keyWord = text.toLowerCase()
+            SEARCH_STRING = keyWord
+            this.getDataFromSv()
         });
     }
 
@@ -229,9 +232,10 @@ export default class CustomerPlant extends Component {
         return (
             <View style={{flex: 1, backgroundColor: Color.backGroundFlatList}}>
                 <View style={styles.titleStyle}>
-                    <TouchableOpacity style={styles.iconStyle} onPress={() => this.props.backToTravel()}>
-                        <Icon2 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
-                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => this.props.backToTravel()}
+                                      style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
+                        <Icon2 style={styles.iconStyle} size={24} color="white"
+                               name="ios-arrow-back"/></TouchableOpacity>
                     <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Lập kế hoạch</Text>
                     <TouchableOpacity
                         onPress={() => {
@@ -241,18 +245,6 @@ export default class CustomerPlant extends Component {
                         <Text style={{color: 'white', paddingRight: 8, paddingTop: 4}}>OK</Text>
                     </TouchableOpacity>
                 </View>
-                <TouchableOpacity onPress={() => this.props.backToTravel()}
-                                  style={{
-                                      width: 50,
-                                      height: 50,
-                                      position: 'absolute',
-                                      left: 16,
-                                      top: 0,
-                                      right: 0,
-                                      bottom: 0
-                                  }}/>
-
-
                 <View style={{
                     marginLeft: 8,
                     marginTop: 8,
@@ -336,7 +328,8 @@ export default class CustomerPlant extends Component {
 
                         </TouchableOpacity>
                     </View>
-                    <DialogCustom callback={() => {
+                    <DialogCustom callback={(id) => {
+                        this.setState({idNhanvien: id})
                     }}/>
                 </Modal>
 
@@ -363,9 +356,10 @@ export default class CustomerPlant extends Component {
     onCancel() {
         return new Promise((resolve, reject) => {
             resolve();
-
-            SEARCH_STRING = ''
-            this.setState({dataRender: this.state.dataSearch, isSearching: false})
+            if (SEARCH_STRING.length !== 0) {
+                SEARCH_STRING = ''
+                this.getDataFromSv()
+            }
         });
     }
 
@@ -377,52 +371,26 @@ export default class CustomerPlant extends Component {
         }
         if (obj.dulieulapkehoach.length === 0 || this.state.idNhanvien.length === 0) Toast.show('Vui lòng chọn kế hoạch cho nhân viên trước khi lập kế hoạch')
         else
-            fetch(URlConfig.getLinkLapKeHoach(obj))
-                .then((response) => (response.json()))
-                .then((responseJson) => {
-                    console.log(responseJson)
-                    if (responseJson.status) {
-                        if (responseJson.listkehoachmoi.length !== 0)
-                            Toast.show('Lập kế hoạch thành công')
-                        else
-                            Toast.show('Kế hoạch đã bị trùng , vui lòng thử lại')
-                        this.props.backToTravel()
-                    }
-                }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+        fetch(URlConfig.getLinkLapKeHoach(obj))
+            .then((response) => (response.json()))
+            .then((responseJson) => {
+                console.log(responseJson)
+                if (responseJson.status) {
+                    if (responseJson.listkehoachmoi.length !== 0)
+                        Toast.show('Lập kế hoạch thành công')
+                    else
+                        Toast.show('Kế hoạch đã bị trùng , vui lòng thử lại')
+                    this.props.backToTravel()
+                }
+            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
 
     }
 
     componentDidMount() {
         ALL_LOADED = false
-        fetch(URlConfig.getCustomerLink(PAGE))
-            .then((response) => (response.json()))
-            .then((responseJson) => {
-                console.log(responseJson.data.length)
-                if (responseJson.endlist) ALL_LOADED = true
-                if (responseJson.status) {
-                    this.setState({
-                        dataRender: responseJson.data,
-                        dataSearch: responseJson.data
-                    })
+        SEARCH_STRING = ''
+        this.getDataFromSv()
 
-
-                }
-            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
-        fetch(URlConfig.getListNhanVienLink())
-            .then((response) => (response.json()))
-            .then((responseJson) => {
-                if (responseJson.status) {
-                    var arr = []
-                    this.setState({
-                        dataNhanVien: responseJson.dsNhanVien
-                    }, function () {
-                        for (var item in responseJson.dsNhanVien)
-                            arr.push(responseJson.dsNhanVien[item].tennhanvien)
-                        this.setState({NhanVienStatus: arr})
-                    })
-
-                }
-            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
     }
 }
 const styles = StyleSheet.create({
@@ -447,8 +415,6 @@ const styles = StyleSheet.create({
         paddingBottom: 8
     }, iconStyle: {
         alignSelf: 'center',
-        width: 35,
-        height: 35,
         backgroundColor: "transparent",
         marginLeft: 16,
         marginTop: (Platform.OS === 'ios') ? 8 : 0

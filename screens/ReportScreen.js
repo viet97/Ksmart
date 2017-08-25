@@ -83,6 +83,7 @@ export default class ReportScreen extends Component {
     }
 
     componentDidMount() {
+        SEARCH_STRING = ''
         this.getReportListFromServer()
     }
 

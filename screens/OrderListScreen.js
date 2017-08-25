@@ -163,6 +163,7 @@ export default class OrderListScreen extends Component {
 
 
     componentDidMount() {
+        SEARCH_STRING = ''
         this.getOrderListFromServer(this.state.filtDialog.dateFrom, this.state.filtDialog.dateTo)
     }
 

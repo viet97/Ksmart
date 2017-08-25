@@ -85,7 +85,7 @@ export default class TravelScreen extends React.Component {
 
 
     componentWillMount() {
-
+        SEARCH_STRING = ''
         let arr = [];
         arr.push('Tất cả');
         arr.push('Chưa vào điểm');

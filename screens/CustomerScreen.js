@@ -61,6 +61,7 @@ export default class CustomerScreen extends Component {
         PAGE = 0;
         this.setState({dataRender: null})
         ALL_LOADED = false
+
         fetch(URlConfig.getCustomerLink(PAGE, SEARCH_STRING))
             .then((response) => (response.json()))
             .then((responseJson) => {
@@ -230,6 +231,8 @@ export default class CustomerScreen extends Component {
     }
 
     componentDidMount() {
+        PAGE = 0
+        SEARCH_STRING = ''
         this.getDataFromSv()
     }
 }

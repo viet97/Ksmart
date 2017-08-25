@@ -619,6 +619,7 @@ export default class ListNhanVienScreen extends React.Component {
     }
 
     componentDidMount() {
+        SEARCH_STRING = ''
         this.getDataFromSv()
     }
 
