@@ -65,9 +65,10 @@ export default class CustomerScreen extends Component {
         fetch(URlConfig.getCustomerLink(PAGE, SEARCH_STRING))
             .then((response) => (response.json()))
             .then((responseJson) => {
-                console.log(URlConfig.getCustomerLink(PAGE, SEARCH_STRING), responseJson)
+                console.log('dm', URlConfig.getCustomerLink(PAGE, SEARCH_STRING), responseJson)
                 if (responseJson.status) {
                     PAGE = responseJson.lastid
+
                     if (responseJson.endlist) {
                         ALL_LOADED = true
                         this.forceUpdate()

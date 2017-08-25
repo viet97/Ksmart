@@ -62,7 +62,6 @@ export default class ModalSendMessage extends Component {
         } else {
             return (
                 <Image
-
                     source={{uri: 'http://jav.ksmart.vn' + url}}
                     indicator={ProgressBar.Pie}
                     style={{margin: 8, width: 60, height: 60, borderRadius: 30}}/>
@@ -131,6 +130,7 @@ export default class ModalSendMessage extends Component {
                 <View style={{flex: 9}}>
                         <View style={styles.autocompleteContainer}>
                             <Autocomplete
+                                ref="autocp"
                                 hideResults={this.state.hideResults}
                                 data={this.state.listNhanVien}
                                 defaultValue={this.state.nameInput}
@@ -138,11 +138,15 @@ export default class ModalSendMessage extends Component {
                                 style={{width: width - 32, paddingLeft: 8, height: 40, backgroundColor: 'white'}}
                                 onChangeText={text => {
                                     if (text.length !== 0) {
-                                        this.setState({hideResults: false, receiver: text}, function () {
+                                        this.setState({
+                                            hideResults: false,
+                                            receiver: text,
+                                            nameInput: text
+                                        }, function () {
                                             this.requestSearch(text)
                                         })
                                     } else {
-                                        this.setState({hideResults: true})
+                                        this.setState({hideResults: true, nameInput: ''})
                                     }
                                 }}
                                 renderItem={(data) => (
@@ -153,7 +157,9 @@ export default class ModalSendMessage extends Component {
                                                 nameInput: data.tennhanvien,
                                                 IDNhanVien: data.idnhanvien,
                                                 hideResults: true
-                                            })
+                                            }, function () {
+                                                Keyboard.dismiss();
+                                            });
                                         }}>
 
                                         <View style={{justifyContent: 'center'}}>

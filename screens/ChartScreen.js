@@ -377,13 +377,16 @@ export default class ChartScreen extends React.Component {
 
                         </ModalDropdownCustom>
                     </View>
-                    <ModalDropdownCustom
-                        data={this.state.type}
-                        defaultValue={this.state.type[0]}
-                        onSelect={(idx, value) => {
-                            this.setState({numberTypePick: idx})
-                        }}
-                    />
+                    <View style={{alignSelf: 'center', flexDirection: 'row', backgroundColor: 'transparent'}}>
+                        <Text style={{color: 'white', alignSelf: 'center', marginRight: 4}}>Dạng hiển thị</Text>
+                        <ModalDropdownCustom
+                            data={this.state.type}
+                            defaultValue={this.state.type[0]}
+                            onSelect={(idx, value) => {
+                                this.setState({numberTypePick: idx})
+                            }}
+                        />
+                    </View>
                     {this.getChartorFlatListorNull(options)}
                 </View>
                 <ProgressDialog

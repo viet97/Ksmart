@@ -40,6 +40,7 @@ export default class ModalDropdownCustom extends Component {
                     borderRadius: 10,
                     justifyContent: 'center',
                     alignItems: 'center',
+                    borderRightWidth: 0.4,
                     marginTop: 4, backgroundColor: 'transparent'
                 }}
                 defaultValue={this.props.defaultValue}
