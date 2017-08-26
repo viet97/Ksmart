@@ -13,6 +13,8 @@ import Image from 'react-native-image-progress';
 import ProgressBar from 'react-native-progress/Bar';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import Icon1 from 'react-native-vector-icons/Ionicons'
+
+
 import React from 'react';
 import Color from '../configs/color'
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
@@ -34,9 +36,10 @@ export default class TravelScreen extends React.Component {
         ALL_LOADED = false
         this.setState({isEndList: false, dataRender: null})
         PAGE = 1
-        fetch(URlConfig.getLinkTravel(this.state.dateFrom, this.state.dateTo, PAGE))
+        fetch(URlConfig.getLinkTravel(this.state.dateFrom, this.state.dateTo, PAGE, this.state.status))
             .then((response) => (response.json()))
             .then((responseJson) => {
+                console.log(responseJson.data)
                     if (responseJson.status) {
                         this.setState({
                             dataFull: responseJson.data,
@@ -70,6 +73,7 @@ export default class TravelScreen extends React.Component {
 
         today = dd + '-' + mm + '-' + yyyy;
         this.state = ({
+            status: 2,
             isEndList: false,
             numberPickTravel: 0,
             travelStatus: [],
@@ -92,48 +96,8 @@ export default class TravelScreen extends React.Component {
         arr.push('Đã vào điểm');
         arr.push('Sắp đến giờ');
         this.setState({travelStatus: arr});
-
         this.getDataFromSv()
     }
-
-    setDataRender() {
-
-        let data = this.state.dataFull.slice(0, NUMBER_ROW_RENDER + 10)
-        NUMBER_ROW_RENDER = NUMBER_ROW_RENDER + 10
-        let arr = []
-        switch (this.state.numberPickTravel) {
-            case 0:
-                arr = data
-                break;
-            case 1:
-
-                for (let item of data) {
-                    if (item.TrangThai === 0) {
-                        arr.push(item)
-                    }
-                }
-                break;
-            case 2:
-                for (let item of data) {
-                    if (item.TrangThai === 1) {
-                        arr.push(item)
-                    }
-                }
-                break;
-            case 3:
-                for (let item of data) {
-                    let now = new Date();
-                    let timeItem = new Date(item.ThoiGianVaoDiemDuKien);
-                    let seconds = (timeItem.getTime() - 7 * 3600 * 1000 - now.getTime()) / 1000;
-                    if (seconds >= 0 && seconds <= TIME_SAP_DEN_GIO) {
-                        arr.push(item)
-                    }
-                }
-                break;
-        }
-        this.setState({dataRender: arr})
-    }
-
 
     getImage(url) {
         if (url.length === 0) {
@@ -161,8 +125,7 @@ export default class TravelScreen extends React.Component {
 
             if (!this.state.isEndList) {
                 PAGE = PAGE + 1;
-                let url = URlConfig.getLinkTravel(this.state.dateFrom, this.state.dateTo, PAGE)
-                console.log(url);
+                let url = URlConfig.getLinkTravel(this.state.dateFrom, this.state.dateTo, PAGE, this.state.status)
                 fetch(url)
                     .then((response) => (response.json()))
                     .then((responseJson) => {
@@ -226,6 +189,8 @@ export default class TravelScreen extends React.Component {
                 <FlatList
                     ListFooterComponent={this.renderFooter}
                     ref="listview"
+                    refreshing={this.state.refreshing}
+                    onRefresh={() => this.refreshData()}
                     onEndReachedThreshold={0.2}
                     onEndReached={() => {
                         this.loadMoreDataFromSv()
@@ -349,12 +314,29 @@ export default class TravelScreen extends React.Component {
                     <ModalDropdownCustom
                         data={this.state.travelStatus}
                         defaultValue={this.state.travelStatus[0]}
-                        onSelect={(idx, value) =>
-                            this.setState({numberPickTravel: idx})
-
-                        }
-
-                    />
+                        onSelect={(idx, value) => {
+                            let status = ''
+                            this.setState({
+                                numberPickTravel: idx
+                            })
+                            switch (idx) {
+                                case 0:
+                                    status = 2
+                                    break
+                                case 1:
+                                    status = 0
+                                    break
+                                case 2:
+                                    status = 1
+                                    break
+                                case 3:
+                                    status = 3
+                                    break
+                            }
+                            this.setState({status: status}, function () {
+                                this.getDataFromSv()
+                            })
+                        }}/>
                 </View>
                 {this.flatListorIndicator()}
             </View>

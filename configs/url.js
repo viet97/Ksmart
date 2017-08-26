@@ -25,8 +25,8 @@ export default class URlConfig {
 
             + idct + '&taikhoan=' + username + '&matkhau=' + md5.hex_md5(password) + '&kinhdo=0&vido=0'
             + '&isFakeGPS=1&device=' + DeviceInfo.getSystemName() + '&idpush=' + DeviceInfo.getUniqueID() + '&os=' + os
-            + '&ver='+DeviceInfo.getVersion()+'&accuracy=0&osversion=' + DeviceInfo.getSystemVersion() + '&dongmay=' + DeviceInfo.getModel() + '&doimay='
-            + '&imei=124125125243&devicename='+DeviceInfo.getManufacturer()+'&isCheDoTietKiemPin=0'
+            + '&ver=' + DeviceInfo.getVersion() + '&accuracy=0&osversion=' + DeviceInfo.getSystemVersion() + '&dongmay=' + DeviceInfo.getModel() + '&doimay='
+            + '&imei=124125125243&devicename=' + DeviceInfo.getManufacturer() + '&isCheDoTietKiemPin=0'
             + '&ngaycaidat='
     }
 
@@ -51,6 +51,7 @@ export default class URlConfig {
         let data = URlConfig.OBJLOGIN;
         return data.urlserver + '/AppGuiTinNhan.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&noidung=' + noidung + '&tieude=' + tieude + '&idnhanvien=' + id + '&loai=quanlyguinhanvien'
     }
+
     static getNewFeedLink(page, keyWord) {
         let data = URlConfig.OBJLOGIN;
         return data.urlserver + '/AppNewFeed_v2.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&macongty=' + data.idct + '&page=' + page + '&timkiem=' + keyWord;
@@ -84,10 +85,25 @@ export default class URlConfig {
         return data.urlserver + '/AppDanhSachDonHang_v2.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idct=' + data.idcongty + '&from=' + from + '&to=' + to + '&rangthaigps=0&page=' + page + '&timkiem=' + keyword;
     }
 
-    static getLinkTravel(dateFrom, dateTo, page) {
-        //http://jav.ksmart.vn/AppKeHoachDiChuyen_v3.aspx?token=6e22b116f5111220741848ccd290e9e9a281184550a212fd0a896d68f16f236e&idct=1&idquanly=47&from=13-07-2017&to=&00loai=chitietcacngaycokehoach
+    static getLinkTravel(dateFrom, dateTo, page, status, minutes = 5) {
         let data = URlConfig.OBJLOGIN;
-        return data.urlserver + '/AppKeHoachDiChuyen_v4.aspx?token=' + md5.hex_md5(Date.now()) + '&idct=' + data.idcongty + '&idquanly=' + data.id + '&from=' + dateFrom + '&to=' + dateTo + '&loai=chitietcacngaycokehoach&page=' + page;
+        let loctrangthai = ''
+        switch (status) {
+            case 0:
+                loctrangthai = '&loctrangthai=' + status
+                break
+            case 1:
+                loctrangthai = '&loctrangthai=' + status
+                break
+            case 2:
+                loctrangthai = '&loctrangthai=' + status
+                break
+            case 3:
+                loctrangthai = '&loctrangthai=' + status + '&sophut=' + minutes
+                break
+
+        }
+        return data.urlserver + '/AppKeHoachDiChuyen_v4.aspx?token=' + md5.hex_md5(Date.now()) + '&idct=' + data.idcongty + '&idquanly=' + data.id + '&from=' + dateFrom + '&to=' + dateTo + '&loai=chitietcacngaycokehoach&page=' + page + loctrangthai;
     }
 
     static getCustomerLink(page, keyword = '') {

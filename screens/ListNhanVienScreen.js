@@ -619,6 +619,10 @@ export default class ListNhanVienScreen extends React.Component {
     }
 
     componentDidMount() {
+        pickStatus = 0;
+        pickParty = 0;
+        id_nhom = null;
+        status = -1;
         SEARCH_STRING = ''
         this.getDataFromSv()
     }

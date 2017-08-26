@@ -203,6 +203,7 @@ export default class CustomerPlant extends Component {
                                         this.setState({dataChoose: arr})
                                     }
                                 }
+                                console.log(arr)
                             }}/>
                     }
                 />
