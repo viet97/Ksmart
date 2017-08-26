@@ -352,6 +352,11 @@ export default class CustomerPlant extends Component {
                         this.refs.modal.close()
                     }} callback={(id, tennhanvien) => {
                         this.setState({idNhanvien: id, namePerson: tennhanvien})
+                        if (this.state.dataChoose.length !== 0) {
+                            for (let i = 0; i < this.state.dataChoose.length; i++) {
+                                this.state.dataChoose[i].idnhanvien = id
+                            }
+                        }
                     }}/>
                 </Modal>
 

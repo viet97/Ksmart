@@ -120,7 +120,7 @@ export default class ReportScreen extends Component {
     getReportListFromServer() {
         ALL_LOADED = false
         this.setState({isEndList: false, dataRender: null})
-        PAGE = 1
+        PAGE = 1;
         let url = this.getTypeLinkOfReport()
         fetch(url)
             .then((response) => (response.json()))
