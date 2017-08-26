@@ -322,13 +322,16 @@ export default class OnlineChartScreen extends React.Component {
                             }}
                         />
                     </View>
-                    <ModalDropdownCustom
-                        data={this.state.type}
-                        defaultValue={this.state.type[0]}
-                        onSelect={(idx, value) => {
-                            this.setState({numberTypePick: idx})
-                        }}
-                    />
+                    <View style={{backgroundColor: 'transparent', flexDirection: 'row', justifyContent: 'center'}}>
+                        <Text style={{color: 'white', alignSelf: 'center', marginRight: 4}}>Dạng hiển thị</Text>
+                        <ModalDropdownCustom
+                            data={this.state.type}
+                            defaultValue={this.state.type[0]}
+                            onSelect={(idx, value) => {
+                                this.setState({numberTypePick: idx})
+                            }}
+                        />
+                    </View>
                     {this.getChartorFlatListorNull(options)}
                 </View>
             </View>

@@ -17,6 +17,7 @@ import Toast from 'react-native-simple-toast'
 import ultils from "../configs/ultils";
 import ModalDropdownCustom from "../components/ModalDropdownCustom";
 import PTRView from 'react-native-pull-to-refresh'
+
 var {height, width} = Dimensions.get('window');
 export default class TravelChartScreen extends React.Component {
     static navigationOptions = {
@@ -197,6 +198,7 @@ export default class TravelChartScreen extends React.Component {
         else title = 'Biểu đồ tần suất nhân viên viếng thăm'
         return title
     }
+
     getTitleChart() {
         var b = this.state.keyChart
         title = 'Biểu đồ tần suất nhân viên viếng thăm từ ngày ' + this.state.dateFrom + ' đến ngày ' + this.state.dateTo
@@ -330,14 +332,17 @@ export default class TravelChartScreen extends React.Component {
                             }}
                         />
                     </View>
-                    <ModalDropdownCustom
-                        data={this.state.type}
-                        defaultValue={this.state.type[0]}
-                        onSelect={(idx, value) => {
-                            this.setState({numberTypePick: idx})
-                        }}
-                    />
-                            {this.getChartorFlatListorNull(options)}
+                    <View style={{backgroundColor: 'transparent', flexDirection: 'row', justifyContent: 'center'}}>
+                        <Text style={{color: 'white', alignSelf: 'center', marginRight: 4}}>Dạng hiển thị</Text>
+                        <ModalDropdownCustom
+                            data={this.state.type}
+                            defaultValue={this.state.type[0]}
+                            onSelect={(idx, value) => {
+                                this.setState({numberTypePick: idx})
+                            }}
+                        />
+                    </View>
+                    {this.getChartorFlatListorNull(options)}
 
 
                 </View>

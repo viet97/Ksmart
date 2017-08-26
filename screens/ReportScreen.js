@@ -378,15 +378,18 @@ export default class ReportScreen extends Component {
                             }}
                         />
                     </View>
-                    <ModalDropdownCustom
-                        data={this.state.reportStatus}
-                        defaultValue={this.state.reportStatus[0]}
-                        onSelect={(idx, value) => {
-                            this.setState({numberPickType: idx}, function () {
-                                this.getReportListFromServer()
-                            })
-                        }}
-                    />
+                    <View style={{backgroundColor: 'transparent', flexDirection: 'row', justifyContent: 'center'}}>
+                        <Text style={{color: 'white', alignSelf: 'center', marginRight: 4}}>Loại</Text>
+                        <ModalDropdownCustom
+                            data={this.state.reportStatus}
+                            defaultValue={this.state.reportStatus[0]}
+                            onSelect={(idx, value) => {
+                                this.setState({numberPickType: idx}, function () {
+                                    this.getReportListFromServer()
+                                })
+                            }}
+                        />
+                    </View>
                     <View style={{width: width}}>
                         <Search
                             ref="search_box"

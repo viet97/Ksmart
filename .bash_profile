@@ -1,0 +1,1 @@
+export PATH=/Users/hao/Library/Android/sdk/platform-tools:/Users/hao/Library/Android/sdk/tools:$PATH
