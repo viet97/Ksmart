@@ -34,6 +34,7 @@ export default class TravelScreen extends React.Component {
 
     getDataFromSv() {
         ALL_LOADED = false
+        console.log(URlConfig.getLinkTravel(this.state.dateFrom, this.state.dateTo, PAGE, this.state.status))
         this.setState({isEndList: false, dataRender: null})
         PAGE = 1;
         fetch(URlConfig.getLinkTravel(this.state.dateFrom, this.state.dateTo, PAGE, this.state.status))

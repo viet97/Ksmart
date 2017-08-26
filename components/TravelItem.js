@@ -78,7 +78,6 @@ export default class TravelItem extends React.Component {
 
     render() {
         let item = this.props.data;
-        console.log('item1', item);
         var strVaoDiem = '';
         var strRaDiem = '';
         if (item.ThoiGianVaoDiemThucTe === '1900-01-01T00:00:00') {
@@ -185,9 +184,7 @@ export default class TravelItem extends React.Component {
                             fetch(URlConfig.getLinkDeleteTravel(item.IDKeHoach))
                                 .then((response) => response.json())
                                 .then((responseJson) => {
-                                    console.log('url', URlConfig.getLinkDeleteTravel(item.IDKeHoach))
                                     if (responseJson.status) {
-
                                         Toast.show('Xoá thành công!')
                                         this.props.refreshData();
                                     } else {

@@ -30,6 +30,7 @@ export default class NewFeedItem extends React.Component {
     }
 
     getImage(urlImage) {
+
         if (urlImage === undefined || urlImage.length === 0) {
             return (
 
@@ -42,7 +43,7 @@ export default class NewFeedItem extends React.Component {
             return (
                 <Image
                     style={{margin: 8, width: 60, height: 60, borderRadius: 30}}
-                    source={{uri: 'http://jav.ksmart.vn' + urlImage}}
+                    source={{uri: urlImage}}
                     // indicator={ProgressBar.Pie}
                 />
             );
