@@ -35,7 +35,7 @@ export default class TravelScreen extends React.Component {
     getDataFromSv() {
         ALL_LOADED = false
         this.setState({isEndList: false, dataRender: null})
-        PAGE = 1
+        PAGE = 1;
         fetch(URlConfig.getLinkTravel(this.state.dateFrom, this.state.dateTo, PAGE, this.state.status))
             .then((response) => (response.json()))
             .then((responseJson) => {
@@ -47,7 +47,7 @@ export default class TravelScreen extends React.Component {
                             dataRender: responseJson.data
                         }, function () {
                             if (this.state.isEndList) {
-                                ALL_LOADED = true
+                                ALL_LOADED = true;
                                 this.forceUpdate()
                             }
                         })
@@ -206,6 +206,9 @@ export default class TravelScreen extends React.Component {
                             data={item}
                             callback={() => this.props.callback(item)}
                             backToTravel={() => this.props.backToTravel()}
+                            editClick={() => {
+                                this.props.goToEditTravel(item)
+                            }}
                         />
                     }
                 />

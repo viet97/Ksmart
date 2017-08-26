@@ -64,7 +64,8 @@ export default class TravelItem extends React.Component {
     }
 
     editClick() {
-        this.props.callback();
+        this.props.editClick();
+
     }
 
     millisToMinutes(from, to) {

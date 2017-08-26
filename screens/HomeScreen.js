@@ -181,6 +181,9 @@ export default class HomeScreen extends React.Component {
                     callback={(data) => {
                         navigate('DetailTravel', {data: data})
                     }}
+                    goToEditTravel={(data) => {
+                        navigate('EditTravel', {data: data})
+                    }}
 
                 />
             case "Chart":
