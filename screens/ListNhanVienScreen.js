@@ -27,6 +27,7 @@ import TabNavigator from 'react-native-tab-navigator';
 import MapListScreen from "./MapListScreen";
 import {Dialog} from 'react-native-simple-dialogs';
 import PTRView from 'react-native-pull-to-refresh'
+import ListNhanVienItem from "../components/ListNhanVienItem";
 
 let {height, width} = Dimensions.get('window');
 
@@ -80,7 +81,7 @@ export default class ListNhanVienScreen extends React.Component {
             return (
                 <Image
 
-                    source={{uri: 'http://jav.ksmart.vn' + url}}
+                    source={{uri: url}}
                     indicator={ProgressBar.Pie}
                     style={{margin: 8, width: 60, height: 60, borderRadius: 30}}/>
             );
@@ -265,47 +266,11 @@ export default class ListNhanVienScreen extends React.Component {
                     extraData={this.state.dataRender}
                     data={this.state.dataRender}
                     renderItem={({item}) =>
-                        <TouchableOpacity onPress={() => this.props.goToDetailNhanVien(item.idnhanvien)}>
-                            <View style={{
-                                margin: 4
-                            }}>
-                                <Image source={require('../images/bg1.png')}
-                                       style={{
-                                           width: width - 8,
-                                           height: height / 6
-                                       }}>
-                                    <Text style={{textAlign: 'right', fontSize: 12, backgroundColor: 'transparent'}}>
-                                        Cập nhật
-                                        lúc {item.thoigiancapnhat}</Text>
-                                    <View style={{flexDirection: 'row'}}>
-                                        <View style={{justifyContent: 'center'}}>
-                                            <Image indicator={ProgressBar.Pie}
-                                                   style={{margin: 8, width: 60, height: 60, borderRadius: 30}}
-                                                   source={require('../images/bglogin.jpg')}/>
-                                        </View>
-                                        <View style={{
-                                            flex: 4,
-                                            margin: 8,
-                                            justifyContent: 'center',
-                                            backgroundColor: 'transparent'
-                                        }}>
-                                            <Text
-                                                style={{
-                                                    fontSize: 18, backgroundColor: 'transparent'
-                                                }}>{item.tennhanvien}</Text>
-                                            <Text>{item.tendangnhap}</Text>
-                                            {this.isOnline(item.dangtructuyen)}
-                                        </View>
-                                        <TouchableOpacity onPress={() => {
-                                            this.props.callback(item.KinhDo, item.ViDo, 'Địa điểm Nhân Viên')
-                                        }}>
-                                            <Icon2 style={{backgroundColor: 'transparent'}} size={30} color='red'
-                                                   name="location"/>
-                                        </TouchableOpacity>
-                                    </View>
-                                </Image>
-                            </View>
-                        </TouchableOpacity>
+                        <ListNhanVienItem
+                            data={item}
+                            goToDetailNhanVien={() => this.props.goToDetailNhanVien(item.idnhanvien)}
+                            callback={() => this.props.callback(item.KinhDo, item.ViDo, 'Địa điểm Nhân Viên')}
+                        />
                     }
                 />
             </View>)

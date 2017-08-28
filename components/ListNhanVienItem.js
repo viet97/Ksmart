@@ -37,9 +37,9 @@ export default class ListNhanVienItem extends React.Component {
     }
 
     getImage(url) {
+        console.log(url)
         if (url.length === 0) {
             return (
-
                 <Image
                     source={require('../images/bglogin.jpg')}
                     style={{margin: 8, width: 60, height: 60, borderRadius: 30}}/>
@@ -47,7 +47,7 @@ export default class ListNhanVienItem extends React.Component {
         } else {
             return (
                 <Image
-                    source={{uri: 'http://jav.ksmart.vn' + url}}
+                    source={{uri: url}}
                     style={{margin: 8, width: 60, height: 60, borderRadius: 30}}/>
             );
         }
@@ -82,7 +82,7 @@ export default class ListNhanVienItem extends React.Component {
         let item = this.props.data
         return (
             <TouchableOpacity style={{}}
-                              onPress={() => this.props.goToDetailNhanVien(item.idnhanvien)}>
+                              onPress={() => this.props.goToDetailNhanVien()}>
 
                 <View
                     onLayout={(e) => {
@@ -105,9 +105,7 @@ export default class ListNhanVienItem extends React.Component {
                         lúc {item.thoigiancapnhat}</Text>
                     <View style={{flexDirection: 'row'}}>
                         <View style={{justifyContent: 'center'}}>
-                            <Image
-                                style={{margin: 8, width: 60, height: 60, borderRadius: 30}}
-                                source={require('../images/bglogin.jpg')}/>
+                            {this.getImage(item.AnhDaiDien)}
                         </View>
                         <View style={{
                             flex: 4,

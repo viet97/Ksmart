@@ -49,6 +49,29 @@ export default class DetailNhanVien extends React.Component {
         }
     }
 
+    getImage(url) {
+        console.log(url)
+        if (url === undefined) {
+            console.log('1')
+            return
+        } else {
+            console.log('2')
+            if (url.length === 0)
+                <Image
+                    source={require('../images/bglogin.jpg')}
+                    indicator={ProgressBar.Pie}
+                    style={{alignSelf: 'center', width: 120, height: 120, borderRadius: 60}}/>
+            else
+                return (
+                    <Image
+
+                        source={{uri: url}}
+                        indicator={ProgressBar.Pie}
+                        style={{alignSelf: 'center', width: 120, height: 120, borderRadius: 60}}/>
+                );
+        }
+    }
+
     isOnline(dangtructuyen) {
         if (dangtructuyen === 1)
             return <Icon2 style={{alignSelf: 'center'}} size={24} color="green" name="controller-record"/>
@@ -61,7 +84,7 @@ export default class DetailNhanVien extends React.Component {
 
     render() {
         const {navigate} = this.props.navigation;
-        var data = this.state.data
+        let data = this.state.data
         return (
             <View style={{flex: 1}}>
                 <View style={styles.titleStyle}>
@@ -83,8 +106,7 @@ export default class DetailNhanVien extends React.Component {
                 <View style={{flex: 4, justifyContent: 'center'}}>
                     <Image source={require('../images/bg.png')}
                            style={{position: 'absolute', top: 0}}/>
-                    <Image style={{width: 120, height: 120, borderRadius: 60, alignSelf: 'center'}}
-                           source={{uri: data.AnhDaiDien}}/>
+                    {this.getImage(data.AnhDaiDien)}
                     <View style={{flexDirection: 'row', alignSelf: 'center', justifyContent: 'center'}}>
                         {this.isOnline(this.state.datadangtructuyen)}
                         <Text style={{
@@ -203,6 +225,7 @@ export default class DetailNhanVien extends React.Component {
             .then((responseJson) => {
                 if (responseJson.status)
                     this.setState({data: responseJson.data}, function () {
+                        console.log(this.state.data.AnhDaiDien)
                         this.setState({
                             region: {
                                 latitude: this.state.data.vido,
