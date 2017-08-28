@@ -138,6 +138,7 @@ export default class CustomerScreen extends Component {
             <View style={{flex: 9}}>
 
                 <FlatList
+                    keyboardDismissMode="on-drag"
                     ListFooterComponent={this.renderFooter}
                     ref="listview"
                     onEndReachedThreshold={0.2}

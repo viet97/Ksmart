@@ -133,6 +133,7 @@ export default class RevenuePerPersonnelScreen extends React.Component {
                 return (
                     <View style={{flex: 9}}>
                         <FlatList
+                            keyboardDismissMode="on-drag"
                             ref="listview"
                             refreshing={this.state.refreshing}
                             onRefresh={() => this.refreshData()}

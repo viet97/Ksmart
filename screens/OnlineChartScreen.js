@@ -173,8 +173,8 @@ export default class OnlineChartScreen extends React.Component {
             if (this.state.numberTypePick === 0)
                 return (
                     <View style={{flex: 9}}>
-                        <FlatList
-
+                        <FlatLis
+                            keyboardDismissMode="on-drag"
                             ref="listview"
                             refreshing={this.state.refreshing}
                             onRefresh={() => this.refreshData()}

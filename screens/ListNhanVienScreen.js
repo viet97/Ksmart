@@ -247,6 +247,7 @@ export default class ListNhanVienScreen extends React.Component {
             <View style={{flex: 9}}>
 
                 <FlatList
+                    keyboardDismissMode="on-drag"
                     ListFooterComponent={this.renderFooter}
                     ref="listview"
                     onEndReachedThreshold={0.2}
@@ -653,7 +654,7 @@ export default class ListNhanVienScreen extends React.Component {
 
     componentWillMount() {
         this.getNhomNhanVienFromSv()
-        console.log('13123')
+        console.log('13123');
     }
 }
 

@@ -188,6 +188,7 @@ export default class TravelScreen extends React.Component {
             <View style={{flex: 9}}>
 
                 <FlatList
+                    keyboardDismissMode="on-drag"
                     ListFooterComponent={this.renderFooter}
                     ref="listview"
                     refreshing={this.state.refreshing}

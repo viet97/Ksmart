@@ -189,6 +189,7 @@ export default class OrderListScreen extends Component {
         return (
             <View style={{flex: 9}}>
                 <FlatList
+                    keyboardDismissMode="on-drag"
                     ListFooterComponent={this.renderFooter}
                     ref={(listV) => {
                         this.listV = listV

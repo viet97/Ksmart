@@ -158,6 +158,8 @@ export default class CustomerPlant extends Component {
         return (
             <View style={{backgroundColor: Color.backGroundFlatList, flex: 9}}>
                 <FlatList
+
+                    keyboardDismissMode="on-drag"
                     keyExtractor={(item, index) => {
                         item.key = index
                     }}

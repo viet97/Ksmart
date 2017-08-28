@@ -143,6 +143,7 @@ export default class NewFeedScreen extends React.Component {
             <View style={{flex: 9}}>
 
                 <FlatList
+                    keyboardDismissMode="on-drag"
                     style={{flex: 1}}
                     ListFooterComponent={this.renderFooter}
                     ref="listview"
