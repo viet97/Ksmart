@@ -66,6 +66,7 @@ export default class CustomerScreen extends Component {
             .then((response) => (response.json()))
             .then((responseJson) => {
                 console.log('dm', URlConfig.getCustomerLink(PAGE, SEARCH_STRING), responseJson)
+                this.setState({customerCount: responseJson.tongsoitem})
                 if (responseJson.status) {
                     PAGE = responseJson.lastid
 
@@ -74,7 +75,6 @@ export default class CustomerScreen extends Component {
                         this.forceUpdate()
                     }
                     this.setState({
-                        customerCount: responseJson.tongsoitem,
                         dataFull: responseJson.data,
                         dataRender: responseJson.data
                     })
