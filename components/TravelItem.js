@@ -105,8 +105,15 @@ export default class TravelItem extends React.Component {
                 buttonWidth: 60
             },
         ];
+        let come = new Date(item.ThoiGianVaoDiemDuKien);
+        let now = new Date();
+        let showSwipe = false;
+        if (come.getTime() - now.getTime() >= 5 * 60 * 1000) {
+            showSwipe = true;
+        }
         return (
-            <Swipeout right={swipeoutBtns} style={{backgroundColor: 'transparent'}} close={this.state.closeSwipe}>
+            <Swipeout right={showSwipe ? swipeoutBtns : []} style={{backgroundColor: 'transparent'}}
+                      close={this.state.closeSwipe}>
                 <TouchableOpacity
                     onPress={() => this.props.callback()}>
                     <View
