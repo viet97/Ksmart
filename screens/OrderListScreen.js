@@ -27,10 +27,10 @@ import PTRView from 'react-native-pull-to-refresh'
 import {ConfirmDialog} from 'react-native-simple-dialogs';
 
 let {height, width} = Dimensions.get('window');
-
-let Page = 1
+let NUMBER_ITEM_PER_PAGE = 10;
+let Page = 1;
 let SEARCH_STRING = '';
-let ALL_LOADED = false
+let ALL_LOADED = false;
 export default class OrderListScreen extends Component {
     static navigationOptions = {
         header: null,
@@ -94,6 +94,10 @@ export default class OrderListScreen extends Component {
                             this.forceUpdate()
                         }
                         let dataFill = this.filtData(responseJson.data)
+                        if (dataFill.length < NUMBER_ITEM_PER_PAGE) {
+                            ALL_LOADED = true
+                            this.forceUpdate()
+                        }
                         this.setState({dataRender: dataFill})
                     });
                 } else {
