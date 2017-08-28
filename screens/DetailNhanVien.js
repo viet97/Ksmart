@@ -53,14 +53,14 @@ export default class DetailNhanVien extends React.Component {
         console.log(url)
         if (url === undefined) {
             console.log('1')
-            return
+            return;
         } else {
-            console.log('2')
             if (url.length === 0)
-                <Image
-                    source={require('../images/bglogin.jpg')}
-                    indicator={ProgressBar.Pie}
-                    style={{alignSelf: 'center', width: 120, height: 120, borderRadius: 60}}/>
+                return (
+                    <Image
+                        source={require('../images/bglogin.jpg')}
+                        indicator={ProgressBar.Pie}
+                        style={{alignSelf: 'center', width: 120, height: 120, borderRadius: 60}}/>)
             else
                 return (
                     <Image
