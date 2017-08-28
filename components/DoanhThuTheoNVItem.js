@@ -86,7 +86,7 @@ export default class DoanhThuTheoNVItem extends React.Component {
                     <Text style={{
                         marginLeft: 8,
                         backgroundColor: 'transparent'
-                    }}>{ultils.getDate(item.TongTien)}</Text>
+                    }}>{ultils.getMoney(item.TongTien, 2)}</Text>
                 </View>
             </View>
         )
