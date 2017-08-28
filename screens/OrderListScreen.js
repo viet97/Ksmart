@@ -89,13 +89,10 @@ export default class OrderListScreen extends Component {
                         orderListDataFull: responseJson.data,
                         isEndList: responseJson.endlist
                     }, function () {
-                        if (this.state.isEndList) {
-                            ALL_LOADED = true
-                            this.forceUpdate()
-                        }
+
                         let dataFill = this.filtData(responseJson.data)
-                        if (dataFill.length < NUMBER_ITEM_PER_PAGE) {
-                            ALL_LOADED = true
+                        if (dataFill.length < NUMBER_ITEM_PER_PAGE || this.state.isEndList) {
+                            ALL_LOADED = true;
                             this.forceUpdate()
                         }
                         this.setState({dataRender: dataFill})
