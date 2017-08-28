@@ -66,9 +66,9 @@ export default class MapScreen extends Component {
 
         return (
             <View style={{flex: 1}}>
+                <Image source={require('../images/bg.png')}
+                       style={{position: 'absolute', top: 0}}/>
                 <View style={styles.titleStyle}>
-                    <Image source={require('../images/bg.png')}
-                           style={{position: 'absolute'}}/>
                     <TouchableOpacity onPress={() => this.props.navigation.goBack()}
                                       style={styles.iconStyle}>
                         <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
@@ -115,7 +115,6 @@ var styles = StyleSheet.create({
         elevation: 15,
         justifyContent: 'space-between',
         flexDirection: 'row',
-        backgroundColor: Color.backgroundNewFeed,
     },
     iconStyle: {
         alignSelf: 'center',

@@ -158,7 +158,6 @@ export default class CustomerPlant extends Component {
         return (
             <View style={{backgroundColor: Color.backGroundFlatList, flex: 9}}>
                 <FlatList
-
                     keyboardDismissMode="on-drag"
                     keyExtractor={(item, index) => {
                         item.key = index
@@ -253,6 +252,7 @@ export default class CustomerPlant extends Component {
 
         return (
             <View style={{flex: 1, backgroundColor: Color.backGroundFlatList}}>
+
                 <View style={styles.titleStyle}>
                     <TouchableOpacity onPress={() => this.props.backToTravel()}
                                       style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
@@ -424,7 +424,7 @@ export default class CustomerPlant extends Component {
 }
 const styles = StyleSheet.create({
     titleStyle: {
-        marginTop: Platform.OS === 'ios' ? 16 : 0,
+        paddingTop: Platform.OS === 'ios' ? 16 : 0,
         flex: 1,
         elevation: 15,
         justifyContent: 'space-between',

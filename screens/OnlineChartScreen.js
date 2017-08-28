@@ -64,7 +64,7 @@ export default class OnlineChartScreen extends React.Component {
                     this.setState({
                         dataRender: responseJson.data
                     })
-            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại. Mã lỗi: ' + e))
     }
 
     componentDidMount() {
@@ -173,8 +173,8 @@ export default class OnlineChartScreen extends React.Component {
             if (this.state.numberTypePick === 0)
                 return (
                     <View style={{flex: 9}}>
-                        <FlatLis
-                            keyboardDismissMode="on-drag"
+                        <FlatList
+
                             ref="listview"
                             refreshing={this.state.refreshing}
                             onRefresh={() => this.refreshData()}
