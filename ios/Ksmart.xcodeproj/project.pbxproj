@@ -233,6 +233,13 @@
 			remoteGlobalIDString = 323A12871E5F266B004975B8;
 			remoteInfo = "ART-tvOS";
 		};
+		3F4DAF8E1F54F74500C7CC53 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8DF82BFAF8B94B1C9116570F /* RNSVG.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3F4DAF6A1F54F73800C7CC53;
+			remoteInfo = "RNSVG-tvOS";
+		};
 		3F4F7A741F106BAB0052407F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 3E03047889494455AAEC5170 /* RealmReact.xcodeproj */;
@@ -288,13 +295,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = 0CF68AC11AF0540F00FF9E5C;
 			remoteInfo = RNSVG;
-		};
-		3FDD63FD1F130E7B0058A2BD /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8DF82BFAF8B94B1C9116570F /* RNSVG.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = A361E7A31EB0C33D00646005;
-			remoteInfo = "RNSVG-tvOS";
 		};
 		5E9157321DD0AC6500FF2AA8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -626,7 +626,7 @@
 			isa = PBXGroup;
 			children = (
 				3FDD63FC1F130E7B0058A2BD /* libRNSVG.a */,
-				3FDD63FE1F130E7B0058A2BD /* libRNSVG-tvOS.a */,
+				3F4DAF8F1F54F74500C7CC53 /* libRNSVG-tvOS.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1071,6 +1071,13 @@
 			remoteRef = 3F0AD0371F0F80FF001EACF5 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		3F4DAF8F1F54F74500C7CC53 /* libRNSVG-tvOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libRNSVG-tvOS.a";
+			remoteRef = 3F4DAF8E1F54F74500C7CC53 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		3F4F7A751F106BAB0052407F /* libRealmReact.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1125,13 +1132,6 @@
 			fileType = archive.ar;
 			path = libRNSVG.a;
 			remoteRef = 3FDD63FB1F130E7B0058A2BD /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		3FDD63FE1F130E7B0058A2BD /* libRNSVG-tvOS.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libRNSVG-tvOS.a";
-			remoteRef = 3FDD63FD1F130E7B0058A2BD /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */ = {
