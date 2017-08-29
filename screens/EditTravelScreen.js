@@ -27,6 +27,7 @@ import Autocomplete from "react-native-autocomplete-input";
 import CustomerScreen from "./CustomerScreen";
 import ChooseTypeChart from "./ChooseTypeChart";
 import ChooseCustomerScreen from "./ChooseCustomerScreen";
+import Utils from '../configs/ultils'
 
 export default class EditTravelScreen extends React.Component {
     static navigationOptions = ({navigation}) => ({
@@ -324,7 +325,7 @@ export default class EditTravelScreen extends React.Component {
                             style={{marginLeft: 8, width: 120}}
                             date={this.state.dateCome}
                             mode="datetime"
-                            format="YYYY-MM-DD HH:mm:ss"
+                            format="DD-MM-YYYY HH:mm:ss"
                             confirmBtnText="Xác nhận"
                             cancelBtnText="Huỷ bỏ"
                             customStyles={{
@@ -365,7 +366,7 @@ export default class EditTravelScreen extends React.Component {
                             style={{marginLeft: 8, width: 120}}
                             date={this.state.dateOut}
                             mode="datetime"
-                            format="YYYY-MM-DD HH:mm:ss"
+                            format="DD-MM-YYYY HH:mm:ss"
                             confirmBtnText="Xác nhận"
                             cancelBtnText="Huỷ bỏ"
                             customStyles={{
@@ -431,8 +432,8 @@ export default class EditTravelScreen extends React.Component {
                 idnhanvien: params.data.IDNhanVien,
                 idkhachhang: params.data.IDCuaHang,
                 idkehoach: params.data.IDKeHoach,
-                dateCome: params.data.ThoiGianVaoDiemDuKien.replace('T', ' '),
-                dateOut: params.data.ThoiGianRaDiemDuKien.replace('T', ' '),
+                dateCome: Utils.changeDateFormat(params.data.ThoiGianVaoDiemDuKien),
+                dateOut: Utils.changeDateFormat(params.data.ThoiGianRaDiemDuKien),
                 dateComeReal: params.data.ThoiGianVaoDiemThucTe
             },
             function () {

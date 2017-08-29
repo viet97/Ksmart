@@ -193,7 +193,11 @@ export default class OrderListItem extends Component {
                         <Text numberOfLines={1} style={{
                             fontSize: 10,
                             backgroundColor: 'transparent'
-                        }}>{item.thoigianlapdon} </Text>
+                        }}>{function () {
+                            let moment = require('moment')
+                            let date = moment(item.thoigianlapdon, 'DD-MM-YY HH:mm:ss').toDate();
+                            return moment(date).format('DD-MM-YYYY HH:mm:ss');
+                        }()}</Text>
                     </View>
                     <View style={{flex: 1}}>
                         {this.getInfoKhachHang(item)}

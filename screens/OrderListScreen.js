@@ -84,6 +84,7 @@ export default class OrderListScreen extends Component {
         fetch(URlConfig.getLinkOrderList(datef, datet, Page, SEARCH_STRING))
             .then((response) => response.json())
             .then((responseJson) => {
+                console.log('url', URlConfig.getLinkOrderList(datef, datet, Page, SEARCH_STRING))
                 if (responseJson.status) {
                     this.setState({
                         orderListDataFull: responseJson.data,

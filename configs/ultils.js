@@ -1,6 +1,6 @@
 import Toast from "react-native-simple-toast";
 
-export default class ultils {
+export default class Utils {
     static getMoney(n, dp) {
         if (n === undefined || n === null) {
             n = 0;
@@ -38,9 +38,15 @@ export default class ultils {
         if (seconds < 10) seconds = hours
         if (month < 10) month = '0' + month
         if (day < 10) day = '0' + day
-
         let dateString = day + '-' + month + '-' + date.getFullYear() + ' ' + hours + ':' + minutes + ':' + seconds
         return dateString;
+    }
+
+    static changeDateFormat(d, format = 'DD-MM-YYYY HH:mm:ss') {
+        let date = new Date(d);
+        date.setHours(date.getHours() - 7)
+        let moment = require('moment');
+        return moment(date).format(format);
     }
 
 }

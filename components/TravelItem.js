@@ -21,7 +21,7 @@ import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import URlConfig from "../configs/url";
 import Toast from 'react-native-simple-toast'
 import DatePicker from 'react-native-datepicker'
-import ultils from "../configs/ultils";
+import Utils from "../configs/ultils";
 import {ConfirmDialog} from 'react-native-simple-dialogs'
 
 let {width, height} = Dimensions.get('window');
@@ -76,6 +76,7 @@ export default class TravelItem extends React.Component {
         return minutes;
     }
 
+
     render() {
         let item = this.props.data;
         var strVaoDiem = '';
@@ -83,12 +84,12 @@ export default class TravelItem extends React.Component {
         if (item.ThoiGianVaoDiemThucTe === '1900-01-01T00:00:00') {
             strVaoDiem = "Chưa vào điểm!"
         } else {
-            strVaoDiem = 'Vào điểm lúc: ' + item.ThoiGianVaoDiemThucTe.replace('T', ' ');
+            strVaoDiem = 'Vào điểm lúc: ' + Utils.changeDateFormat(item.ThoiGianVaoDiemThucTe);
         }
         if (item.ThoiGianRaDiemThucTe === '1900-01-01T00:00:00') {
             strRaDiem = "Chưa ra điểm!"
         } else {
-            strRaDiem = 'Ra điểm lúc: ' + item.ThoiGianRaDiemThucTe.replace('T', ' ');
+            strRaDiem = 'Ra điểm lúc: ' + Utils.changeDateFormat(item.ThoiGianRaDiemThucTe);
         }
         var swipeoutBtns = [
             {
@@ -137,7 +138,7 @@ export default class TravelItem extends React.Component {
                             backgroundColor: 'transparent',
                             fontSize: 12,
                             marginRight: 4
-                        }}>Vào điểm dự kiến: {item.ThoiGianVaoDiemDuKien.replace('T', ' ')}</Text>
+                        }}>Vào điểm dự kiến: {Utils.changeDateFormat(item.ThoiGianVaoDiemDuKien)}</Text>
 
                         <Text style={{
                             textAlign: 'right',

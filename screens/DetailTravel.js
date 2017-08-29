@@ -28,7 +28,7 @@ import MapListScreen from "./MapListScreen";
 import MapView from 'react-native-maps';
 import {PagerTabIndicator, IndicatorViewPager, PagerTitleIndicator, PagerDotIndicator} from 'rn-viewpager';
 import MapScreen from "./MapScreen";
-import ultils from "../configs/ultils";
+import Utils from "../configs/ultils";
 
 var {width, height} = Dimensions.get('window');
 export default class DetailTravel extends React.Component {
@@ -66,14 +66,12 @@ export default class DetailTravel extends React.Component {
         if (params.data.ThoiGianVaoDiemThucTe === '1900-01-01T00:00:00') {
             strVaoDiem = "Chưa vào điểm!"
         } else {
-            var diffMins = this.millisToMinutes(params.data.ThoiGianVaoDiemDuKien, params.data.ThoiGianVaoDiemThucTe)
-            strVaoDiem = 'Vào điểm lúc: ' + params.data.ThoiGianVaoDiemThucTe.replace('T', ' ')
+            strVaoDiem = 'Vào điểm lúc: ' + Utils.changeDateFormat(params.data.ThoiGianVaoDiemThucTe)
         }
         if (params.data.ThoiGianRaDiemThucTe === '1900-01-01T00:00:00') {
             strRaDiem = "Chưa ra điểm!"
         } else {
-            diffMins = this.millisToMinutes(params.data.ThoiGianRaDiemDuKien, params.data.ThoiGianRaDiemThucTe)
-            strRaDiem = 'Ra điểm lúc: ' + params.data.ThoiGianRaDiemThucTe.replace('T', ' ')
+            strRaDiem = 'Ra điểm lúc: ' + Utils.changeDateFormat(params.data.ThoiGianRaDiemThucTe);
         }
         return (
             <View style={{flex: 1}}>
@@ -146,7 +144,7 @@ export default class DetailTravel extends React.Component {
                         <Text style={{
                             marginLeft: 8,
                             backgroundColor: 'transparent'
-                        }}>{params.data.ThoiGianVaoDiemDuKien.replace('T', ' ')}</Text>
+                        }}>{Utils.changeDateFormat(params.data.ThoiGianVaoDiemDuKien)}</Text>
                     </View>
                     <View style={{
                         flexDirection: 'row',
