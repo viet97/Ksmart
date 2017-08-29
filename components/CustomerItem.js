@@ -19,6 +19,7 @@ import Toast from 'react-native-simple-toast'
 import Color from '../configs/color'
 import URlConfig from "../configs/url";
 import Search from "react-native-search-box";
+import Communications from 'react-native-communications';
 
 var {height, width} = Dimensions.get('window');
 export default class NewFeedItem extends React.Component {
@@ -67,8 +68,7 @@ export default class NewFeedItem extends React.Component {
                             backgroundColor: 'transparent',
                             marginLeft: 8,
                             fontSize: 18,
-                            marginRight: 8,
-                            fontWeight: "bold",
+                            fontWeight: "bold", alignSelf: 'center',
                             marginRight: 20,
                         }}>{item.TenCuaHang}</Text>
                     </View>
@@ -85,7 +85,7 @@ export default class NewFeedItem extends React.Component {
                             backgroundColor: 'transparent',
                             marginLeft: 8,
                             paddingRight: 8,
-                            marginRight: 20,
+                            marginRight: 20, alignSelf: 'center'
                         }}>{item.tennhomkhachhang}</Text>
                     </View>
                     <View style={{
@@ -102,7 +102,7 @@ export default class NewFeedItem extends React.Component {
                             style={{
                                 backgroundColor: 'transparent',
                                 marginLeft: 8,
-                                marginRight: 20,
+                                marginRight: 20, alignSelf: 'center'
                             }}>
                             {item.DiaChi}</Text>
                     </View>
@@ -111,16 +111,21 @@ export default class NewFeedItem extends React.Component {
                         marginLeft: 8,
                         marginTop: 4,
                         marginRight: 8,
-                        marginBottom: 4
+                        marginBottom: 4,
                     }}>
-                        <Icon style={{backgroundColor: 'transparent',}} size={24} color="green"
-                              name="phone"/>
+                        <TouchableOpacity onPress={() => {
+                            item.DienThoai !== undefined && item.DienThoai === null && item.DienThoai.length > 0 ? Communications.phonecall(item.DienThoai, true) : console.log('rong');
+                        }}>
+                            <Icon style={{backgroundColor: 'transparent',}} size={24} color="green"
+                                  name="phone"/>
+                        </TouchableOpacity>
                         <Text
                             numberOfLines={1}
                             style={{
                                 backgroundColor: 'transparent',
                                 marginLeft: 8,
                                 marginRight: 20,
+                                alignSelf: 'center'
                             }}>
                             {item.DienThoai}</Text>
                     </View>
