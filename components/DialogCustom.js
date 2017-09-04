@@ -219,7 +219,7 @@ export default class DialogCustom extends React.Component {
                                 });
 
                                 this.props.callback(item.idnhanvien, item.tennhanvien);
-                                this.props.closeModal();
+                                DialogManager.dismiss();
                             }
                             }>
                             <View style={{flexDirection: 'row'}}>
