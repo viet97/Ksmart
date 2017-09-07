@@ -93,7 +93,8 @@ export default class ReportScreen extends Component {
                                       style={styles.iconStyle}>
                         <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
                     </TouchableOpacity>
-                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Báo cáo online</Text>
+                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Báo
+                        cáo online</Text>
                     <TouchableOpacity
                         onPress={() => this.getOnlineReportListFromServer()}
                         style={{backgroundColor: 'transparent', width: 35, height: 35, alignSelf: 'center'}}>
