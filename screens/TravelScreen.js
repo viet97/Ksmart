@@ -34,10 +34,10 @@ export default class TravelScreen extends React.Component {
 
     getDataFromSv() {
         ALL_LOADED = false
-        console.log(URlConfig.getLinkTravel(this.state.dateFrom, this.state.dateTo, PAGE, this.state.status))
+        console.log(URlConfig.getLinkTravel(this.state.dateFrom, this.state.dateTo, PAGE, this.props.status))
         this.setState({isEndList: false, dataRender: null})
         PAGE = 1;
-        fetch(URlConfig.getLinkTravel(this.state.dateFrom, this.state.dateTo, PAGE, this.state.status))
+        fetch(URlConfig.getLinkTravel(this.state.dateFrom, this.state.dateTo, PAGE, this.props.status))
             .then((response) => (response.json()))
             .then((responseJson) => {
                 console.log(responseJson.data)
@@ -74,7 +74,7 @@ export default class TravelScreen extends React.Component {
 
         today = dd + '-' + mm + '-' + yyyy;
         this.state = ({
-            status: 2,
+
             isEndList: false,
             numberPickTravel: 0,
             travelStatus: [],
@@ -126,7 +126,7 @@ export default class TravelScreen extends React.Component {
 
             if (!this.state.isEndList) {
                 PAGE = PAGE + 1;
-                let url = URlConfig.getLinkTravel(this.state.dateFrom, this.state.dateTo, PAGE, this.state.status)
+                let url = URlConfig.getLinkTravel(this.state.dateFrom, this.state.dateTo, PAGE, this.props.status)
                 fetch(url)
                     .then((response) => (response.json()))
                     .then((responseJson) => {
@@ -226,7 +226,7 @@ export default class TravelScreen extends React.Component {
                 <View style={styles.titleStyle}>
                     <Image source={require('../images/bg.png')}
                            style={{position: 'absolute'}}/>
-                    <TouchableOpacity onPress={() => this.props.backToHome()}
+                    <TouchableOpacity onPress={() => this.props.backToChooseTypeTravel()}
                                       style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                         <Icon1 style={styles.iconStyle} size={24} color="white"
                                name="ios-arrow-back"/>
@@ -253,114 +253,10 @@ export default class TravelScreen extends React.Component {
                         </View>
                     </TouchableOpacity>
                 </View>
-
-                <View style={{width: window.width, height: 45, elevation: 5}}>
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                        <DatePicker
-                            style={{marginLeft: 8}}
-                            date={this.state.dateFrom}
-                            mode="date"
-                            placeholder="select date"
-                            format="DD-MM-YYYY"
-
-                            confirmBtnText="Xác nhận"
-                            cancelBtnText="Huỷ bỏ"
-                            customStyles={{
-                                dateIcon: {},
-                                dateInput: {
-                                    backgroundColor: 'white',
-                                    borderWidth: 1,
-                                    borderColor: 'gray',
-                                    borderRadius: 4,
-                                },
-                            }}
-                            onDateChange={(date) => {
-                                this.ondateChange(date, this.state.dateTo);
-                            }}
-                        />
-                        <Text style={{
-                            textAlign: 'center',
-                            alignSelf: 'center',
-                            backgroundColor: 'transparent',
-                            color: 'black'
-                        }}>Đến
-                            ngày</Text>
-                        <DatePicker
-                            style={{marginLeft: 8}}
-                            date={this.state.dateTo}
-                            mode="date"
-                            placeholder="select date"
-                            format="DD-MM-YYYY"
-
-                            confirmBtnText="Xác nhận"
-                            cancelBtnText="Huỷ bỏ"
-                            customStyles={{
-                                dateIcon: {},
-                                dateInput: {
-                                    backgroundColor: 'white',
-                                    borderWidth: 1,
-                                    borderColor: 'gray',
-                                    borderRadius: 4,
-                                },
-                            }}
-                            onDateChange={(date) => {
-                                this.ondateChange(this.state.dateFrom, date);
-                            }}
-                        />
-                    </View>
-                </View>
-                <View style={{width: width, flexDirection: 'row', justifyContent: 'center'}}>
-                    <Text style={{
-                        alignSelf: 'center',
-                        textAlign: 'center',
-                        backgroundColor: 'transparent',
-                        color: 'black', marginRight: 8
-                    }}>Trạng thái</Text>
-                    <ModalDropdownCustom
-                        data={this.state.travelStatus}
-                        defaultValue={this.state.travelStatus[0]}
-                        onSelect={(idx, value) => {
-                            let status = ''
-                            this.setState({
-                                numberPickTravel: idx
-                            })
-                            switch (idx) {
-                                case 0:
-                                    status = 2
-                                    break
-                                case 1:
-                                    status = 0
-                                    break
-                                case 2:
-                                    status = 1
-                                    break
-                                case 3:
-                                    status = 3
-                                    break
-                            }
-                            this.setState({status: status}, function () {
-                                this.getDataFromSv()
-                            })
-                        }}/>
-                </View>
                 {this.flatListorIndicator()}
             </View>
         )
     }
-
-
-    ondateChange(dateFrom, dateTo) {
-        this.setState({
-            dateFrom: dateFrom,
-            dateTo: dateTo,
-            URL: URlConfig.getLinkTravel(dateFrom, dateTo)
-        }, function () {
-            this.getDataFromSv()
-        });
-
-    }
-
-
 }
 const styles = StyleSheet.create({
     titleStyle: {

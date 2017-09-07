@@ -58,8 +58,8 @@ export default class OrderListScreen extends Component {
         today = dd + '-' + mm + '-' + yyyy;
         this.state = {
             ALL_LOADED: false,
-            dateFrom: this.props.dateFrom,
-            dateTo: this.props.dateTo,
+            dateFrom: today,
+            dateTo: today,
             refreshing: false,
             waiting: false,
             dataRender: null,

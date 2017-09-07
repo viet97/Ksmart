@@ -61,8 +61,6 @@ export default class ReportScreen extends Component {
         this.state = {
             isEndList: false,
             title: 'Báo cáo doanh thu sản lượng',
-            reportStatus: [],
-            numberPickType: 0,
             dateFrom: today,
             dateTo: today,
             refreshing: false,
@@ -74,12 +72,6 @@ export default class ReportScreen extends Component {
 
     componentWillMount() {
         ALL_LOADED = true
-        let arr = []
-        arr.push('Doanh thu sản lượng')
-        arr.push('10 nhân viên doanh thu cao nhất')
-        arr.push('10 nhân viên doanh thu thấp nhất')
-        arr.push('Nhân viên chưa có doanh thu trong ngày')
-        this.setState({reportStatus: arr})
     }
 
     componentDidMount() {
@@ -89,9 +81,8 @@ export default class ReportScreen extends Component {
 
     getTypeLinkOfReport() {
         let url = ''
-        console.log('link type', this.state.numberPickType)
-        let status = this.state.numberPickType
-        switch (status) {
+
+        switch (this.props.status) {
 
             case 0:
                 console.log('0')
@@ -125,7 +116,7 @@ export default class ReportScreen extends Component {
         fetch(url)
             .then((response) => (response.json()))
             .then((responseJson) => {
-                if (this.state.numberPickType !== 1 && this.state.numberPickType !== 2) {
+                if (this.props.status !== 1 && this.props.status !== 2) {
                     if (responseJson.status) {
                         this.setState({
                             dataFull: responseJson.data,
@@ -291,7 +282,7 @@ export default class ReportScreen extends Component {
                     extraData={this.state.dataRender}
                     data={this.state.dataRender}
                     renderItem={({item}) => {
-                        switch (this.state.numberPickType) {
+                        switch (this.props.status) {
                             case 0:
                                 return this.renderDoanhThuSanLuong(item)
                             case 1:
@@ -308,9 +299,6 @@ export default class ReportScreen extends Component {
     }
 
     render() {
-        let reportStatusItem = this.state.reportStatus.map((s, i) => {
-            return <Picker.Item key={i} value={i} label={s}/>
-        });
         return (
             <View style={{flex: 1}}>
                 <Image source={require('../images/bg.png')}
@@ -318,7 +306,7 @@ export default class ReportScreen extends Component {
                 <View style={styles.titleStyle}>
                     <Image source={require('../images/bg.png')}
                            style={{position: 'absolute'}}/>
-                    <TouchableOpacity onPress={() => this.props.backToHome()}
+                    <TouchableOpacity onPress={() => this.props.backToChooseTypeReport()}
                                       style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                         <Icon1 style={styles.iconStyle} size={24} color="white"
                                name="ios-arrow-back"/>
@@ -331,66 +319,7 @@ export default class ReportScreen extends Component {
                     }}>{this.state.title}</Text>
                     <View style={{backgroundColor: 'transparent', width: 35, height: 35}}/>
                 </View>
-
                 <View>
-                    <View style={{width: width, flexDirection: 'row', justifyContent: 'space-between'}}>
-                        <DatePicker
-                            date={this.state.dateFrom}
-                            mode="date"
-                            placeholder="select date"
-                            format="DD-MM-YYYY"
-                            confirmBtnText="Xác nhận"
-                            cancelBtnText="Huỷ bỏ"
-                            customStyles={{
-                                dateIcon: {},
-                                dateInput: {
-                                    backgroundColor: 'white',
-                                    borderWidth: 1,
-                                    borderColor: 'gray',
-                                    borderRadius: 4,
-                                }
-                            }}
-                            onDateChange={(date) => {
-
-                                this.ondateChange(date, this.state.dateTo);
-                            }}
-                        />
-
-                        <Text style={{alignSelf: 'center', backgroundColor: 'transparent'}}>Đến ngày </Text>
-                        <DatePicker
-                            date={this.state.dateTo}
-                            mode="date"
-                            placeholder="select date"
-                            format="DD-MM-YYYY"
-
-                            confirmBtnText="Xác nhận"
-                            cancelBtnText="Huỷ bỏ"
-                            customStyles={{
-                                dateIcon: {},
-                                dateInput: {
-                                    backgroundColor: 'white',
-                                    borderWidth: 1,
-                                    borderColor: 'gray',
-                                    borderRadius: 4,
-                                },
-                            }}
-                            onDateChange={(date) => {
-                                this.ondateChange(this.state.dateFrom, date);
-                            }}
-                        />
-                    </View>
-                    <View style={{backgroundColor: 'transparent', flexDirection: 'row', justifyContent: 'center'}}>
-                        <Text style={{color: 'white', alignSelf: 'center', marginRight: 4}}>Loại</Text>
-                        <ModalDropdownCustom
-                            data={this.state.reportStatus}
-                            defaultValue={this.state.reportStatus[0]}
-                            onSelect={(idx, value) => {
-                                this.setState({numberPickType: idx}, function () {
-                                    this.getReportListFromServer()
-                                })
-                            }}
-                        />
-                    </View>
                     <View style={{width: width}}>
                         <Search
                             ref="search_box"

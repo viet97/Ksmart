@@ -37,7 +37,6 @@ let ALL_LOADED = false;
 let pickStatus = 0;
 let pickParty = 0;
 let id_nhom = null;
-let status = -1;
 export default class ListNhanVienScreen extends React.Component {
 
     constructor(props) {
@@ -48,7 +47,6 @@ export default class ListNhanVienScreen extends React.Component {
             dataPartyNhanVien: [],
             numberPickParty: 0,
             partyNhanVienStatus: [],
-            selectedTab: 'ListNhanVien',
             kinhdo: 0,
             vido: 0,
             refreshing: false,
@@ -132,7 +130,7 @@ export default class ListNhanVienScreen extends React.Component {
         Page = 1;
         ALL_LOADED = false;
         this.setState({isEndList: false, dataRender: null})
-        fetch(URlConfig.getListNhanVienLink(Page, id_nhom, SEARCH_STRING, status))
+        fetch(URlConfig.getListNhanVienLink(Page, id_nhom, SEARCH_STRING, this.props.status))
             .then((response) => response.json())
             .then((responseJson) => {
                 if (responseJson.status) {
@@ -144,8 +142,7 @@ export default class ListNhanVienScreen extends React.Component {
                             ALL_LOADED = true
                             this.forceUpdate()
                         }
-                        this.setState({dataRender: this.state.dataFull}, function () {
-                        })
+                        this.setState({dataRender: this.state.dataFull})
                     });
                 } else {
                     ALL_LOADED = true
@@ -161,7 +158,7 @@ export default class ListNhanVienScreen extends React.Component {
 
             if (!this.state.isEndList) {
                 Page = Page + 1
-                fetch(URlConfig.getListNhanVienLink(Page, id_nhom, SEARCH_STRING, status))
+                fetch(URlConfig.getListNhanVienLink(Page, id_nhom, SEARCH_STRING, this.props.status))
                     .then((response) => response.json())
                     .then((responseJson) => {
                         if (responseJson.status) {
@@ -344,13 +341,7 @@ export default class ListNhanVienScreen extends React.Component {
     render() {
 
         return (
-            <TabNavigator>
-                <TabNavigator.Item
-                    selected={this.state.selectedTab === 'ListNhanVien'}
-                    title="Nhân Viên"
-                    renderIcon={() => <Icon1 size={24} color="black" name="ios-people-outline"/>}
-                    renderSelectedIcon={() => <Icon1 size={24} color="green" name="ios-people-outline"/>}
-                    onPress={() => this.setState({selectedTab: 'ListNhanVien'})}>
+
                     <View style={{flex: 1}}>
 
                         <Image source={require('../images/bg.png')}
@@ -358,7 +349,7 @@ export default class ListNhanVienScreen extends React.Component {
                         <View style={styles.titleStyle}>
                             <Image source={require('../images/bg.png')}
                                    style={{position: 'absolute'}}/>
-                            <TouchableOpacity onPress={() => this.props.backToHome()}
+                            <TouchableOpacity onPress={() => this.props.backToChooseTypeListNV()}
                                               style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                                 <Icon1 style={styles.iconStyle} size={24} color="white"
                                        name="ios-arrow-back"/></TouchableOpacity>
@@ -429,27 +420,6 @@ export default class ListNhanVienScreen extends React.Component {
                                         renderRow={this._renderRowStatus.bind(this)}
                                         renderSeparator={(sectionID, rowID, adjacentRowHighlighted) => this._renderSeparatorParty(sectionID, rowID, adjacentRowHighlighted)}
                                     />
-                                    <Text style={{color: 'white'}}>Chon trang thai</Text>
-                                    <ModalDropdown
-                                        options={this.state.dataPickStatus}
-                                        style={{
-                                            borderWidth: 0.4,
-                                            width: 200,
-                                            padding: 8,
-                                            borderRadius: 10,
-                                            justifyContent: 'center',
-                                            alignItems: 'center',
-                                            marginTop: 4
-                                        }}
-                                        textStyle={{color: 'white'}}
-                                        defaultValue={this.state.dataPickStatus[pickStatus]}
-                                        defaultIndex={Number(pickParty)}
-                                        onSelect={(idx, value) => this._onSelectStatus(idx, value)}
-                                        renderRow={this._renderRowStatus.bind(this)}
-                                        renderSeparator={(sectionID, rowID, adjacentRowHighlighted) => this._renderSeparatorStatus(sectionID, rowID, adjacentRowHighlighted)}
-                                    />
-
-
                                 </View>
                             </ScrollView>
                             <View style={{
@@ -507,16 +477,6 @@ export default class ListNhanVienScreen extends React.Component {
                             </View>
                         </Dialog>
                     </View>
-                </TabNavigator.Item>
-                <TabNavigator.Item
-                    selected={this.state.selectedTab === 'MapForAllLocation'}
-                    title="Vị trí"
-                    renderIcon={() => <Icon2 size={24} color="black" name="location"/>}
-                    renderSelectedIcon={() => <Icon2 size={24} color="green" name="location"/>}
-                    onPress={() => this.setState({selectedTab: 'MapForAllLocation'})}>
-                    <MapListScreen backToHome={() => this.props.backToHome()}/>
-                </TabNavigator.Item>
-            </TabNavigator>
 
         )
     }
@@ -530,25 +490,6 @@ export default class ListNhanVienScreen extends React.Component {
         // })
     }
 
-    _onSelectStatus(id, value) {
-        console.log('trangthai', id);
-        pickStatus = id;
-        switch (id) {
-            case '0':
-                status = -1
-                break
-            case '1':
-                status = 0
-                break
-            case '2':
-                status = 1
-                break
-            case '3':
-                status = 2
-                break
-        }
-
-    }
 
     _renderRowStatus(rowData, rowID, highlighted) {
         let icon = highlighted ? require('../images/heart.png') : require('../images/flower.png');
@@ -588,7 +529,6 @@ export default class ListNhanVienScreen extends React.Component {
         pickStatus = 0;
         pickParty = 0;
         id_nhom = null;
-        status = -1;
         SEARCH_STRING = ''
         this.getDataFromSv()
     }

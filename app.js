@@ -31,16 +31,17 @@ import DetailTravel from "./screens/DetailTravel";
 import SendMessageScreen from "./screens/SendMessageScreen";
 import EditTravelScreen from "./screens/EditTravelScreen";
 import TravelScreen from "./screens/TravelScreen";
+import ChooseTypeListNV from "./screens/ChooseTypeListNV";
 
 var {height, width} = Dimensions.get('window');
 const Ksmart = StackNavigator({
-
     Splash: {screen: SplashScreen},
     Chart: {screen: ChartScreen},
     Login: {screen: LoginScreen},
     Home: {screen: HomeScreen},
     Menu: {screen: MenuScreen},
     Map: {screen: MapScreen,},
+    ListNhanVien: {screen: ListNhanVienScreen},
     DetailNhanVien: {screen: DetailNhanVien},
     DetailMessage: {screen: DetailMessageScreen},
     TypeChart: {screen: ChooseTypeChart},

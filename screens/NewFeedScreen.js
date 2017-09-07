@@ -235,11 +235,12 @@ export default class NewFeedScreen extends React.Component {
 }
 const styles = StyleSheet.create({
     titleStyle: {
+        marginTop: Platform.OS === 'ios' ? 16 : 0,
         flex: 1,
         elevation: 15,
         justifyContent: 'space-between',
         flexDirection: 'row',
-        alignItems: 'center',
+        backgroundColor: Color.backgroundNewFeed,
     },
     headerStyle: {
         elevation: 15, height: this.height / 7

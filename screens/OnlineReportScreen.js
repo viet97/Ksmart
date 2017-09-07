@@ -31,6 +31,7 @@ import Search from 'react-native-search-box';
 import Toast from 'react-native-simple-toast';
 import ultils from "../configs/ultils";
 import Communications from 'react-native-communications';
+import ChooseTypeItem from "../components/ChooseTypeItem";
 
 var {height, width} = Dimensions.get('window');
 const timer = require('react-native-timer');
@@ -71,6 +72,8 @@ export default class ReportScreen extends Component {
 
     componentDidMount() {
         this.getOnlineReportListFromServer()
+        timer.clearInterval(this)
+        timer.setInterval(this, "123", () => this.getOnlineReportListFromServer(), 30000);
 
     }
 
@@ -81,8 +84,11 @@ export default class ReportScreen extends Component {
         });
         return (
             <View style={{flex: 1}}>
-
+                <Image source={require('../images/bg.png')}
+                       style={{position: 'absolute', top: 0}}/>
                 <View style={styles.titleStyle}>
+                    <Image source={require('../images/bg.png')}
+                           style={{position: 'absolute'}}/>
                     <TouchableOpacity onPress={() => this.props.backToHome()}
                                       style={styles.iconStyle}>
                         <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
@@ -106,53 +112,31 @@ export default class ReportScreen extends Component {
                                       right: 0,
                                       bottom: 0
                                   }}/>
-                <View style={{flex: 9, backgroundColor: Color.backGroundFlatList}}>
-                    <View style={{margin: 8}}>
-                        <Text style={{marginBottom: 8, marginLeft: 8, marginTop: 8, fontSize: 18}}>Số nhân viên
-                            online: {this.state.data.nhanvienonline}</Text>
-                        <Text style={{marginBottom: 8, marginLeft: 8, fontSize: 18}}>Tổng doanh
-                            thu: {this.state.data.tongdoanhthu}</Text>
-                        <Text style={{marginBottom: 8, marginLeft: 8, fontSize: 18}}>Tổng đơn
-                            hàng: {this.state.data.tongdonhang}</Text>
-                        <Text style={{marginBottom: 8, marginLeft: 8, fontSize: 18}}>Tổng lượt check
-                            in: {this.state.data.tongluotcheckin}</Text>
+                <View style={{flex: 9}}>
+                    <View style={styles.view1}>
+                        <ChooseTypeItem
+                            goToDetail={() => this.props.goToTravel(0)}
+                            title='Nhân viên online'
+                            content={this.state.data.nhanvienonline}
+                        />
+                        <ChooseTypeItem
+                            goToDetail={() => this.props.goToTravel(1)}
+                            title='Doanh thu trong ngày'
+                            content={this.state.data.tongdoanhthu}
+                        />
                     </View>
-                    <Text style={{marginLeft: 16}}>Cài đặt thời gian cập nhập tin tức: </Text>
-                    <Picker style={{height: 44, width: width / 2, marginLeft: 16}}
-                            itemStyle={{color: 'red', height: 88}}
-                            selectedValue={this.state.numberPickType}
-                            onValueChange={(value) => {
-                                this.setState({numberPickType: value}, function () {
-                                        switch (value) {
-                                            case 0 :
-                                                timer.clearInterval(this)
-                                                break
-                                            case 1 :
-                                                timer.clearInterval(this)
-                                                timer.setInterval(this, "123", () => this.getOnlineReportListFromServer(), 10000);
-                                                break
-                                            case 2 :
-                                                timer.clearInterval(this)
-                                                timer.setInterval(this, "123", () => this.getOnlineReportListFromServer(), 30000);
-                                                break
-                                            case 3 :
-                                                timer.clearInterval(this)
-                                                timer.setInterval(this, "123", () => this.getOnlineReportListFromServer(), 60000);
-                                                break
-                                            case 4 :
-                                                timer.clearInterval(this)
-                                                timer.setInterval(this, "123", () => this.getOnlineReportListFromServer(), 180000);
-                                                break
-                                            case 5 :
-                                                timer.clearInterval(this)
-                                                timer.setInterval(this, "123", () => this.getOnlineReportListFromServer(), 300000);
-                                                break
-                                        }
-                                    }
-                                )
-                            }}>
-                        {onlineReportStatusItem}
-                    </Picker>
+                    <View style={styles.view1}>
+                        <ChooseTypeItem
+                            goToDetail={() => this.props.goToTravel(2)}
+                            title='Đơn hàng trong ngày'
+                            content={this.state.data.tongdonhang}
+                        />
+                        <ChooseTypeItem
+                            goToDetail={() => this.props.goToTravel(3)}
+                            title='Check-in trong ngày'
+                            content={this.state.data.tongluotcheckin}
+                        />
+                    </View>
                 </View>
             </View>
 
@@ -161,6 +145,9 @@ export default class ReportScreen extends Component {
 
 }
 const styles = StyleSheet.create({
+    view1: {
+        flexDirection: 'row'
+    },
     indicator: {
         alignSelf: 'center',
         flex: 1,

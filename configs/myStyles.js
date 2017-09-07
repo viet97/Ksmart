@@ -3,7 +3,7 @@ import {
     StyleSheet,
 } from "react-native";
 
-class styles extends Component {
+class myStyles extends Component {
     static styles = StyleSheet.create({
         backTouch: {
             padding: 8, alignItems: 'center', justifyContent: 'center'

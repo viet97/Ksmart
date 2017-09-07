@@ -43,6 +43,10 @@ import TravelChartScreen from "./TravelChartScreen";
 import RevenuePerPersonnelScreen from "./RevenuePerPersonnelScreen";
 import RealtimeChartScreen from "./RealtimeChartScreen";
 import OnlineReportScreen from "./OnlineReportScreen";
+import ChooseTypeListNV from "./ChooseTypeListNV";
+import ChooseTypeTravel from "./ChooseTypeTravel";
+import ChooseTypeReport from "./ChooseTypeReport";
+import ChooseTypeOrder from "./ChooseTypeOrder";
 
 var {height} = Dimensions.get('window');
 var func;
@@ -84,25 +88,14 @@ export default class HomeScreen extends React.Component {
         }
         today = dd + '-' + mm + '-' + yyyy;
         this.state = ({
+            orderStatus: 0,
+            reportStatus: 0,
+            NhanVienStatus: -1,
+            travelStatus: 0,
             fadeAnim: new Animated.Value(0),
-            idDetailNhanVien: '',
-            dataNhanVien: [],
-            datePlant: today,
-            idNhanVienPlant: '',
-            messageContent: [],
-            dateSendMessage: '',
-            messageFrom: '',
-            dateFromForMessage: today,
-            dateToForMessage: today,
-            previousScreen: '',
-            titleMap: '',
-            backCount: 0,
             myText: 'I\'m ready to get swiped!',
-            gestureName: 'none',
             width: 35,
             height: 35,
-            selectedTab: 'NewFeed',
-            headerTitleStyle: {alignSelf: 'center'},
             screenName: 'Menu',
             kinhdo: 0,
             vido: 0,
@@ -130,19 +123,58 @@ export default class HomeScreen extends React.Component {
                 }}/>
             case "ListNhanVien":
                 return <ListNhanVienScreen
-                    ref="ListNhanVien"
                     callback={(kinhdo, vido, title) => {
                         navigate('Map', {title: title, kinhdo: kinhdo, vido: vido})
                     }}
+                    status={this.state.NhanVienStatus}
                     goToDetailNhanVien={(data) => navigate('DetailNhanVien', {idNhanVien: data})}
-                    clickMenu={() => this.openControlPanel()}
+                    backToChooseTypeListNV={() => {
+                        this.setState({screenName: 'ChooseTypeListNV'})
+                    }}
+
+                />
+            case "ChooseTypeTravel":
+                return <ChooseTypeTravel
+                    goToTravel={(status) => this.setState({travelStatus: status}, function () {
+                        this.setState({screenName: 'Travel'})
+                    })}
                     backToHome={() => {
                         this.setState({screenName: 'Menu'})
                     }}
+                />
+            case "ChooseTypeReport":
+                return <ChooseTypeReport
+                    goToReport={(status) => this.setState({reportStatus: status}, function () {
+                        this.setState({screenName: 'Report'})
+                    })}
+                    backToHome={() => {
+                        this.setState({screenName: 'Menu'})
+                    }}
+                />
+
+            case "ChooseTypeListNV":
+                return <ChooseTypeListNV
                     goToMapFromListNhanVien={() => {
                         this.setState({screenName: 'Map'})
                     }}
+                    goToListNhanVien={(status) => this.setState({NhanVienStatus: status}, function () {
+                        this.setState({screenName: 'ListNhanVien'})
+                    })}
+
+                    backToHome={() => {
+                        this.setState({screenName: 'Menu'})
+                    }}
                 />
+            case "ChooseTypeOrder":
+                return <ChooseTypeOrder
+                    goToOrder={(status) => this.setState({orderStatus: status}, function () {
+                        this.setState({screenName: 'Order'})
+                    })}
+                    backToHome={() => {
+                        this.setState({screenName: 'Menu'})
+                    }}
+                />
+
             case "Map":
                 return <MapScreen/>
             case "Order":
@@ -159,8 +191,6 @@ export default class HomeScreen extends React.Component {
                     }}/>
             case "Message":
                 return <MessageScreen
-                    dateFrom={this.state.dateFromForMessage}
-                    dateTo={this.state.dateToForMessage}
                     goToSendMessage={() => navigate('SendMessage')}
                     moveToDetailMessage={(dateFrom, dateTo, nguoigui, thoigian, noidung) => {
                         navigate('DetailMessage', {nguoigui: nguoigui, thoigian: thoigian, noidung: noidung})
@@ -172,11 +202,12 @@ export default class HomeScreen extends React.Component {
                 return <DetailMessageScreen/>
             case "Travel":
                 return <TravelScreen
+                    status={this.state.travelStatus}
                     goToCustomerPlant={(date) => {
                         this.setState({screenName: 'CustomerPlant'})
                     }}
-                    backToHome={() => {
-                        this.setState({screenName: 'Menu'})
+                    backToChooseTypeTravel={() => {
+                        this.setState({screenName: 'ChooseTypeTravel'})
                     }}
                     callback={(data) => {
                         navigate('DetailTravel', {data: data})
@@ -214,8 +245,10 @@ export default class HomeScreen extends React.Component {
                     backToChooseTypeChart={() => this.setState({screenName: 'Chart'})}/>
 
             case "Report":
-                return <ReportScreen backToHome={() => {
-                    this.setState({screenName: 'Menu'})
+                return <ReportScreen
+                    status={this.state.reportStatus}
+                    backToChooseTypeReport={() => {
+                        this.setState({screenName: 'ChooseTypeReport'})
                 }}/>
             case "CustomerPlant":
                 return <CustomerPlant
@@ -232,7 +265,7 @@ export default class HomeScreen extends React.Component {
                 return <TravelChartScreen
                     backToChooseTypeChart={() => this.setState({screenName: 'Chart'})}/>
             case 'RealtimeChart':
-                return <RealtimeChartScreen backToHome={() => {
+                return <OnlineReportScreen backToHome={() => {
                     this.setState({screenName: 'Menu'})
                 }}/>
         }
@@ -272,7 +305,7 @@ export default class HomeScreen extends React.Component {
                                                  fontSize: 20,
                                                  alignSelf: 'center',
                                                  color: 'white'
-                                             }}>Menu</Animatable.Text>
+                                             }}>Trang chủ</Animatable.Text>
 
                             <View style={{width: 50, height: 50, backgroundColor: 'transparent'}}/>
                         </View>
@@ -291,7 +324,7 @@ export default class HomeScreen extends React.Component {
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     style={{alignSelf: 'center', width: 90}}
-                                    onPress={() => this.setState({screenName: "ListNhanVien"})}>
+                                    onPress={() => this.setState({screenName: "ChooseTypeListNV"})}>
                                     <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
 
                                            source={require('../images/linkedin-contacts-2013.png')}/>
@@ -302,7 +335,7 @@ export default class HomeScreen extends React.Component {
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     style={{alignSelf: 'center', width: 90}}
-                                    onPress={() => this.setState({screenName: "Order"})}>
+                                    onPress={() => this.setState({screenName: "ChooseTypeOrder"})}>
                                     <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
                                            source={require('../images/120-in-1-applets-2013.png')}/>
 
@@ -324,7 +357,7 @@ export default class HomeScreen extends React.Component {
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     style={{alignSelf: 'center', width: 90}}
-                                    onPress={() => this.setState({screenName: "Travel"})}>
+                                    onPress={() => this.setState({screenName: "ChooseTypeTravel"})}>
                                     <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
                                            source={require('../images/flight-live-status-weather-2014.png')}/>
                                     <Animatable.Text animation="flipInY" style={styles.titleIconsMenu}>Viếng
@@ -344,7 +377,7 @@ export default class HomeScreen extends React.Component {
                             <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 16}}>
                                 <TouchableOpacity
                                     style={{alignSelf: 'center', width: 90}}
-                                    onPress={() => this.setState({screenName: "Report"})}>
+                                    onPress={() => this.setState({screenName: "ChooseTypeReport"})}>
                                     <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
                                            source={require('../images/appadvice-2017.png')}/>
 
@@ -433,27 +466,25 @@ export default class HomeScreen extends React.Component {
                             }}>
                                 <IconMaterial size={24} style={styles.iconStyle} color="white" name="payment"/>
                                 <Text style={styles.textStyle}>Hoạt động</Text>
-                                <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
                             </TouchableOpacity>
                         </View>
                         <View>
                             <TouchableOpacity style={styles.itemSideMenuStyle} onPress={() => {
-                                this.setState({screenName: "ListNhanVien"});
+                                this.setState({screenName: "ChooseTypeListNV"});
                                 this.closeControlPanel()
                             }}>
                                 <Icon1 size={24} style={styles.iconStyle} color="white" name="ios-people-outline"/>
                                 <Text style={styles.textStyle}>Nhân viên</Text>
-                                <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
+
                             </TouchableOpacity>
                         </View>
                         <View>
                             <TouchableOpacity style={styles.itemSideMenuStyle} onPress={() => {
-                                this.setState({screenName: 'Order'})
+                                this.setState({screenName: 'ChooseTypeOrder'})
                                 this.closeControlPanel()
                             }}>
                                 <Icon2 size={24} style={styles.iconStyle} color="white" name="archive"/>
                                 <Text style={styles.textStyle}>Đơn hàng</Text>
-                                <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
                             </TouchableOpacity>
                         </View>
                         <View>
@@ -462,18 +493,16 @@ export default class HomeScreen extends React.Component {
                             }}>
                                 <Icon2 size={24} style={styles.iconStyle} color="white" name="user"/>
                                 <Text style={styles.textStyle}>Khách hàng</Text>
-                                <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
                             </TouchableOpacity>
                         </View>
                         <View>
                             <TouchableOpacity style={styles.itemSideMenuStyle}
                                               onPress={() => {
-                                                  this.setState({screenName: "Travel"});
+                                                  this.setState({screenName: "ChooseTypeTravel"});
                                                   this.closeControlPanel()
                                               }}>
                                 <Icon2 size={24} style={styles.iconStyle} color="white" name="aircraft-take-off"/>
                                 <Text style={styles.textStyle}>Viếng thăm</Text>
-                                <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
                             </TouchableOpacity>
                         </View>
                         <View>
@@ -483,18 +512,16 @@ export default class HomeScreen extends React.Component {
                             }}>
                                 <Icon3 size={24} style={styles.iconStyle} color="white" name="bar-chart"/>
                                 <Text style={styles.textStyle}>Biểu đồ</Text>
-                                <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
                             </TouchableOpacity>
                         </View>
                         <View>
                             <TouchableOpacity style={styles.itemSideMenuStyle}
                                               onPress={() => {
-                                                  this.setState({screenName: "Report"});
+                                                  this.setState({screenName: "ChooseTypeReport"});
                                                   this.closeControlPanel()
                                               }}>
                                 <Icon3 size={24} style={styles.iconStyle} color="white" name="file-text-o"/>
                                 <Text style={styles.textStyle}>Báo cáo</Text>
-                                <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
                             </TouchableOpacity>
                         </View>
                         <View>
@@ -505,7 +532,6 @@ export default class HomeScreen extends React.Component {
                                               }}>
                                 <Icon2 size={24} style={styles.iconStyle} color="white" name="laptop"/>
                                 <Text style={styles.textStyle}>online</Text>
-                                <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
                             </TouchableOpacity>
                         </View>
                         <View>
@@ -516,7 +542,6 @@ export default class HomeScreen extends React.Component {
                                               }}>
                                 <Icon2 size={24} style={styles.iconStyle} color="white" name="mail"/>
                                 <Text style={styles.textStyle}>Tin nhắn</Text>
-                                <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
                                 {this.renderBagde()}
                             </TouchableOpacity>
                         </View>
@@ -527,10 +552,7 @@ export default class HomeScreen extends React.Component {
                                                   this.closeControlPanel()
                                               }}>
                                 <IconMaterial size={24} style={styles.iconStyle} color="white" name="info-outline"/>
-
                                 <Text style={styles.textStyle}>Liên hệ</Text>
-
-                                <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
                             </TouchableOpacity>
                         </View>
                         <View>
@@ -540,7 +562,6 @@ export default class HomeScreen extends React.Component {
                             }}>
                                 <Icon4 size={24} style={styles.iconStyle} color="white" name="power"/>
                                 <Text style={styles.textStyle}>Đăng xuất</Text>
-                                <Icon2 size={24} style={styles.iconStyle} color="white" name="chevron-small-right"/>
                             </TouchableOpacity>
                         </View>
                     </ScrollView>
@@ -622,7 +643,6 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: 'white',
         flexDirection: 'row',
-        justifyContent: 'space-between',
         margin: 8,
         paddingBottom: 8
     }, iconStyle: {
@@ -633,6 +653,7 @@ const styles = StyleSheet.create({
         marginLeft: 16
     },
     textStyle: {
+        marginLeft: 24,
         fontSize: 18,
         color: 'white',
         backgroundColor: 'transparent'
