@@ -158,7 +158,7 @@ export default class OrderListScreen extends Component {
                             this.forceUpdate()
                         }
                     })
-                    .catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e));
+                    .catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'));
             }
         }
     }

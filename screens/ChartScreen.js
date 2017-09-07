@@ -64,7 +64,7 @@ export default class ChartScreen extends React.Component {
                     })
             }).catch((e) => {
             this.setState({progressVisible: false});
-            Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e)
+            Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại')
         })
     }
 

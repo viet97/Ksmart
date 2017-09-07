@@ -316,7 +316,7 @@ export default class HomeScreen extends React.Component {
                                     style={{alignSelf: 'center', width: 90}}
                                     onPress={() => this.setState({screenName: "NewFeed"})}>
                                     <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
-                                           source={require('../images/thinglist-2013.png')}/>
+                                           source={require('../images/newfeed2.png')}/>
 
                                     <Animatable.Text animation="slideInLeft" style={styles.titleIconsMenu}>Hoạt
                                         động</Animatable.Text>

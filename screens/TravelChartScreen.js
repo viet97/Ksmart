@@ -110,7 +110,7 @@ export default class TravelChartScreen extends React.Component {
                     console.log('dt', dt)
                 }
                 }
-            ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e))
+            ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
     }
 
     renderItem(item) {

@@ -68,7 +68,7 @@ export default class RevenuePerPersonnelScreen extends React.Component {
                 if (responseJson.data !== null) {
                     this.setState({dataRender: responseJson.data})
                 }
-            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e))
+            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
     }
 
     getDataChart() {

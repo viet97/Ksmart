@@ -77,7 +77,7 @@ export default class EditTravelScreen extends React.Component {
                         this.loadAllSearch(receiver, responseJson.nextpage);
                     }
                 }
-            ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e));
+            ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'));
     }
 
     renderHeader() {
