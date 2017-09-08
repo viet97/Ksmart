@@ -85,6 +85,10 @@ export default class DetailNhanVien extends React.Component {
     render() {
         const {navigate} = this.props.navigation;
         let data = this.state.data
+        let lastTime = ultils.getDate(data.thoigiandangnhapcuoicung);
+        let sdt = ''
+        if (data.DienThoai !== null) sdt = data.dienthoai
+
         return (
             <View style={{flex: 1}}>
                 <View style={styles.titleStyle}>
@@ -149,6 +153,10 @@ export default class DetailNhanVien extends React.Component {
                                 </View>
                                 <View style={styles.viewCover}>
                                     <Text style={styles.text1}>Cập nhật lần cuối:</Text>
+                                    <Text style={styles.text2}>{lastTime}</Text>
+                                </View>
+                                <View style={styles.viewCover}>
+                                    <Text style={styles.text1}>Thời gian gửi tọa độ cuối:</Text>
                                     <Text style={styles.text2}>{data.thoigianguitoadocuoi}</Text>
                                 </View>
                                 <View style={styles.viewCover}>
@@ -182,7 +190,7 @@ export default class DetailNhanVien extends React.Component {
                                         marginRight: 8,
                                         justifyContent: 'space-between'
                                     }}>
-                                        <Text style={styles.text2}>01663616055</Text>
+                                        <Text style={styles.text2}>{sdt}</Text>
                                         <TouchableOpacity onPress={() => Communications.phonecall('01663616055', true)}>
                                             <Icon3 size={24} color="green" name="phone"/>
                                         </TouchableOpacity>

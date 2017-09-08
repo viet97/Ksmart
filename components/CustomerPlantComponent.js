@@ -21,13 +21,15 @@ import Color from '../configs/color'
 import URlConfig from "../configs/url";
 import Search from "react-native-search-box";
 import CheckBox from 'react-native-checkbox'
-var {width} = Dimensions.get('window').width;
+
+let {height, width} = Dimensions.get('window');
 
 export default class CustomerPlantComponent extends Component {
 
     constructor(props) {
         super(props)
         this.state = {
+            height: 0,
             ghichu: '',
             vieccanlam: '',
             checkOfCheckBox: false,
@@ -40,21 +42,31 @@ export default class CustomerPlantComponent extends Component {
         var item = this.props.item;
         return (
 
-            <View style={{
+            <View
+                onLayout={(e) => {
+                    var {x, y, width, height} = e.nativeEvent.layout;
+                    this.setState({height: height})
+                }}
+                style={{
                 borderRadius: 10,
-                borderWidth: 1,
-                borderColor: 'black',
-                marginTop: 4, marginBottom: 4, marginLeft: 8, marginRight: 8,
-                backgroundColor: Color.backGroundItemFlatList,
-                borderTopColor: '#227878'
+                    marginTop: 4, marginBottom: 4, marginLeft: 8, marginRight: 8,
             }}>
+                <Image source={require('../images/bg1.png')}
+                       style={{
+                           height: this.state.height,
+                           flexWrap: 'wrap',
+                           position: 'absolute',
+                           width: width - 16
+                       }}/>
+
                 <View style={{
                     justifyContent: 'space-between',
                     flexDirection: 'row',
                     marginLeft: 8,
                     marginTop: 8,
                     marginRight: 8,
-                    marginBottom: 4
+                    marginBottom: 4,
+
                 }}>
                     <View style={{flexDirection: 'row'}}>
                         <Icon size={24} color="red" name="home"/>

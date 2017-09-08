@@ -232,8 +232,8 @@ export default class TravelScreen extends React.Component {
                                name="ios-arrow-back"/>
                     </TouchableOpacity>
                     <Text
-                        style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Viếng
-                        thăm</Text>
+                        style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Kế
+                        hoạch viếng thăm</Text>
                     <TouchableOpacity
                         onPress={() => this.props.goToCustomerPlant()}
                         style={{
@@ -242,14 +242,6 @@ export default class TravelScreen extends React.Component {
                             height: 35
                         }}>
                         <View style={{width: 50, height: 50, justifyContent: 'center', alignSelf: 'center'}}>
-                            <Text style={{
-                                color: 'white',
-                                textAlign: 'center',
-                                alignSelf: 'center',
-                                paddingBottom: 8,
-                                paddingRight: 8,
-                                backgroundColor: 'transparent'
-                            }}>Thêm</Text>
                         </View>
                     </TouchableOpacity>
                 </View>

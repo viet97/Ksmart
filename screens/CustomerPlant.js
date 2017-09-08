@@ -136,7 +136,7 @@ export default class CustomerPlant extends Component {
 
         if (!this.state.dataRender) {
             return (
-                <View style={{backgroundColor: Color.backGroundFlatList, flex: 9}}>
+                <View style={{flex: 9}}>
                     <ActivityIndicator
                         animating={true}
                         style={styles.indicator}
@@ -156,7 +156,7 @@ export default class CustomerPlant extends Component {
             )
 
         return (
-            <View style={{backgroundColor: Color.backGroundFlatList, flex: 9}}>
+            <View style={{flex: 9}}>
                 <FlatList
                     keyboardDismissMode="on-drag"
                     keyExtractor={(item, index) => {
@@ -251,10 +251,13 @@ export default class CustomerPlant extends Component {
     render() {
 
         return (
-            <View style={{flex: 1, backgroundColor: Color.backGroundFlatList}}>
-
+            <View style={{flex: 1,}}>
+                <Image source={require('../images/bg.png')}
+                       style={{position: 'absolute', top: 0}}/>
                 <View style={styles.titleStyle}>
-                    <TouchableOpacity onPress={() => this.props.backToTravel()}
+                    <Image source={require('../images/bg.png')}
+                           style={{position: 'absolute'}}/>
+                    <TouchableOpacity onPress={() => this.props.backToChooseTypeTravel()}
                                       style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                         <Icon2 style={styles.iconStyle} size={24} color="white"
                                name="ios-arrow-back"/></TouchableOpacity>
@@ -271,14 +274,6 @@ export default class CustomerPlant extends Component {
                     marginLeft: 8,
                     marginTop: 8,
                     marginBottom: 4,
-                    marginRight: 4,
-                    backgroundColor: Color.backgroundNewFeed
-                }}>
-                </View>
-                <View style={{
-                    marginLeft: 8,
-                    marginTop: 8,
-                    marginBottom: 4,
                     marginRight: 4
                 }}>
                     <Search
@@ -290,51 +285,51 @@ export default class CustomerPlant extends Component {
                     />
                 </View>
                 <View
-                    style={{width: width, flexDirection: 'row', justifyContent: 'center', marginLeft: 16, height: 45}}>
-                    <Text style={{textAlign: 'center', alignSelf: 'center', backgroundColor: 'transparent'}}>Chọn
-                        ngày</Text>
-                    <DatePicker
-                        style={{marginLeft: 8}}
-                        date={this.state.datePlant}
-                        mode="date"
-                        placeholder="select date"
-                        format="DD-MM-YYYY"
-
-                        confirmBtnText="Xác nhận"
-                        cancelBtnText="Huỷ bỏ"
-                        customStyles={{
-                            dateIcon: {},
-                            dateInput: {
-                                backgroundColor: 'white',
-                                borderWidth: 1,
-                                borderColor: 'gray',
-                                borderRadius: 4,
-                            },
-                        }}
-                        onDateChange={(date) => {
-                            this.setState({datePlant: date})
-                        }}
-                    />
-                </View>
-                <View
-                    style={{width: width, flexDirection: 'row', justifyContent: 'center', marginLeft: 16, height: 45}}>
-                    <Text style={{
-                        textAlign: 'center',
-                        alignSelf: 'center',
-                        backgroundColor: 'transparent',
-                        marginRight: 8
-                    }}>Nhân
-                        viên:</Text>
-                    <TouchableOpacity onPress={() => this.showDialogChoosePerson()} style={{
-                        textAlign: 'center',
-                        alignSelf: 'center',
-                        backgroundColor: 'transparent',
-                        borderWidth: 0.5,
-                        borderRadius: 5,
-                        padding: 4
+                    style={{
+                        width: width,
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        marginLeft: 8,
+                        height: 45
                     }}>
-                        <Text>{this.state.namePerson}</Text>
-                    </TouchableOpacity>
+                    <View style={{width: width / 2, flexDirection: 'row'}}>
+                        <Text style={{textAlign: 'center', alignSelf: 'center', backgroundColor: 'transparent'}}>Chọn
+                            ngày</Text>
+                        <DatePicker
+                            date={this.state.datePlant}
+                            mode="date"
+                            placeholder="select date"
+                            format="DD-MM-YYYY"
+
+                            confirmBtnText="Xác nhận"
+                            cancelBtnText="Huỷ bỏ"
+                            customStyles={{
+                                dateIcon: {},
+                                dateInput: {
+                                    backgroundColor: 'white',
+                                    borderWidth: 1,
+                                    borderColor: 'gray',
+                                    borderRadius: 4,
+                                },
+                            }}
+                            onDateChange={(date) => {
+                                this.setState({datePlant: date})
+                            }}
+                        />
+                    </View>
+                    <View style={{width: width / 2, justifyContent: 'center'}}>
+                        <TouchableOpacity onPress={() => this.showDialogChoosePerson()} style={{
+                            alignSelf: 'center',
+                            backgroundColor: 'transparent',
+                            borderWidth: 0.5,
+                            borderRadius: 5,
+                            height: 45,
+                            backgroundColor: 'white',
+                            justifyContent: 'center'
+                        }}>
+                            <Text style={{textAlign: 'center', color: 'black'}}>{this.state.namePerson}</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
                 {this.flatListorIndicator()}
                 <Modal
@@ -350,16 +345,18 @@ export default class CustomerPlant extends Component {
 
                         </TouchableOpacity>
                     </View>
-                    <DialogCustom closeModal={() => {
-                        this.refs.modal.close()
-                    }} callback={(id, tennhanvien) => {
-                        this.setState({idNhanvien: id, namePerson: tennhanvien})
-                        if (this.state.dataChoose.length !== 0) {
-                            for (let i = 0; i < this.state.dataChoose.length; i++) {
-                                this.state.dataChoose[i].idnhanvien = id
+                    <DialogCustom
+                        closeModal={() => {
+                            this.refs.modal.close()
+                        }}
+                        callback={(id, tennhanvien) => {
+                            this.setState({idNhanvien: id, namePerson: tennhanvien})
+                            if (this.state.dataChoose.length !== 0) {
+                                for (let i = 0; i < this.state.dataChoose.length; i++) {
+                                    this.state.dataChoose[i].idnhanvien = id
+                                }
                             }
-                        }
-                    }}/>
+                        }}/>
                 </Modal>
 
             </View>
@@ -410,7 +407,7 @@ export default class CustomerPlant extends Component {
                             Toast.show('Lập kế hoạch thành công')
                         else
                             Toast.show('Kế hoạch đã bị trùng , vui lòng thử lại')
-                        this.props.backToTravel()
+                        this.props.backToChooseTypeTravel()
                     }
                 }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
 
@@ -424,13 +421,12 @@ export default class CustomerPlant extends Component {
 }
 const styles = StyleSheet.create({
     titleStyle: {
-        paddingTop: Platform.OS === 'ios' ? 16 : 0,
+        marginTop: Platform.OS === 'ios' ? 16 : 0,
         flex: 1,
         elevation: 15,
         justifyContent: 'space-between',
         flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: Color.backgroundNewFeed,
+
     },
     headerStyle: {
         elevation: 15, height: this.height / 7

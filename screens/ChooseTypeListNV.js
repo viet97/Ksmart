@@ -36,14 +36,16 @@ export default class ChooseTypeListNV extends Component {
     }
 
     render() {
-        let style = myStyles.styles
         return (
-            <TabNavigator>
+            <TabNavigator
+                tabBarStyle={{backgroundColor: '#90CAF9'}}
+            >
                 <TabNavigator.Item
+                    titleStyle={{color: 'black'}}
                     selected={this.state.selectedTab === 'ListNhanVien'}
                     title="Nhân Viên"
                     renderIcon={() => <Icon2 size={24} color="black" name="ios-people-outline"/>}
-                    renderSelectedIcon={() => <Icon2 size={24} color="green" name="ios-people-outline"/>}
+                    renderSelectedIcon={() => <Icon2 size={24} color="white" name="ios-people-outline"/>}
                     onPress={() => this.setState({selectedTab: 'ListNhanVien'})}>
                     <View style={{flex: 1}}>
                         <Image source={require('../images/bg.png')}
@@ -94,10 +96,11 @@ export default class ChooseTypeListNV extends Component {
                     </View>
                 </TabNavigator.Item>
                 <TabNavigator.Item
+                    titleStyle={{color: 'black'}}
                     selected={this.state.selectedTab === 'MapForAllLocation'}
                     title="Vị trí"
                     renderIcon={() => <Icon size={24} color="black" name="location"/>}
-                    renderSelectedIcon={() => <Icon size={24} color="green" name="location"/>}
+                    renderSelectedIcon={() => <Icon size={24} color="white" name="location"/>}
                     onPress={() => this.setState({selectedTab: 'MapForAllLocation'})}>
                     <MapListScreen backToHome={() => this.props.backToHome()}/>
                 </TabNavigator.Item>

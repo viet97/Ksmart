@@ -135,6 +135,9 @@ export default class HomeScreen extends React.Component {
                 />
             case "ChooseTypeTravel":
                 return <ChooseTypeTravel
+                    goToCustomerPlant={() => {
+                        this.setState({screenName: 'CustomerPlant'})
+                    }}
                     goToTravel={(status) => this.setState({travelStatus: status}, function () {
                         this.setState({screenName: 'Travel'})
                     })}
@@ -203,9 +206,6 @@ export default class HomeScreen extends React.Component {
             case "Travel":
                 return <TravelScreen
                     status={this.state.travelStatus}
-                    goToCustomerPlant={(date) => {
-                        this.setState({screenName: 'CustomerPlant'})
-                    }}
                     backToChooseTypeTravel={() => {
                         this.setState({screenName: 'ChooseTypeTravel'})
                     }}
@@ -252,7 +252,7 @@ export default class HomeScreen extends React.Component {
                 }}/>
             case "CustomerPlant":
                 return <CustomerPlant
-                    backToTravel={() => this.setState({screenName: 'Travel'})}
+                    backToChooseTypeTravel={() => this.setState({screenName: 'ChooseTypeTravel'})}
                 />
             case "DetailNhanVien":
                 return <DetailNhanVien/>

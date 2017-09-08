@@ -287,12 +287,15 @@ export default class TravelChartScreen extends React.Component {
                                       bottom: 0
                                   }}/>
                 <View style={{flexDirection: 'column', flex: 9}}>
-                    <View style={{width: width, flexDirection: 'row', justifyContent: 'space-between'}}>
+                    <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: 60}}>
+                        <Text style={{backgroundColor: 'transparent'}}>Từ</Text>
                         <DatePicker
+                            style={{marginLeft: 8}}
                             date={this.state.dateFrom}
                             mode="date"
                             placeholder="select date"
                             format="DD-MM-YYYY"
+
                             confirmBtnText="Xác nhận"
                             cancelBtnText="Huỷ bỏ"
                             customStyles={{
@@ -302,16 +305,15 @@ export default class TravelChartScreen extends React.Component {
                                     borderWidth: 1,
                                     borderColor: 'gray',
                                     borderRadius: 4,
-                                }
+                                },
                             }}
                             onDateChange={(date) => {
-
                                 this.ondateChange(date, this.state.dateTo);
                             }}
                         />
-
-                        <Text style={{alignSelf: 'center', backgroundColor: 'transparent'}}>Đến ngày </Text>
+                        <Text style={{backgroundColor: 'transparent'}}>đến</Text>
                         <DatePicker
+                            style={{marginLeft: 8}}
                             date={this.state.dateTo}
                             mode="date"
                             placeholder="select date"

@@ -32,6 +32,7 @@ export default class ModalDropdownCustom extends Component {
     render() {
         return (
             <ModalDropdown
+                width={this.state.width}
                 options={this.props.data}
                 style={{
                     borderWidth: 0.4,

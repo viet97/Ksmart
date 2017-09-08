@@ -9,7 +9,8 @@ import {
     FlatList,
     ActivityIndicator,
     Platform,
-    Picker, TouchableHighlight, ScrollView, RefreshControl
+    Picker, TouchableHighlight, ScrollView, RefreshControl,
+    Alert
 } from 'react-native';
 import ModalDropdown from "react-native-modal-dropdown";
 import Toast from 'react-native-simple-toast';
@@ -400,7 +401,7 @@ export default class ListNhanVienScreen extends React.Component {
                                         />
                                     </View>
 
-                                    <Text style={{color: 'white'}}>Chon phong ban</Text>
+                                    <Text style={{color: 'white'}}>Chọn phòng ban</Text>
                                     <ModalDropdown
                                         options={this.state.partyNhanVienStatus}
                                         style={{
@@ -445,7 +446,7 @@ export default class ListNhanVienScreen extends React.Component {
                                         this.setState({dialogVisible: false});
                                         console.log('Huỷ bỏ ', this.state.numberPickStatus, this.state.numberPickParty);
                                     }}>
-                                    <Text style={{color: '#6a5aff', alignSelf: 'center'}}>Cancle</Text>
+                                    <Text style={{color: '#6a5aff', alignSelf: 'center'}}>Cancel</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     style={{

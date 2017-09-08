@@ -64,7 +64,7 @@ export default class OnlineChartScreen extends React.Component {
                     this.setState({
                         dataRender: responseJson.data
                     })
-            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại. Mã lỗi: ' + e))
+            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại. Mã lỗi: '))
     }
 
     componentDidMount() {
@@ -145,7 +145,7 @@ export default class OnlineChartScreen extends React.Component {
                         <Text style={{
                             marginLeft: 8,
                             backgroundColor: 'transparent'
-                        }}>{item.gio}</Text>
+                        }}>{item.gio}:00</Text>
                     </View>
                 </View>
 

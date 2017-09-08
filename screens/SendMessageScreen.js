@@ -12,7 +12,7 @@ import {
     Platform,
     TextInput,
     ScrollView,
-
+    Alert,
 } from 'react-native';
 import {Keyboard} from 'react-native';
 import DialogManager, {ScaleAnimation, DialogContent} from 'react-native-dialog-component';
@@ -27,6 +27,7 @@ import Search from "react-native-search-box";
 import {Icon} from "react-native-elements";
 import DialogCustom from "../components/DialogCustom";
 import Autocomplete from "react-native-autocomplete-input";
+import Modal from 'react-native-modalbox';
 
 let {height, width} = Dimensions.get('window')
 export default class ModalSendMessage extends Component {
@@ -128,50 +129,50 @@ export default class ModalSendMessage extends Component {
                     </TouchableOpacity>
                 </View>
                 <View style={{flex: 9}}>
-                        <View style={styles.autocompleteContainer}>
-                            <Autocomplete
-                                ref="autocp"
-                                hideResults={this.state.hideResults}
-                                data={this.state.listNhanVien}
-                                defaultValue={this.state.nameInput}
-                                placeholder="Nhập tên người nhận"
-                                style={{width: width - 32, paddingLeft: 8, height: 40, backgroundColor: 'white'}}
-                                onChangeText={text => {
-                                    if (text.length !== 0) {
+                    <View style={styles.autocompleteContainer}>
+                        <Autocomplete
+                            ref="autocp"
+                            hideResults={this.state.hideResults}
+                            data={this.state.listNhanVien}
+                            defaultValue={this.state.nameInput}
+                            placeholder="Nhập tên người nhận"
+                            style={{width: width - 32, paddingLeft: 8, height: 40, backgroundColor: 'white'}}
+                            onChangeText={text => {
+                                if (text.length !== 0) {
+                                    this.setState({
+                                        hideResults: false,
+                                        receiver: text,
+                                        nameInput: text
+                                    }, function () {
+                                        this.requestSearch(text)
+                                    })
+                                } else {
+                                    this.setState({hideResults: true, nameInput: ''})
+                                }
+                            }}
+                            renderItem={(data) => (
+                                <TouchableOpacity
+                                    style={{flexDirection: 'row'}}
+                                    onPress={() => {
                                         this.setState({
-                                            hideResults: false,
-                                            receiver: text,
-                                            nameInput: text
+                                            nameInput: data.tennhanvien,
+                                            IDNhanVien: data.idnhanvien,
+                                            hideResults: true
                                         }, function () {
-                                            this.requestSearch(text)
-                                        })
-                                    } else {
-                                        this.setState({hideResults: true, nameInput: ''})
-                                    }
-                                }}
-                                renderItem={(data) => (
-                                    <TouchableOpacity
-                                        style={{flexDirection: 'row'}}
-                                        onPress={() => {
-                                            this.setState({
-                                                nameInput: data.tennhanvien,
-                                                IDNhanVien: data.idnhanvien,
-                                                hideResults: true
-                                            }, function () {
-                                                Keyboard.dismiss();
-                                            });
-                                        }}>
+                                            Keyboard.dismiss();
+                                        });
+                                    }}>
 
-                                        <View style={{justifyContent: 'center'}}>
-                                            <Image
-                                                style={{margin: 8, width: 30, height: 30, borderRadius: 15}}
-                                                source={require('../images/bglogin.jpg')}/>
-                                        </View>
-                                        <Text style={{marginLeft: 16, alignSelf: 'center'}}>{data.tennhanvien}</Text>
-                                    </TouchableOpacity>
-                                )}
-                            />
-                        </View>
+                                    <View style={{justifyContent: 'center'}}>
+                                        <Image
+                                            style={{margin: 8, width: 30, height: 30, borderRadius: 15}}
+                                            source={require('../images/bglogin.jpg')}/>
+                                    </View>
+                                    <Text style={{marginLeft: 16, alignSelf: 'center'}}>{data.tennhanvien}</Text>
+                                </TouchableOpacity>
+                            )}
+                        />
+                    </View>
                     <View style={{marginHorizontal: 16, marginTop: 60, backgroundColor: 'transparent'}}>
                         <Text style={{marginBottom: 8}}>Tiêu đề</Text>
                         <TextInput
@@ -214,11 +215,50 @@ export default class ModalSendMessage extends Component {
                         }}>Gửi</Text>
                     </TouchableOpacity>
                 </View>
+                <Modal
+                    style={[styles.modal]}
+                    ref={"modal"}
+                    swipeToClose={true}
+                    onClosingState={this.onClosingState}>
+                    <View style={{alignItems: 'flex-end', position: 'absolute', right: 8, top: 0}}>
+                        <TouchableOpacity
+                            onPress={() => {
+                                this.refs.modal.close()
+                            }}>
+                            <Icon style={{paddingVertical: 8}} name="x" size={24} color="#EC433E" type="foundation"/>
+
+                        </TouchableOpacity>
+                    </View>
+                    <DialogCustom
+                        closeModal={() => {
+                            this.refs.modal.close()
+                        }}
+                        callback={(id, name) => {
+                            this.setState({IDNhanVien: id, receiver: name, nameInput: name})
+                        }}
+                    />
+                </Modal>
+
             </View>
         )
     }
 
     sendMessage() {
+        if (this.state.text.le) {
+            Alert.alert(
+                'Nội dung tin nhắn không có gì',
+                'Bạn có chắc chắn muốn gửi ?',
+                [
+                    {text: 'Hủy',},
+                    {text: 'Gửi', onPress: () => this.startSendMessage()}
+                ],
+                {cancelable: false}
+            )
+        }
+
+    }
+
+    startSendMessage() {
         fetch(URlConfig.getLinkSendMessage(this.state.IDNhanVien, this.state.title, this.state.text))
             .then((response) => (response.json()))
             .then((responseJson) => {
@@ -230,19 +270,7 @@ export default class ModalSendMessage extends Component {
     }
 
     showDialog() {
-        DialogManager.show({
-            animationDuration: 200,
-            ScaleAnimation: new ScaleAnimation(),
-            height: height - 32,
-            children: (
-                <DialogCustom
-                    callback={(id, name) => {
-                        this.setState({IDNhanVien: id, receiver: name, nameInput: name})
-                    }}/>
-            ),
-        }, () => {
-            console.log('callback - show');
-        });
+        this.refs.modal.open();
     }
 
 }
@@ -304,9 +332,9 @@ const styles = StyleSheet.create({
         fontFamily: 'Al Nile'
     },
     modal: {
+        flex: 1,
         flexDirection: 'column',
         paddingHorizontal: 8,
-        marginTop: 32,
-        justifyContent: 'center',
+        marginTop: 36,
     },
 })

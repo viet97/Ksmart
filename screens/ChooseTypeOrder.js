@@ -74,8 +74,9 @@ export default class ChooseTypeOrder extends Component {
                         }}>Báo cáo</Text>
                     <View style={{backgroundColor: 'transparent', width: 35, height: 35}}/>
                 </View>
-                <View style={{width: window.width, height: 45, elevation: 5}}>
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                <View style={{width: window.width, height: 60, elevation: 5}}>
+                    <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: 60}}>
+                        <Text style={{backgroundColor: 'transparent'}}>Từ</Text>
                         <DatePicker
                             style={{marginLeft: 8}}
                             date={this.state.dateFrom}
@@ -98,13 +99,7 @@ export default class ChooseTypeOrder extends Component {
                                 this.ondateChange(date, this.state.dateTo);
                             }}
                         />
-                        <Text style={{
-                            textAlign: 'center',
-                            alignSelf: 'center',
-                            backgroundColor: 'transparent',
-                            color: 'black'
-                        }}>Đến
-                            ngày</Text>
+                        <Text style={{backgroundColor: 'transparent'}}>đến</Text>
                         <DatePicker
                             style={{marginLeft: 8}}
                             date={this.state.dateTo}
