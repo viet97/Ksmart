@@ -90,7 +90,6 @@ export default class OrderListScreen extends Component {
                         orderListDataFull: responseJson.data,
                         isEndList: responseJson.endlist
                     }, function () {
-
                         let dataFill = this.filtData(responseJson.data)
                         if (dataFill.length < NUMBER_ITEM_PER_PAGE || this.state.isEndList) {
                             ALL_LOADED = true;
@@ -158,7 +157,7 @@ export default class OrderListScreen extends Component {
                             this.forceUpdate()
                         }
                     })
-                    .catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'));
+                    .catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e));
             }
         }
     }
