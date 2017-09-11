@@ -20,6 +20,7 @@ import {ProgressDialog} from 'react-native-simple-dialogs';
 import ultils from "../configs/ultils";
 import {CheckBox} from 'react-native-elements'
 import Communications from 'react-native-communications';
+import {Icon} from 'react-native-elements'
 
 let {width, height} = Dimensions.get('window')
 const Realm = require('realm');
@@ -27,7 +28,7 @@ export default class LoginScreen extends React.Component {
 
     static navigationOptions = {
         header: null
-    }
+    };
 
     showToast(msg, time = 3000) {
         let toast = Toast.show(msg, {
@@ -98,93 +99,114 @@ export default class LoginScreen extends React.Component {
         let website = 'http://ksmart.vn';
         let windowWidth = Dimensions.get('window').width;
         return (
-            <View style={{flex: 1, justifyContent: 'center', flexDirection: 'column'}}>
+            <View style={{flex: 1, justifyContent: 'space-between', flexDirection: 'column', backgroundColor: 'white'}}>
                 <Animatable.Image
                     source={require('../images/bg.png')}
-                    style={styles.absolute}
+                    style={styles.image}
                     resizeMode={Image.resizeMode.cover}
                     blurRadius={1}
-                />
-                <ScrollView style={{flex: 1, alignSelf: 'center',}} keyboardDismissMode="on-drag" scrollEnabled={false}>
-                    <View style={{
-                        flexDirection: 'column',
-                        flex: 1,
-                        width: windowWidth - 2,
-                        height: height,
-                        justifyContent: 'center'
-                    }}>
-                        <View>
-                            <Image source={require('../images/logoksmart.png')}
-                                   style={{alignSelf: 'center', width: 100, height: 100}}/>
-                        </View>
-                        <View style={{alignSelf: 'center', width: windowWidth}}>
-                            <TextInputLayout style={styles.inputLayout}
-                                             hintColor='white' focusColor='white'>
-                                <TextInput
-                                    returnKeyType={"next"}
-                                    value={this.state.idct}
-                                    style={styles.textInput}
-                                    placeholder={'Mã công ty'}
-                                    secureTextEntry={false}
-                                    onChangeText={(text) => this.setState({idct: text})}
-                                    onSubmitEditing={(event) => {
-                                        this.refs.ipPass.focus();
-                                    }}
+                >
+                    <View style={{alignSelf: 'center', backgroundColor: 'transparent'}}>
+                        <Image source={require('../images/logoksmart.png')}
+                               style={{alignSelf: 'center', width: 100, height: 100}}/>
+                        <Text style={{
+                            color: 'white',
+                            fontSize: 30,
+                            alignSelf: 'center',
+                            marginTop: 8,
+                            fontFamily: 'GillSans-Light'
+                        }}>Ksmart Manager</Text>
+                    </View>
+                </Animatable.Image>
+                <ScrollView style={{flex: 1, alignSelf: 'center', backgroundColor: 'white'}}
+                            keyboardDismissMode="on-drag" scrollEnabled={false}>
 
-                                />
-                            </TextInputLayout>
-                            <TextInputLayout style={styles.inputLayout} hintColor='white' focusColor='white'>
-                                <TextInput
-                                    ref="ipPass"
-                                    returnKeyType={"next"}
-                                    value={this.state.username}
-                                    style={styles.textInput}
-                                    placeholder={'Tên đăng nhập'}
-                                    secureTextEntry={false}
-                                    onChangeText={(text) => this.setState({username: text})}
-                                    onSubmitEditing={(event) => {
-                                        this.refs.ipRePass.focus();
-                                    }}
-                                />
-                            </TextInputLayout>
-                            <TextInputLayout style={styles.inputLayout} hintColor='white' focusColor='white'>
-                                <TextInput
-                                    ref="ipRePass"
-                                    value={this.state.password}
-                                    style={styles.textInput}
-                                    returnKeyType={"done"}
-                                    placeholder={'Mật khẩu'}
-                                    secureTextEntry={true}
-                                    onChangeText={(text) => this.setState({password: text})}
-                                />
-                            </TextInputLayout>
-                        </View>
-                        <View
-                            style={{flexDirection: 'column', alignSelf: 'center', marginTop: 16, alignItems: 'center'}}>
-                            <CheckBox
-                                title='Ghi nhớ đăng nhập'
-                                checked={this.state.checkOfCheckBox}
-                                onPress={() => this.setState({checkOfCheckBox: !this.state.checkOfCheckBox})}
-                                style={{backgroundColor: 'transparent'}}
-                            />
-                            <TouchableHighlight
-                                activeOpacity={1}
-                                underlayColor="transparent"
-                                style={{
-                                    height: 48,
-                                    backgroundColor: 'transparent',
-                                    justifyContent: 'center',
-                                    padding: 16
+                </ScrollView>
+                <View style={{
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    position: 'absolute',
+                    backgroundColor: 'white',
+                    padding: 8,
+                    top: height * 0.32, left: width * 0.05, right: width * 0.05, bottom: height * 0.3,
+                }}>
+
+                    <View style={{alignSelf: 'center', width: windowWidth}}>
+                        <View style={styles.viewborder}>
+                            <TextInput
+                                hintColor='gray' focusColor='black'
+                                returnKeyType={"next"}
+                                value={this.state.idct}
+                                style={styles.textInput}
+                                placeholder={'Mã công ty'}
+                                secureTextEntry={false}
+                                onChangeText={(text) => this.setState({idct: text})}
+                                onSubmitEditing={(event) => {
+                                    this.refs.ipPass.focus();
                                 }}
-                                onPress={() => this.startLogin()}>
-                                <Animatable.Text animation="fadeInDown" style={styles.loginTextButton}>Đăng
-                                    nhập</Animatable.Text>
 
-                            </TouchableHighlight>
+                            />
+                            <Icon name="account-balance" size={24} color="#90CAF9"/>
+                        </View>
+                        <View style={styles.viewborder}>
+                            <TextInput
+                                ref="ipPass"
+                                returnKeyType={"next"}
+                                value={this.state.username}
+                                style={styles.textInput}
+                                placeholder={'Tên đăng nhập'}
+                                secureTextEntry={false}
+                                onChangeText={(text) => this.setState({username: text})}
+                                onSubmitEditing={(event) => {
+                                    this.refs.ipRePass.focus();
+                                }}
+                            />
+                            <Icon name="user-circle-o" type="font-awesome" size={24} color="#90CAF9"/>
+                        </View>
+                        <View style={styles.viewborder}>
+                            <TextInput
+                                ref="ipRePass"
+                                value={this.state.password}
+                                style={styles.textInput}
+                                returnKeyType={"done"}
+                                placeholder={'Mật khẩu'}
+                                secureTextEntry={true}
+                                onChangeText={(text) => this.setState({password: text})}
+                            />
+                            <Icon name="security" size={24} color="#90CAF9"/>
                         </View>
 
                     </View>
-                </ScrollView>
+                    <View
+                        style={{flexDirection: 'column', alignSelf: 'center', marginTop: 16, alignItems: 'center'}}>
+                        <CheckBox
+                            textStyle={{color: 'gray'}}
+                            title='Ghi nhớ đăng nhập'
+                            checked={this.state.checkOfCheckBox}
+                            onPress={() => this.setState({checkOfCheckBox: !this.state.checkOfCheckBox})}
+                            style={{backgroundColor: 'transparent'}}
+                        />
+                        <TouchableHighlight
+                            activeOpacity={1}
+                            underlayColor="transparent"
+                            style={{
+                                height: 48,
+                                marginTop: 16,
+                                borderRadius: 24,
+                                backgroundColor: '#4c91f8',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                padding: 16,
+                                width: width - width * 0.1,
+                            }}
+                            onPress={() => this.startLogin()}>
+                            <Animatable.Text style={styles.loginTextButton}>Đăng
+                                nhập</Animatable.Text>
+
+                        </TouchableHighlight>
+                    </View>
+
+                </View>
                 <View style={{
                     position: 'absolute',
                     bottom: 0,
@@ -362,8 +384,9 @@ export default class LoginScreen extends React.Component {
 
 
 const styles = StyleSheet.create({
-    absolute: {
-        top: 0, bottom: 0, left: 0, right: 0, position: 'absolute',
+    image: {
+        height: height * 0.36, justifyContent: 'center', alignItems: 'center',
+        width: width
     },
     container: {
         flex: 1,
@@ -371,7 +394,9 @@ const styles = StyleSheet.create({
     },
     textInput: {
         fontSize: 16,
-        height: 40
+        height: 40,
+        paddingHorizontal: 8,
+        width: width - width * 0.1 - 80,
     },
     inputLayout: {
         marginTop: 16,
@@ -380,9 +405,17 @@ const styles = StyleSheet.create({
     loginTextButton: {
         fontSize: 16,
         fontFamily: 'Al Nile',
-        color: 'darkblue'
+        color: 'white'
     },
     textStyle: {
-        color: 'white'
+        color: 'gray'
+    },
+    viewborder: {
+        borderBottomWidth: 0.5,
+        marginTop: 16,
+        marginHorizontal: 48,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        borderBottomColor: '#90CAF9'
     }
 })
