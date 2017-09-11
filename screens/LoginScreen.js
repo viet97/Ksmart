@@ -133,6 +133,7 @@ export default class LoginScreen extends React.Component {
                     <View style={{alignSelf: 'center', width: windowWidth}}>
                         <View style={styles.viewborder}>
                             <TextInput
+                                underlineColorAndroid="transparent"
                                 hintColor='gray' focusColor='black'
                                 returnKeyType={"next"}
                                 value={this.state.idct}
@@ -150,6 +151,7 @@ export default class LoginScreen extends React.Component {
                         <View style={styles.viewborder}>
                             <TextInput
                                 ref="ipPass"
+                                underlineColorAndroid="transparent"
                                 returnKeyType={"next"}
                                 value={this.state.username}
                                 style={styles.textInput}
@@ -165,6 +167,7 @@ export default class LoginScreen extends React.Component {
                         <View style={styles.viewborder}>
                             <TextInput
                                 ref="ipRePass"
+                                underlineColorAndroid="transparent"
                                 value={this.state.password}
                                 style={styles.textInput}
                                 returnKeyType={"done"}
@@ -396,6 +399,7 @@ const styles = StyleSheet.create({
         height: 40,
         paddingHorizontal: 8,
         width: width - width * 0.1 - 80,
+
     },
     inputLayout: {
         marginTop: 16,
