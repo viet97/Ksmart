@@ -101,7 +101,7 @@ export default class LoginScreen extends React.Component {
         return (
             <View style={{flex: 1, justifyContent: 'space-between', flexDirection: 'column', backgroundColor: 'white'}}>
                 <Animatable.Image
-                    source={require('../images/bg.png')}
+                    source={require('../images/blur_blue.jpg')}
                     style={styles.image}
                     resizeMode={Image.resizeMode.cover}
                     blurRadius={1}
@@ -127,7 +127,7 @@ export default class LoginScreen extends React.Component {
                     position: 'absolute',
                     backgroundColor: 'white',
                     padding: 8,
-                    top: height * 0.32, left: width * 0.05, right: width * 0.05, bottom: 0
+                    top: height * 0.32, left: width * 0.05, right: width * 0.05, bottom: 0,
                 }}>
 
                     <View style={{alignSelf: 'center', width: windowWidth}}>
