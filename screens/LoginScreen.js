@@ -124,11 +124,10 @@ export default class LoginScreen extends React.Component {
                 </ScrollView>
                 <View style={{
                     flexDirection: 'column',
-                    justifyContent: 'center',
                     position: 'absolute',
                     backgroundColor: 'white',
                     padding: 8,
-                    top: height * 0.32, left: width * 0.05, right: width * 0.05, bottom: height * 0.3,
+                    top: height * 0.32, left: width * 0.05, right: width * 0.05, bottom: 0
                 }}>
 
                     <View style={{alignSelf: 'center', width: windowWidth}}>
