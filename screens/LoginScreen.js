@@ -99,7 +99,8 @@ export default class LoginScreen extends React.Component {
         let website = 'http://ksmart.vn';
         let windowWidth = Dimensions.get('window').width;
         return (
-            <View style={{flex: 1, justifyContent: 'space-between', flexDirection: 'column', backgroundColor: 'white'}}>
+            <View
+                style={{flex: 1, justifyContent: 'space-between', flexDirection: 'column', backgroundColor: 'white',}}>
                 <Animatable.Image
                     source={require('../images/blur_blue.jpg')}
                     style={styles.image}
@@ -388,7 +389,8 @@ export default class LoginScreen extends React.Component {
 const styles = StyleSheet.create({
     image: {
         height: height * 0.36, justifyContent: 'center', alignItems: 'center',
-        width: width
+        width: width,
+        opacity: 0.7
     },
     container: {
         flex: 1,
