@@ -64,7 +64,7 @@ export default class TravelItem extends React.Component {
     }
 
     editClick() {
-        this.props.editClick();
+        this.props.goToEditTravel();
 
     }
 
@@ -116,7 +116,7 @@ export default class TravelItem extends React.Component {
             <Swipeout right={showSwipe ? swipeoutBtns : []} style={{backgroundColor: 'transparent'}}
                       close={this.state.closeSwipe}>
                 <TouchableOpacity
-                    onPress={() => this.props.callback()}>
+                    onPress={() => this.props.goToDetail()}>
                     <View
                         onLayout={(e) => {
                             var {x, y, width, height} = e.nativeEvent.layout;

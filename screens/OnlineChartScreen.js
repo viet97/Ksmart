@@ -122,6 +122,13 @@ export default class OnlineChartScreen extends React.Component {
         else title = 'Biểu đồ nhân viên online'
         return title
     }
+
+    getTime(item) {
+        let time = ''
+        if (item.gio < 10) time = '0' + item.gio + ':00';
+        else time = item.gio + ':00'
+        return time;
+    }
     renderItem(item) {
         return (
             <View style={{
@@ -145,7 +152,7 @@ export default class OnlineChartScreen extends React.Component {
                         <Text style={{
                             marginLeft: 8,
                             backgroundColor: 'transparent'
-                        }}>{item.gio}:00</Text>
+                        }}>{this.getTime(item)}</Text>
                     </View>
                 </View>
 

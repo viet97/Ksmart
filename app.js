@@ -41,6 +41,7 @@ const Ksmart = StackNavigator({
     Home: {screen: HomeScreen},
     Menu: {screen: MenuScreen},
     Map: {screen: MapScreen,},
+    Travel: {screen: TravelScreen},
     ListNhanVien: {screen: ListNhanVienScreen},
     DetailNhanVien: {screen: DetailNhanVien},
     DetailMessage: {screen: DetailMessageScreen},

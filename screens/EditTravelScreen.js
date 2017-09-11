@@ -115,35 +115,32 @@ export default class EditTravelScreen extends React.Component {
                                 fetch(URlConfig.getLinkEditTravel(obj))
                                     .then((response) => (response.json()))
                                     .then((responseJson) => {
-                                            if (responseJson.status) {
-                                                Toast.show('Sửa thành công!')
-                                                const {navigate} = this.props.navigation
-                                                this.props
-                                                    .navigation
-                                                    .dispatch(NavigationActions.reset(
-                                                        {
-                                                            index: 0,
-                                                            actions: [
-                                                                NavigationActions.navigate({
-                                                                    routeName: 'Home',
-                                                                    params: {name: 'Travel'}
-                                                                })
-                                                            ]
-                                                        }));
-                                            } else {
-                                                Toast.show('Sửa thất bại,vui lòng thử lại!')
-                                            }
+                                        if (responseJson.status) {
+                                            Toast.show('Sửa thành công!')
+                                            this.props.navigation.goBack();
                                         }
-                                    ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+                                    })
                             }
-                        }}
-                        style={{
-                            padding: 8,
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            backgroundColor: 'transparent'
-                        }}>
-                        <Text style={{color: 'white', paddingRight: 8, paddingTop: 8}}>OK</Text>
+                        }
+                        }
+                        style={
+                            {
+                                padding: 8,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                backgroundColor: 'transparent'
+                            }
+                        }>
+                        <Text
+                            style={
+                                {
+                                    color: 'white',
+                                    paddingRight: 8,
+                                    paddingTop: 8
+                                }
+                            }>
+                            OK
+                        </Text>
                     </TouchableOpacity>
                 </View>
             )
@@ -158,7 +155,12 @@ export default class EditTravelScreen extends React.Component {
                         style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                         <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
                     </TouchableOpacity>
-                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Chỉnh
+                    <Text style={{
+                        fontSize: 20,
+                        color: 'white',
+                        alignSelf: 'center',
+                        backgroundColor: 'transparent'
+                    }}>Chỉnh
                         sửa kế hoạch</Text>
                     <TouchableOpacity
                         onPress={() => {
@@ -184,19 +186,7 @@ export default class EditTravelScreen extends React.Component {
                                     .then((responseJson) => {
                                             if (responseJson.status) {
                                                 Toast.show('Sửa thành công!')
-                                                const {navigate} = this.props.navigation
-                                                this.props
-                                                    .navigation
-                                                    .dispatch(NavigationActions.reset(
-                                                        {
-                                                            index: 0,
-                                                            actions: [
-                                                                NavigationActions.navigate({
-                                                                    routeName: 'Home',
-                                                                    params: {name: 'Travel'}
-                                                                })
-                                                            ]
-                                                        }));
+                                                this.props.navigation.goBack();
                                             } else {
                                                 Toast.show('Sửa thất bại,vui lòng thử lại!')
                                             }

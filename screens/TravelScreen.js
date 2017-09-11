@@ -30,14 +30,16 @@ let ALL_LOADED = false
 let PAGE = 1
 const TIME_SAP_DEN_GIO = 10 * 60;//10 phut
 export default class TravelScreen extends React.Component {
-
-
+    static navigationOptions = {
+        header: null
+    };
     getDataFromSv() {
+        const {params} = this.props.navigation.state;
         ALL_LOADED = false
-        console.log(URlConfig.getLinkTravel(this.state.dateFrom, this.state.dateTo, PAGE, this.props.status))
+        console.log(URlConfig.getLinkTravel(this.state.dateFrom, this.state.dateTo, PAGE, params.status))
         this.setState({isEndList: false, dataRender: null})
         PAGE = 1;
-        fetch(URlConfig.getLinkTravel(this.state.dateFrom, this.state.dateTo, PAGE, this.props.status))
+        fetch(URlConfig.getLinkTravel(this.state.dateFrom, this.state.dateTo, PAGE, params.status))
             .then((response) => (response.json()))
             .then((responseJson) => {
                 console.log(responseJson.data)
@@ -80,7 +82,7 @@ export default class TravelScreen extends React.Component {
             travelStatus: [],
             refreshing: false,
             dataFull: [],
-            dateFrom: today,
+            dateFrom: '01-09-2017',
             dateTo: today,
             dataRender: null,
             onEndReach: true,
@@ -121,12 +123,13 @@ export default class TravelScreen extends React.Component {
     }
 
     loadMoreDataFromSv() {
+        const {params} = this.props.navigation.state;
         if (!this.state.onEndReach) {
             this.setState({onEndReach: true})
 
             if (!this.state.isEndList) {
                 PAGE = PAGE + 1;
-                let url = URlConfig.getLinkTravel(this.state.dateFrom, this.state.dateTo, PAGE, this.props.status)
+                let url = URlConfig.getLinkTravel(this.state.dateFrom, this.state.dateTo, PAGE, params.status)
                 fetch(url)
                     .then((response) => (response.json()))
                     .then((responseJson) => {
@@ -168,7 +171,7 @@ export default class TravelScreen extends React.Component {
     };
 
     flatListorIndicator() {
-
+        const {navigate} = this.props.navigation;
         if (!this.state.dataRender) {
             return (
                 <View style={{flex: 9}}>
@@ -206,11 +209,12 @@ export default class TravelScreen extends React.Component {
                         <TravelItem
                             refreshData={() => this.refreshData()}
                             data={item}
-                            callback={() => this.props.callback(item)}
-                            backToTravel={() => this.props.backToTravel()}
-                            editClick={() => {
-                                this.props.goToEditTravel(item)
-                            }}
+                            goToDetail={
+                                () => navigate('DetailTravel', {data: item})
+                            }
+                            goToEditTravel={
+                                () => navigate('EditTravel', {data: item})
+                            }
                         />
                     }
                 />
@@ -226,7 +230,7 @@ export default class TravelScreen extends React.Component {
                 <View style={styles.titleStyle}>
                     <Image source={require('../images/bg.png')}
                            style={{position: 'absolute'}}/>
-                    <TouchableOpacity onPress={() => this.props.backToChooseTypeTravel()}
+                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}
                                       style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                         <Icon1 style={styles.iconStyle} size={24} color="white"
                                name="ios-arrow-back"/>

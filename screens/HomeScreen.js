@@ -138,9 +138,7 @@ export default class HomeScreen extends React.Component {
                     goToCustomerPlant={() => {
                         this.setState({screenName: 'CustomerPlant'})
                     }}
-                    goToTravel={(status) => this.setState({travelStatus: status}, function () {
-                        this.setState({screenName: 'Travel'})
-                    })}
+                    goToTravel={(status) => navigate('Travel', {status: status})}
                     backToHome={() => {
                         this.setState({screenName: 'Menu'})
                     }}
@@ -205,17 +203,6 @@ export default class HomeScreen extends React.Component {
                 return <DetailMessageScreen/>
             case "Travel":
                 return <TravelScreen
-                    status={this.state.travelStatus}
-                    backToChooseTypeTravel={() => {
-                        this.setState({screenName: 'ChooseTypeTravel'})
-                    }}
-                    callback={(data) => {
-                        navigate('DetailTravel', {data: data})
-                    }}
-                    goToEditTravel={(data) => {
-                        navigate('EditTravel', {data: data})
-                    }}
-
                 />
             case "Chart":
                 return <ChooseTypeChart
