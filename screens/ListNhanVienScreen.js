@@ -345,11 +345,11 @@ export default class ListNhanVienScreen extends React.Component {
 
                     <View style={{flex: 1}}>
 
-                        <Image source={require('../images/bg.png')}
-                               style={{position: 'absolute', top: 0}}/>
+                        <Image source={require('../images/blur_blue.jpg')}
+                               style={{position: 'absolute', top: 0, opacity: 0.2}}/>
                         <View style={styles.titleStyle}>
-                            <Image source={require('../images/bg.png')}
-                                   style={{position: 'absolute'}}/>
+                            <Image source={require('../images/blur_blue.jpg')}
+                                   style={{position: 'absolute', opacity: 0.4}}/>
                             <TouchableOpacity onPress={() => this.props.backToChooseTypeListNV()}
                                               style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                                 <Icon1 style={styles.iconStyle} size={24} color="white"

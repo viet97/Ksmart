@@ -51,7 +51,8 @@ import ChooseTypeOrder from "./ChooseTypeOrder";
 var {height} = Dimensions.get('window');
 var func;
 var backcount = 0
-var isLoginScreen = true
+var isLoginScreen = true;
+const ICON_SIZE = 56;
 export default class HomeScreen extends React.Component {
     static navigationOptions = {
         header: null
@@ -271,8 +272,8 @@ export default class HomeScreen extends React.Component {
                 onSwipeRight={(state) => this.onSwipeRight(state)}
                 style={{flex: 1}}>
                 <View style={{flex: 1}}>
-                    <Image source={require('../images/bg.png')}
-                           style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0}}/>
+                    <Image source={require('../images/blur_blue.jpg')}
+                           style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, opacity: 0.4}}/>
                     <ScrollView style={{flex: 1}}>
                         <View style={styles.titleStyle}>
                             <Image source={require('../images/bg.png')}
@@ -398,7 +399,7 @@ export default class HomeScreen extends React.Component {
 
                                     <Animatable.Text animation="slideInRight" style={styles.titleIconsMenu}>Tin
                                         nhắn</Animatable.Text>
-                                    {this.renderBagde()}
+                                    {this.renderBagde(14)}
 
                                 </TouchableOpacity>
                             </View>
@@ -446,111 +447,94 @@ export default class HomeScreen extends React.Component {
                 <View style={{paddingTop: 15, flexDirection: 'column', flex: 9}}>
                     <Image style={{position: 'absolute'}} source={require('../images/bg.png')}/>
                     <ScrollView style={{marginTop: (Platform.OS === 'ios') ? 16 : 0,}}>
-                        <View>
+
                             <TouchableOpacity style={styles.itemSideMenuStyle} onPress={() => {
                                 this.setState({screenName: "NewFeed"});
                                 this.closeControlPanel()
                             }}>
-                                <IconMaterial size={24} style={styles.iconStyle} color="white" name="payment"/>
+                                <IconMaterial size={ICON_SIZE} style={styles.iconStyle} color="white" name="payment"/>
                                 <Text style={styles.textStyle}>Hoạt động</Text>
                             </TouchableOpacity>
-                        </View>
-                        <View>
+
                             <TouchableOpacity style={styles.itemSideMenuStyle} onPress={() => {
                                 this.setState({screenName: "ChooseTypeListNV"});
                                 this.closeControlPanel()
                             }}>
-                                <Icon1 size={24} style={styles.iconStyle} color="white" name="ios-people-outline"/>
+                                <Icon1 size={ICON_SIZE} style={styles.iconStyle} color="white"
+                                       name="ios-people-outline"/>
                                 <Text style={styles.textStyle}>Nhân viên</Text>
 
                             </TouchableOpacity>
-                        </View>
-                        <View>
                             <TouchableOpacity style={styles.itemSideMenuStyle} onPress={() => {
                                 this.setState({screenName: 'ChooseTypeOrder'})
                                 this.closeControlPanel()
                             }}>
-                                <Icon2 size={24} style={styles.iconStyle} color="white" name="archive"/>
+                                <Icon2 size={ICON_SIZE} style={styles.iconStyle} color="white" name="archive"/>
                                 <Text style={styles.textStyle}>Đơn hàng</Text>
                             </TouchableOpacity>
-                        </View>
-                        <View>
                             <TouchableOpacity style={styles.itemSideMenuStyle} onPress={() => {
                                 this.setState({screenName: 'Customer'}), this.closeControlPanel()
                             }}>
-                                <Icon2 size={24} style={styles.iconStyle} color="white" name="user"/>
+                                <Icon2 size={ICON_SIZE} style={styles.iconStyle} color="white" name="user"/>
                                 <Text style={styles.textStyle}>Khách hàng</Text>
                             </TouchableOpacity>
-                        </View>
-                        <View>
                             <TouchableOpacity style={styles.itemSideMenuStyle}
                                               onPress={() => {
                                                   this.setState({screenName: "ChooseTypeTravel"});
                                                   this.closeControlPanel()
                                               }}>
-                                <Icon2 size={24} style={styles.iconStyle} color="white" name="aircraft-take-off"/>
+                                <Icon2 size={ICON_SIZE} style={styles.iconStyle} color="white"
+                                       name="aircraft-take-off"/>
                                 <Text style={styles.textStyle}>Viếng thăm</Text>
                             </TouchableOpacity>
-                        </View>
-                        <View>
                             <TouchableOpacity style={styles.itemSideMenuStyle} onPress={() => {
                                 this.setState({screenName: "Chart"});
                                 this.closeControlPanel()
                             }}>
-                                <Icon3 size={24} style={styles.iconStyle} color="white" name="bar-chart"/>
+                                <Icon3 size={ICON_SIZE} style={styles.iconStyle} color="white" name="bar-chart"/>
                                 <Text style={styles.textStyle}>Biểu đồ</Text>
                             </TouchableOpacity>
-                        </View>
-                        <View>
                             <TouchableOpacity style={styles.itemSideMenuStyle}
                                               onPress={() => {
                                                   this.setState({screenName: "ChooseTypeReport"});
                                                   this.closeControlPanel()
                                               }}>
-                                <Icon3 size={24} style={styles.iconStyle} color="white" name="file-text-o"/>
+                                <Icon3 size={ICON_SIZE} style={styles.iconStyle} color="white" name="file-text-o"/>
                                 <Text style={styles.textStyle}>Báo cáo</Text>
                             </TouchableOpacity>
-                        </View>
-                        <View>
                             <TouchableOpacity style={styles.itemSideMenuStyle}
                                               onPress={() => {
                                                   this.setState({screenName: "RealtimeChart"});
                                                   this.closeControlPanel()
                                               }}>
-                                <Icon2 size={24} style={styles.iconStyle} color="white" name="laptop"/>
-                                <Text style={styles.textStyle}>online</Text>
+                                <Icon2 size={ICON_SIZE} style={styles.iconStyle} color="white" name="laptop"/>
+                                <Text style={styles.textStyle}>Online</Text>
                             </TouchableOpacity>
-                        </View>
-                        <View>
                             <TouchableOpacity style={styles.itemSideMenuStyle}
                                               onPress={() => {
                                                   this.setState({screenName: "Message"});
                                                   this.closeControlPanel()
                                               }}>
-                                <Icon2 size={24} style={styles.iconStyle} color="white" name="mail"/>
+                                <Icon2 size={ICON_SIZE} style={styles.iconStyle} color="white" name="mail"/>
                                 <Text style={styles.textStyle}>Tin nhắn</Text>
-                                {this.renderBagde()}
+                                {this.renderBagde(20)}
                             </TouchableOpacity>
-                        </View>
-                        <View>
                             <TouchableOpacity style={styles.itemSideMenuStyle}
                                               onPress={() => {
                                                   this.setState({screenName: "AboutUs"});
                                                   this.closeControlPanel()
                                               }}>
-                                <IconMaterial size={24} style={styles.iconStyle} color="white" name="info-outline"/>
+                                <IconMaterial size={ICON_SIZE} style={styles.iconStyle} color="white"
+                                              name="info-outline"/>
                                 <Text style={styles.textStyle}>Liên hệ</Text>
                             </TouchableOpacity>
-                        </View>
-                        <View>
                             <TouchableOpacity style={styles.itemSideMenuStyle} onPress={() => {
                                 this.closeControlPanel()
                                 this.logout()
                             }}>
-                                <Icon4 size={24} style={styles.iconStyle} color="white" name="power"/>
+                                <Icon4 size={ICON_SIZE} style={styles.iconStyle} color="white" name="power"/>
                                 <Text style={styles.textStyle}>Đăng xuất</Text>
                             </TouchableOpacity>
-                        </View>
                     </ScrollView>
                 </View>
 
@@ -559,13 +543,13 @@ export default class HomeScreen extends React.Component {
         )
     }
 
-    renderBagde() {
+    renderBagde(size) {
 
         if (URlConfig.OBJLOGIN.messageUnread > 0) {
             console.log('vao day rrrrr')
             return (
                 <Badge textStyle={{
-                    color: '#fff'
+                    color: '#fff', fontSize: size
                 }}
                        style={{
                            position: 'absolute',
@@ -616,6 +600,11 @@ export default class HomeScreen extends React.Component {
 
 }
 const styles = StyleSheet.create({
+    buttonContainer: {
+        justifyContent: 'center', alignItems: 'center', backgroundColor: 'yellow',
+
+        marginTop: 32,
+    },
     titleStyle: {
         marginTop: Platform.OS === 'ios' ? 16 : 0,
         flex: 1,
@@ -627,20 +616,16 @@ const styles = StyleSheet.create({
         elevation: 15, height: this.height / 7
     },
     itemSideMenuStyle: {
-        borderBottomWidth: 1,
+        borderBottomWidth: 0.5,
         borderBottomColor: 'white',
-        flexDirection: 'row',
-        margin: 8,
-        paddingBottom: 8
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 16,
     }, iconStyle: {
         alignSelf: 'center',
-        width: 24,
-        height: 24,
         backgroundColor: "transparent",
-        marginLeft: 16
     },
     textStyle: {
-        marginLeft: 24,
         fontSize: 18,
         color: 'white',
         backgroundColor: 'transparent'
