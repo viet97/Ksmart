@@ -96,8 +96,6 @@ export default class NewFeedItem extends React.Component {
         return `${arr[0]}
 (${arr[1]}`;
     }
-
-
 }
 
 //     render() {

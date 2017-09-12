@@ -63,7 +63,7 @@ export default class HomeScreen extends React.Component {
         backcount = 0
     };
     openControlPanel = () => {
-        this._drawer.open()
+        this._drawer.open();
         this.setState({
             width: 0,
             height: 0

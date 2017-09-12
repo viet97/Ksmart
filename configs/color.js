@@ -15,10 +15,9 @@ export  default class Color{
 const colors = [
     "#4344ce",
     "#40cf2e",
-    "#e8c055",
     "#f12942",
+    "#e8c055",
     "#f800f3",
     "#76caef"
-
 ]
 export {colors}
