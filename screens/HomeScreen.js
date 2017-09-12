@@ -47,10 +47,11 @@ import ChooseTypeListNV from "./ChooseTypeListNV";
 import ChooseTypeTravel from "./ChooseTypeTravel";
 import ChooseTypeReport from "./ChooseTypeReport";
 import ChooseTypeOrder from "./ChooseTypeOrder";
+import {shadowProps} from "../configs/shadow";
 
 var {height} = Dimensions.get('window');
 var func;
-var backcount = 0
+var backcount = 0;
 var isLoginScreen = true;
 const ICON_SIZE = 56;
 export default class HomeScreen extends React.Component {
@@ -237,7 +238,7 @@ export default class HomeScreen extends React.Component {
                     status={this.state.reportStatus}
                     backToChooseTypeReport={() => {
                         this.setState({screenName: 'ChooseTypeReport'})
-                }}/>
+                    }}/>
             case "CustomerPlant":
                 return <CustomerPlant
                     backToChooseTypeTravel={() => this.setState({screenName: 'ChooseTypeTravel'})}
@@ -279,7 +280,13 @@ export default class HomeScreen extends React.Component {
                             <Image source={require('../images/bg.png')}
                                    style={{position: 'absolute', left: 0, bottom: -height * 9 / 10, height: 50}}/>
                             <TouchableOpacity onPress={() => this.openControlPanel()}
-                                              style={{marginLeft: 16, width: 40, height: 40, alignSelf: 'center'}}>
+                                              style={{
+                                                  marginLeft: 16,
+                                                  width: 40,
+                                                  height: 40,
+                                                  alignSelf: 'center',
+                                                  backgroundColor: 'transparent', ...shadowProps
+                                              }}>
                                 <Icon1
                                     style={{alignSelf: 'center', backgroundColor: 'transparent'}}
                                     size={35}
@@ -301,7 +308,11 @@ export default class HomeScreen extends React.Component {
                         <View style={{flex: 9}}>
                             <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 16}}>
                                 <TouchableOpacity
-                                    style={{alignSelf: 'center', width: 90}}
+                                    style={{
+                                        alignSelf: 'center',
+                                        width: 90,
+                                        backgroundColor: 'transparent', ...shadowProps
+                                    }}
                                     onPress={() => this.setState({screenName: "NewFeed"})}>
                                     <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
                                            source={require('../images/newfeed2.png')}/>
@@ -311,7 +322,11 @@ export default class HomeScreen extends React.Component {
 
                                 </TouchableOpacity>
                                 <TouchableOpacity
-                                    style={{alignSelf: 'center', width: 90}}
+                                    style={{
+                                        alignSelf: 'center',
+                                        width: 90,
+                                        backgroundColor: 'transparent', ...shadowProps
+                                    }}
                                     onPress={() => this.setState({screenName: "ChooseTypeListNV"})}>
                                     <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
 
@@ -322,7 +337,11 @@ export default class HomeScreen extends React.Component {
 
                                 </TouchableOpacity>
                                 <TouchableOpacity
-                                    style={{alignSelf: 'center', width: 90}}
+                                    style={{
+                                        alignSelf: 'center',
+                                        width: 90,
+                                        backgroundColor: 'transparent', ...shadowProps
+                                    }}
                                     onPress={() => this.setState({screenName: "ChooseTypeOrder"})}>
                                     <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
                                            source={require('../images/120-in-1-applets-2013.png')}/>
@@ -334,7 +353,11 @@ export default class HomeScreen extends React.Component {
                             </View>
                             <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 16}}>
                                 <TouchableOpacity
-                                    style={{alignSelf: 'center', width: 90}}
+                                    style={{
+                                        alignSelf: 'center',
+                                        width: 90,
+                                        backgroundColor: 'transparent', ...shadowProps
+                                    }}
                                     onPress={() => this.setState({screenName: "Customer"})}>
                                     <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
                                            source={require('../images/myface-for-facebook-2013.png')}/>
@@ -344,7 +367,11 @@ export default class HomeScreen extends React.Component {
 
                                 </TouchableOpacity>
                                 <TouchableOpacity
-                                    style={{alignSelf: 'center', width: 90}}
+                                    style={{
+                                        alignSelf: 'center',
+                                        width: 90,
+                                        backgroundColor: 'transparent', ...shadowProps
+                                    }}
                                     onPress={() => this.setState({screenName: "ChooseTypeTravel"})}>
                                     <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
                                            source={require('../images/flight-live-status-weather-2014.png')}/>
@@ -352,7 +379,11 @@ export default class HomeScreen extends React.Component {
                                         thăm</Animatable.Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity
-                                    style={{alignSelf: 'center', width: 90}}
+                                    style={{
+                                        alignSelf: 'center',
+                                        width: 90,
+                                        backgroundColor: 'transparent', ...shadowProps
+                                    }}
                                     onPress={() => this.setState({screenName: "Chart"})}>
                                     <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
                                            source={require('../images/moneybook-2011.png')}/>
@@ -364,7 +395,11 @@ export default class HomeScreen extends React.Component {
                             </View>
                             <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 16}}>
                                 <TouchableOpacity
-                                    style={{alignSelf: 'center', width: 90}}
+                                    style={{
+                                        alignSelf: 'center',
+                                        width: 90,
+                                        backgroundColor: 'transparent', ...shadowProps
+                                    }}
                                     onPress={() => this.setState({screenName: "ChooseTypeReport"})}>
                                     <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
                                            source={require('../images/appadvice-2017.png')}/>
@@ -374,7 +409,11 @@ export default class HomeScreen extends React.Component {
 
                                 </TouchableOpacity>
                                 <TouchableOpacity
-                                    style={{alignSelf: 'center', width: 90}}
+                                    style={{
+                                        alignSelf: 'center',
+                                        width: 90,
+                                        backgroundColor: 'transparent', ...shadowProps
+                                    }}
                                     onPress={() => this.setState({screenName: "RealtimeChart"})}>
                                     <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
                                            source={require('../images/turboscan-2015.png')}/>
@@ -384,7 +423,11 @@ export default class HomeScreen extends React.Component {
 
                                 </TouchableOpacity>
                                 <TouchableOpacity
-                                    style={{alignSelf: 'center', width: 90}}
+                                    style={{
+                                        alignSelf: 'center',
+                                        width: 90,
+                                        backgroundColor: 'transparent', ...shadowProps
+                                    }}
                                     onPress={() => this.setState({screenName: "Message"})}>
                                     <Image style={{
                                         width: 60,
@@ -446,10 +489,10 @@ export default class HomeScreen extends React.Component {
                 <View style={{paddingTop: 15, flexDirection: 'column', flex: 9}}>
                     <Image style={{position: 'absolute'}} source={require('../images/bg.png')}/>
                     <ScrollView style={{marginTop: (Platform.OS === 'ios') ? 16 : 0,}}>
-
+                        <View style={styles.touchable}>
                             <TouchableOpacity style={styles.itemSideMenuStyle} onPress={() => {
                                 this.setState({screenName: "NewFeed"});
-                                this.closeControlPanel()
+                                this.closeControlPanel();
                             }}>
                                 <IconMaterial size={ICON_SIZE} style={styles.iconStyle} color="white" name="payment"/>
                                 <Text style={styles.textStyle}>Hoạt động</Text>
@@ -457,13 +500,15 @@ export default class HomeScreen extends React.Component {
 
                             <TouchableOpacity style={styles.itemSideMenuStyle} onPress={() => {
                                 this.setState({screenName: "ChooseTypeListNV"});
-                                this.closeControlPanel()
+                                this.closeControlPanel();
                             }}>
                                 <Icon1 size={ICON_SIZE} style={styles.iconStyle} color="white"
                                        name="ios-people-outline"/>
                                 <Text style={styles.textStyle}>Nhân viên</Text>
 
                             </TouchableOpacity>
+                        </View>
+                        <View style={styles.touchable}>
                             <TouchableOpacity style={styles.itemSideMenuStyle} onPress={() => {
                                 this.setState({screenName: 'ChooseTypeOrder'})
                                 this.closeControlPanel()
@@ -477,6 +522,8 @@ export default class HomeScreen extends React.Component {
                                 <Icon2 size={ICON_SIZE} style={styles.iconStyle} color="white" name="user"/>
                                 <Text style={styles.textStyle}>Khách hàng</Text>
                             </TouchableOpacity>
+                        </View>
+                        <View style={styles.touchable}>
                             <TouchableOpacity style={styles.itemSideMenuStyle}
                                               onPress={() => {
                                                   this.setState({screenName: "ChooseTypeTravel"});
@@ -493,6 +540,8 @@ export default class HomeScreen extends React.Component {
                                 <Icon3 size={ICON_SIZE} style={styles.iconStyle} color="white" name="bar-chart"/>
                                 <Text style={styles.textStyle}>Biểu đồ</Text>
                             </TouchableOpacity>
+                        </View>
+                        <View style={styles.touchable}>
                             <TouchableOpacity style={styles.itemSideMenuStyle}
                                               onPress={() => {
                                                   this.setState({screenName: "ChooseTypeReport"});
@@ -509,6 +558,8 @@ export default class HomeScreen extends React.Component {
                                 <Icon2 size={ICON_SIZE} style={styles.iconStyle} color="white" name="laptop"/>
                                 <Text style={styles.textStyle}>Online</Text>
                             </TouchableOpacity>
+                        </View>
+                        <View style={styles.touchable}>
                             <TouchableOpacity style={styles.itemSideMenuStyle}
                                               onPress={() => {
                                                   this.setState({screenName: "Message"});
@@ -527,6 +578,8 @@ export default class HomeScreen extends React.Component {
                                               name="info-outline"/>
                                 <Text style={styles.textStyle}>Liên hệ</Text>
                             </TouchableOpacity>
+                        </View>
+                        <View style={styles.touchable}>
                             <TouchableOpacity style={styles.itemSideMenuStyle} onPress={() => {
                                 this.closeControlPanel()
                                 this.logout()
@@ -534,6 +587,7 @@ export default class HomeScreen extends React.Component {
                                 <Icon4 size={ICON_SIZE} style={styles.iconStyle} color="white" name="power"/>
                                 <Text style={styles.textStyle}>Đăng xuất</Text>
                             </TouchableOpacity>
+                        </View>
                     </ScrollView>
                 </View>
 
@@ -617,9 +671,9 @@ const styles = StyleSheet.create({
     itemSideMenuStyle: {
         borderBottomWidth: 0.5,
         borderBottomColor: 'white',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: 16,
+        marginTop: 16, marginLeft: 4, backgroundColor: 'transparent',
+        flex: 1, justifyContent: 'center', alignItems: 'center',
+        ...shadowProps
     }, iconStyle: {
         alignSelf: 'center',
         backgroundColor: "transparent",
@@ -635,9 +689,13 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 16,
         backgroundColor: 'transparent',
+
         fontFamily: 'Al Nile'
     }, absolute: {
         top: 0, bottom: 0, left: 0, right: 0, position: 'absolute',
+    },
+    touchable: {
+        flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 8, flex: 1
     }
 })
 
@@ -656,4 +714,6 @@ BackHandler.addEventListener('hardwareBackPress', function () {
         backcount = 0
         return false
     }
+
+
 });

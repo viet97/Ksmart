@@ -24,10 +24,9 @@ import PTRView from 'react-native-pull-to-refresh';
 let SEARCH_STRING = '';
 let {width, height} = Dimensions.get('window');
 let ALL_LOADED = false
-let PAGE = 1
+let PAGE = 1;
+const timer = require('react-native-timer');
 export default class NewFeedScreen extends React.Component {
-
-
     constructor(props) {
         super(props)
         this.state = ({
@@ -45,6 +44,7 @@ export default class NewFeedScreen extends React.Component {
         this.setState({isEndList: false, dataRender: null})
         PAGE = 1;
         let url = URlConfig.getNewFeedLink(PAGE, SEARCH_STRING)
+        console.log(url)
         fetch(url)
             .then((response) => (response.json()))
             .then((responseJson) => {
@@ -59,7 +59,7 @@ export default class NewFeedScreen extends React.Component {
                             this.forceUpdate()
                         }
                     })
-            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e))
     }
 
     loadMoreDataFromSv() {
@@ -87,7 +87,7 @@ export default class NewFeedScreen extends React.Component {
                             }
                         })
                     })
-                    .catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+                    .catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e))
             }
         }
     }
@@ -228,8 +228,8 @@ export default class NewFeedScreen extends React.Component {
     }
 
     componentDidMount() {
-        SEARCH_STRING = ''
-        this.getDataFromSv()
+        SEARCH_STRING = '';
+        this.getDataFromSv();
     }
 
 }

@@ -7,7 +7,6 @@ import {
 } from 'react-native';
 import {NavigationActions} from "react-navigation";
 import orderListData from '../dbcontext/orderListData'
-import URlConfig from "../configs/url";
 
 export default class SplashScreen extends React.Component {
     static navigationOptions = {

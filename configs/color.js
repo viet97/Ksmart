@@ -12,3 +12,13 @@ export  default class Color{
     static backGroundFlatList = '#C5CAE9'
     static backGroundItemFlatList = '#E0E0E0'
 }
+const colors = [
+    "#4344ce",
+    "#40cf2e",
+    "#e8c055",
+    "#f12942",
+    "#f800f3",
+    "#76caef"
+
+]
+export {colors}

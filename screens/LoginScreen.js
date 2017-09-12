@@ -22,6 +22,7 @@ import {CheckBox} from 'react-native-elements'
 import Communications from 'react-native-communications';
 import {Icon} from 'react-native-elements'
 import {shadowProps} from '../configs/shadow'
+
 let {width, height} = Dimensions.get('window')
 const Realm = require('realm');
 export default class LoginScreen extends React.Component {
@@ -179,7 +180,7 @@ export default class LoginScreen extends React.Component {
                     <View
                         style={{flexDirection: 'column', alignSelf: 'center', marginTop: 16, alignItems: 'center'}}>
                         <CheckBox
-                            textStyle={{color: 'gray'}}
+                            textStyle={{color: 'gray', fontFamily: 'System'}}
                             title='Ghi nhớ đăng nhập'
                             checked={this.state.checkOfCheckBox}
                             onPress={() => this.setState({checkOfCheckBox: !this.state.checkOfCheckBox})}
@@ -203,7 +204,6 @@ export default class LoginScreen extends React.Component {
                             <Animatable.Text style={styles.loginTextButton}>Đăng nhập</Animatable.Text>
                         </TouchableOpacity>
                     </View>
-
                 </View>
                 <View style={{
                     position: 'absolute',
@@ -211,7 +211,6 @@ export default class LoginScreen extends React.Component {
                     width: Dimensions.get('window').width,
                     flexDirection: 'column', backgroundColor: 'transparent'
                 }}>
-
                     <View style={{alignSelf: 'center', flexDirection: 'row'}}>
                         <Text style={styles.textStyle}>Website: </Text>
                         <TouchableOpacity onPress={() => Communications.web(website)}>
@@ -227,7 +226,7 @@ export default class LoginScreen extends React.Component {
                         </TouchableOpacity>
                     </View>
                     <View style={{alignSelf: 'center'}}>
-                        <Text style={styles.textStyle}>Phien ban: 1.0.0</Text>
+                        <Text style={styles.textStyle}>Phiên bản: 1.0.0</Text>
                     </View>
                 </View>
                 <ProgressDialog
@@ -265,10 +264,11 @@ export default class LoginScreen extends React.Component {
         if (value !== undefined && value.status) {
             URlConfig.BASE_URL_APP = value.data;
             let urlLogin = URlConfig.getLoginRouter(this.state.username, this.state.password, this.state.idct);
-            console.log(urlLogin)
+            console.log("hihi", urlLogin)
             fetch(urlLogin)
                 .then((response) => response.json())
                 .then((responseJson) => {
+                    console.log("login xong", responseJson)
                     this.setState({progressVisible: false})
                     if (!responseJson.status) {
                         this.showToast(responseJson.msg);

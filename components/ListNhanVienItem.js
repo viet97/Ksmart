@@ -70,7 +70,7 @@ export default class ListNhanVienItem extends React.Component {
                 </View>)
         else if (dangtructuyen === 0)
             return (
-                <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center'}}>
+                <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center',}}>
                     <Icon2 style={{backgroundColor: 'transparent'}} size={24} color="gray"
                            name="controller-record"/>
                     <Text style={{alignSelf: 'center', fontSize: 11}}>Ngoại tuyến</Text>

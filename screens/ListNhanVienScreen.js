@@ -236,12 +236,18 @@ export default class ListNhanVienScreen extends React.Component {
                         size="large"/>
                 </View>)
         } else if (this.state.dataFull.length === 0 && this.state.isEndList)
-            return (    <View style={{flex: 9}}>
-                <Text style={{alignSelf: 'center', textAlign: 'center', fontSize: 20, backgroundColor: 'transparent'}}>Không
-                    có dữ liệu</Text>
+            return (
+                <View style={{flex: 9}}>
+                    <Text style={{
+                        alignSelf: 'center',
+                        textAlign: 'center',
+                        fontSize: 20,
+                        backgroundColor: 'transparent'
+                    }}>Không
+                        có dữ liệu</Text>
 
-            </View>)
-
+                </View>
+            )
         return (
             <View style={{flex: 9}}>
 
@@ -343,141 +349,141 @@ export default class ListNhanVienScreen extends React.Component {
 
         return (
 
-                    <View style={{flex: 1}}>
+            <View style={{flex: 1}}>
 
-                        <Image source={require('../images/blur_blue.jpg')}
-                               style={{position: 'absolute', top: 0, opacity: 0.2}}/>
-                        <View style={styles.titleStyle}>
-                            <Image source={require('../images/blur_blue.jpg')}
-                                   style={{position: 'absolute', opacity: 0.4}}/>
-                            <TouchableOpacity onPress={() => this.props.backToChooseTypeListNV()}
-                                              style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
-                                <Icon1 style={styles.iconStyle} size={24} color="white"
-                                       name="ios-arrow-back"/></TouchableOpacity>
-                            <Text style={{
-                                fontSize: 20,
-                                color: 'white',
-                                alignSelf: 'center',
-                                backgroundColor: 'transparent'
-                            }}>Danh sách nhân viên</Text>
-                            <TouchableOpacity style={{alignSelf: 'center'}}
-                                              onPress={() => this.showDialog()}
-                            >
-                                <Text style={{
-                                    textAlign: 'center',
-                                    color: 'white',
-                                    alignSelf: 'center',
-                                    backgroundColor: 'transparent'
-                                }}>Bộ lọc</Text>
-                            </TouchableOpacity>
-                        </View>
+                <Image source={require('../images/blur_blue.jpg')}
+                       style={{position: 'absolute', top: 0, opacity: 0.2}}/>
+                <View style={styles.titleStyle}>
+                    <Image source={require('../images/blur_blue.jpg')}
+                           style={{position: 'absolute', opacity: 0.4}}/>
+                    <TouchableOpacity onPress={() => this.props.backToChooseTypeListNV()}
+                                      style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
+                        <Icon1 style={styles.iconStyle} size={24} color="white"
+                               name="ios-arrow-back"/></TouchableOpacity>
+                    <Text style={{
+                        fontSize: 20,
+                        color: 'white',
+                        alignSelf: 'center',
+                        backgroundColor: 'transparent'
+                    }}>Danh sách nhân viên</Text>
+                    <TouchableOpacity style={{alignSelf: 'center'}}
+                                      onPress={() => this.showDialog()}
+                    >
+                        <Text style={{
+                            textAlign: 'center',
+                            color: 'white',
+                            alignSelf: 'center',
+                            backgroundColor: 'transparent'
+                        }}>Bộ lọc</Text>
+                    </TouchableOpacity>
+                </View>
 
 
-                        <View style={{width: width}}>
-                            <Search
-                                placeholder="Tìm kiếm"
-                                cancelTitle="Huỷ bỏ"
-                                ref="search_box"
-                                onChangeText={(text) => this.onChangeText(text)}
-                                onCancel={() => this.onCancel()}
-                            />
-                        </View>
-                        {this.flatListorIndicator()}
-                        <Dialog
-                            visible={this.state.dialogVisible}
-                            dialogStyle={{borderBottomLeftRadius: 10, borderBottomRightRadius: 10}}
+                <View style={{width: width}}>
+                    <Search
+                        placeholder="Tìm kiếm"
+                        cancelTitle="Huỷ bỏ"
+                        ref="search_box"
+                        onChangeText={(text) => this.onChangeText(text)}
+                        onCancel={() => this.onCancel()}
+                    />
+                </View>
+                {this.flatListorIndicator()}
+                <Dialog
+                    visible={this.state.dialogVisible}
+                    dialogStyle={{borderBottomLeftRadius: 10, borderBottomRightRadius: 10}}
 
-                        >
-                            <ScrollView>
-                                <View style={{
-                                    flexDirection: 'column',
-                                    paddingBottom: 100,
+                >
+                    <ScrollView>
+                        <View style={{
+                            flexDirection: 'column',
+                            paddingBottom: 100,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            backgroundColor: 'transparent',
+                        }}>
+                            <View style={{position: 'absolute', top: 0, right: 0, left: 0, bottom: 46}}>
+                                <Image source={require('../images/bg.png')} resizeMode='cover'
+                                />
+                            </View>
+
+                            <Text style={{color: 'white'}}>Chọn phòng ban</Text>
+                            <ModalDropdown
+                                options={this.state.partyNhanVienStatus}
+                                style={{
+                                    borderWidth: 0.4,
+                                    width: 200,
+                                    padding: 8,
+                                    borderRadius: 10,
                                     justifyContent: 'center',
                                     alignItems: 'center',
-                                    backgroundColor: 'transparent',
-                                }}>
-                                    <View style={{position: 'absolute', top: 0, right: 0, left: 0, bottom: 46}}>
-                                        <Image source={require('../images/bg.png')} resizeMode='cover'
-                                        />
-                                    </View>
-
-                                    <Text style={{color: 'white'}}>Chọn phòng ban</Text>
-                                    <ModalDropdown
-                                        options={this.state.partyNhanVienStatus}
-                                        style={{
-                                            borderWidth: 0.4,
-                                            width: 200,
-                                            padding: 8,
-                                            borderRadius: 10,
-                                            justifyContent: 'center',
-                                            alignItems: 'center',
-                                            marginBottom: 16,
-                                            marginTop: 4
-                                        }}
-                                        textStyle={{color: 'white'}}
-                                        defaultValue={this.state.partyNhanVienStatus[pickParty]}
-                                        defaultIndex={Number(pickParty)}
-                                        onSelect={(idx, value) => this._onSelectParty(idx, value)}
-                                        renderRow={this._renderRowStatus.bind(this)}
-                                        renderSeparator={(sectionID, rowID, adjacentRowHighlighted) => this._renderSeparatorParty(sectionID, rowID, adjacentRowHighlighted)}
-                                    />
-                                </View>
-                            </ScrollView>
-                            <View style={{
-                                flexDirection: 'row',
+                                    marginBottom: 16,
+                                    marginTop: 4
+                                }}
+                                textStyle={{color: 'white'}}
+                                defaultValue={this.state.partyNhanVienStatus[pickParty]}
+                                defaultIndex={Number(pickParty)}
+                                onSelect={(idx, value) => this._onSelectParty(idx, value)}
+                                renderRow={this._renderRowStatus.bind(this)}
+                                renderSeparator={(sectionID, rowID, adjacentRowHighlighted) => this._renderSeparatorParty(sectionID, rowID, adjacentRowHighlighted)}
+                            />
+                        </View>
+                    </ScrollView>
+                    <View style={{
+                        flexDirection: 'row',
+                        flex: 1,
+                        position: 'absolute',
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        backgroundColor: '#123'
+                    }}>
+                        <TouchableOpacity
+                            style={{
                                 flex: 1,
-                                position: 'absolute',
-                                left: 0,
-                                right: 0,
-                                bottom: 0,
-                                backgroundColor: '#123'
+                                alignSelf: 'center',
+                                justifyContent: 'center',
+                                backgroundColor: '#e8e8e8',
+                                borderRightWidth: 0.5,
+                                borderColor: 'white',
+                                height: 46,
+                            }}
+                            onPress={() => {
+                                this.setState({dialogVisible: false});
+                                console.log('Huỷ bỏ ', this.state.numberPickStatus, this.state.numberPickParty);
                             }}>
-                                <TouchableOpacity
-                                    style={{
-                                        flex: 1,
-                                        alignSelf: 'center',
-                                        justifyContent: 'center',
-                                        backgroundColor: '#e8e8e8',
-                                        borderRightWidth: 0.5,
-                                        borderColor: 'white',
-                                        height: 46,
-                                    }}
-                                    onPress={() => {
-                                        this.setState({dialogVisible: false});
-                                        console.log('Huỷ bỏ ', this.state.numberPickStatus, this.state.numberPickParty);
-                                    }}>
-                                    <Text style={{color: '#6a5aff', alignSelf: 'center'}}>Cancel</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity
-                                    style={{
-                                        alignSelf: 'center',
-                                        justifyContent: 'center',
-                                        flex: 1,
-                                        backgroundColor: '#e8e8e8',
-                                        borderColor: 'white',
-                                        height: 46
-                                    }}
-                                    onPress={() => {
-                                        this.setState({
-                                            dialogVisible: false,
-                                            numberPickParty: pickParty,
-                                            idNhom: id_nhom,
-                                            numberPickStatus: pickStatus
-                                        }, function () {
-                                            this.getDataFromSv();
+                            <Text style={{color: '#6a5aff', alignSelf: 'center'}}>Cancel</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={{
+                                alignSelf: 'center',
+                                justifyContent: 'center',
+                                flex: 1,
+                                backgroundColor: '#e8e8e8',
+                                borderColor: 'white',
+                                height: 46
+                            }}
+                            onPress={() => {
+                                this.setState({
+                                    dialogVisible: false,
+                                    numberPickParty: pickParty,
+                                    idNhom: id_nhom,
+                                    numberPickStatus: pickStatus
+                                }, function () {
+                                    this.getDataFromSv();
 
-                                        })
-                                    }}>
-                                    <Text style={{
-                                        color: '#6a5aff',
-                                        alignSelf: 'center',
-                                        fontWeight: 'bold'
-                                    }}>Ok</Text>
-                                </TouchableOpacity>
+                                })
+                            }}>
+                            <Text style={{
+                                color: '#6a5aff',
+                                alignSelf: 'center',
+                                fontWeight: 'bold'
+                            }}>Ok</Text>
+                        </TouchableOpacity>
 
-                            </View>
-                        </Dialog>
                     </View>
+                </Dialog>
+            </View>
 
         )
     }
