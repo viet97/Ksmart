@@ -21,7 +21,7 @@ import ultils from "../configs/ultils";
 import {CheckBox} from 'react-native-elements'
 import Communications from 'react-native-communications';
 import {Icon} from 'react-native-elements'
-
+import {shadowProps} from '../configs/shadow'
 let {width, height} = Dimensions.get('window')
 const Realm = require('realm');
 export default class LoginScreen extends React.Component {
@@ -119,19 +119,15 @@ export default class LoginScreen extends React.Component {
                         }}>Ksmart Manager</Text>
                     </View>
                 </Animatable.Image>
-                <ScrollView style={{flex: 1, alignSelf: 'center', backgroundColor: 'white'}}
-                            keyboardDismissMode="on-drag" scrollEnabled={false}>
-
-                </ScrollView>
                 <View style={{
                     flexDirection: 'column',
                     position: 'absolute',
                     backgroundColor: 'white',
                     padding: 8,
-                    top: height * 0.32, left: width * 0.05, right: width * 0.05, bottom: 0,
+                    top: height * 0.32, left: width * 0.05, right: width * 0.05, borderRadius: 8, ...shadowProps
                 }}>
 
-                    <View style={{alignSelf: 'center', width: windowWidth}}>
+                    <View style={{alignSelf: 'center', width: windowWidth,}}>
                         <View style={styles.viewborder}>
                             <TextInput
                                 underlineColorAndroid="transparent"
@@ -189,10 +185,11 @@ export default class LoginScreen extends React.Component {
                             onPress={() => this.setState({checkOfCheckBox: !this.state.checkOfCheckBox})}
                             style={{backgroundColor: 'transparent'}}
                         />
-                        <TouchableHighlight
-                            activeOpacity={1}
+                        <TouchableOpacity
+                            activeOpacity={0.6}
                             underlayColor="transparent"
                             style={{
+
                                 height: 48,
                                 marginTop: 16,
                                 borderRadius: 24,
@@ -200,19 +197,17 @@ export default class LoginScreen extends React.Component {
                                 justifyContent: 'center',
                                 alignItems: 'center',
                                 padding: 16,
-                                width: width - width * 0.1,
+                                width: width - width * 0.2, ...shadowProps
                             }}
                             onPress={() => this.startLogin()}>
-                            <Animatable.Text style={styles.loginTextButton}>Đăng
-                                nhập</Animatable.Text>
-
-                        </TouchableHighlight>
+                            <Animatable.Text style={styles.loginTextButton}>Đăng nhập</Animatable.Text>
+                        </TouchableOpacity>
                     </View>
 
                 </View>
                 <View style={{
                     position: 'absolute',
-                    bottom: 0,
+                    bottom: 16,
                     width: Dimensions.get('window').width,
                     flexDirection: 'column', backgroundColor: 'transparent'
                 }}>
@@ -225,7 +220,7 @@ export default class LoginScreen extends React.Component {
                     </View>
                     <View style={{alignSelf: 'center', flexDirection: 'row'}}>
                         <Text style={styles.textStyle}>Hotline: </Text>
-                        <TouchableOpacity onPress={() => {
+                        <TouchableOpacity activeOpacity={0.6} onPress={() => {
                             Communications.phonecall(hotline, true)
                         }}>
                             <Text style={styles.textStyle}>{hotline}</Text>
@@ -401,7 +396,6 @@ const styles = StyleSheet.create({
         height: 40,
         paddingHorizontal: 8,
         width: width - width * 0.1 - 80,
-
     },
     inputLayout: {
         marginTop: 16,
@@ -413,7 +407,9 @@ const styles = StyleSheet.create({
         color: 'white'
     },
     textStyle: {
-        color: 'gray'
+        color: 'black',
+        fontFamily: 'System',
+        fontSize: 15
     },
     viewborder: {
         borderBottomWidth: 0.5,
@@ -421,6 +417,6 @@ const styles = StyleSheet.create({
         marginHorizontal: 48,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        borderBottomColor: '#90CAF9'
+        borderBottomColor: '#90CAF9',
     }
 })

@@ -400,7 +400,6 @@ export default class HomeScreen extends React.Component {
                                     <Animatable.Text animation="slideInRight" style={styles.titleIconsMenu}>Tin
                                         nhắn</Animatable.Text>
                                     {this.renderBagde(14)}
-
                                 </TouchableOpacity>
                             </View>
                         </View>
