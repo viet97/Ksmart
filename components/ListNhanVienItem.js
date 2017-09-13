@@ -25,6 +25,7 @@ import Color from '../configs/color'
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import TabNavigator from 'react-native-tab-navigator';
 import {Dialog} from 'react-native-simple-dialogs';
+import {shadowProps} from "../configs/shadow";
 
 let {height, width} = Dimensions.get('window');
 export default class ListNhanVienItem extends React.Component {
@@ -56,50 +57,63 @@ export default class ListNhanVienItem extends React.Component {
     isOnline(dangtructuyen) {
         if (dangtructuyen === 1)
             return (
-                <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center'}}>
-                    <Icon2 style={{backgroundColor: 'transparent'}} size={24} color="green"
-                           name="controller-record"/>
-                    <Text style={{alignSelf: 'center', fontSize: 11}}>Đang trực tuyến</Text>
-                </View>)
+                <View style={{
+                    backgroundColor: '#40cf2e',
+                    borderRadius: 16,
+                    height: 32,
+                    width: 150,
+                    padding: 8,
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}>
+                    <Text style={{fontSize: 16, color: 'white'}}>Đang trực tuyến</Text>
+                </View>
+            )
         else if (dangtructuyen === 2)
             return (
-                <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center'}}>
-                    <Icon2 style={{backgroundColor: 'transparent'}} size={24} color="red"
-                           name="controller-record"/>
-                    <Text style={{alignSelf: 'center', fontSize: 11}}>Mất tín hiệu</Text>
-                </View>)
+                <View style={{
+                    backgroundColor: '#f12942',
+                    borderRadius: 16,
+                    width: 130,
+                    height: 32,
+                    padding: 8,
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}>
+                    <Text style={{fontSize: 16, color: 'white'}}>Mất tín hiệu</Text>
+                </View>
+            )
         else if (dangtructuyen === 0)
             return (
-                <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center',}}>
-                    <Icon2 style={{backgroundColor: 'transparent'}} size={24} color="gray"
-                           name="controller-record"/>
-                    <Text style={{alignSelf: 'center', fontSize: 11}}>Ngoại tuyến</Text>
-                </View>)
+                <View style={{
+                    backgroundColor: '#D3D3D3',
+                    borderRadius: 16,
+                    width: 130,
+                    height: 32,
+                    padding: 8,
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}>
+                    <Text style={{fontSize: 16, color: 'white'}}>Ngoại tuyến</Text>
+                </View>
+            )
 
     }
 
     render() {
-        let item = this.props.data
+        let item = this.props.data;
         return (
-            <TouchableOpacity style={{}}
+            <TouchableOpacity style={{marginTop: 2, marginHorizontal: 8,}} activeOpacity={1}
                               onPress={() => this.props.goToDetailNhanVien()}>
-
                 <View
                     onLayout={(e) => {
                         var {x, y, width, height} = e.nativeEvent.layout;
                         this.setState({height: height})
                     }}
                     style={{
-                        margin: 4,
+                        backgroundColor: '#f7f7f7',
+                        fontSize: 20, ...shadowProps,
                     }}>
-                    <Image source={require('../images/bg1.png')}
-                           style={{
-                               height: this.state.height,
-                               flexWrap: 'wrap',
-                               position: 'absolute',
-                               width: width - 8
-
-                           }}/>
                     <Text style={{textAlign: 'right', fontSize: 12, backgroundColor: 'transparent', marginTop: 4}}>
                         Cập nhật
                         lúc {item.thoigiancapnhat}</Text>
@@ -115,23 +129,22 @@ export default class ListNhanVienItem extends React.Component {
                         }}>
                             <Text
                                 style={{
-                                    fontSize: 18, backgroundColor: 'transparent'
+                                    fontSize: 18, backgroundColor: 'transparent', color: '#2d92dc',
                                 }}>{item.tennhanvien}</Text>
-                            <Text>{item.tendangnhap}</Text>
+                            <Text style={{paddingVertical: 8, marginLeft: 8}}>{item.tendangnhap}</Text>
                             {this.isOnline(item.dangtructuyen)}
                         </View>
                         <TouchableOpacity onPress={() => {
                             this.props.callback()
-                        }}>
-                            <Icon2 style={{backgroundColor: 'transparent'}} size={30} color='red'
+                        }}
+                                          style={{alignSelf: 'center'}}
+                        >
+                            <Icon2 style={{backgroundColor: 'transparent'}} size={24} color='#2d92dc'
                                    name="location"/>
                         </TouchableOpacity>
                     </View>
                 </View>
-
-
             </TouchableOpacity>
         )
-
     }
 }

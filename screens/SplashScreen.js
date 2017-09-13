@@ -24,8 +24,8 @@ export default class SplashScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <Image source={require('../images/bg.png')}
-                       style={{flex: 1}}/>
+                <Image source={require('../images/flyhight.png')}
+                       style={{flex: 1, opacity: 0.6}}/>
                 <Image source={require('../images/logoksmart.png') }
                        style={{alignSelf: 'center', position: 'absolute'}}/>
 

@@ -64,7 +64,6 @@ export default class DetailNhanVien extends React.Component {
             else
                 return (
                     <Image
-
                         source={{uri: url}}
                         indicator={ProgressBar.Pie}
                         style={{alignSelf: 'center', width: 120, height: 120, borderRadius: 60}}/>

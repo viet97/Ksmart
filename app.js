@@ -50,6 +50,8 @@ const Ksmart = StackNavigator({
     DetailTravel: {screen: DetailTravel},
     SendMessage: {screen: SendMessageScreen},
     EditTravel: {screen: EditTravelScreen}
-    },
+    }, {
+        mode: 'modal'
+    }
 );
 AppRegistry.registerComponent('Ksmart', () => Ksmart);

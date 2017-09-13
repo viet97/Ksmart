@@ -53,7 +53,7 @@ var {height} = Dimensions.get('window');
 var func;
 var backcount = 0;
 var isLoginScreen = true;
-const ICON_SIZE = 56;
+const ICON_SIZE = 32;
 export default class HomeScreen extends React.Component {
     static navigationOptions = {
         header: null
@@ -470,7 +470,6 @@ export default class HomeScreen extends React.Component {
     sideMenuView() {
         const {navigate} = this.props.navigation;
         return (
-
             <View style={{flex: 1}}>
                 <View style={{
                     justifyContent: 'center',
@@ -567,7 +566,7 @@ export default class HomeScreen extends React.Component {
                                               }}>
                                 <Icon2 size={ICON_SIZE} style={styles.iconStyle} color="white" name="mail"/>
                                 <Text style={styles.textStyle}>Tin nhắn</Text>
-                                {this.renderBagde(20)}
+                                {this.renderBagde(16)}
                             </TouchableOpacity>
                             <TouchableOpacity style={styles.itemSideMenuStyle}
                                               onPress={() => {

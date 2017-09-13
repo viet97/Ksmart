@@ -9,7 +9,6 @@ import {
     Platform, Image
 } from 'react-native';
 import Search from 'react-native-search-box';
-// import Image from 'react-native-image-progress';
 import ProgressBar from 'react-native-progress/Bar';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import Icon1 from 'react-native-vector-icons/Ionicons'
@@ -193,13 +192,19 @@ export default class NewFeedScreen extends React.Component {
 
             <View
                 style={{flex: 1}}>
-                <Image source={require('../images/bg.png')}
-                       style={{position: 'absolute', top: 0}}/>
+                <Image source={require('../images/flyhight.png')}
+                       style={{
+                           position: 'absolute',
+                           top: 0,
+                           bottom: 0,
+                           left: 0,
+                           right: 0,
+                           resizeMode: 'cover',
+                           width: '100%',
+                           height: '100%',
+                           opacity: 0.6
+                       }}/>
                 <View style={styles.titleStyle}>
-                    {function () {
-                        if (Platform.OS !== 'ios') return (<Image source={require('../images/bg.png')}
-                                                                  style={{position: 'absolute'}}/>)
-                    }()}
                     <TouchableOpacity onPress={() => this.props.backToHome()}
                                       style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                         <Icon1 style={styles.iconStyle} size={24} color="white"
@@ -208,11 +213,9 @@ export default class NewFeedScreen extends React.Component {
                     <Text
                         style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Hoạt
                         động</Text>
-                    <View style={{backgroundColor: 'transparent', width: 35, height: 35}}/>
+                    <View/>
                 </View>
-
-
-                <View style={{width: width}}>
+                <View style={{width: width, padding: 8}}>
                     <Search
                         ref="search_box"
                         placeholder="Tìm kiếm"

@@ -66,7 +66,7 @@ export default class NewFeedItem extends React.Component {
                 {this.getImage(this.item.anhdaidien)}
                 <View style={{marginLeft: 16, justifyContent: 'center', alignItems: 'flex-start'}}>
                     <Text style={{
-                        color: '#a4c1e5',
+                        color: '#2d92dc',
                         fontSize: 20,
                         marginBottom: 16,
                         width: Dimensions.get('window').width * 0.6
