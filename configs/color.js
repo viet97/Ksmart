@@ -18,6 +18,7 @@ const colors = [
     "#f12942",
     "#e8c055",
     "#f800f3",
-    "#76caef"
+    "#76caef",
+    '#2e9a48'
 ]
 export {colors}
