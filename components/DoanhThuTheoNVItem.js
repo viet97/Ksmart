@@ -57,6 +57,9 @@ export default class DoanhThuTheoNVItem extends React.Component {
                         <Text style={{alignSelf: 'center', backgroundColor: 'transparent'}}>Nhân viên: </Text>
                         <Text style={{
                             marginLeft: 8,
+                            fontSize: 16,
+                            fontWeight: 'bold',
+                            alignSelf: 'center',
                             backgroundColor: 'transparent'
                         }}>{item.tennhanvien}</Text>
                     </View>

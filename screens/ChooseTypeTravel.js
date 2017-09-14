@@ -76,18 +76,21 @@ export default class ChooseTypeTravel extends Component {
                     <TouchableOpacity
                         onPress={() => this.props.goToCustomerPlant()}
                         style={{
+                            justifyContent: 'center',
                             alignSelf: 'center',
-                            width: 35,
-                            height: 35
+                            width: 60,
+                            height: 60
                         }}>
-                        <View style={{width: 50, height: 50, justifyContent: 'center', alignSelf: 'center'}}>
+                        <View style={{width: 60, height: 60, justifyContent: 'center', alignSelf: 'center'}}>
                             <Text style={{
                                 color: 'white',
                                 textAlign: 'center',
                                 alignSelf: 'center',
                                 paddingBottom: 8,
                                 paddingRight: 8,
-                                backgroundColor: 'transparent'
+                                fontSize: 16,
+                                backgroundColor: 'transparent',
+
                             }}>Thêm</Text>
                         </View>
                     </TouchableOpacity>

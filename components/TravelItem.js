@@ -87,7 +87,8 @@ export default class TravelItem extends React.Component {
             strVaoDiem = 'Vào điểm lúc: ' + Utils.changeDateFormat(item.ThoiGianVaoDiemThucTe);
         }
         if (item.ThoiGianRaDiemThucTe === '1900-01-01T00:00:00') {
-            strRaDiem = "Chưa ra điểm!"
+            if (item.ThoiGianVaoDiemThucTe !== '1900-01-01T00:00:00')
+                strRaDiem = "Chưa ra điểm!"
         } else {
             strRaDiem = 'Ra điểm lúc: ' + Utils.changeDateFormat(item.ThoiGianRaDiemThucTe);
         }

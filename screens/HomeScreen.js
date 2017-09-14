@@ -48,6 +48,7 @@ import ChooseTypeTravel from "./ChooseTypeTravel";
 import ChooseTypeReport from "./ChooseTypeReport";
 import ChooseTypeOrder from "./ChooseTypeOrder";
 import {shadowProps} from "../configs/shadow";
+import ChooseTypeNew from "./ChooseTypeNew";
 
 var {height} = Dimensions.get('window');
 var func;
@@ -120,7 +121,9 @@ export default class HomeScreen extends React.Component {
             case "Menu":
                 return this.menuScreen();
             case "NewFeed":
-                return <NewFeedScreen clickMenu={() => this.openControlPanel()} backToHome={() => {
+                return <ChooseTypeNew
+
+                    backToHome={() => {
                     this.setState({screenName: 'Menu'})
                 }}/>
             case "ListNhanVien":

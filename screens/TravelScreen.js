@@ -82,7 +82,7 @@ export default class TravelScreen extends React.Component {
             travelStatus: [],
             refreshing: false,
             dataFull: [],
-            dateFrom: '01-09-2017',
+            dateFrom: '01-08-2017',
             dateTo: today,
             dataRender: null,
             onEndReach: true,

@@ -1,5 +1,5 @@
 const shadowProps = {
-    elevation: 8,
+    elevation: 1,
     shadowColor: 'gray',
     shadowOpacity: 0.75,
     shadowRadius: 5,
