@@ -25,7 +25,7 @@ export default class ChooseTypeItem extends React.Component {
     render() {
         return (
 
-            <View style={{flex: 1, justifyItems: 'center',}}>
+            <View style={{flex: 1}}>
                 <TouchableOpacity
                     onPress={() => this.props.goToDetail()}
                     style={{width: width / 2 - 32, height: width / 2 - 32, margin: 16}}>

@@ -28,6 +28,7 @@ export default class NewFeedItem extends React.Component {
             time: 'abcd'
         }
         this.item = this.props.data;
+        console.log(this.item);
     }
 
 
@@ -62,7 +63,7 @@ export default class NewFeedItem extends React.Component {
                 width: Dimensions.get('window').width,
                 backgroundColor: '#f7f7f7',
                 paddingBottom: 8
-            }}>
+            }} activeOpaity={1}>
                 {this.getImage(this.item.anhdaidien)}
                 <View style={{marginLeft: 16, justifyContent: 'center', alignItems: 'flex-start'}}>
                     <Text style={{
