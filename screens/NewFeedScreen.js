@@ -36,7 +36,8 @@ export default class NewFeedScreen extends React.Component {
                 onEndReach: true,
                 isEndList: false,
                 dialogVisible: false,
-                itemSelect: undefined
+                itemSelect: undefined,
+                titleDialog: ""
             }
         )
         this.getDetail = this._getDetail.bind(this);
@@ -164,7 +165,11 @@ export default class NewFeedScreen extends React.Component {
                     renderItem={({item}) =>
                         <TouchableOpacity activeOpacity={0.8}
                                           onPress={() => {
-                                              this.setState({itemSelect: item, dialogVisible: true});
+                                              this.setState({
+                                                  itemSelect: item,
+                                                  dialogVisible: true,
+                                                  titleDialog: item.tenloai
+                                              });
                                           }}>
                             <NewFeedItem
                                 data={item}
@@ -235,6 +240,7 @@ export default class NewFeedScreen extends React.Component {
                 </View>
                 {this.flatListorIndicator()}
                 <ConfirmDialog
+                    title={this.state.titleDialog}
                     visible={this.state.dialogVisible}
                     onTouchOutside={() => this.setState({dialogVisible: false})}
                     positiveButton={{
@@ -261,104 +267,104 @@ export default class NewFeedScreen extends React.Component {
                 //đăng nhập:
                 console.log('dang nhap click')
                 return (
+                    <View style={{
+                        flex: 1,
+                        paddingBottom: 64,
+                        paddingTop: 64,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        marginLeft: 16
+                    }}>
+                        <Text style={{
+                            color: colors[1],
+                            fontSize: 18,
+                            alignSelf: 'center',
+                            marginBottom: 12
+                        }}>{item.tennhanvien}</Text>
+                        <Text>Đã đăng nhập: {item.thoigian_hienthi}</Text>
 
-                    <View style={{flexDirection: 'row', flex: 1, paddingBottom: 64, paddingTop: 16}}>
-                        <Image source={{uri: item.anhdaidien}} style={{width: 60, height: 60, borderRadius: 30}}/>
-                        <View style={{flex: 1, marginLeft: 8,}}>
-                            <Text style={{
-                                color: colors[1],
-                                fontSize: 18,
-                                alignSelf: 'center',
-                                marginBottom: 12
-                            }}>{item.tennhanvien}</Text>
-                            <Text>Đã đăng nhập: {item.thoigian_hienthi}</Text>
-                        </View>
                     </View>
                 )
             case 2:
                 return (
 
-                    <View style={{flexDirection: 'row', flex: 1, paddingBottom: 64, paddingTop: 16}}>
-                        <Image source={{uri: item.anhdaidien}} style={{width: 60, height: 60, borderRadius: 30}}/>
-                        <View style={{flex: 1, marginLeft: 8,}}>
-                            <Text style={{
-                                color: colors[2],
-                                fontSize: 18,
-                                alignSelf: 'center',
-                                marginBottom: 12
-                            }}>{item.tennhanvien}</Text>
-                            <Text>Đã đăng xuất: {item.thoigian_hienthi}</Text>
-                        </View>
+                    <View style={{
+                        flex: 1,
+                        paddingBottom: 64,
+                        paddingTop: 64,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        marginLeft: 16
+                    }}>
+                        <Text style={{
+                            color: colors[2],
+                            fontSize: 18,
+                            alignSelf: 'center',
+                            marginBottom: 12
+                        }}>{item.tennhanvien}</Text>
+                        <Text>Đã đăng xuất: {item.thoigian_hienthi}</Text>
+
                     </View>
                 )
             case 3:
                 return (
-                    <View style={{flexDirection: 'row', flex: 1, paddingBottom: 120, paddingTop: 16}}>
-                        <Image source={{uri: item.anhdaidien}} style={{width: 60, height: 60, borderRadius: 30}}/>
-                        <View style={{flex: 1, marginLeft: 8}}>
-                            <Text style={{
-                                color: colors[3],
-                                fontSize: 18,
-                                alignSelf: 'center',
-                                marginBottom: 12
-                            }}>{item.tennhanvien}</Text>
-                            <Text>Khách hàng: {item.tenkhachhang}</Text>
-                            <Text>Địa chỉ: {item.diachi}</Text>
-                            <Text>Vào điểm: {item.thoigian_hienthi}</Text>
-                        </View>
+                    <View style={{paddingBottom: 120, paddingTop: 64, marginLeft: 16}}>
+                        <Text style={{
+                            color: colors[3],
+                            fontSize: 18,
+                            alignSelf: 'center',
+                            marginBottom: 12
+                        }}>{item.tennhanvien}</Text>
+                        <Text>Khách hàng: {item.tenkhachhang}</Text>
+                        <Text>Địa chỉ: {item.diachi}</Text>
+                        <Text>Vào điểm: {item.thoigian_hienthi}</Text>
+
                     </View>
                 )
             case 4:
                 return (
-                    <View style={{flexDirection: 'row', flex: 1, paddingBottom: 120, paddingTop: 16}}>
-                        <Image source={{uri: item.anhdaidien}} style={{width: 60, height: 60, borderRadius: 30}}/>
-                        <View style={{flex: 1, marginLeft: 8}}>
-                            <Text style={{
-                                color: colors[4],
-                                fontSize: 18,
-                                alignSelf: 'center',
-                                marginBottom: 12
-                            }}>{item.tennhanvien}</Text>
-                            <Text>Khách hàng: {item.tenkhachhang}</Text>
-                            <Text>Địa chỉ: {item.diachi}</Text>
-                            <Text>Ra điểm: {item.thoigian_hienthi}</Text>
-                        </View>
+                    <View style={{flex: 1, paddingBottom: 120, paddingTop: 64, marginLeft: 16}}>
+                        <Text style={{
+                            color: colors[4],
+                            fontSize: 18,
+                            alignSelf: 'center',
+                            marginBottom: 12
+                        }}>{item.tennhanvien}</Text>
+                        <Text>Khách hàng: {item.tenkhachhang}</Text>
+                        <Text>Địa chỉ: {item.diachi}</Text>
+                        <Text>Ra điểm: {item.thoigian_hienthi}</Text>
+
                     </View>
                 )
             case 5:
                 return (
-                    <View style={{flexDirection: 'row', flex: 1, paddingBottom: 120, paddingTop: 16}}>
-                        <Image source={{uri: item.anhdaidien}} style={{width: 60, height: 60, borderRadius: 30}}/>
-                        <View style={{flex: 1, marginLeft: 8}}>
-                            <Text style={{
-                                color: colors[5],
-                                fontSize: 18,
-                                alignSelf: 'center',
-                                marginBottom: 12
-                            }}>{item.tennhanvien}</Text>
-                            <Text>Khách hàng: {item.tenkhachhang || "<trống>"}</Text>
-                            <Text>Địa chỉ: {item.diachi}</Text>
-                            <Text>Chụp ảnh: {item.thoigian_hienthi}</Text>
-                            <Text>Số lượng ảnh: {item.soluonganh}</Text>
-                        </View>
+                    <View style={{flex: 1, paddingBottom: 120, paddingTop: 64, marginLeft: 16}}>
+                        <Text style={{
+                            color: colors[5],
+                            fontSize: 18,
+                            alignSelf: 'center',
+                            marginBottom: 12
+                        }}>{item.tennhanvien}</Text>
+                        <Text>Khách hàng: {item.tenkhachhang || "<trống>"}</Text>
+                        <Text>Địa chỉ: {item.diachi}</Text>
+                        <Text>Chụp ảnh: {item.thoigian_hienthi}</Text>
+                        <Text>Số lượng ảnh: {item.soluonganh}</Text>
+
                     </View>
                 )
             case 6:
                 return (
-                    <View style={{flexDirection: 'row', flex: 1, paddingBottom: 120, paddingTop: 16}}>
-                        <Image source={{uri: item.anhdaidien}} style={{width: 60, height: 60, borderRadius: 30}}/>
-                        <View style={{flex: 1, marginLeft: 8}}>
-                            <Text style={{
-                                color: colors[6],
-                                fontSize: 18,
-                                alignSelf: 'center',
-                                marginBottom: 12
-                            }}>{item.tennhanvien}</Text>
-                            <Text>Khách hàng: {item.tenkhachhang || "<trống>"}</Text>
-                            <Text>Địa chỉ: {item.diachi}</Text>
-                            <Text>Lập đơn hàng: {item.thoigian_hienthi}</Text>
-                            <Text>Tổng tiền: {item.TongTien}</Text>
-                        </View>
+                    <View style={{flex: 1, paddingBottom: 120, paddingTop: 64, marginLeft: 16}}>
+                        <Text style={{
+                            color: colors[6],
+                            fontSize: 18,
+                            alignSelf: 'center',
+                            marginBottom: 12
+                        }}>{item.tennhanvien}</Text>
+                        <Text>Khách hàng: {item.tenkhachhang || "<trống>"}</Text>
+                        <Text>Địa chỉ: {item.diachi}</Text>
+                        <Text>Lập đơn hàng: {item.thoigian_hienthi}</Text>
+                        <Text>Tổng tiền: {item.TongTien}</Text>
                     </View>
                 )
         }
