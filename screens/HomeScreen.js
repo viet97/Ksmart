@@ -672,7 +672,7 @@ const styles = StyleSheet.create({
         borderBottomColor: 'white',
         marginTop: 16, marginLeft: 4, backgroundColor: 'transparent',
         flex: 1, justifyContent: 'center', alignItems: 'center',
-        ...shadowProps
+        
     }, iconStyle: {
         alignSelf: 'center',
         backgroundColor: "transparent",
