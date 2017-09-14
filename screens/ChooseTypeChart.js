@@ -21,7 +21,11 @@ import URlConfig from "../configs/url";
 import {ButtonGroup} from "react-native-elements";
 
 import * as Animatable from 'react-native-animatable';
+import ChooseTypeItem from "../components/ChooseTypeItem";
+import ChooseTypeChartItem from "../components/ChooseTypeChartItem";
 
+const propView = 7 / 8;
+const {width, height} = Dimensions.get('window');
 const component1 = () => <Text numberOfLines={1} style={{textAlign: 'center'}}>Doanh thu sản lượng</Text>
 const component2 = () => <Text numberOfLines={1} style={{textAlign: 'center'}}>Doanh thu sản lượng theo nhân viên</Text>
 const component3 = () => <Text numberOfLines={1} style={{textAlign: 'center'}}>Tần suất nhân viên online</Text>
@@ -59,71 +63,45 @@ export default class ChooseTypeChart extends React.Component {
                     <TouchableOpacity onPress={() => this.props.backToHome()}
                                       style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                         <Icon2 style={styles.iconStyle} size={24} color="white"
-                               name="ios-arrow-back"/></TouchableOpacity>
+                               name="ios-arrow-back"/>
+                    </TouchableOpacity>
                     <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Chọn
                         loại biểu đồ</Text>
                     <View style={{width: 35, height: 35}}/>
                 </View>
-
-                <View style={{flex: 9, marginTop: 16}}>
-                    <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
-                        <TouchableOpacity
-                            style={{alignSelf: 'center', width: Dimensions.get('window').width / 2 - 15}}
-                            onPress={() => this.props.goToDoanhThuChart()}>
-                            <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
-                                   source={require('../images/appadvice-2017.png')}/>
-
-                            <Animatable.Text numberOfLines={1} animation="slideInLeft" style={styles.titleIconsMenu}>Doanh
-                                thu
-                                sản lượng</Animatable.Text>
-
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={{alignSelf: 'center', width: Dimensions.get('window').width / 2 - 15}}
-                            onPress={() => this.props.goToDoanhThuNVChart()}>
-                            <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
-                                   source={require('../images/living-earth-2013.png')}/>
-
-                            <Animatable.Text numberOfLines={1} animation="slideInRight" style={styles.titleIconsMenu}>Doanh
-                                thu
-                                sản lượng theo nhân viên</Animatable.Text>
-
-                        </TouchableOpacity>
-
+                <View style={{flex: 9}}>
+                    <View style={styles.view1}>
+                        <ChooseTypeChartItem
+                            goToChart={() => this.props.goToDoanhThuChart()}
+                            title='Doanh thu sản lượng'
+                        />
+                        <ChooseTypeChartItem
+                            goToChart={() => this.props.goToDoanhThuNVChart()}
+                            title='Doanh thu sản lượng theo nhân viên'
+                        />
                     </View>
-                    <View style={{justifyContent: 'space-between', flexDirection: 'row', marginTop: 16}}>
-                        <TouchableOpacity
-                            style={{alignSelf: 'center', width: Dimensions.get('window').width / 2 - 15}}
-                            onPress={() => this.props.goToTravelChart()}>
-                            <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
-                                   source={require('../images/memrise-learn-languages-2017.png')}/>
-
-                            <Animatable.Text numberOfLines={1} animation="slideInLeft" style={styles.titleIconsMenu}>Tần
-                                suất
-                                viếng thăm theo nhân viên</Animatable.Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={{alignSelf: 'center', width: Dimensions.get('window').width / 2 - 15}}
-                            onPress={() => this.props.goToOnlineChart()}>
-                            <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
-                                   source={require('../images/openfolio-2016.png')}/>
-
-                            <Animatable.Text numberOfLines={1} animation="slideInRight" style={styles.titleIconsMenu}>Tần
-                                suất
-                                nhân viên online</Animatable.Text>
-
-                        </TouchableOpacity>
+                    <View style={styles.view1}>
+                        <ChooseTypeChartItem
+                            goToChart={() => this.props.goToTravelChart()}
+                            title='Tần suất nhân viên viếng thăm'
+                        />
+                        <ChooseTypeChartItem
+                            goToChart={() => this.props.goToOnlineChart()}
+                            title='Tần suất nhân viên online'
+                        />
                     </View>
                 </View>
+
             </View>
         )
     }
 }
 
 
-const propView = 7 / 8;
-const {width, height} = Dimensions.get('window');
 const styles = StyleSheet.create({
+    view1: {
+        flexDirection: 'row'
+    },
     textStyle: {
         color: 'white', backgroundColor: 'transparent', fontSize: 16, textAlign: 'center', width: width * propView
     },

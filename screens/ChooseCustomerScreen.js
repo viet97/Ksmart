@@ -182,7 +182,8 @@ export default class ChooseCustomerScreen extends Component {
                     <TouchableOpacity onPress={() => this.props.backClick()}
                                       style={{alignItems: 'center', justifyContent: 'center'}}>
                         <Icon2 style={styles.iconStyle} size={24} color="white"
-                               name="ios-arrow-back"/></TouchableOpacity>
+                               name="ios-arrow-back"/>
+                    </TouchableOpacity>
                     <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Chọn
                         khách hàng</Text>
                     <View style={{width: 35, height: 35}}/>

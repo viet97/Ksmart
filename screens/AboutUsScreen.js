@@ -17,7 +17,7 @@ export default class AboutUsScreen extends React.Component {
     }
 
     render() {
-        const phonenumber = '043.565.2626';
+        const phonenumber = '0243.565.2626';
         const hotline = '0902.295.486';
         const email = 'phanmem@lachongmedia.vn';
         return (
@@ -45,7 +45,7 @@ export default class AboutUsScreen extends React.Component {
                            style={{width: 250, height: 100, alignSelf: 'center'}}
                            resizeMode='contain'/>
                     <Text>
-                        {'Công ty cổ phần truyền thông Lạc Hồng \nVPGD: Tầng 2,Toà nhà Ngôi Sao, B15 Khu ĐTM Đại Kim, đường Nguyễn Cảnh Dị, phường Đại Kim, quận Hoàng Mai, Hà Nội.'}
+                        {'Công ty cổ phần giải pháp công nghệ Lạc Hồng \nVPGD: Tầng 2,Toà nhà Ngôi Sao, B15 Khu ĐTM Đại Kim, đường Nguyễn Cảnh Dị, phường Đại Kim, quận Hoàng Mai, Hà Nội.'}
                     </Text>
                     <View style={{flexDirection: 'row', backgroundColor: 'transparent'}}>
                         <Text>Điện thoại: </Text>

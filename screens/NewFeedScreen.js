@@ -262,8 +262,8 @@ export default class NewFeedScreen extends React.Component {
                 console.log('dang nhap click')
                 return (
 
-                    <View style={{flexDirection: 'row', flex: 1, paddingBottom: 64, paddingTop: 16}}>
-                        <Image source={{uri: item.anhdaidien}} style={{width: 60, height: 60, borderRadius: 30}}/>
+                    <View style={styles.viewCoverStyle}>
+                        <Image source={{uri: item.anhdaidien}} style={styles.imageStyle}/>
                         <View style={{flex: 1, marginLeft: 8,}}>
                             <Text style={{
                                 color: colors[1],
@@ -278,8 +278,8 @@ export default class NewFeedScreen extends React.Component {
             case 2:
                 return (
 
-                    <View style={{flexDirection: 'row', flex: 1, paddingBottom: 64, paddingTop: 16}}>
-                        <Image source={{uri: item.anhdaidien}} style={{width: 60, height: 60, borderRadius: 30}}/>
+                    <View style={styles.viewCoverStyle}>
+                        <Image source={{uri: item.anhdaidien}} style={styles.imageStyle}/>
                         <View style={{flex: 1, marginLeft: 8,}}>
                             <Text style={{
                                 color: colors[2],
@@ -293,8 +293,8 @@ export default class NewFeedScreen extends React.Component {
                 )
             case 3:
                 return (
-                    <View style={{flexDirection: 'row', flex: 1, paddingBottom: 120, paddingTop: 16}}>
-                        <Image source={{uri: item.anhdaidien}} style={{width: 60, height: 60, borderRadius: 30}}/>
+                    <View style={styles.viewCoverStyle}>
+                        <Image source={{uri: item.anhdaidien}} style={styles.imageStyle}/>
                         <View style={{flex: 1, marginLeft: 8}}>
                             <Text style={{
                                 color: colors[3],
@@ -310,8 +310,8 @@ export default class NewFeedScreen extends React.Component {
                 )
             case 4:
                 return (
-                    <View style={{flexDirection: 'row', flex: 1, paddingBottom: 120, paddingTop: 16}}>
-                        <Image source={{uri: item.anhdaidien}} style={{width: 60, height: 60, borderRadius: 30}}/>
+                    <View style={styles.viewCoverStyle}>
+                        <Image source={{uri: item.anhdaidien}} style={styles.imageStyle}/>
                         <View style={{flex: 1, marginLeft: 8}}>
                             <Text style={{
                                 color: colors[4],
@@ -327,8 +327,8 @@ export default class NewFeedScreen extends React.Component {
                 )
             case 5:
                 return (
-                    <View style={{flexDirection: 'row', flex: 1, paddingBottom: 120, paddingTop: 16}}>
-                        <Image source={{uri: item.anhdaidien}} style={{width: 60, height: 60, borderRadius: 30}}/>
+                    <View style={styles.viewCoverStyle}>
+                        <Image source={{uri: item.anhdaidien}} style={styles.imageStyle}/>
                         <View style={{flex: 1, marginLeft: 8}}>
                             <Text style={{
                                 color: colors[5],
@@ -345,8 +345,8 @@ export default class NewFeedScreen extends React.Component {
                 )
             case 6:
                 return (
-                    <View style={{flexDirection: 'row', flex: 1, paddingBottom: 120, paddingTop: 16}}>
-                        <Image source={{uri: item.anhdaidien}} style={{width: 60, height: 60, borderRadius: 30}}/>
+                    <View style={styles.viewCoverStyle}>
+                        <Image source={{uri: item.anhdaidien}} style={styles.imageStyle}/>
                         <View style={{flex: 1, marginLeft: 8}}>
                             <Text style={{
                                 color: colors[6],
@@ -371,6 +371,12 @@ export default class NewFeedScreen extends React.Component {
 
 }
 const styles = StyleSheet.create({
+    imageStyle: {
+        width: 60, height: 60, borderRadius: 30
+    },
+    viewCoverStyle: {
+        flexDirection: 'row', flex: 1, paddingBottom: 120, paddingTop: 16
+    },
     titleStyle: {
         marginTop: Platform.OS === 'ios' ? 16 : 0,
         flex: 1,
