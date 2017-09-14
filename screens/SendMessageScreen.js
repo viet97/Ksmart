@@ -244,18 +244,21 @@ export default class ModalSendMessage extends Component {
     }
 
     sendMessage() {
-        if (this.state.text.le) {
-            Alert.alert(
-                'Nội dung tin nhắn không có gì',
-                'Bạn có chắc chắn muốn gửi ?',
-                [
-                    {text: 'Hủy',},
-                    {text: 'Gửi', onPress: () => this.startSendMessage()}
-                ],
-                {cancelable: false}
-            )
+        if (this.state.IDNhanVien.length == 0) Toast.show('Vui lòng nhập người gửi')
+        else {
+            if (this.state.text.length == 0) {
+                Alert.alert(
+                    'Nội dung tin nhắn không có gì',
+                    'Bạn có chắc chắn muốn gửi ?',
+                    [
+                        {text: 'Hủy',},
+                        {text: 'Gửi', onPress: () => this.startSendMessage()}
+                    ],
+                    {cancelable: false}
+                )
+            } else
+                this.startSendMessage()
         }
-
     }
 
     startSendMessage() {
@@ -266,7 +269,7 @@ export default class ModalSendMessage extends Component {
                     Toast.show('Gửi tin nhắn thành công');
                     this.props.navigation.goBack()
                 }
-            })
+            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
     }
 
     showDialog() {
