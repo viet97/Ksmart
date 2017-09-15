@@ -77,33 +77,33 @@ export default class ChooseTypeNew extends Component {
                                 goToDetail={() => this.props.goToOrder(0)}
                                 title='Tất cả'
                             />
-                        </View>
-
-                        <View style={styles.view1}>
                             <ChooseTypeItem
                                 goToDetail={() => this.props.goToOrder(0)}
                                 title='Đăng nhập'
                             />
+                        </View>
+
+                        <View style={styles.view1}>
                             <ChooseTypeItem
                                 goToDetail={() => this.props.goToOrder(1)}
                                 title='Đăng xuất'
                             />
-                        </View>
-                        <View style={styles.view1}>
                             <ChooseTypeItem
                                 goToDetail={() => this.props.goToOrder(2)}
                                 title='Vào điểm'
                             />
+                        </View>
+                        <View style={styles.view1}>
                             <ChooseTypeItem
                                 goToDetail={() => this.props.goToOrder(3)}
                                 title='Ra điểm'
                             />
-                        </View>
-                        <View style={styles.view1}>
                             <ChooseTypeItem
                                 goToDetail={() => this.props.goToOrder(2)}
                                 title='Chụp ảnh'
                             />
+                        </View>
+                        <View style={styles.view1}>
                             <ChooseTypeItem
                                 goToDetail={() => this.props.goToOrder(3)}
                                 title='Lập đơn hàng'

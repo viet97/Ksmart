@@ -72,8 +72,8 @@ export default class TopDoanhThuItem extends React.Component {
                         marginBottom: 4
                     }}>
                     <View style={{flexDirection: 'row'}}>
-                        <Icon1 style={{backgroundColor: 'transparent'}} size={24} color="black"
-                               name="ios-people-outline"/>
+                        <Icon1 style={{backgroundColor: 'transparent'}} size={24} color="gray"
+                               name="ios-people"/>
                         <Text style={{
                             width: width - 80,
                             marginLeft: 8,
@@ -94,7 +94,7 @@ export default class TopDoanhThuItem extends React.Component {
                     marginRight: 8,
                     marginBottom: 4
                 }}>
-                    <Icon2 style={{backgroundColor: 'transparent'}} size={24} color="black" name="news"/>
+                    <Icon2 style={{backgroundColor: 'transparent'}} size={24} color="yellow" name="news"/>
                     <Text style={{marginLeft: 8, backgroundColor: 'transparent'}}>{item.DonHang}</Text>
                 </View>
                 <View style={{

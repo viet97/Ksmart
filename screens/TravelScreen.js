@@ -13,8 +13,7 @@ import Image from 'react-native-image-progress';
 import ProgressBar from 'react-native-progress/Bar';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import Icon1 from 'react-native-vector-icons/Ionicons'
-
-
+import Search from 'react-native-search-box';
 import React from 'react';
 import Color from '../configs/color'
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
@@ -23,7 +22,7 @@ import Toast from 'react-native-simple-toast'
 import DatePicker from 'react-native-datepicker'
 import TravelItem from "../components/TravelItem";
 import ModalDropdownCustom from "../components/ModalDropdownCustom";
-
+import {shadowProps} from "../configs/shadow";
 let SEARCH_STRING = '';
 let {width, height} = Dimensions.get('window');
 let ALL_LOADED = false
@@ -249,6 +248,15 @@ export default class TravelScreen extends React.Component {
                         </View>
                     </TouchableOpacity>
                 </View>
+                <View style={{width: width}}>
+                    <Search
+                        placeholder="Tìm kiếm"
+                        cancelTitle="Huỷ bỏ"
+                        ref="search_box"
+
+                    />
+                </View>
+
                 {this.flatListorIndicator()}
             </View>
         )

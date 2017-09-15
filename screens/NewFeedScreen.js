@@ -229,7 +229,7 @@ export default class NewFeedScreen extends React.Component {
                         động</Text>
                     <View/>
                 </View>
-                <View style={{width: width, padding: 8}}>
+                <View style={{width: width}}>
                     <Search
                         ref="search_box"
                         placeholder="Tìm kiếm"

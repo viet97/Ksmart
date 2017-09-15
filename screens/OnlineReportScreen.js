@@ -70,11 +70,13 @@ export default class ReportScreen extends Component {
             ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
     }
 
+    componentWillUnmount() {
+        timer.clearInterval(this)
+    }
     componentDidMount() {
         this.getOnlineReportListFromServer()
         timer.clearInterval(this)
         timer.setInterval(this, "123", () => this.getOnlineReportListFromServer(), 30000);
-
     }
 
     render() {
@@ -116,24 +118,24 @@ export default class ReportScreen extends Component {
                 <View style={{flex: 9}}>
                     <View style={styles.view1}>
                         <ChooseTypeItem
-                            goToDetail={() => Toast.show('Đéo có gì đâu đừng bấm vào')}
+                            goToDetail={() => Toast.show('ko có gì đâu đừng bấm vào')}
                             title='Nhân viên online'
                             content={this.state.data.nhanvienonline}
                         />
                         <ChooseTypeItem
-                            goToDetail={() => Toast.show('Đéo có gì đâu đừng bấm vào')}
+                            goToDetail={() => Toast.show('ko có gì đâu đừng bấm vào')}
                             title='Doanh thu trong ngày'
                             content={this.state.data.tongdoanhthu}
                         />
                     </View>
                     <View style={styles.view1}>
                         <ChooseTypeItem
-                            goToDetail={() => Toast.show('Đéo có gì đâu đừng bấm vào')}
+                            goToDetail={() => Toast.show('ko có gì đâu đừng bấm vào')}
                             title='Đơn hàng trong ngày'
                             content={this.state.data.tongdonhang}
                         />
                         <ChooseTypeItem
-                            goToDetail={() => Toast.show('Đéo có gì đâu đừng bấm vào')}
+                            goToDetail={() => Toast.show('ko có gì đâu đừng bấm vào')}
                             title='Check-in trong ngày'
                             content={this.state.data.tongluotcheckin}
                         />

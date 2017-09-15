@@ -61,7 +61,7 @@ export default class ReportScreen extends Component {
         this.state = {
             isEndList: false,
             title: 'Báo cáo doanh thu sản lượng',
-            dateFrom: today,
+            dateFrom: '01-09-2017',
             dateTo: today,
             refreshing: false,
             waiting: false,

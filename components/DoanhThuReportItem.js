@@ -69,9 +69,10 @@ export default class DoanhThuReportItem extends React.Component {
                     marginRight: 8,
                     marginBottom: 4
                 }}>
-                    <Icon1 style={{backgroundColor: 'transparent'}} size={24} color="black"
-                           name="ios-people-outline"/>
+                    <Icon1 style={{backgroundColor: 'transparent'}} size={24} color="gray"
+                           name="ios-people"/>
                     <Text style={{
+
                         marginLeft: 8,
                         fontSize: 18,
                         fontWeight: "bold"
@@ -79,6 +80,7 @@ export default class DoanhThuReportItem extends React.Component {
                     }}>{item.tenkhachhang}</Text>
                 </View>
                 <View style={{
+                    width: width - 36,
                     flexDirection: 'row',
                     marginLeft: 8,
                     marginTop: 4,
@@ -96,7 +98,7 @@ export default class DoanhThuReportItem extends React.Component {
                     marginRight: 8,
                     marginBottom: 4
                 }}>
-                    <Icon2 style={{backgroundColor: 'transparent'}} size={24} color="black" name="news"/>
+                    <Icon2 style={{backgroundColor: 'transparent'}} size={24} color="yellow" name="news"/>
                     <Text style={{marginLeft: 8, backgroundColor: 'transparent'}}>{item.sodonhang}</Text>
                 </View>
                 <View style={{

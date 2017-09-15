@@ -121,7 +121,7 @@ export default class HomeScreen extends React.Component {
             case "Menu":
                 return this.menuScreen();
             case "NewFeed":
-                return <ChooseTypeNew
+                return <NewFeedScreen
 
                     backToHome={() => {
                     this.setState({screenName: 'Menu'})

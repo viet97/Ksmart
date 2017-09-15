@@ -93,7 +93,7 @@ export default class ListNhanVienScreen extends React.Component {
                 <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center'}}>
                     <Icon2 style={{backgroundColor: 'transparent'}} size={24} color="green"
                            name="controller-record"/>
-                    <Text style={{alignSelf: 'center', fontSize: 11}}>Đang trực tuyến</Text>
+                    <Text style={{alignSelf: 'center', fontSize: 11}}>Trực tuyến</Text>
                 </View>)
         else if (dangtructuyen === 2)
             return (

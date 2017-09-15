@@ -66,7 +66,7 @@ export default class ListNhanVienItem extends React.Component {
                     justifyContent: 'center',
                     alignItems: 'center'
                 }}>
-                    <Text style={{fontSize: 16, color: 'white'}}>Đang trực tuyến</Text>
+                    <Text style={{fontSize: 16, color: 'white'}}>Trực tuyến</Text>
                 </View>
             )
         else if (dangtructuyen === 2)
@@ -103,7 +103,7 @@ export default class ListNhanVienItem extends React.Component {
     render() {
         let item = this.props.data;
         return (
-            <TouchableOpacity style={{marginTop: 2, marginHorizontal: 8,}} activeOpacity={1}
+            <TouchableOpacity style={{marginTop: 2}} activeOpacity={1}
                               onPress={() => this.props.goToDetailNhanVien()}>
                 <View
                     onLayout={(e) => {

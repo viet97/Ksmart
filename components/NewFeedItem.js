@@ -58,8 +58,7 @@ export default class NewFeedItem extends React.Component {
             <View style={{
                 flexDirection: 'row',
                 marginTop: 1,
-                marginLeft: 8, ...shadowProps,
-                borderBottomWidth: 0.5,
+                ...shadowProps,
                 width: Dimensions.get('window').width,
                 backgroundColor: '#f7f7f7',
                 paddingBottom: 8
@@ -69,7 +68,7 @@ export default class NewFeedItem extends React.Component {
                     <Text style={{
                         color: '#2d92dc',
                         fontSize: 20,
-                        marginBottom: 16,
+                        marginBottom: 4,
                         width: Dimensions.get('window').width * 0.6
                     }} numberOfLines={1}>{this.item.tennhanvien}</Text>
                     <View style={{backgroundColor: colors[this.item.loai], borderRadius: 16, height: 32, padding: 8}}>
@@ -79,7 +78,7 @@ export default class NewFeedItem extends React.Component {
                 <View style={{
                     position: 'absolute',
                     right: 10,
-                    bottom: 4,
+                    bottom: 8,
                     flexDirection: 'row',
                     alignItems: 'center',
                 }}>
@@ -95,7 +94,7 @@ export default class NewFeedItem extends React.Component {
     getTime(string) {
         let arr = string.split("(");
         return `${arr[0]}
-(${arr[1]}`;
+        (${arr[1]}`;
     }
 }
 
