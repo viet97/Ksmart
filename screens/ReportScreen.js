@@ -81,27 +81,27 @@ export default class ReportScreen extends Component {
 
     getTypeLinkOfReport() {
         let url = ''
-
-        switch (this.props.status) {
+        const {params} = this.props.navigation.state;
+        switch (params.status) {
 
             case 0:
                 console.log('0')
-                url = URlConfig.getReportList(this.state.dateFrom, this.state.dateTo, PAGE, SEARCH_STRING)
+                url = URlConfig.getReportList(params.dateFrom, params.dateTo, PAGE, SEARCH_STRING)
                 this.setState({title: 'Báo cáo doanh thu sản lượng'})
                 break
             case 1:
                 console.log('1')
-                url = URlConfig.getLinkTopDoanhThu(this.state.dateFrom, this.state.dateTo, 1)
+                url = URlConfig.getLinkTopDoanhThu(params.dateFrom, params.dateTo, 1)
                 this.setState({title: '10 nhân viên doanh thu cao nhất'})
                 break
             case 2:
                 console.log('2')
-                url = URlConfig.getLinkTopDoanhThu(this.state.dateFrom, this.state.dateTo, 2)
+                url = URlConfig.getLinkTopDoanhThu(params.dateFrom, params.dateTo, 2)
                 this.setState({title: '10 nhân viên doanh thu thấp nhất'})
                 break
             case 3:
                 console.log('3')
-                url = URlConfig.getLinkKhongCoDoanhThu(this.state.dateFrom, this.state.dateTo, PAGE, SEARCH_STRING)
+                url = URlConfig.getLinkKhongCoDoanhThu(params.dateFrom, params.dateTo, PAGE, SEARCH_STRING)
                 this.setState({title: 'Nhân viên không có doanh thu'})
                 break
         }
@@ -109,6 +109,7 @@ export default class ReportScreen extends Component {
     }
 
     getReportListFromServer() {
+        const {params} = this.props.navigation.state
         ALL_LOADED = false
         this.setState({isEndList: false, dataRender: null})
         PAGE = 1;
@@ -116,7 +117,7 @@ export default class ReportScreen extends Component {
         fetch(url)
             .then((response) => (response.json()))
             .then((responseJson) => {
-                if (this.props.status !== 1 && this.props.status !== 2) {
+                if (params.status !== 1 && params.status !== 2) {
                     if (responseJson.status) {
                         this.setState({
                             dataFull: responseJson.data,
@@ -239,7 +240,7 @@ export default class ReportScreen extends Component {
     };
 
     flatListorIndicator() {
-
+        const {params} = this.props.navigation.state
         if (!this.state.dataRender) {
             return (
                 <View style={{flex: 9}}>
@@ -282,7 +283,7 @@ export default class ReportScreen extends Component {
                     extraData={this.state.dataRender}
                     data={this.state.dataRender}
                     renderItem={({item}) => {
-                        switch (this.props.status) {
+                        switch (params.status) {
                             case 0:
                                 return this.renderDoanhThuSanLuong(item)
                             case 1:
@@ -306,7 +307,7 @@ export default class ReportScreen extends Component {
                 <View style={styles.titleStyle}>
                     <Image source={require('../images/bg.png')}
                            style={{position: 'absolute'}}/>
-                    <TouchableOpacity onPress={() => this.props.backToChooseTypeReport()}
+                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}
                                       style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                         <Icon1 style={styles.iconStyle} size={24} color="white"
                                name="ios-arrow-back"/>

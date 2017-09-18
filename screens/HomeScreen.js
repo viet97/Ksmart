@@ -122,7 +122,7 @@ export default class HomeScreen extends React.Component {
                 return this.menuScreen();
             case "NewFeed":
                 return <ChooseTypeNew
-
+                    goToNewFeed={(status) => navigate('NewFeed', {status: status})}
                     backToHome={() => {
                     this.setState({screenName: 'Menu'})
                 }}/>
@@ -154,8 +154,10 @@ export default class HomeScreen extends React.Component {
                 />
             case "ChooseTypeReport":
                 return <ChooseTypeReport
-                    goToReport={(status) => this.setState({reportStatus: status}, function () {
-                        this.setState({screenName: 'Report'})
+                    goToReport={(status, dateF, dateT) => navigate('Report', {
+                        status: status,
+                        dateFrom: dateF,
+                        dateTo: dateT
                     })}
                     backToHome={() => {
                         this.setState({screenName: 'Menu'})

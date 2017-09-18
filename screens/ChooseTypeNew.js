@@ -20,6 +20,7 @@ import Icon3 from 'react-native-vector-icons/MaterialCommunityIcons'
 import DatePicker from 'react-native-datepicker'
 import ChooseTypeItem from "../components/ChooseTypeItem";
 import Color from '../configs/color'
+import URlConfig from "../configs/url";
 
 let {width, height} = Dimensions.get('window')
 export default class ChooseTypeNew extends Component {
@@ -28,21 +29,10 @@ export default class ChooseTypeNew extends Component {
     }
 
     constructor(props) {
-        let today = new Date();
-        let dd = today.getDate();
-        let mm = today.getMonth() + 1; //January is 0!
-        let yyyy = today.getFullYear();
-
-        if (dd < 10) {
-            dd = '0' + dd
-        }
-
-        if (mm < 10) {
-            mm = '0' + mm
-        }
-
-        today = dd + '-' + mm + '-' + yyyy;
         super(props)
+        this.state = {
+            data: []
+        }
     }
 
     render() {
@@ -71,46 +61,19 @@ export default class ChooseTypeNew extends Component {
                     <View style={{backgroundColor: 'transparent', width: 35, height: 35}}/>
                 </View>
                 <View style={{flex: 9}}>
-                    <ScrollView>
-                        <View style={styles.view1}>
+                    <FlatList
+                        numColumns={2}
+                        keyboardDismissMode="on-drag"
+                        ref="listview"
+                        extraData={this.state.data}
+                        data={this.state.data}
+                        renderItem={({item}) =>
                             <ChooseTypeItem
-                                goToDetail={() => this.props.goToOrder(0)}
-                                title='Tất cả'
+                                data={item}
+                                goToDetail={() => this.props.goToNewFeed(item.trangthai)}
                             />
-                            <ChooseTypeItem
-                                goToDetail={() => this.props.goToOrder(0)}
-                                title='Đăng nhập'
-                            />
-                        </View>
-
-                        <View style={styles.view1}>
-                            <ChooseTypeItem
-                                goToDetail={() => this.props.goToOrder(1)}
-                                title='Đăng xuất'
-                            />
-                            <ChooseTypeItem
-                                goToDetail={() => this.props.goToOrder(2)}
-                                title='Vào điểm'
-                            />
-                        </View>
-                        <View style={styles.view1}>
-                            <ChooseTypeItem
-                                goToDetail={() => this.props.goToOrder(3)}
-                                title='Ra điểm'
-                            />
-                            <ChooseTypeItem
-                                goToDetail={() => this.props.goToOrder(2)}
-                                title='Chụp ảnh'
-                            />
-                        </View>
-                        <View style={styles.view1}>
-                            <ChooseTypeItem
-                                goToDetail={() => this.props.goToOrder(3)}
-                                title='Lập đơn hàng'
-                            />
-                        </View>
-
-                    </ScrollView>
+                        }
+                    />
                 </View>
             </View>
         )
@@ -128,7 +91,15 @@ export default class ChooseTypeNew extends Component {
     }
 
     componentDidMount() {
-        // keo data tu server xuong
+        fetch(URlConfig.getLinkSoNewFeed())
+            .then((response) => (response.json()))
+            .then((responseJson) => {
+                if (responseJson.status) {
+                    this.setState({data: responseJson.danhsach})
+                    console.log(responseJson.danhsach)
+                }
+            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e))
+
     }
 }
 const styles = StyleSheet.create({

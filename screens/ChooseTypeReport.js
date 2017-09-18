@@ -19,6 +19,7 @@ import Icon3 from 'react-native-vector-icons/MaterialCommunityIcons'
 import DatePicker from 'react-native-datepicker'
 import ChooseTypeItem from "../components/ChooseTypeItem";
 import Color from '../configs/color'
+import URlConfig from "../configs/url";
 
 let {width, height} = Dimensions.get('window')
 export default class ChooseTypeReport extends Component {
@@ -43,9 +44,21 @@ export default class ChooseTypeReport extends Component {
         today = dd + '-' + mm + '-' + yyyy;
         super(props)
         this.state = {
+            data: [],
             dateFrom: today,
             dateTo: today,
         }
+    }
+
+    getDataFromSv() {
+        fetch(URlConfig.getLinkSoReport(this.state.dateFrom, this.state.dateTo))
+            .then((response) => (response.json()))
+            .then((responseJson) => {
+                if (responseJson.status) {
+                    this.setState({data: responseJson.danhsach})
+                }
+            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+
     }
 
     render() {
@@ -125,25 +138,21 @@ export default class ChooseTypeReport extends Component {
                 </View>
 
                 <View style={{flex: 9}}>
-                    <View style={styles.view1}>
-                        <ChooseTypeItem
-                            goToDetail={() => this.props.goToReport(0)}
-                            title='Doanh thu sản lượng'
+                    <View style={{flex: 9}}>
+                        <FlatList
+                            numColumns={2}
+                            keyboardDismissMode="on-drag"
+                            ref="listview"
+                            extraData={this.state.data}
+                            data={this.state.data}
+                            renderItem={({item}) =>
+                                <ChooseTypeItem
+                                    data={item}
+                                    goToDetail={() => this.props.goToReport(item.trangthai, this.state.dateFrom, this.state.dateTo)}
+                                />
+                            }
                         />
-                        <ChooseTypeItem
-                            goToDetail={() => this.props.goToReport(1)}
-                            title='Nhân viên có doanh thu cao'
-                        />
-                    </View>
-                    <View style={styles.view1}>
-                        <ChooseTypeItem
-                            goToDetail={() => this.props.goToReport(2)}
-                            title='Nhân viên có doanh thu thấp'
-                        />
-                        <ChooseTypeItem
-                            goToDetail={() => this.props.goToReport(3)}
-                            title='Nhân viên không có doanh thu'
-                        />
+
                     </View>
                 </View>
             </View>
@@ -151,18 +160,17 @@ export default class ChooseTypeReport extends Component {
     }
 
     ondateChange(from, to) {
-        this.setState({dataRender: null})
         var dFrom = String(from);
         var dTo = String(to);
         dFrom.replace('/', '-');
         dTo.replace('/', '-');
         this.setState({dateFrom: dFrom, dateTo: dTo}, function () {
-            //keo lai data tư sv xuống
+            this.getDataFromSv()
         })
     }
 
     componentDidMount() {
-        // keo data tu server xuong
+        this.getDataFromSv()
     }
 }
 const styles = StyleSheet.create({

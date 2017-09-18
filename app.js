@@ -32,6 +32,7 @@ import SendMessageScreen from "./screens/SendMessageScreen";
 import EditTravelScreen from "./screens/EditTravelScreen";
 import TravelScreen from "./screens/TravelScreen";
 import ChooseTypeListNV from "./screens/ChooseTypeListNV";
+import ReportScreen from "./screens/ReportScreen";
 
 var {height, width} = Dimensions.get('window');
 const Ksmart = StackNavigator({
@@ -42,6 +43,8 @@ const Ksmart = StackNavigator({
     Menu: {screen: MenuScreen},
     Map: {screen: MapScreen,},
     Travel: {screen: TravelScreen},
+    NewFeed: {screen: NewFeedScreen},
+    Report: {screen: ReportScreen},
     ListNhanVien: {screen: ListNhanVienScreen},
     DetailNhanVien: {screen: DetailNhanVien},
     DetailMessage: {screen: DetailMessageScreen},

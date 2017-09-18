@@ -44,10 +44,11 @@ export default class NewFeedScreen extends React.Component {
     }
 
     getDataFromSv() {
+        const {params} = this.props.navigation.state
         ALL_LOADED = false;
         this.setState({isEndList: false, dataRender: null})
         PAGE = 1;
-        let url = URlConfig.getNewFeedLink(PAGE, SEARCH_STRING)
+        let url = URlConfig.getNewFeedLink(PAGE, SEARCH_STRING, params.status)
         console.log(url)
         fetch(url)
             .then((response) => (response.json()))
@@ -67,12 +68,13 @@ export default class NewFeedScreen extends React.Component {
     }
 
     loadMoreDataFromSv() {
+        const {params} = this.props.navigation.state
         if (!this.state.onEndReach) {
             this.setState({onEndReach: true})
 
             if (!this.state.isEndList) {
                 PAGE = PAGE + 1
-                let url = URlConfig.getNewFeedLink(PAGE, SEARCH_STRING)
+                let url = URlConfig.getNewFeedLink(PAGE, SEARCH_STRING, params.status)
                 console.log(url)
                 fetch(url)
                     .then((response) => (response.json()))
@@ -219,7 +221,7 @@ export default class NewFeedScreen extends React.Component {
                            opacity: 0.6
                        }}/>
                 <View style={styles.titleStyle}>
-                    <TouchableOpacity onPress={() => this.props.backToHome()}
+                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}
                                       style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                         <Icon1 style={styles.iconStyle} size={24} color="white"
                                name="ios-arrow-back"/>
