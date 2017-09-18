@@ -47,11 +47,46 @@ export default class ChooseTypeTravel extends Component {
         today = dd + '-' + mm + '-' + yyyy;
         super(props)
         this.state = {
+            refreshing: false,
             data: [],
             dateFrom: today,
             dateTo: today,
         }
 
+    }
+
+    flatListorIndicator() {
+        if (!this.state.data) {
+            return (
+                <View style={{flex: 9}}>
+                    <ActivityIndicator
+                        animating={true}
+                        style={styles.indicator}
+                        size="large"/>
+                </View>)
+        }
+        return (
+            <View style={{flex: 9}}>
+                <View style={{flex: 9}}>
+                    <FlatList
+                        onRefresh={() => this.getDataFromSv()}
+                        refreshing={this.state.refreshing}
+                        numColumns={2}
+                        keyboardDismissMode="on-drag"
+                        ref="listview"
+                        extraData={this.state.data}
+                        data={this.state.data}
+                        renderItem={({item}) =>
+                            <ChooseTypeItem
+                                data={item}
+                                goToDetail={() => this.props.goToTravel(item.trangthai, this.state.dateFrom, this.state.dateTo)}
+                            />
+                        }
+                    />
+
+                </View>
+
+            </View>)
     }
 
     render() {
@@ -152,22 +187,7 @@ export default class ChooseTypeTravel extends Component {
                     </View>
                 </View>
 
-                <View style={{flex: 9}}>
-                    <FlatList
-                        numColumns={2}
-                        keyboardDismissMode="on-drag"
-                        ref="listview"
-                        extraData={this.state.data}
-                        data={this.state.data}
-                        renderItem={({item}) =>
-                            <ChooseTypeItem
-                                data={item}
-                                goToDetail={() => this.props.goToTravel(item.trangthai, this.state.dateFrom, this.state.dateTo)}
-                            />
-                        }
-                    />
-
-                </View>
+                {this.flatListorIndicator()}
             </View>
         )
     }
@@ -183,6 +203,7 @@ export default class ChooseTypeTravel extends Component {
     }
 
     getDataFromSv() {
+        this.setState({data: null})
         fetch(URlConfig.getLinkSoKeHoach(this.state.dateFrom, this.state.dateTo))
             .then((response) => (response.json()))
             .then((responseJson) => {

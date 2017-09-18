@@ -33,6 +33,7 @@ export default class ChooseTypeListNV extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            refreshing: false,
             data: [],
             selectedTab: 'ListNhanVien',
         }
@@ -74,22 +75,7 @@ export default class ChooseTypeListNV extends Component {
                                 viên</Text>
                             <View style={{backgroundColor: 'transparent', width: 35, height: 35}}/>
                         </View>
-                        <View style={{flex: 9}}>
-                            <FlatList
-                                numColumns={2}
-                                keyboardDismissMode="on-drag"
-                                ref="listview"
-                                extraData={this.state.data}
-                                data={this.state.data}
-                                renderItem={({item}) =>
-                                    <ChooseTypeItem
-                                        data={item}
-                                        goToDetail={() => this.props.goToListNhanVien(item.trangthai)}
-                                    />
-                                }
-                            />
-
-                        </View>
+                        {this.flatListorIndicator()}
                     </View>
                 </TabNavigator.Item>
                 <TabNavigator.Item
@@ -105,15 +91,51 @@ export default class ChooseTypeListNV extends Component {
         )
     }
 
-    componentDidMount() {
+    flatListorIndicator() {
+        if (!this.state.data) {
+            return (
+                <View style={{flex: 9}}>
+                    <ActivityIndicator
+                        animating={true}
+                        style={styles.indicator}
+                        size="large"/>
+                </View>)
+        }
+        return (
+            <View style={{flex: 9}}>
+                <FlatList
+                    onRefresh={() => this.getDataFromSv()}
+                    refreshing={this.state.refreshing}
+                    numColumns={2}
+                    keyboardDismissMode="on-drag"
+                    ref="listview"
+                    extraData={this.state.data}
+                    data={this.state.data}
+                    renderItem={({item}) =>
+                        <ChooseTypeItem
+                            data={item}
+                            goToDetail={() => this.props.goToListNhanVien(item.trangthai)}
+                        />
+                    }
+                />
+
+            </View>)
+    }
+
+    getDataFromSv() {
+        this.setState({data: null})
         fetch(URlConfig.getLinkSoNhanVien())
             .then((response) => (response.json()))
             .then((responseJson) => {
                 if (responseJson.status) {
+                    console.log(responseJson.danhsach)
                     this.setState({data: responseJson.danhsach})
                 }
-            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e))
+            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+    }
 
+    componentDidMount() {
+        this.getDataFromSv()
     }
 }
 const styles = StyleSheet.create({

@@ -44,6 +44,7 @@ export default class ChooseTypeReport extends Component {
         today = dd + '-' + mm + '-' + yyyy;
         super(props)
         this.state = {
+            refreshing: false,
             data: [],
             dateFrom: today,
             dateTo: today,
@@ -51,6 +52,7 @@ export default class ChooseTypeReport extends Component {
     }
 
     getDataFromSv() {
+        this.setState({data: null})
         fetch(URlConfig.getLinkSoReport(this.state.dateFrom, this.state.dateTo))
             .then((response) => (response.json()))
             .then((responseJson) => {
@@ -59,6 +61,40 @@ export default class ChooseTypeReport extends Component {
                 }
             }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
 
+    }
+
+    flatListorIndicator() {
+        if (!this.state.data) {
+            return (
+                <View style={{flex: 9}}>
+                    <ActivityIndicator
+                        animating={true}
+                        style={styles.indicator}
+                        size="large"/>
+                </View>)
+        }
+        return (
+            <View style={{flex: 9}}>
+                <View style={{flex: 9}}>
+                    <FlatList
+                        numColumns={2}
+                        onRefresh={() => this.getDataFromSv()}
+                        refreshing={this.state.refreshing}
+                        keyboardDismissMode="on-drag"
+                        ref="listview"
+                        extraData={this.state.data}
+                        data={this.state.data}
+                        renderItem={({item}) =>
+                            <ChooseTypeItem
+                                data={item}
+                                goToDetail={() => this.props.goToReport(item.trangthai, this.state.dateFrom, this.state.dateTo)}
+                            />
+                        }
+                    />
+
+                </View>
+
+            </View>)
     }
 
     render() {
@@ -136,25 +172,8 @@ export default class ChooseTypeReport extends Component {
                         />
                     </View>
                 </View>
+                {this.flatListorIndicator()}
 
-                <View style={{flex: 9}}>
-                    <View style={{flex: 9}}>
-                        <FlatList
-                            numColumns={2}
-                            keyboardDismissMode="on-drag"
-                            ref="listview"
-                            extraData={this.state.data}
-                            data={this.state.data}
-                            renderItem={({item}) =>
-                                <ChooseTypeItem
-                                    data={item}
-                                    goToDetail={() => this.props.goToReport(item.trangthai, this.state.dateFrom, this.state.dateTo)}
-                                />
-                            }
-                        />
-
-                    </View>
-                </View>
             </View>
         )
     }

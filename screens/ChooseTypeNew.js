@@ -31,8 +31,41 @@ export default class ChooseTypeNew extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            data: []
+            data: [],
+            refreshing: false,
         }
+    }
+
+    flatListorIndicator() {
+
+        if (!this.state.data) {
+            return (
+                <View style={{flex: 9}}>
+                    <ActivityIndicator
+                        animating={true}
+                        style={styles.indicator}
+                        size="large"/>
+                </View>)
+        }
+        return (
+            <View style={{flex: 9}}>
+                <FlatList
+                    onRefresh={() => this.getDataFromSv()}
+                    refreshing={this.state.refreshing}
+                    numColumns={2}
+                    keyboardDismissMode="on-drag"
+                    ref="listview"
+                    extraData={this.state.data}
+                    data={this.state.data}
+                    renderItem={({item}) =>
+                        <ChooseTypeItem
+                            data={item}
+                            goToDetail={() => this.props.goToNewFeed(item.trangthai)}
+                        />
+                    }
+                />
+
+            </View>)
     }
 
     render() {
@@ -60,21 +93,7 @@ export default class ChooseTypeNew extends Component {
                         }}>Hoạt động</Text>
                     <View style={{backgroundColor: 'transparent', width: 35, height: 35}}/>
                 </View>
-                <View style={{flex: 9}}>
-                    <FlatList
-                        numColumns={2}
-                        keyboardDismissMode="on-drag"
-                        ref="listview"
-                        extraData={this.state.data}
-                        data={this.state.data}
-                        renderItem={({item}) =>
-                            <ChooseTypeItem
-                                data={item}
-                                goToDetail={() => this.props.goToNewFeed(item.trangthai)}
-                            />
-                        }
-                    />
-                </View>
+                {this.flatListorIndicator()}
             </View>
         )
     }
@@ -90,7 +109,8 @@ export default class ChooseTypeNew extends Component {
         })
     }
 
-    componentDidMount() {
+    getDataFromSv() {
+        this.setState({data: null})
         fetch(URlConfig.getLinkSoNewFeed())
             .then((response) => (response.json()))
             .then((responseJson) => {
@@ -99,10 +119,20 @@ export default class ChooseTypeNew extends Component {
                     console.log(responseJson.danhsach)
                 }
             }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e))
+    }
 
+    componentDidMount() {
+        this.getDataFromSv()
     }
 }
 const styles = StyleSheet.create({
+    indicator: {
+        alignSelf: 'center',
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: 80
+    },
     view1: {
         flexDirection: 'row'
     },
