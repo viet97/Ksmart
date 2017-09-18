@@ -81,6 +81,8 @@ export default class EditTravelScreen extends React.Component {
     }
 
     renderHeader() {
+        const {params} = this.props.navigation.state;
+
         if (Platform.OS === 'ios') {
             return (
                 <View style={styles.titleStyle}>
@@ -185,7 +187,9 @@ export default class EditTravelScreen extends React.Component {
                                     .then((response) => (response.json()))
                                     .then((responseJson) => {
                                             if (responseJson.status) {
+
                                                 Toast.show('Sửa thành công!')
+                                                params.reload()
                                                 this.props.navigation.goBack();
                                             } else {
                                                 Toast.show('Sửa thất bại,vui lòng thử lại!')
@@ -205,13 +209,13 @@ export default class EditTravelScreen extends React.Component {
                 </View>
             )
         }
-        console.log('vaooooo1', this.state.showHeader)
     }
 
 
     render() {
-        const {params} = this.props.navigation.state;
         const {navigate} = this.props.navigation;
+        const {params} = this.props.navigation.state;
+
         return (
             <View style={{flex: 1, backgroundColor: 'transparent'}}>
                 <Image source={require('../images/bg.png')}
@@ -252,7 +256,6 @@ export default class EditTravelScreen extends React.Component {
                                 <TouchableOpacity
                                     style={{flexDirection: 'row'}}
                                     onPress={() => {
-                                        console.log('dyyd', data)
                                         this.setState({
                                             nameInput: data.tennhanvien,
                                             tennhanvien: data.tennhanvien,
@@ -282,7 +285,6 @@ export default class EditTravelScreen extends React.Component {
                         paddingLeft: 16
                     }}
                                       onPress={() => {
-                                          console.log('abc');
                                           Keyboard.dismiss();
                                           this.setState({showHeader: false})
                                           this.refs.modal.open()
@@ -386,7 +388,6 @@ export default class EditTravelScreen extends React.Component {
                     swipeToClose={true}>
                     <ChooseCustomerScreen
                         callback={(item) => {
-                            console.log('item', item);
                             this.setState({
                                 customerSelect: item,
                                 tenkhachhang: item.TenCuaHang,
@@ -414,21 +415,24 @@ export default class EditTravelScreen extends React.Component {
     }
 
     componentDidMount() {
-        const {params} = this.props.navigation.state;
-        console.log('paramsss', params.data)
-        this.setState({
-                tennhanvien: params.data.TenNhanVien,
-                tenkhachhang: params.data.TenCuaHang,
-                idnhanvien: params.data.IDNhanVien,
-                idkhachhang: params.data.IDCuaHang,
-                idkehoach: params.data.IDKeHoach,
-                dateCome: Utils.changeDateFormat(params.data.ThoiGianVaoDiemDuKien),
-                dateOut: Utils.changeDateFormat(params.data.ThoiGianRaDiemDuKien),
-                dateComeReal: params.data.ThoiGianVaoDiemThucTe
-            },
-            function () {
-                console.log('dmdmdmdmd', this.state.dateCome, this.state.dateOut)
-            })
+        const {params} = this.props.navigation.state
+        fetch(URlConfig.getLinkDetailTravel(params.id))
+            .then((response) => (response.json()))
+            .then((responseJson) => {
+                console.log(responseJson.data)
+                if (responseJson.status) {
+                    this.setState({
+                        tennhanvien: responseJson.thongtin.TenNhanVien,
+                        tenkhachhang: responseJson.thongtin.TenCuaHang,
+                        idnhanvien: responseJson.thongtin.IDNhanVien,
+                        idkhachhang: responseJson.thongtin.IDCuaHang,
+                        idkehoach: responseJson.thongtin.IDKeHoach,
+                        dateCome: Utils.changeDateFormat(responseJson.thongtin.ThoiGianVaoDiemDuKien),
+                        dateOut: Utils.changeDateFormat(responseJson.thongtin.ThoiGianRaDiemDuKien),
+                        dateComeReal: responseJson.thongtin.ThoiGianVaoDiemThucTe
+                    })
+                }
+            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
     }
 }
 

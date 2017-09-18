@@ -85,9 +85,17 @@ export default class URlConfig {
         return data.urlserver + '/AppDanhSachDonHang_v2.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idct=' + data.idcongty + '&from=' + from + '&to=' + to + '&rangthaigps=0&page=' + page + '&timkiem=' + keyword;
     }
 
-    static getLinkTravel(dateFrom, dateTo, page, status, minutes = 5) {
+    static getLinkDetailTravel(id) {
+        // return 'http://jav.ksmart.vn/AppDanhSachDonHang.aspx?6e22b116f5111220741848ccd290e9e9e60cd16030852326e0ebdcf522be1393&idquanly=47&idct=1&from=01-05-2017&to=10-07-2017&trangthaigps=0'
+        let data = URlConfig.OBJLOGIN;
+        return data.urlserver + '/AppChiTietKeHoach.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idcty=' + data.idcongty + '&idkehoach=' + id
+    }
+
+    static getLinkTravel(dateFrom, dateTo, page, status, minutes = 5, timkiem) {
         let data = URlConfig.OBJLOGIN;
         let loctrangthai = ''
+        let timkiemStr = ''
+        if (timkiem.length !== 0) timkiemStr = '&timkiem=' + timkiem
         switch (status) {
             case 0:
                 loctrangthai = '&loctrangthai=' + status
@@ -103,7 +111,7 @@ export default class URlConfig {
                 break
 
         }
-        return data.urlserver + '/AppKeHoachDiChuyen_v4.aspx?token=' + md5.hex_md5(Date.now()) + '&idct=' + data.idcongty + '&idquanly=' + data.id + '&from=' + dateFrom + '&to=' + dateTo + '&loai=chitietcacngaycokehoach&page=' + page + loctrangthai;
+        return data.urlserver + '/AppKeHoachDiChuyen_v4.aspx?token=' + md5.hex_md5(Date.now()) + '&idct=' + data.idcongty + '&idquanly=' + data.id + '&from=' + dateFrom + '&to=' + dateTo + '&loai=chitietcacngaycokehoach&page=' + page + loctrangthai + timkiemStr;
     }
 
     static getCustomerLink(page, keyword = '') {
@@ -153,6 +161,18 @@ export default class URlConfig {
     static getLinkTopDoanhThu(dateFrom, dateTo, type) {
         let data = URlConfig.OBJLOGIN;
         return data.urlserver + '/AppBieuDoTopDoanhThu.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&macongty=' + data.idct + '&tungay=' + dateFrom + '&denngay=' + dateTo + '&loai=' + type;
+
+    }
+
+    static getLinkSoNhanVien() {
+        let data = URlConfig.OBJLOGIN;
+        return data.urlserver + '/AppSoNhanVien.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idcty=' + data.idcongty;
+
+    }
+
+    static getLinkSoKeHoach(dateF, dateT) {
+        let data = URlConfig.OBJLOGIN;
+        return data.urlserver + '/AppSoKeHoach.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idcty=' + data.idcongty + '&tungay=' + dateF + "&denngay=" + dateT + '&loai=chitietcacngaycokehoach';
 
     }
 

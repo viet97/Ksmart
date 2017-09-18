@@ -282,7 +282,7 @@ export default class NewFeedScreen extends React.Component {
                             marginBottom: 12
                         }}>{item.tennhanvien}</Text>
                         <Text>Đã đăng nhập: {item.thoigian_hienthi}</Text>
-
+                        <Text>Địa chỉ: {item.diachi}</Text>
                     </View>
                 )
             case 2:
@@ -303,7 +303,7 @@ export default class NewFeedScreen extends React.Component {
                             marginBottom: 12
                         }}>{item.tennhanvien}</Text>
                         <Text>Đã đăng xuất: {item.thoigian_hienthi}</Text>
-
+                        <Text>Địa chỉ: {item.diachi}</Text>
                     </View>
                 )
             case 3:

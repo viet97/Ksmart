@@ -379,7 +379,7 @@ export default class ChartScreen extends React.Component {
                         </ModalDropdownCustom>
                     </View>
                     <View style={{alignSelf: 'center', flexDirection: 'row', backgroundColor: 'transparent'}}>
-                        <Text style={{color: 'white', alignSelf: 'center', marginRight: 4}}>Dạng hiển thị</Text>
+                        <Text style={{color: 'black', alignSelf: 'center', marginRight: 4}}>Dạng hiển thị</Text>
                         <ModalDropdownCustom
                             data={this.state.type}
                             defaultValue={this.state.type[0]}

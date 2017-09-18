@@ -21,6 +21,7 @@ import TabNavigator from 'react-native-tab-navigator';
 import Color from '../configs/color'
 import DatePicker from 'react-native-datepicker'
 import ChooseTypeItem from "../components/ChooseTypeItem";
+import URlConfig from "../configs/url";
 
 let {width, height} = Dimensions.get('window')
 export default class ChooseTypeTravel extends Component {
@@ -29,6 +30,7 @@ export default class ChooseTypeTravel extends Component {
     }
 
     constructor(props) {
+
         let today = new Date();
         let dd = today.getDate();
         let mm = today.getMonth() + 1; //January is 0!
@@ -45,12 +47,15 @@ export default class ChooseTypeTravel extends Component {
         today = dd + '-' + mm + '-' + yyyy;
         super(props)
         this.state = {
+            data: [],
             dateFrom: today,
             dateTo: today,
         }
+
     }
 
     render() {
+
         return (
             <View style={{flex: 1}}>
                 <Image source={require('../images/bg.png')}
@@ -148,26 +153,20 @@ export default class ChooseTypeTravel extends Component {
                 </View>
 
                 <View style={{flex: 9}}>
-                    <View style={styles.view1}>
-                        <ChooseTypeItem
-                            goToDetail={() => this.props.goToTravel(0)}
-                            title='Kế hoạch trong ngày'
-                        />
-                        <ChooseTypeItem
-                            goToDetail={() => this.props.goToTravel(1)}
-                            title='Kế hoạch đã vào điểm'
-                        />
-                    </View>
-                    <View style={styles.view1}>
-                        <ChooseTypeItem
-                            goToDetail={() => this.props.goToTravel(2)}
-                            title='Kế hoạch chưa vào điểm'
-                        />
-                        <ChooseTypeItem
-                            goToDetail={() => this.props.goToTravel(3)}
-                            title='Kế hoạch sắp đến giờ vào điẻm'
-                        />
-                    </View>
+                    <FlatList
+                        numColumns={2}
+                        keyboardDismissMode="on-drag"
+                        ref="listview"
+                        extraData={this.state.data}
+                        data={this.state.data}
+                        renderItem={({item}) =>
+                            <ChooseTypeItem
+                                data={item}
+                                goToDetail={() => this.props.goToTravel(item.trangthai, this.state.dateFrom, this.state.dateTo)}
+                            />
+                        }
+                    />
+
                 </View>
             </View>
         )
@@ -178,14 +177,25 @@ export default class ChooseTypeTravel extends Component {
             dateFrom: dateFrom,
             dateTo: dateTo,
         }, function () {
-            // keo data tu server xuong
+            this.getDataFromSv()
         });
 
     }
 
+    getDataFromSv() {
+        fetch(URlConfig.getLinkSoKeHoach(this.state.dateFrom, this.state.dateTo))
+            .then((response) => (response.json()))
+            .then((responseJson) => {
+                if (responseJson.status) {
+                    this.setState({data: responseJson.danhsach})
+                    console.log(responseJson.danhsach)
+                }
+            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e))
+
+    }
 
     componentDidMount() {
-        // keo data tu server xuong
+        this.getDataFromSv()
     }
 }
 const styles = StyleSheet.create({

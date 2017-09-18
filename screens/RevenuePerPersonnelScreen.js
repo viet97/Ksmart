@@ -141,8 +141,7 @@ export default class RevenuePerPersonnelScreen extends React.Component {
                             data={this.state.dataRender}
                             renderItem={({item}) => {
                                 return this.renderItem(item)
-                            }
-                            }
+                            }}
                         />
                     </View>
                 )
@@ -306,7 +305,7 @@ export default class RevenuePerPersonnelScreen extends React.Component {
                         />
                     </View>
                     <View style={{backgroundColor: 'transparent', flexDirection: 'row', justifyContent: 'center'}}>
-                        <Text style={{color: 'white', alignSelf: 'center', marginRight: 4}}>Dạng hiển thị</Text>
+                        <Text style={{color: 'black', alignSelf: 'center', marginRight: 4}}>Dạng hiển thị</Text>
                         <ModalDropdownCustom
                             data={this.state.type}
                             defaultValue={this.state.type[0]}

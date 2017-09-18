@@ -57,21 +57,40 @@ export default class DetailTravel extends React.Component {
 
     }
 
+    getDataFromSv() {
+        const {params} = this.props.navigation.state
+        fetch(URlConfig.getLinkDetailTravel(params.id))
+            .then((response) => (response.json()))
+            .then((responseJson) => {
+                if (responseJson.status) {
+                    this.setState({
+                            data: responseJson.thongtin,
+                            region: {
+                                latitude: responseJson.thongtin.ViDo,
+                                longitude: responseJson.thongtin.KinhDo,
+                                latitudeDelta: 0.0922,
+                                longitudeDelta: 0.0421,
+                            },
+                            selectedTab: 'blueTab'
+                        }
+                    )
+                }
+            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+
+    }
     render() {
-        const {navigate} = this.props.navigation;
-        const {params} = this.props.navigation.state;
-        console.log(params.data.ThoiGianVaoDiemDuKien)
+        const {navigate} = this.props.navigation
         var strVaoDiem = '';
         var strRaDiem = '';
-        if (params.data.ThoiGianVaoDiemThucTe === '1900-01-01T00:00:00') {
+        if (this.state.data.ThoiGianVaoDiemThucTe === '1900-01-01T00:00:00') {
             strVaoDiem = "Chưa vào điểm!"
         } else {
-            strVaoDiem = 'Vào điểm lúc: ' + Utils.changeDateFormat(params.data.ThoiGianVaoDiemThucTe)
+            strVaoDiem = 'Vào điểm lúc: ' + Utils.changeDateFormat(this.state.data.ThoiGianVaoDiemThucTe)
         }
-        if (params.data.ThoiGianRaDiemThucTe === '1900-01-01T00:00:00') {
+        if (this.state.data.ThoiGianRaDiemThucTe === '1900-01-01T00:00:00') {
             strRaDiem = "Chưa ra điểm!"
         } else {
-            strRaDiem = 'Ra điểm lúc: ' + Utils.changeDateFormat(params.data.ThoiGianRaDiemThucTe);
+            strRaDiem = 'Ra điểm lúc: ' + Utils.changeDateFormat(this.state.data.ThoiGianRaDiemThucTe);
         }
         return (
             <View style={{flex: 1}}>
@@ -88,7 +107,10 @@ export default class DetailTravel extends React.Component {
                     <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Thông
                         tin kế hoạch</Text>
                     <TouchableOpacity
-                        onPress={() => navigate('EditTravel', {data: params.data})}
+                        onPress={() => navigate('EditTravel', {
+                            id: this.state.data.IDKeHoach,
+                            reload: () => this.getDataFromSv()
+                        })}
                         style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                         <Icon2 style={{
                             alignSelf: 'center',
@@ -116,7 +138,7 @@ export default class DetailTravel extends React.Component {
                             <Text style={{
                                 marginLeft: 8,
                                 backgroundColor: 'transparent'
-                            }}>{params.data.TenNhanVien}</Text>
+                            }}>{this.state.data.TenNhanVien}</Text>
                         </View>
                     </View>
 
@@ -131,7 +153,7 @@ export default class DetailTravel extends React.Component {
                         <Text style={{
                             marginLeft: 8,
                             backgroundColor: 'transparent'
-                        }}>{params.data.TenCuaHang}</Text>
+                        }}>{this.state.data.TenCuaHang}</Text>
                     </View>
                     <View style={{
                         flexDirection: 'row',
@@ -144,7 +166,7 @@ export default class DetailTravel extends React.Component {
                         <Text style={{
                             marginLeft: 8,
                             backgroundColor: 'transparent'
-                        }}>{Utils.changeDateFormat(params.data.ThoiGianVaoDiemDuKien)}</Text>
+                        }}>{Utils.changeDateFormat(this.state.data.ThoiGianVaoDiemDuKien)}</Text>
                     </View>
                     <View style={{
                         flexDirection: 'row',
@@ -180,7 +202,7 @@ export default class DetailTravel extends React.Component {
                         <Text style={{
                             marginLeft: 8,
                             backgroundColor: 'transparent'
-                        }}>{params.data.text_color_mota}</Text>
+                        }}>{this.state.data.text_color_mota}</Text>
                     </View>
                 </View>
                 <MapView
@@ -188,8 +210,8 @@ export default class DetailTravel extends React.Component {
                     initialRegion={this.state.region}>
                     <MapView.Marker.Animated
                         coordinate={{
-                            latitude: params.data.ViDo,
-                            longitude: params.data.KinhDo,
+                            latitude: this.state.data.ViDo,
+                            longitude: this.state.data.KinhDo,
                             latitudeDelta: 0.0922,
                             longitudeDelta: 0.0421
                         }}
@@ -213,16 +235,7 @@ export default class DetailTravel extends React.Component {
 
     componentDidMount() {
         const {params} = this.props.navigation.state;
-        this.setState({
-                region: {
-                    latitude: params.data.ViDo,
-                    longitude: params.data.KinhDo,
-                    latitudeDelta: 0.0922,
-                    longitudeDelta: 0.0421,
-                },
-                selectedTab: 'blueTab'
-            }
-        )
+        this.getDataFromSv()
     }
 }
 

@@ -21,6 +21,8 @@ import TabNavigator from 'react-native-tab-navigator';
 import Color from '../configs/color'
 import myStyles from '../configs/myStyles'
 import ChooseTypeItem from "../components/ChooseTypeItem";
+import URlConfig from "../configs/url";
+import Toast from "react-native-simple-toast";
 
 let {width, height} = Dimensions.get('window')
 export default class ChooseTypeListNV extends Component {
@@ -31,6 +33,7 @@ export default class ChooseTypeListNV extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            data: [],
             selectedTab: 'ListNhanVien',
         }
     }
@@ -72,26 +75,20 @@ export default class ChooseTypeListNV extends Component {
                             <View style={{backgroundColor: 'transparent', width: 35, height: 35}}/>
                         </View>
                         <View style={{flex: 9}}>
-                            <View style={styles.view1}>
-                                <ChooseTypeItem
-                                    goToDetail={() => this.props.goToListNhanVien(-1)}
-                                    title='Tổng số nhân viên'
-                                />
-                                <ChooseTypeItem
-                                    goToDetail={() => this.props.goToListNhanVien(1)}
-                                    title='Số nhân viên trực tuyến'
-                                />
-                            </View>
-                            <View style={styles.view1}>
-                                <ChooseTypeItem
-                                    goToDetail={() => this.props.goToListNhanVien(0)}
-                                    title='Số nhân viên ngoại tuyến'
-                                />
-                                <ChooseTypeItem
-                                    goToDetail={() => this.props.goToListNhanVien(2)}
-                                    title='Số nhân viên mất tín hiệu'
-                                />
-                            </View>
+                            <FlatList
+                                numColumns={2}
+                                keyboardDismissMode="on-drag"
+                                ref="listview"
+                                extraData={this.state.data}
+                                data={this.state.data}
+                                renderItem={({item}) =>
+                                    <ChooseTypeItem
+                                        data={item}
+                                        goToDetail={() => this.props.goToListNhanVien(item.trangthai)}
+                                    />
+                                }
+                            />
+
                         </View>
                     </View>
                 </TabNavigator.Item>
@@ -109,7 +106,14 @@ export default class ChooseTypeListNV extends Component {
     }
 
     componentDidMount() {
-        // keo data tu server xuong
+        fetch(URlConfig.getLinkSoNhanVien())
+            .then((response) => (response.json()))
+            .then((responseJson) => {
+                if (responseJson.status) {
+                    this.setState({data: responseJson.danhsach})
+                }
+            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e))
+
     }
 }
 const styles = StyleSheet.create({

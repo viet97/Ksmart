@@ -23,6 +23,7 @@ import DatePicker from 'react-native-datepicker'
 import TravelItem from "../components/TravelItem";
 import ModalDropdownCustom from "../components/ModalDropdownCustom";
 import {shadowProps} from "../configs/shadow";
+
 let SEARCH_STRING = '';
 let {width, height} = Dimensions.get('window');
 let ALL_LOADED = false
@@ -32,13 +33,14 @@ export default class TravelScreen extends React.Component {
     static navigationOptions = {
         header: null
     };
+
     getDataFromSv() {
         const {params} = this.props.navigation.state;
+        console.log(URlConfig.getLinkTravel(params.dateFrom, params.dateTo, PAGE, params.status, 5, SEARCH_STRING))
         ALL_LOADED = false
-        console.log(URlConfig.getLinkTravel(this.state.dateFrom, this.state.dateTo, PAGE, params.status))
         this.setState({isEndList: false, dataRender: null})
         PAGE = 1;
-        fetch(URlConfig.getLinkTravel(this.state.dateFrom, this.state.dateTo, PAGE, params.status))
+        fetch(URlConfig.getLinkTravel(params.dateFrom, params.dateTo, PAGE, params.status, 5, SEARCH_STRING))
             .then((response) => (response.json()))
             .then((responseJson) => {
                 console.log(responseJson.data)
@@ -60,20 +62,7 @@ export default class TravelScreen extends React.Component {
 
     constructor(props) {
         super(props);
-        var today = new Date();
-        var dd = today.getDate();
-        var mm = today.getMonth() + 1; //January is 0!
-        var yyyy = today.getFullYear();
 
-        if (dd < 10) {
-            dd = '0' + dd
-        }
-
-        if (mm < 10) {
-            mm = '0' + mm
-        }
-
-        today = dd + '-' + mm + '-' + yyyy;
         this.state = ({
 
             isEndList: false,
@@ -81,14 +70,33 @@ export default class TravelScreen extends React.Component {
             travelStatus: [],
             refreshing: false,
             dataFull: [],
-            dateFrom: '01-08-2017',
-            dateTo: today,
             dataRender: null,
             onEndReach: true,
             URL: ''
         })
     }
 
+    onChangeText(text) {
+        return new Promise((resolve, reject) => {
+            resolve();
+            var arr = []
+            var keyWord = text.toLowerCase();
+            SEARCH_STRING = keyWord
+            this.getDataFromSv()
+        });
+    }
+
+    onCancel() {
+        return new Promise((resolve, reject) => {
+            resolve();
+            console.log("onCancle")
+            if (SEARCH_STRING.length !== 0) {
+                SEARCH_STRING = ''
+                this.getDataFromSv()
+            }
+
+        });
+    }
 
     componentWillMount() {
         SEARCH_STRING = ''
@@ -128,7 +136,7 @@ export default class TravelScreen extends React.Component {
 
             if (!this.state.isEndList) {
                 PAGE = PAGE + 1;
-                let url = URlConfig.getLinkTravel(this.state.dateFrom, this.state.dateTo, PAGE, params.status)
+                let url = URlConfig.getLinkTravel(params.dateFrom, params.dateTo, PAGE, params.status, 5, SEARCH_STRING)
                 fetch(url)
                     .then((response) => (response.json()))
                     .then((responseJson) => {
@@ -209,10 +217,10 @@ export default class TravelScreen extends React.Component {
                             refreshData={() => this.refreshData()}
                             data={item}
                             goToDetail={
-                                () => navigate('DetailTravel', {data: item})
+                                () => navigate('DetailTravel', {id: item.IDKeHoach})
                             }
                             goToEditTravel={
-                                () => navigate('EditTravel', {data: item})
+                                () => navigate('EditTravel', {id: item.IDKeHoach, reload: () => this.getDataFromSv()})
                             }
                         />
                     }
@@ -253,7 +261,8 @@ export default class TravelScreen extends React.Component {
                         placeholder="Tìm kiếm"
                         cancelTitle="Huỷ bỏ"
                         ref="search_box"
-
+                        onChangeText={(text) => this.onChangeText(text)}
+                        onCancel={() => this.onCancel()}
                     />
                 </View>
 

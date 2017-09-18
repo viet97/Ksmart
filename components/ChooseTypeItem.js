@@ -19,12 +19,10 @@ let {width, height} = Dimensions.get('window')
 export default class ChooseTypeItem extends React.Component {
     constructor(props) {
         super(props)
-
     }
-
     render() {
-        return (
 
+        return (
             <View style={{flex: 1}}>
                 <TouchableOpacity
                     onPress={() => this.props.goToDetail()}
@@ -36,7 +34,7 @@ export default class ChooseTypeItem extends React.Component {
                         borderTopLeftRadius: 5,
                         borderTopRightRadius: 5
                     }}>
-                        <Text style={{textAlign: 'center', color: 'white'}}>{this.props.title}</Text>
+                        <Text style={{textAlign: 'center', color: 'white'}}>{this.props.data.tenloai}</Text>
                     </View>
                     <View style={{
                         flex: 3,
@@ -45,18 +43,13 @@ export default class ChooseTypeItem extends React.Component {
                         borderBottomLeftRadius: 5,
                         borderBottomRightRadius: 5
                     }}>
-                        <Text style={{textAlign: 'center', color: 'white', fontSize: 20}}>{this.getContent()}</Text>
+                        <Text
+                            style={{textAlign: 'center', color: 'white', fontSize: 20}}>{this.props.data.tongso}</Text>
                     </View>
                 </TouchableOpacity>
             </View>
 
         )
-    }
-
-    getContent() {
-        if (this.props.content !== undefined)
-            return this.props.content
-        return null
     }
 }
 const styles = StyleSheet.create({

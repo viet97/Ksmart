@@ -73,6 +73,7 @@ export default class ReportScreen extends Component {
     componentWillUnmount() {
         timer.clearInterval(this)
     }
+
     componentDidMount() {
         this.getOnlineReportListFromServer()
         timer.clearInterval(this)
@@ -105,40 +106,110 @@ export default class ReportScreen extends Component {
                     </TouchableOpacity>
 
                 </View>
-                <TouchableOpacity onPress={() => this.props.backToHome()}
-                                  style={{
-                                      width: 50,
-                                      height: 50,
-                                      position: 'absolute',
-                                      left: 16,
-                                      top: 0,
-                                      right: 0,
-                                      bottom: 0
-                                  }}/>
                 <View style={{flex: 9}}>
                     <View style={styles.view1}>
-                        <ChooseTypeItem
-                            goToDetail={() => Toast.show('ko có gì đâu đừng bấm vào')}
-                            title='Nhân viên online'
-                            content={this.state.data.nhanvienonline}
-                        />
-                        <ChooseTypeItem
-                            goToDetail={() => Toast.show('ko có gì đâu đừng bấm vào')}
-                            title='Doanh thu trong ngày'
-                            content={this.state.data.tongdoanhthu}
-                        />
+                        <View
+                            style={{width: width / 2 - 32, height: width / 2 - 32, margin: 16, flex: 1}}>
+                            <View style={{
+                                flex: 1,
+                                backgroundColor: '#0088C2',
+                                justifyContent: 'center',
+                                borderTopLeftRadius: 5,
+                                borderTopRightRadius: 5
+                            }}>
+                                <Text style={{textAlign: 'center', color: 'white'}}>Nhân viên online</Text>
+                            </View>
+                            <View style={{
+                                flex: 3,
+                                backgroundColor: '#009CDE',
+                                justifyContent: 'center',
+                                borderBottomLeftRadius: 5,
+                                borderBottomRightRadius: 5
+                            }}>
+                                <Text style={{
+                                    textAlign: 'center',
+                                    color: 'white',
+                                    fontSize: 20
+                                }}>{this.state.data.nhanvienonline}</Text>
+                            </View>
+                        </View>
+                        <View
+                            style={{width: width / 2 - 32, height: width / 2 - 32, margin: 16, flex: 1}}>
+                            <View style={{
+                                flex: 1,
+                                backgroundColor: '#0088C2',
+                                justifyContent: 'center',
+                                borderTopLeftRadius: 5,
+                                borderTopRightRadius: 5
+                            }}>
+                                <Text style={{textAlign: 'center', color: 'white'}}>Doanh thu trong ngày</Text>
+                            </View>
+                            <View style={{
+                                flex: 3,
+                                backgroundColor: '#009CDE',
+                                justifyContent: 'center',
+                                borderBottomLeftRadius: 5,
+                                borderBottomRightRadius: 5
+                            }}>
+                                <Text style={{
+                                    textAlign: 'center',
+                                    color: 'white',
+                                    fontSize: 20
+                                }}>{this.state.data.tongdoanhthu}</Text>
+                            </View>
+                        </View>
                     </View>
                     <View style={styles.view1}>
-                        <ChooseTypeItem
-                            goToDetail={() => Toast.show('ko có gì đâu đừng bấm vào')}
-                            title='Đơn hàng trong ngày'
-                            content={this.state.data.tongdonhang}
-                        />
-                        <ChooseTypeItem
-                            goToDetail={() => Toast.show('ko có gì đâu đừng bấm vào')}
-                            title='Check-in trong ngày'
-                            content={this.state.data.tongluotcheckin}
-                        />
+                        <View
+                            style={{width: width / 2 - 32, height: width / 2 - 32, margin: 16, flex: 1}}>
+                            <View style={{
+                                flex: 1,
+                                backgroundColor: '#0088C2',
+                                justifyContent: 'center',
+                                borderTopLeftRadius: 5,
+                                borderTopRightRadius: 5
+                            }}>
+                                <Text style={{textAlign: 'center', color: 'white'}}>Đơn hàng trong ngày</Text>
+                            </View>
+                            <View style={{
+                                flex: 3,
+                                backgroundColor: '#009CDE',
+                                justifyContent: 'center',
+                                borderBottomLeftRadius: 5,
+                                borderBottomRightRadius: 5
+                            }}>
+                                <Text style={{
+                                    textAlign: 'center',
+                                    color: 'white',
+                                    fontSize: 20
+                                }}>{this.state.data.tongdonhang}</Text>
+                            </View>
+                        </View>
+                        <View
+                            style={{width: width / 2 - 32, height: width / 2 - 32, margin: 16, flex: 1}}>
+                            <View style={{
+                                flex: 1,
+                                backgroundColor: '#0088C2',
+                                justifyContent: 'center',
+                                borderTopLeftRadius: 5,
+                                borderTopRightRadius: 5
+                            }}>
+                                <Text style={{textAlign: 'center', color: 'white'}}>Check-in trong ngày</Text>
+                            </View>
+                            <View style={{
+                                flex: 3,
+                                backgroundColor: '#009CDE',
+                                justifyContent: 'center',
+                                borderBottomLeftRadius: 5,
+                                borderBottomRightRadius: 5
+                            }}>
+                                <Text style={{
+                                    textAlign: 'center',
+                                    color: 'white',
+                                    fontSize: 20
+                                }}>{this.state.data.tongluotcheckin}</Text>
+                            </View>
+                        </View>
                     </View>
                 </View>
             </View>
