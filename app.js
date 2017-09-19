@@ -33,6 +33,7 @@ import EditTravelScreen from "./screens/EditTravelScreen";
 import TravelScreen from "./screens/TravelScreen";
 import ChooseTypeListNV from "./screens/ChooseTypeListNV";
 import ReportScreen from "./screens/ReportScreen";
+import CustomerScreen from "./screens/CustomerScreen";
 
 var {height, width} = Dimensions.get('window');
 const Ksmart = StackNavigator({
@@ -52,7 +53,8 @@ const Ksmart = StackNavigator({
     DetailCustomer: {screen: DetailCustomer},
     DetailTravel: {screen: DetailTravel},
     SendMessage: {screen: SendMessageScreen},
-    EditTravel: {screen: EditTravelScreen}
+    EditTravel: {screen: EditTravelScreen},
+    Customer: {screen: CustomerScreen}
     }, {
         mode: 'modal'
     }

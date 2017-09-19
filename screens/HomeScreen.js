@@ -49,6 +49,8 @@ import ChooseTypeReport from "./ChooseTypeReport";
 import ChooseTypeOrder from "./ChooseTypeOrder";
 import {shadowProps} from "../configs/shadow";
 import ChooseTypeNew from "./ChooseTypeNew";
+import ChooseCustomerScreen from "./ChooseCustomerScreen";
+import ChooseTypeCustomer from "./ChooseTypeCustomer";
 
 var {height} = Dimensions.get('window');
 var func;
@@ -194,13 +196,12 @@ export default class HomeScreen extends React.Component {
                     this.setState({screenName: 'Menu'})
                 }}/>
             case "Customer":
-                return <CustomerScreen
-                    callback={(kinhdo, vido, title, objCustomer) => {
-                        navigate('DetailCustomer', {title: title, kinhdo: kinhdo, vido: vido, item: objCustomer})
-                    }}
+                return <ChooseTypeCustomer
                     backToHome={() => {
                         this.setState({screenName: 'Menu'})
-                    }}/>
+                    }}
+                    goToDetail={() => navigate('Customer')}
+                />
             case "Message":
                 return <MessageScreen
                     goToSendMessage={() => navigate('SendMessage')}

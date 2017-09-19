@@ -98,6 +98,12 @@ export default class URlConfig {
         return data.urlserver + '/AppSoNewFeed.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idcty=' + data.idcongty
     }
 
+    static getLinkSoKhachHang() {
+        // return 'http://jav.ksmart.vn/AppDanhSachDonHang.aspx?6e22b116f5111220741848ccd290e9e9e60cd16030852326e0ebdcf522be1393&idquanly=47&idct=1&from=01-05-2017&to=10-07-2017&trangthaigps=0'
+        let data = URlConfig.OBJLOGIN;
+        return data.urlserver + '/AppSoKhachHang.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idcty=' + data.idcongty
+    }
+
     static getLinkSoReport(dateF, dateT) {
         // return 'http://jav.ksmart.vn/AppDanhSachDonHang.aspx?6e22b116f5111220741848ccd290e9e9e60cd16030852326e0ebdcf522be1393&idquanly=47&idct=1&from=01-05-2017&to=10-07-2017&trangthaigps=0'
         let data = URlConfig.OBJLOGIN;

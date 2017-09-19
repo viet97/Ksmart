@@ -27,6 +27,9 @@ var SEARCH_STRING = '';
 var PAGE = 0;
 var {height, width} = Dimensions.get('window');
 export default class CustomerScreen extends Component {
+    static navigationOptions = {
+        header: null
+    }
     constructor(props) {
         super(props)
         this.state = {
@@ -119,6 +122,8 @@ export default class CustomerScreen extends Component {
     }
 
     flatListorIndicator() {
+        const {navigate} = this.props.navigation;
+
         if (!this.state.dataRender) {
             return (
                 <View style={{flex: 9}}>
@@ -156,7 +161,12 @@ export default class CustomerScreen extends Component {
 
                         <CustomerItem
                             data={item}
-                            callback={() => this.props.callback(item.KinhDo, item.ViDo, 'Địa chỉ khách hàng', item)}
+                            callback={() => navigate('DetailCustomer', {
+                                title: 'Địa chỉ khách hàng',
+                                kinhdo: item.KinhDo,
+                                vido: item.ViDo,
+                                item: item
+                            })}
                         />
                     }
                 />
@@ -186,7 +196,7 @@ export default class CustomerScreen extends Component {
                 <View style={styles.titleStyle}>
                     <Image source={require('../images/bg.png')}
                            style={{position: 'absolute'}}/>
-                    <TouchableOpacity onPress={() => this.props.backToHome()}
+                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}
                                       style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                         <Icon2 style={styles.iconStyle} size={24} color="white"
                                name="ios-arrow-back"/></TouchableOpacity>
