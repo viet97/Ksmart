@@ -283,7 +283,7 @@ export default class ListNhanVienScreen extends React.Component {
     onChangeText(text) {
         return new Promise((resolve, reject) => {
             resolve();
-            var arr = []
+            let arr = []
             var a = text.toLowerCase();
             SEARCH_STRING = a
             console.log(a)

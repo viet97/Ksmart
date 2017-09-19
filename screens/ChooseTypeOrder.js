@@ -12,11 +12,8 @@ import {
     Platform,
     ScrollView
 } from 'react-native';
+import {Tabs, Tab, Icon} from 'react-native-elements'
 import Image from 'react-native-image-progress';
-import Icon from 'react-native-vector-icons/Entypo'
-import Icon1 from 'react-native-vector-icons/MaterialIcons'
-import Icon2 from 'react-native-vector-icons/Ionicons'
-import Icon3 from 'react-native-vector-icons/MaterialCommunityIcons'
 import DatePicker from 'react-native-datepicker'
 import ChooseTypeItem from "../components/ChooseTypeItem";
 import Color from '../configs/color'
@@ -62,8 +59,8 @@ export default class ChooseTypeOrder extends Component {
                     }()}
                     <TouchableOpacity onPress={() => this.props.backToHome()}
                                       style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
-                        <Icon2 style={styles.iconStyle} size={24} color="white"
-                               name="ios-arrow-back"/>
+                        <Icon type={"ionicon"} style={styles.iconStyle} size={24} color="white"
+                              name="ios-arrow-back"/>
                     </TouchableOpacity>
                     <Text
                         style={{
@@ -164,9 +161,9 @@ export default class ChooseTypeOrder extends Component {
     }
 
     ondateChange(from, to) {
-        this.setState({dataRender: null})
-        var dFrom = String(from);
-        var dTo = String(to);
+        this.setState({dataRender: null});
+        let dFrom = String(from);
+        let dTo = String(to);
         dFrom.replace('/', '-');
         dTo.replace('/', '-');
         this.setState({dateFrom: dFrom, dateTo: dTo}, function () {

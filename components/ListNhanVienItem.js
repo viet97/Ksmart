@@ -107,7 +107,7 @@ export default class ListNhanVienItem extends React.Component {
                               onPress={() => this.props.goToDetailNhanVien()}>
                 <View
                     onLayout={(e) => {
-                        var {x, y, width, height} = e.nativeEvent.layout;
+                        let {x, y, width, height} = e.nativeEvent.layout;
                         this.setState({height: height})
                     }}
                     style={{

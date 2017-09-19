@@ -50,7 +50,7 @@ export default class ChooseTypeChart extends React.Component {
 
     render() {
         const buttons = [{element: component1}, {element: component2}, {element: component3}, {element: component4}]
-        const {selectedIndex} = this.state
+        const {selectedIndex} = this.state;
         return (
             <View style={{
                 flex: 1,

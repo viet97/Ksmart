@@ -83,7 +83,7 @@ export default class DetailNhanVien extends React.Component {
         let lastTime = ultils.getDate(data.thoigiandangnhapcuoicung);
         let sdt = '';
         if (data.DienThoai !== null) sdt = data.dienthoai
-
+        console.log('tao do', this.state.region);
         return (
             <View style={{flex: 1}}>
                 <StatusBar barStyle="light-content"/>
@@ -101,14 +101,28 @@ export default class DetailNhanVien extends React.Component {
                                 this.navTitleView = navTitleView;
                             }}
                         >
-                            <Icon type="ionicon" style={{position: 'absolute', top: 8, left: 0, padding: 16}} size={24}
-                                  color="white" name="ios-arrow-back"/>
+                            <TouchableOpacity style={{position: 'absolute', top: 8, left: 0, padding: 16}}
+                                              onPress={() => {
+                                                  const {goBack} = this.props.navigation;
+                                                  goBack();
+                                              }}>
+                                <Icon type="ionicon"
+                                      size={24}
+                                      color="white" name="ios-arrow-back"/>
+                            </TouchableOpacity>
                             <Text style={styles.navTitle}>{this.state.data.tennhanvien}</Text>
                         </Animatable.View>}
                     renderForeground={() =>
                         <View style={styles.titleContainer}>
-                            <Icon type="ionicon" style={{position: 'absolute', top: 0, left: 0, padding: 16}} size={24}
-                                  color="white" name="ios-arrow-back"/>
+                            <TouchableOpacity style={{position: 'absolute', top: 8, left: 0, padding: 16}}
+                                              onPress={() => {
+                                                  const {goBack} = this.props.navigation;
+                                                  goBack();
+                                              }}>
+                                <Icon type="ionicon"
+                                      size={24}
+                                      color="white" name="ios-arrow-back"/>
+                            </TouchableOpacity>
                             <Image source={{uri: this.state.data.AnhDaiDien}}
                                    style={{width: 60, height: 60, borderRadius: 30}}/>
                             <Text style={styles.imageTitle}>
@@ -196,27 +210,23 @@ export default class DetailNhanVien extends React.Component {
                         </View>
                         <Text style={styles.keywords}>Vị trí</Text>
                         <MapView
+                            region={this.state.region}
                             style={{flex: 1, height: 200}}
                             initialRegion={this.state.region}>
-                            <MapView.Marker.Animated
-                                coordinate={this.state.region}
-                            />
-                           
+                            <MapView.Marker.Animated coordinate={this.state.region}/>
                         </MapView>
                     </View>
                 </HeaderImageScrollView>
             </View>
         )
-        //TODO: Sua mapview o day
     }
 
     _renderTitleIndicator() {
         return <PagerTitleIndicator titles={['Hồ sơ', 'Vị trí']}/>;
     }
 
-    componentDidMount() {
+    componentWillMount() {
         const {params} = this.props.navigation.state;
-        console.log('url', URlConfig.getLinkDetailNhanVien(params.idNhanVien))
         fetch(URlConfig.getLinkDetailNhanVien(params.idNhanVien))
             .then((response) => (response.json()))
             .then((responseJson) => {
