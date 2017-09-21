@@ -69,7 +69,6 @@ export default class HomeScreen extends React.Component {
     constructor(props) {
 
         super(props);
-        const {params} = this.props.navigation.state
 
         backcount = 0
         isLoginScreen = false

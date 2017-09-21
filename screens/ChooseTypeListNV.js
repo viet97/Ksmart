@@ -42,10 +42,10 @@ export default class ChooseTypeListNV extends Component {
     render() {
         return (
             <TabNavigator
-                tabBarStyle={{backgroundColor: '#90CAF9'}}
-            >
+                tabBarStyle={{backgroundColor: '#90CAF9'}}>
                 <TabNavigator.Item
-                    titleStyle={{color: 'red'}}
+                    titleStyle={{color:'black'}}
+
                     selected={this.state.selectedTab === 'ListNhanVien'}
                     title="Nhân Viên"
                     renderIcon={() => <Icon2 size={24} color="black" name="ios-people-outline"/>}
