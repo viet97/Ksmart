@@ -49,7 +49,7 @@ export default class DetailOrderScreen extends React.Component {
 
     getElement(title, content) {
         return (
-            <View style={{marginTop: 8}}>
+            <View style={{marginTop: 8,backgroundColor:'transparent'}}>
                 <Text style={{flexDirection: 'row', marginLeft: 4, fontSize: 16}}>{title}</Text>
                 <View style={{
                     marginTop: 4,
@@ -57,7 +57,7 @@ export default class DetailOrderScreen extends React.Component {
                     width: width - 16,
                     marginRight: 8,
                     marginLeft: 8,
-                    height: 50,
+                    height: 44,
                     flexDirection: 'row'
                 }}>
                     <Text style={{alignSelf: 'center', marginLeft: 4}}>{content} </Text>
@@ -90,7 +90,7 @@ export default class DetailOrderScreen extends React.Component {
                     }}>Chi tiết đơn hàng</Text>
                     <View/>
                 </View>
-                <View style={{flex: 9}}>
+                <View style={{flex: 9,backgroundColor:'transparent'}}>
                     <Image source={require('../images/bg.png')}
                            style={{position: 'absolute', top: 0}}/>
                     <ScrollView style={{flex: 1, marginBottom: 4}}>

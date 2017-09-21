@@ -77,7 +77,7 @@ export default class CustomerPlantComponent extends Component {
                 }}
                 style={{
                     borderRadius: 10,
-                    marginTop: 4, marginBottom: 4, marginLeft: 8, marginRight: 8,
+                    marginTop: 4, marginBottom: 4, marginLeft: 8, marginRight: 8,backgroundColor:'transparent'
                 }}>
                 <Image source={require('../images/bg1.png')}
                        style={{

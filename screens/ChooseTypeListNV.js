@@ -45,7 +45,7 @@ export default class ChooseTypeListNV extends Component {
                 tabBarStyle={{backgroundColor: '#90CAF9'}}
             >
                 <TabNavigator.Item
-                    titleStyle={{color: 'black'}}
+                    titleStyle={{color: 'red'}}
                     selected={this.state.selectedTab === 'ListNhanVien'}
                     title="Nhân Viên"
                     renderIcon={() => <Icon2 size={24} color="black" name="ios-people-outline"/>}
@@ -71,8 +71,7 @@ export default class ChooseTypeListNV extends Component {
                                     color: 'white',
                                     alignSelf: 'center',
                                     backgroundColor: 'transparent'
-                                }}>Nhân
-                                viên</Text>
+                                }}>Nhân viên</Text>
                             <View style={{backgroundColor: 'transparent', width: 35, height: 35}}/>
                         </View>
                         {this.flatListorIndicator()}

@@ -34,6 +34,7 @@ export default class SplashScreen extends React.Component {
     }
 
     componentDidMount() {
+        console.disableYellowBox = true;
                 var today = new Date();
                 var dd = today.getDate();
                 var mm = today.getMonth() + 1; //January is 0!
