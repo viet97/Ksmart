@@ -44,6 +44,7 @@ import RevenuePerPersonnelScreen from "./screens/RevenuePerPersonnelScreen";
 import TravelChartScreen from "./screens/TravelChartScreen";
 import ChooseTypeReport from "./screens/ChooseTypeReport";
 import OnlineReportScreen from "./screens/OnlineReportScreen";
+import AboutUsScreen from "./screens/AboutUsScreen";
 
 var {height, width} = Dimensions.get('window');
 const Ksmart = StackNavigator({
@@ -67,6 +68,7 @@ const Ksmart = StackNavigator({
     DetailTravel: {screen: DetailTravel},
     SendMessage: {screen: SendMessageScreen},
     EditTravel: {screen: EditTravelScreen},
+    AboutUs: {screen: AboutUsScreen},
     Customer: {screen: CustomerScreen},
     Order: {screen: OrderListScreen},
     OnlineChart: {screen: OnlineChartScreen},

@@ -11,7 +11,9 @@ import Color from '../configs/color'
 import Communications from 'react-native-communications';
 
 export default class AboutUsScreen extends React.Component {
-
+    static navigationOptions = {
+        header: null
+    }
     constructor(props) {
         super(props);
     }
@@ -27,7 +29,7 @@ export default class AboutUsScreen extends React.Component {
                 <View style={styles.titleStyle}>
                     <Image source={require('../images/bg.png')}
                            style={{position: 'absolute'}}/>
-                    <TouchableOpacity onPress={() => this.props.backToHome()}
+                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}
                                       style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                         <Icon1 style={styles.iconStyle} size={24} color="white"
                                name="ios-arrow-back"/></TouchableOpacity>
