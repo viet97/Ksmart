@@ -6,8 +6,6 @@ import Icon4 from 'react-native-vector-icons/Foundation'
 import React from 'react';
 import Drawer from 'react-native-drawer';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
-import DetailMessageScreen from './DetailMessageScreen'
-import DetailNhanVien from './DetailNhanVien'
 import * as Animatable from 'react-native-animatable';
 import {
     AppRegistry,
@@ -21,34 +19,15 @@ import {
     ScrollView,
     Alert, Animated
 } from 'react-native';
-import NewFeedScreen from "./NewFeedScreen";
-import ListNhanVienScreen from "./ListNhanVienScreen";
 import Badge from 'react-native-smart-badge'
-import MapScreen from "./MapScreen";
 import {NavigationActions} from "react-navigation";
 import Toast from 'react-native-simple-toast';
-import OrderListScreen from "./OrderListScreen";
-import CustomerScreen from "./CustomerScreen";
-import MessageScreen from "./MessageScreen";
-import TravelScreen from "./TravelScreen";
-import ReportScreen from "./ReportScreen";
-import ChartScreen from "./ChartScreen";
 import URlConfig from "../configs/url";
-import CustomerPlant from "./CustomerPlant";
-import AboutUsScreen from "./AboutUsScreen";
 import ChooseTypeChart from "./ChooseTypeChart";
-import OnlineChartScreen from "./OnlineChartScreen";
-import TravelChartScreen from "./TravelChartScreen";
-import RevenuePerPersonnelScreen from "./RevenuePerPersonnelScreen";
-import RealtimeChartScreen from "./RealtimeChartScreen";
-import OnlineReportScreen from "./OnlineReportScreen";
 import ChooseTypeListNV from "./ChooseTypeListNV";
 import ChooseTypeTravel from "./ChooseTypeTravel";
 import ChooseTypeReport from "./ChooseTypeReport";
-import ChooseTypeOrder from "./ChooseTypeOrder";
 import {shadowProps} from "../configs/shadow";
-import ChooseTypeNew from "./ChooseTypeNew";
-import ChooseCustomerScreen from "./ChooseCustomerScreen";
 import ChooseTypeCustomer from "./ChooseTypeCustomer";
 import {onChangeMessage} from "../networks/Network";
 const Realm = require('realm');

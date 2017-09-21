@@ -112,8 +112,7 @@ export default class DetailNhanVien extends React.Component {
                             </TouchableOpacity>
                             <TouchableOpacity style={{position: 'absolute', top: 8, right: 0, padding: 16}}
                                               onPress={() => {
-                                                  const {goBack} = this.props.navigation;
-                                                  goBack();
+                                                  navigate('SendMessage', {data: this.state.data})
                                               }}>
                                 <Icon type="entypo"
                                       size={24}
@@ -136,8 +135,7 @@ export default class DetailNhanVien extends React.Component {
                             </TouchableOpacity>
                             <TouchableOpacity style={{position: 'absolute', top: 8, right: 0, padding: 16}}
                                               onPress={() => {
-                                                  const {goBack} = this.props.navigation;
-                                                  goBack();
+                                                  navigate('SendMessage', {data: this.state.data})
                                               }}>
                                 <Icon type="entypo"
                                       size={24}
