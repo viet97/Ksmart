@@ -72,19 +72,7 @@ export default class OrderListScreen extends Component {
         ALL_LOADED = true
     }
 
-    componentWillAnimateIn() {
-        Toast.show('' + 'componentDidFocus')
-    }
 
-    componentWillAnimateOut() {
-        Toast.show('componentWillBlur')
-
-    }
-
-    componentDidFocus() {
-        Toast.show('componentDidFocus')
-
-    }
     componentDidMount() {
 
         this.getMessageListFromServer(this.state.dateFrom, this.state.dateTo)
@@ -184,6 +172,7 @@ export default class OrderListScreen extends Component {
     }
 
     flatListorIndicator() {
+        const {navigate} = this.props.navigation
 
         if (!this.state.dataRender) {
             return (
@@ -234,13 +223,13 @@ export default class OrderListScreen extends Component {
                                     .then((response) => (response.json()))
                                     .then((responseJson) => {
                                         if (responseJson.status) {
-                                            this.props.moveToDetailMessage(
-                                                this.state.dateFrom,
-                                                this.state.dateTo,
-                                                item.Ten_NGUOIGUI,
-                                                item.NgayGui,
-                                                item.NoiDung
-                                            )
+                                            navigate('DetailMessage',
+                                                {
+                                                    nguoigui: item.Ten_NGUOIGUI,
+                                                    thoigian: item.NgayGui,
+                                                    noidung: item.NoiDung,
+                                                    reload: () => this.getMessageListFromServer(this.state.dateFrom, this.state.dateTo)
+                                                })
                                         }
                                     }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
                             }>
@@ -276,7 +265,7 @@ export default class OrderListScreen extends Component {
     }
 
     render() {
-
+        const {navigate} = this.props.navigation
         return (
             <View style={{flex: 1}}>
                 <Image source={require('../images/bg.png')}
@@ -284,30 +273,18 @@ export default class OrderListScreen extends Component {
                 <View style={styles.titleStyle}>
                     <Image source={require('../images/bg.png')}
                            style={{position: 'absolute'}}/>
-                    <TouchableOpacity onPress={() => this.props.backToHome()}
+                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}
                                       style={styles.iconStyle}>
                         <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
                     </TouchableOpacity>
                     <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Tin
                         nhắn</Text>
                     <TouchableOpacity style={{backgroundColor: 'transparent', alignSelf: 'center', marginRight: 8}}
-                                      onPress={() => {
-                                          this.props.goToSendMessage()
-                                      }}>
+                                      onPress={() => navigate('SendMessage', {reload: () => this.getMessageListFromServer(this.state.dateFrom, this.state.dateTo)})}>
                         <Icon2 style={{backgroundColor: 'transparent', alignSelf: 'center'}} size={24} color="white"
                                name="new-message"/>
                     </TouchableOpacity>
                 </View>
-                <TouchableOpacity onPress={() => this.props.backToHome()}
-                                  style={{
-                                      width: 50,
-                                      height: 50,
-                                      position: 'absolute',
-                                      left: 16,
-                                      top: 0,
-                                      right: 0,
-                                      bottom: 0
-                                  }}/>
                 <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: 60}}>
                     <Text style={{backgroundColor: 'transparent'}}>Từ</Text>
                     <DatePicker

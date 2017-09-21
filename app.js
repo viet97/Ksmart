@@ -35,11 +35,20 @@ import ChooseTypeListNV from "./screens/ChooseTypeListNV";
 import ReportScreen from "./screens/ReportScreen";
 import CustomerScreen from "./screens/CustomerScreen";
 import DetailOrderScreen from "./screens/DetailOrderScreen";
+import MessageScreen from "./screens/MessageScreen";
+import ChooseTypeNew from "./screens/ChooseTypeNew";
+import ChooseTypeCustomer from "./screens/ChooseTypeCustomer";
+import ChooseTypeTravel from "./screens/ChooseTypeTravel";
+import CustomerPlant from "./screens/CustomerPlant";
+import RevenuePerPersonnelScreen from "./screens/RevenuePerPersonnelScreen";
+import TravelChartScreen from "./screens/TravelChartScreen";
+import ChooseTypeReport from "./screens/ChooseTypeReport";
+import OnlineReportScreen from "./screens/OnlineReportScreen";
 
 var {height, width} = Dimensions.get('window');
 const Ksmart = StackNavigator({
     Splash: {screen: SplashScreen},
-    Chart: {screen: ChartScreen},
+    NewFeed: {screen: NewFeedScreen},
     DetailOrder: {screen: DetailOrderScreen},
     Login: {screen: LoginScreen},
     Home: {screen: HomeScreen},
@@ -47,7 +56,9 @@ const Ksmart = StackNavigator({
     Map: {screen: MapScreen,},
     Travel: {screen: TravelScreen},
     NewFeed: {screen: NewFeedScreen},
+    Message: {screen: MessageScreen},
     Report: {screen: ReportScreen},
+    OnlineReport: {screen: OnlineReportScreen},
     ListNhanVien: {screen: ListNhanVienScreen},
     DetailNhanVien: {screen: DetailNhanVien},
     DetailMessage: {screen: DetailMessageScreen},
@@ -56,7 +67,19 @@ const Ksmart = StackNavigator({
     DetailTravel: {screen: DetailTravel},
     SendMessage: {screen: SendMessageScreen},
     EditTravel: {screen: EditTravelScreen},
-    Customer: {screen: CustomerScreen}
+    Customer: {screen: CustomerScreen},
+    Order: {screen: OrderListScreen},
+    OnlineChart: {screen: OnlineChartScreen},
+    RevenuePerPersonnel: {screen: RevenuePerPersonnelScreen},
+    Chart: {screen: ChartScreen},
+    TravelChart: {screen: TravelChartScreen},
+    CustomerPlant: {screen: CustomerPlant},
+    ChooseTypeNewFeed: {screen: ChooseTypeNew},
+    ChooseTypeChart: {screen: ChooseTypeChart},
+    ChooseTypeListNV: {screen: ChooseTypeListNV},
+    ChooseTypeCustomer: {screen: ChooseTypeCustomer},
+    ChooseTypeTravel: {screen: ChooseTypeTravel},
+    ChooseTypeReport: {screen: ChooseTypeReport},
     }, {
         mode: 'modal'
     }

@@ -23,6 +23,7 @@ import {ButtonGroup} from "react-native-elements";
 import * as Animatable from 'react-native-animatable';
 import ChooseTypeItem from "../components/ChooseTypeItem";
 import ChooseTypeChartItem from "../components/ChooseTypeChartItem";
+import RevenuePerPersonnelScreen from "./RevenuePerPersonnelScreen";
 
 const propView = 7 / 8;
 const {width, height} = Dimensions.get('window');
@@ -49,6 +50,7 @@ export default class ChooseTypeChart extends React.Component {
 
 
     render() {
+        const {navigate} = this.props.navigation
         const buttons = [{element: component1}, {element: component2}, {element: component3}, {element: component4}]
         const {selectedIndex} = this.state;
         return (
@@ -60,7 +62,7 @@ export default class ChooseTypeChart extends React.Component {
                 <View style={styles.titleStyle}>
                     <Image source={require('../images/bg.png')}
                            style={{position: 'absolute'}}/>
-                    <TouchableOpacity onPress={() => this.props.backToHome()}
+                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}
                                       style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                         <Icon2 style={styles.iconStyle} size={24} color="white"
                                name="ios-arrow-back"/>
@@ -72,21 +74,21 @@ export default class ChooseTypeChart extends React.Component {
                 <View style={{flex: 9}}>
                     <View style={styles.view1}>
                         <ChooseTypeChartItem
-                            goToChart={() => this.props.goToDoanhThuChart()}
+                            goToChart={() => navigate('Chart')}
                             title='Doanh thu sản lượng'
                         />
                         <ChooseTypeChartItem
-                            goToChart={() => this.props.goToDoanhThuNVChart()}
+                            goToChart={() => navigate('RevenuePerPersonnel')}
                             title='Doanh thu sản lượng theo nhân viên'
                         />
                     </View>
                     <View style={styles.view1}>
                         <ChooseTypeChartItem
-                            goToChart={() => this.props.goToTravelChart()}
+                            goToChart={() => navigate('TravelChart')}
                             title='Tần suất nhân viên viếng thăm'
                         />
                         <ChooseTypeChartItem
-                            goToChart={() => this.props.goToOnlineChart()}
+                            goToChart={() => navigate('OnlineChart')}
                             title='Tần suất nhân viên online'
                         />
                     </View>

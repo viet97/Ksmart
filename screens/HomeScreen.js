@@ -116,162 +116,6 @@ export default class HomeScreen extends React.Component {
 
     }
 
-
-    renderSomething() {
-        const {navigate} = this.props.navigation;
-        switch (this.state.screenName) {
-            case "Menu":
-                return this.menuScreen();
-            case "NewFeed":
-                return <ChooseTypeNew
-                    goToNewFeed={(status) => navigate('NewFeed', {status: status})}
-                    backToHome={() => {
-                    this.setState({screenName: 'Menu'})
-                }}/>
-            case "ListNhanVien":
-                return <ListNhanVienScreen
-                    callback={(kinhdo, vido, title) => {
-                        navigate('Map', {title: title, kinhdo: kinhdo, vido: vido})
-                    }}
-                    status={this.state.NhanVienStatus}
-                    goToDetailNhanVien={(data) => navigate('DetailNhanVien', {idNhanVien: data})}
-                    backToChooseTypeListNV={() => {
-                        this.setState({screenName: 'ChooseTypeListNV'})
-                    }}
-
-                />
-            case "ChooseTypeTravel":
-                return <ChooseTypeTravel
-                    goToCustomerPlant={() => {
-                        this.setState({screenName: 'CustomerPlant'})
-                    }}
-                    goToTravel={(status, dateF, dateT) => navigate('Travel', {
-                        status: status,
-                        dateFrom: dateF,
-                        dateTo: dateT
-                    })}
-                    backToHome={() => {
-                        this.setState({screenName: 'Menu'})
-                    }}
-                />
-            case "ChooseTypeReport":
-                return <ChooseTypeReport
-                    goToReport={(status, dateF, dateT) => navigate('Report', {
-                        status: status,
-                        dateFrom: dateF,
-                        dateTo: dateT
-                    })}
-                    backToHome={() => {
-                        this.setState({screenName: 'Menu'})
-                    }}
-                />
-
-            case "ChooseTypeListNV":
-                return <ChooseTypeListNV
-                    goToMapFromListNhanVien={() => {
-                        this.setState({screenName: 'Map'})
-                    }}
-                    goToListNhanVien={(status) => this.setState({NhanVienStatus: status}, function () {
-                        this.setState({screenName: 'ListNhanVien'})
-                    })}
-
-                    backToHome={() => {
-                        this.setState({screenName: 'Menu'})
-                    }}
-                />
-            case "ChooseTypeOrder":
-                return <ChooseTypeOrder
-                    goToOrder={(status) => this.setState({orderStatus: status}, function () {
-                        this.setState({screenName: 'Order'})
-                    })}
-                    backToHome={() => {
-                        this.setState({screenName: 'Menu'})
-                    }}
-                />
-
-            case "Map":
-                return <MapScreen/>
-            case "Order":
-                return <OrderListScreen
-                    goToDetail={(id) => navigate('DetailOrder', {id: id})}
-                    backToHome={() => {
-                    this.setState({screenName: 'Menu'})
-                }}/>
-            case "Customer":
-                return <ChooseTypeCustomer
-                    backToHome={() => {
-                        this.setState({screenName: 'Menu'})
-                    }}
-                    goToDetail={(id) => navigate('Customer', {id: id})}
-                />
-            case "Message":
-                return <MessageScreen
-                    goToSendMessage={() => navigate('SendMessage')}
-                    moveToDetailMessage={(dateFrom, dateTo, nguoigui, thoigian, noidung) => {
-                        navigate('DetailMessage', {nguoigui: nguoigui, thoigian: thoigian, noidung: noidung})
-                    }}
-                    backToHome={() => {
-                        this.setState({screenName: 'Menu'})
-                    }}/>
-            case "DetailMessage":
-                return <DetailMessageScreen/>
-            case "Travel":
-                return <TravelScreen
-                />
-            case "Chart":
-                return <ChooseTypeChart
-                    backToHome={() => {
-                        this.setState({screenName: 'Menu'})
-                    }}
-                    goToOnlineChart={() => {
-                        this.setState({screenName: 'OnlineChart'})
-                    }}
-                    goToDoanhThuNVChart={() => {
-                        this.setState({screenName: 'DoanhThuNVChart'})
-                    }}
-                    goToTravelChart={() => {
-                        this.setState({screenName: 'TravelChart'})
-                    }}
-                    goToDoanhThuChart={() => {
-                        this.setState({screenName: 'DoanhThuChart'})
-                    }}
-                />
-            case 'DoanhThuNVChart':
-                return <RevenuePerPersonnelScreen backToChooseTypeChart={() => this.setState({screenName: 'Chart'})}/>
-            case 'OnlineChart':
-                return <OnlineChartScreen
-                    backToChooseTypeChart={() => this.setState({screenName: 'Chart'})}/>
-            case 'DoanhThuChart':
-                return <ChartScreen
-                    backToChooseTypeChart={() => this.setState({screenName: 'Chart'})}/>
-
-            case "Report":
-                return <ReportScreen
-                    status={this.state.reportStatus}
-                    backToChooseTypeReport={() => {
-                        this.setState({screenName: 'ChooseTypeReport'})
-                    }}/>
-            case "CustomerPlant":
-                return <CustomerPlant
-                    backToChooseTypeTravel={() => this.setState({screenName: 'ChooseTypeTravel'})}
-                />
-            case "DetailNhanVien":
-                return <DetailNhanVien/>
-            case "AboutUs":
-                return <AboutUsScreen
-                    backToHome={() => {
-                        this.setState({screenName: 'Menu'})
-                    }}/>
-            case 'TravelChart':
-                return <TravelChartScreen
-                    backToChooseTypeChart={() => this.setState({screenName: 'Chart'})}/>
-            case 'RealtimeChart':
-                return <OnlineReportScreen backToHome={() => {
-                    this.setState({screenName: 'Menu'})
-                }}/>
-        }
-    }
-
     onSwipeRight(gestureState) {
         console.log("onSwipeRight")
         this.setState({myText: 'You swiped right!'});
@@ -280,6 +124,7 @@ export default class HomeScreen extends React.Component {
 
 
     menuScreen() {
+        const {navigate} = this.props.navigation
         return (
             <GestureRecognizer
                 onSwipeRight={(state) => this.onSwipeRight(state)}
@@ -325,7 +170,7 @@ export default class HomeScreen extends React.Component {
                                         width: 90,
                                         backgroundColor: 'transparent', ...shadowProps
                                     }}
-                                    onPress={() => this.setState({screenName: "NewFeed"})}>
+                                    onPress={() => navigate('ChooseTypeNewFeed')}>
                                     <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
                                            source={require('../images/newfeed2.png')}/>
 
@@ -339,7 +184,7 @@ export default class HomeScreen extends React.Component {
                                         width: 90,
                                         backgroundColor: 'transparent', ...shadowProps
                                     }}
-                                    onPress={() => this.setState({screenName: "ChooseTypeListNV"})}>
+                                    onPress={() => navigate('ChooseTypeListNV')}>
                                     <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
 
                                            source={require('../images/linkedin-contacts-2013.png')}/>
@@ -354,7 +199,7 @@ export default class HomeScreen extends React.Component {
                                         width: 90,
                                         backgroundColor: 'transparent', ...shadowProps
                                     }}
-                                    onPress={() => this.setState({screenName: "Order"})}>
+                                    onPress={() => navigate('Order')}>
                                     <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
                                            source={require('../images/120-in-1-applets-2013.png')}/>
 
@@ -370,7 +215,7 @@ export default class HomeScreen extends React.Component {
                                         width: 90,
                                         backgroundColor: 'transparent', ...shadowProps
                                     }}
-                                    onPress={() => this.setState({screenName: "Customer"})}>
+                                    onPress={() => navigate('ChooseTypeCustomer')}>
                                     <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
                                            source={require('../images/myface-for-facebook-2013.png')}/>
 
@@ -384,7 +229,7 @@ export default class HomeScreen extends React.Component {
                                         width: 90,
                                         backgroundColor: 'transparent', ...shadowProps
                                     }}
-                                    onPress={() => this.setState({screenName: "ChooseTypeTravel"})}>
+                                    onPress={() => navigate('ChooseTypeTravel')}>
                                     <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
                                            source={require('../images/flight-live-status-weather-2014.png')}/>
                                     <Animatable.Text animation="flipInY" style={styles.titleIconsMenu}>Viếng
@@ -396,7 +241,7 @@ export default class HomeScreen extends React.Component {
                                         width: 90,
                                         backgroundColor: 'transparent', ...shadowProps
                                     }}
-                                    onPress={() => this.setState({screenName: "Chart"})}>
+                                    onPress={() => navigate('ChooseTypeChart')}>
                                     <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
                                            source={require('../images/moneybook-2011.png')}/>
 
@@ -412,7 +257,7 @@ export default class HomeScreen extends React.Component {
                                         width: 90,
                                         backgroundColor: 'transparent', ...shadowProps
                                     }}
-                                    onPress={() => this.setState({screenName: "ChooseTypeReport"})}>
+                                    onPress={() => navigate('ChooseTypeReport')}>
                                     <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
                                            source={require('../images/appadvice-2017.png')}/>
 
@@ -426,7 +271,7 @@ export default class HomeScreen extends React.Component {
                                         width: 90,
                                         backgroundColor: 'transparent', ...shadowProps
                                     }}
-                                    onPress={() => this.setState({screenName: "RealtimeChart"})}>
+                                    onPress={() => navigate('OnlineReport')}>
                                     <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
                                            source={require('../images/turboscan-2015.png')}/>
 
@@ -440,7 +285,7 @@ export default class HomeScreen extends React.Component {
                                         width: 90,
                                         backgroundColor: 'transparent', ...shadowProps
                                     }}
-                                    onPress={() => this.setState({screenName: "Message"})}>
+                                    onPress={() => navigate('Message')}>
                                     <Image style={{
                                         width: 60,
                                         height: 60,
@@ -502,7 +347,7 @@ export default class HomeScreen extends React.Component {
                     <ScrollView style={{marginTop: (Platform.OS === 'ios') ? 16 : 0,}}>
                         <View style={styles.touchable}>
                             <TouchableOpacity style={styles.itemSideMenuStyle} onPress={() => {
-                                this.setState({screenName: "NewFeed"});
+                                navigate('ChooseTypeNewFeed');
                                 this.closeControlPanel();
                             }}>
                                 <IconMaterial size={ICON_SIZE} style={styles.iconStyle} color="white" name="payment"/>
@@ -510,7 +355,7 @@ export default class HomeScreen extends React.Component {
                             </TouchableOpacity>
 
                             <TouchableOpacity style={styles.itemSideMenuStyle} onPress={() => {
-                                this.setState({screenName: "ChooseTypeListNV"});
+                                navigate('ChooseTypeListNV')
                                 this.closeControlPanel();
                             }}>
                                 <Icon1 size={ICON_SIZE} style={styles.iconStyle} color="white"
@@ -521,14 +366,14 @@ export default class HomeScreen extends React.Component {
                         </View>
                         <View style={styles.touchable}>
                             <TouchableOpacity style={styles.itemSideMenuStyle} onPress={() => {
-                                this.setState({screenName: 'Order'})
+                                navigate('Order')
                                 this.closeControlPanel()
                             }}>
                                 <Icon2 size={ICON_SIZE} style={styles.iconStyle} color="white" name="archive"/>
                                 <Text style={styles.textStyle}>Đơn hàng</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={styles.itemSideMenuStyle} onPress={() => {
-                                this.setState({screenName: 'Customer'}), this.closeControlPanel()
+                                navigate('ChooseTypeCustomer'), this.closeControlPanel()
                             }}>
                                 <Icon2 size={ICON_SIZE} style={styles.iconStyle} color="white" name="user"/>
                                 <Text style={styles.textStyle}>Khách hàng</Text>
@@ -537,7 +382,7 @@ export default class HomeScreen extends React.Component {
                         <View style={styles.touchable}>
                             <TouchableOpacity style={styles.itemSideMenuStyle}
                                               onPress={() => {
-                                                  this.setState({screenName: "ChooseTypeTravel"});
+                                                  navigate('ChooseTypeTravel')
                                                   this.closeControlPanel()
                                               }}>
                                 <Icon2 size={ICON_SIZE} style={styles.iconStyle} color="white"
@@ -545,7 +390,7 @@ export default class HomeScreen extends React.Component {
                                 <Text style={styles.textStyle}>Viếng thăm</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={styles.itemSideMenuStyle} onPress={() => {
-                                this.setState({screenName: "Chart"});
+                                navigate('ChooseTypeChart')
                                 this.closeControlPanel()
                             }}>
                                 <Icon3 size={ICON_SIZE} style={styles.iconStyle} color="white" name="bar-chart"/>
@@ -555,15 +400,15 @@ export default class HomeScreen extends React.Component {
                         <View style={styles.touchable}>
                             <TouchableOpacity style={styles.itemSideMenuStyle}
                                               onPress={() => {
-                                                  this.setState({screenName: "ChooseTypeReport"});
                                                   this.closeControlPanel()
+                                                  navigate('ChooseTypeReport')
                                               }}>
                                 <Icon3 size={ICON_SIZE} style={styles.iconStyle} color="white" name="file-text-o"/>
                                 <Text style={styles.textStyle}>Báo cáo</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={styles.itemSideMenuStyle}
                                               onPress={() => {
-                                                  this.setState({screenName: "RealtimeChart"});
+                                                  navigate('OnlineReport')
                                                   this.closeControlPanel()
                                               }}>
                                 <Icon2 size={ICON_SIZE} style={styles.iconStyle} color="white" name="laptop"/>
@@ -573,7 +418,7 @@ export default class HomeScreen extends React.Component {
                         <View style={styles.touchable}>
                             <TouchableOpacity style={styles.itemSideMenuStyle}
                                               onPress={() => {
-                                                  this.setState({screenName: "Message"});
+                                                  navigate('Message')
                                                   this.closeControlPanel()
                                               }}>
                                 <Icon2 size={ICON_SIZE} style={styles.iconStyle} color="white" name="mail"/>
@@ -656,7 +501,7 @@ export default class HomeScreen extends React.Component {
                 negotiatePan={true}
                 onCloseStart={() => this.showToogle()}
                 content={this.sideMenuView()}>
-                {this.renderSomething()}
+                {this.menuScreen()}
             </Drawer>
 
         );
@@ -684,7 +529,7 @@ const styles = StyleSheet.create({
         borderBottomColor: 'white',
         marginTop: 16, marginLeft: 4, backgroundColor: 'transparent',
         flex: 1, justifyContent: 'center', alignItems: 'center',
-        
+
     }, iconStyle: {
         alignSelf: 'center',
         backgroundColor: "transparent",

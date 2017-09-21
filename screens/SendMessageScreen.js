@@ -72,7 +72,7 @@ export default class ModalSendMessage extends Component {
 
     componentDidMount() {
         const {params} = this.props.navigation.state;
-        if (params !== undefined)
+        if (params.data !== undefined)
             this.setState({
                 IDNhanVien: params.data.idnhanvien,
                 receiver: params.data.tennhanvien,
@@ -109,7 +109,7 @@ export default class ModalSendMessage extends Component {
     }
 
     render() {
-
+        const {params} = this.props.navigation.state
         return (
             <View style={{flex: 1}}>
                 <Image source={require('../images/bg.png')}
@@ -117,7 +117,10 @@ export default class ModalSendMessage extends Component {
                 <View style={styles.titleStyle}>
                     <Image source={require('../images/bg.png')}
                            style={{position: 'absolute'}}/>
-                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}
+                    <TouchableOpacity onPress={() => {
+                        params.reload()
+                        this.props.navigation.goBack()
+                    }}
                                       style={styles.iconStyle}>
                         <Icon2 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
                     </TouchableOpacity>

@@ -44,7 +44,10 @@ export default class DetailMessageScreen extends Component {
                     <Image source={require('../images/bg.png')}
                            style={{position: 'absolute'}}/>
                     <TouchableOpacity
-                        onPress={() => this.props.navigation.goBack()}
+                        onPress={() => {
+                            params.reload()
+                            this.props.navigation.goBack()
+                        }}
                         style={styles.iconStyle}>
                         <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
                     </TouchableOpacity>

@@ -60,7 +60,7 @@ export default class ChooseTypeListNV extends Component {
                                     return (<Image source={require('../images/bg.png')}
                                                    style={{position: 'absolute'}}/>)
                             }()}
-                            <TouchableOpacity onPress={() => this.props.backToHome()}
+                            <TouchableOpacity onPress={() => this.props.navigation.goBack()}
                                               style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                                 <Icon2 style={styles.iconStyle} size={24} color="white"
                                        name="ios-arrow-back"/>
@@ -85,13 +85,14 @@ export default class ChooseTypeListNV extends Component {
                     renderIcon={() => <Icon size={24} color="black" name="location"/>}
                     renderSelectedIcon={() => <Icon size={24} color="white" name="location"/>}
                     onPress={() => this.setState({selectedTab: 'MapForAllLocation'})}>
-                    <MapListScreen backToHome={() => this.props.backToHome()}/>
+                    <MapListScreen backToHome={() => this.props.navigation.goBack()}/>
                 </TabNavigator.Item>
             </TabNavigator>
         )
     }
 
     flatListorIndicator() {
+        const {navigate} = this.props.navigation
         if (!this.state.data) {
             return (
                 <View style={{flex: 9}}>
@@ -114,7 +115,8 @@ export default class ChooseTypeListNV extends Component {
                     renderItem={({item}) =>
                         <ChooseTypeItem
                             data={item}
-                            goToDetail={() => this.props.goToListNhanVien(item.trangthai)}
+                            goToDetail={() => navigate('ListNhanVien', {status: item.trangthai})}
+
                         />
                     }
                 />

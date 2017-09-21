@@ -34,6 +34,9 @@ let PAGE = 0;
 let IDNhanVien = '';
 var {height, width} = Dimensions.get('window');
 export default class CustomerPlant extends Component {
+    static navigationOptions = {
+        header: null
+    }
     constructor(props) {
         super(props)
         var today = new Date();
@@ -216,7 +219,7 @@ export default class CustomerPlant extends Component {
         ALL_LOADED = false
         this.setState({dataRender: null})
         PAGE = 0
-        fetch(URlConfig.getCustomerLink(PAGE, SEARCH_STRING))
+        fetch(URlConfig.getCustomerLink(PAGE, SEARCH_STRING, -1))
             .then((response) => (response.json()))
             .then((responseJson) => {
                 if (responseJson.endlist || responseJson.data.length === 0) {
@@ -257,7 +260,7 @@ export default class CustomerPlant extends Component {
                 <View style={styles.titleStyle}>
                     <Image source={require('../images/bg.png')}
                            style={{position: 'absolute'}}/>
-                    <TouchableOpacity onPress={() => this.props.backToChooseTypeTravel()}
+                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}
                                       style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                         <Icon2 style={styles.iconStyle} size={24} color="white"
                                name="ios-arrow-back"/></TouchableOpacity>

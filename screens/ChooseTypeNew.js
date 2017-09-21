@@ -37,7 +37,7 @@ export default class ChooseTypeNew extends Component {
     }
 
     flatListorIndicator() {
-
+        const {navigate} = this.props.navigation
         if (!this.state.data) {
             return (
                 <View style={{flex: 9}}>
@@ -60,7 +60,7 @@ export default class ChooseTypeNew extends Component {
                     renderItem={({item}) =>
                         <ChooseTypeItem
                             data={item}
-                            goToDetail={() => this.props.goToNewFeed(item.trangthai)}
+                            goToDetail={() => navigate('NewFeed', {status: item.trangthai})}
                         />
                     }
                 />
@@ -79,7 +79,7 @@ export default class ChooseTypeNew extends Component {
                             return (<Image source={require('../images/bg.png')}
                                            style={{position: 'absolute'}}/>)
                     }()}
-                    <TouchableOpacity onPress={() => this.props.backToHome()}
+                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}
                                       style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                         <Icon2 style={styles.iconStyle} size={24} color="white"
                                name="ios-arrow-back"/>

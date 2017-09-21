@@ -56,6 +56,7 @@ export default class ChooseTypeTravel extends Component {
     }
 
     flatListorIndicator() {
+        const {navigate} = this.props.navigation
         if (!this.state.data) {
             return (
                 <View style={{flex: 9}}>
@@ -79,7 +80,11 @@ export default class ChooseTypeTravel extends Component {
                         renderItem={({item}) =>
                             <ChooseTypeItem
                                 data={item}
-                                goToDetail={() => this.props.goToTravel(item.trangthai, this.state.dateFrom, this.state.dateTo)}
+                                goToDetail={() => navigate('Travel', {
+                                    status: item.trangthai,
+                                    dateFrom: this.state.dateFrom,
+                                    dateTo: this.state.dateTo
+                                })}
                             />
                         }
                     />
@@ -90,7 +95,7 @@ export default class ChooseTypeTravel extends Component {
     }
 
     render() {
-
+        const {navigate} = this.props.navigation
         return (
             <View style={{flex: 1}}>
                 <Image source={require('../images/bg.png')}
@@ -101,7 +106,7 @@ export default class ChooseTypeTravel extends Component {
                             return (<Image source={require('../images/bg.png')}
                                            style={{position: 'absolute'}}/>)
                     }()}
-                    <TouchableOpacity onPress={() => this.props.backToHome()}
+                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}
                                       style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                         <Icon2 style={styles.iconStyle} size={24} color="white"
                                name="ios-arrow-back"/>
@@ -114,7 +119,7 @@ export default class ChooseTypeTravel extends Component {
                             backgroundColor: 'transparent'
                         }}>Kế hoạch viếng thăm</Text>
                     <TouchableOpacity
-                        onPress={() => this.props.goToCustomerPlant()}
+                        onPress={() => navigate('CustomerPlant')}
                         style={{
                             justifyContent: 'center',
                             alignSelf: 'center',

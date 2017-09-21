@@ -225,7 +225,7 @@ export default class RevenuePerPersonnelScreen extends React.Component {
                 <View style={styles.titleStyle}>
                     <Image source={require('../images/bg.png')}
                            style={{position: 'absolute'}}/>
-                    <TouchableOpacity onPress={() => this.props.backToChooseTypeChart()}
+                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}
                                       style={styles.iconStyle}>
                         <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
                     </TouchableOpacity>
@@ -241,16 +241,6 @@ export default class RevenuePerPersonnelScreen extends React.Component {
                     }}>
                     </TouchableOpacity>
                 </View>
-                <TouchableOpacity onPress={() => this.props.backToChooseTypeChart()}
-                                  style={{
-                                      width: 50,
-                                      height: 50,
-                                      position: 'absolute',
-                                      left: 16,
-                                      top: 0,
-                                      right: 0,
-                                      bottom: 0
-                                  }}/>
                 <View style={{flexDirection: 'column', flex: 9}}>
                     <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: 60}}>
                         <Text style={{backgroundColor: 'transparent'}}>Từ</Text>

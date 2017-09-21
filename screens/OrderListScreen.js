@@ -211,6 +211,7 @@ export default class OrderListScreen extends Component {
     }
 
     flatListorIndicator() {
+        const {navigate} = this.props.navigation
         if (!this.state.dataRender) {
             return (
                 <View style={{flex: 9}}>
@@ -256,7 +257,7 @@ export default class OrderListScreen extends Component {
                     renderItem={({item}) =>
                         <OrderListItem
                             data={item}
-                            goToDetail={() => this.props.goToDetail(item.iddonhang)}
+                            goToDetail={() => navigate('DetailOrder', {id: item.iddonhang})}
                         />
                     }
                 />
@@ -272,7 +273,7 @@ export default class OrderListScreen extends Component {
                 <View style={styles.titleStyle}>
                     <Image source={require('../images/bg.png')}
                            style={{position: 'absolute'}}/>
-                    <TouchableOpacity onPress={() => this.props.backToHome()}
+                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}
                                       style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                         <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
                     </TouchableOpacity>

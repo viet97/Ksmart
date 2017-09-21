@@ -39,7 +39,9 @@ let pickStatus = 0;
 let pickParty = 0;
 let id_nhom = null;
 export default class ListNhanVienScreen extends React.Component {
-
+    static navigationOptions = {
+        header: null
+    }
     constructor(props) {
         super(props)
         this.state = ({
@@ -226,7 +228,7 @@ export default class ListNhanVienScreen extends React.Component {
     }
 
     flatListorIndicator() {
-
+        const {navigate} = this.props.navigation
         if (!this.state.dataRender) {
             return (
                 <View style={{flex: 9}}>
@@ -272,7 +274,7 @@ export default class ListNhanVienScreen extends React.Component {
                     renderItem={({item}) =>
                         <ListNhanVienItem
                             data={item}
-                            goToDetailNhanVien={() => this.props.goToDetailNhanVien(item.idnhanvien)}
+                            goToDetailNhanVien={() => navigate('DetailNhanVien', {idNhanVien: item.idnhanvien})}
                             callback={() => this.props.callback(item.KinhDo, item.ViDo, 'Địa điểm Nhân Viên')}
                         />
                     }
@@ -356,7 +358,7 @@ export default class ListNhanVienScreen extends React.Component {
                 <View style={styles.titleStyle}>
                     <Image source={require('../images/blur_blue.jpg')}
                            style={{position: 'absolute', opacity: 0.4}}/>
-                    <TouchableOpacity onPress={() => this.props.backToChooseTypeListNV()}
+                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}
                                       style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                         <Icon1 style={styles.iconStyle} size={24} color="white"
                                name="ios-arrow-back"/></TouchableOpacity>
