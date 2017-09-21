@@ -34,11 +34,13 @@ import TravelScreen from "./screens/TravelScreen";
 import ChooseTypeListNV from "./screens/ChooseTypeListNV";
 import ReportScreen from "./screens/ReportScreen";
 import CustomerScreen from "./screens/CustomerScreen";
+import DetailOrderScreen from "./screens/DetailOrderScreen";
 
 var {height, width} = Dimensions.get('window');
 const Ksmart = StackNavigator({
     Splash: {screen: SplashScreen},
     Chart: {screen: ChartScreen},
+    DetailOrder: {screen: DetailOrderScreen},
     Login: {screen: LoginScreen},
     Home: {screen: HomeScreen},
     Menu: {screen: MenuScreen},

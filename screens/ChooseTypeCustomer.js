@@ -92,7 +92,7 @@ export default class ChooseTypeCustomer extends Component {
                     renderItem={({item}) =>
                         <ChooseTypeItem
                             data={item}
-                            goToDetail={() => this.props.goToDetail()}
+                            goToDetail={() => this.props.goToDetail(item.trangthai)}
                         />
                     }
                 />

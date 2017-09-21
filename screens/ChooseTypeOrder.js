@@ -41,6 +41,7 @@ export default class ChooseTypeOrder extends Component {
         today = dd + '-' + mm + '-' + yyyy;
         super(props)
         this.state = {
+            data: [],
             dateFrom: today,
             dateTo: today,
         }
@@ -161,14 +162,27 @@ export default class ChooseTypeOrder extends Component {
     }
 
     ondateChange(from, to) {
-        this.setState({dataRender: null});
         let dFrom = String(from);
         let dTo = String(to);
         dFrom.replace('/', '-');
         dTo.replace('/', '-');
         this.setState({dateFrom: dFrom, dateTo: dTo}, function () {
-            //keo lai data tư sv xuống
+            this.getDataFromSv()
         })
+    }
+
+    getDataFromSv() {
+        this.setState({data: null})
+        fetch(URlConfig.getLinkSoDonHang(this.state.dateFrom, this.state.dateTo))
+            .then((response) => (response.json()))
+            .then((responseJson) => {
+                if (responseJson.status) {
+                    var arr = []
+
+                    this.setState({data: responseJson})
+                }
+            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e))
+
     }
 
     componentDidMount() {

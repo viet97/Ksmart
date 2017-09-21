@@ -13,18 +13,20 @@ import {Icon} from 'react-native-elements'
 import Color from '../configs/color'
 import * as Toast from "react-native-simple-toast";
 import {PagerTabIndicator, IndicatorViewPager, PagerTitleIndicator, PagerDotIndicator} from 'rn-viewpager';
+import URlConfig from "../configs/url";
 
+let {width, height} = Dimensions.get('window')
 export default class DetailCustomer extends React.Component {
     static navigationOptions = ({navigation}) => ({
         header: null
     });
-
 
     constructor(props) {
         super(props);
         const {params} = this.props.navigation.state;
         const item = params.item;
         this.state = {
+            data: [],
             region: {
                 latitude: item.ViDo,
                 longitude: item.KinhDo,
@@ -38,6 +40,51 @@ export default class DetailCustomer extends React.Component {
         return <PagerTitleIndicator titles={['Hồ sơ', 'Vị trí']}/>;
     }
 
+    componentDidMount() {
+        const {params} = this.props.navigation.state
+        fetch(URlConfig.getLinkDetailCustomer(params.id))
+            .then((response) => (response.json()))
+            .then((responseJson) => {
+                if (responseJson.status) {
+                    console.log(responseJson.data)
+                    this.setState({data: responseJson.data})
+                }
+            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+
+    }
+
+    getLoaiKhachHang(loai) {
+        let str = ''
+        fetch(URlConfig.getLinkSoKhachHang())
+            .then((response) => (response.json()))
+            .then((responseJson) => {
+                if (responseJson.status) {
+                    for (let item in responseJson.danhsach) {
+                        if (responseJson.danhsach.ID_LoaiKhachHang === loai)
+                            str = str + responseJson.danhsach.TenLoaiKhachHang
+                        break
+                    }
+                }
+            })
+    }
+
+    getElement(title, content) {
+        return (
+            <View style={{flexDirection: 'row', marginTop: 8}}>
+                <Text style={{width: width / 3 - 4, marginLeft: 4, alignSelf: 'center'}}>{title}</Text>
+                <View style={{
+                    backgroundColor: 'white',
+                    width: width * 2 / 3 - 4,
+                    marginRight: 4,
+                    height: 30,
+                    flexDirection: 'row'
+                }}>
+                    <Text style={{alignSelf: 'center', marginLeft: 4}}>{content} </Text>
+                </View>
+            </View>
+        )
+
+    }
 
     render() {
         const {params} = this.props.navigation.state;
@@ -68,9 +115,32 @@ export default class DetailCustomer extends React.Component {
                     style={{flex: 9, backgroundColor: 'white'}}
                     indicator={this._renderTitleIndicator()}
                 >
-                    <ScrollView style={{flex: 1}}>
-                        <Text>1231313213123</Text>
-                    </ScrollView>
+
+                    <View style={{flex: 1}}>
+                        <Image source={require('../images/bg.png')}
+                               style={{position: 'absolute', top: 0}}/>
+                        <ScrollView style={{flex: 1, marginBottom: 4}}>
+                            {this.getElement('Tên cửa hàng', this.state.data.TenCuaHang)}
+                            {this.getElement('Website', this.state.data.tennhomkhachhang)}
+                            {this.getElement('Loại khách hàng', this.getLoaiKhachHang(this.state.data.idloaikhachhang))}
+                            {this.getElement('Địa chỉ', this.state.data.DiaChi)}
+                            {this.getElement('Số điện thoại 1', this.state.data.SoDienThoai)}
+                            {this.getElement('Số điện thoại 2', this.state.data.SoDienThoai2)}
+                            {this.getElement('Số điện thoại 3', this.state.data.SoDienThoai3)}
+                            {this.getElement('Số điện thoại mặc định', this.state.data.SoDienThoaiMacDinh)}
+                            {this.getElement('Email', this.state.data.Email)}
+                            {this.getElement('Fax', this.state.data.Fax)}
+                            {this.getElement('Website', this.state.data.Website)}
+                            {this.getElement('Tài khoản ngân hàng', this.state.data.TKNganHang)}
+                            {this.getElement('Mã số thuế', this.state.data.MaSoThue)}
+                            {this.getElement('Ghi chú', this.state.data.GhiChu)}
+                            {this.getElement('Ngày tạo', this.state.data.ngaytao)}
+                            {this.getElement('Tỉnh', this.state.data.tentinh)}
+                            {this.getElement('Quận', this.state.data.tenquan)}
+                            {this.getElement('Phường', this.state.data.tenphuong)}
+                            {this.getElement('Đường', this.state.data.DuongPho)}
+                        </ScrollView>
+                    </View>
                     <MapView
                         style={{flex: 9}}
                         initialRegion={this.state.region}>

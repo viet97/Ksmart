@@ -192,7 +192,9 @@ export default class HomeScreen extends React.Component {
             case "Map":
                 return <MapScreen/>
             case "Order":
-                return <OrderListScreen backToHome={() => {
+                return <OrderListScreen
+                    goToDetail={(id) => navigate('DetailOrder', {id: id})}
+                    backToHome={() => {
                     this.setState({screenName: 'Menu'})
                 }}/>
             case "Customer":
@@ -200,7 +202,7 @@ export default class HomeScreen extends React.Component {
                     backToHome={() => {
                         this.setState({screenName: 'Menu'})
                     }}
-                    goToDetail={() => navigate('Customer')}
+                    goToDetail={(id) => navigate('Customer', {id: id})}
                 />
             case "Message":
                 return <MessageScreen
@@ -352,7 +354,7 @@ export default class HomeScreen extends React.Component {
                                         width: 90,
                                         backgroundColor: 'transparent', ...shadowProps
                                     }}
-                                    onPress={() => this.setState({screenName: "ChooseTypeOrder"})}>
+                                    onPress={() => this.setState({screenName: "Order"})}>
                                     <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
                                            source={require('../images/120-in-1-applets-2013.png')}/>
 
@@ -519,7 +521,7 @@ export default class HomeScreen extends React.Component {
                         </View>
                         <View style={styles.touchable}>
                             <TouchableOpacity style={styles.itemSideMenuStyle} onPress={() => {
-                                this.setState({screenName: 'ChooseTypeOrder'})
+                                this.setState({screenName: 'Order'})
                                 this.closeControlPanel()
                             }}>
                                 <Icon2 size={ICON_SIZE} style={styles.iconStyle} color="white" name="archive"/>

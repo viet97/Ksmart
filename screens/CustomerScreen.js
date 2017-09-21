@@ -64,11 +64,10 @@ export default class CustomerScreen extends Component {
         PAGE = 0;
         this.setState({dataRender: null})
         ALL_LOADED = false
-
-        fetch(URlConfig.getCustomerLink(PAGE, SEARCH_STRING))
+        const {params} = this.props.navigation.state
+        fetch(URlConfig.getCustomerLink(PAGE, SEARCH_STRING, params.id))
             .then((response) => (response.json()))
             .then((responseJson) => {
-                console.log('dm', URlConfig.getCustomerLink(PAGE, SEARCH_STRING), responseJson)
                 this.setState({customerCount: responseJson.tongsoitem})
                 if (responseJson.status) {
                     PAGE = responseJson.lastid
@@ -96,10 +95,11 @@ export default class CustomerScreen extends Component {
 
 
     loadMoreData() {
+        const {params} = this.props.navigation.state
         if (!this.state.onEndReach) {
             console.log("LOADMORE")
             this.setState({onEndReach: true})
-            fetch(URlConfig.getCustomerLink(PAGE, SEARCH_STRING))
+            fetch(URlConfig.getCustomerLink(PAGE, SEARCH_STRING, params.id))
                 .then((response) => (response.json()))
                 .then((responseJson) => {
                     console.log(responseJson)
@@ -162,6 +162,7 @@ export default class CustomerScreen extends Component {
                         <CustomerItem
                             data={item}
                             callback={() => navigate('DetailCustomer', {
+                                id: item.idcuahang,
                                 title: 'Địa chỉ khách hàng',
                                 kinhdo: item.KinhDo,
                                 vido: item.ViDo,

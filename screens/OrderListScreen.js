@@ -211,7 +211,6 @@ export default class OrderListScreen extends Component {
     }
 
     flatListorIndicator() {
-
         if (!this.state.dataRender) {
             return (
                 <View style={{flex: 9}}>
@@ -257,6 +256,7 @@ export default class OrderListScreen extends Component {
                     renderItem={({item}) =>
                         <OrderListItem
                             data={item}
+                            goToDetail={() => this.props.goToDetail(item.iddonhang)}
                         />
                     }
                 />

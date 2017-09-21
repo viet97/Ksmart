@@ -157,7 +157,8 @@ export default class OrderListItem extends Component {
     render() {
         let item = this.props.data
         return (
-            <View
+            <TouchableOpacity
+                onPress={() => this.props.goToDetail()}
                 onLayout={(e) => {
                     var {x, y, width, height} = e.nativeEvent.layout;
                     this.setState({height: height})
@@ -205,7 +206,7 @@ export default class OrderListItem extends Component {
                 </View>
                 {this.getGiaoHangHoacThanhToan(item)}
 
-            </View>
+            </TouchableOpacity>
         )
     }
 }

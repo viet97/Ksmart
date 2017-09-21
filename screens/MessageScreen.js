@@ -72,7 +72,21 @@ export default class OrderListScreen extends Component {
         ALL_LOADED = true
     }
 
+    componentWillAnimateIn() {
+        Toast.show('' + 'componentDidFocus')
+    }
+
+    componentWillAnimateOut() {
+        Toast.show('componentWillBlur')
+
+    }
+
+    componentDidFocus() {
+        Toast.show('componentDidFocus')
+
+    }
     componentDidMount() {
+
         this.getMessageListFromServer(this.state.dateFrom, this.state.dateTo)
     }
 
@@ -182,10 +196,15 @@ export default class OrderListScreen extends Component {
         } else if (this.state.dataRender.length === 0)
             return (
                 <View style={{flex: 9}}>
-                <Text style={{alignSelf: 'center', textAlign: 'center', fontSize: 20, backgroundColor: 'transparent'}}>Không
-                    có dữ liệu</Text>
+                    <Text style={{
+                        alignSelf: 'center',
+                        textAlign: 'center',
+                        fontSize: 20,
+                        backgroundColor: 'transparent'
+                    }}>Không
+                        có dữ liệu</Text>
 
-            </View>)
+                </View>)
 
         return (
             <View style={{flex: 9}}>
@@ -210,12 +229,21 @@ export default class OrderListScreen extends Component {
                     data={this.state.dataRender}
                     renderItem={({item}) =>
                         <TouchableOpacity
-                            onPress={() => this.props.moveToDetailMessage(
-                                this.state.dateFrom,
-                                this.state.dateTo,
-                                item.Ten_NGUOIGUI,
-                                item.NgayGui,
-                                item.NoiDung)}>
+                            onPress={() =>
+                                fetch(URlConfig.getLinkReadMessage(item.ID_TINNHAN))
+                                    .then((response) => (response.json()))
+                                    .then((responseJson) => {
+                                        if (responseJson.status) {
+                                            this.props.moveToDetailMessage(
+                                                this.state.dateFrom,
+                                                this.state.dateTo,
+                                                item.Ten_NGUOIGUI,
+                                                item.NgayGui,
+                                                item.NoiDung
+                                            )
+                                        }
+                                    }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+                            }>
                             <View
                                 style={{
                                     margin: 4,

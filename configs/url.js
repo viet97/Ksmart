@@ -110,6 +110,28 @@ export default class URlConfig {
         return data.urlserver + '/AppSoBaoCaoDoanhThu.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idcty=' + data.idcongty + '&tungay=' + dateF + '&denngay=' + dateT
     }
 
+    static getLinkSoDonHang(dateF, dateT) {
+        // return 'http://jav.ksmart.vn/AppDanhSachDonHang.aspx?6e22b116f5111220741848ccd290e9e9e60cd16030852326e0ebdcf522be1393&idquanly=47&idct=1&from=01-05-2017&to=10-07-2017&trangthaigps=0'
+        let data = URlConfig.OBJLOGIN;
+        return data.urlserver + '/AppBaoCaoTongQuan.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&macongty=' + data.idct + '&tungay=' + dateF + '&denngay=' + dateT
+    }
+
+    static getLinkDetailCustomer(id) {
+        let data = URlConfig.OBJLOGIN;
+        return data.urlserver + '/AppChiTietCuaHang.aspx?idkhachhang=' + id
+        // return 'http://jav.ksmart.vn/AppChiTietCuaHang.aspx?&idkhachhang=4424'
+    }
+
+    static getLinkDetailOrder(id) {
+        // let data = URlConfig.OBJLOGIN;
+        // return data.urlserver + '/AppChiTietDonHang.aspx?iddonhang='+id
+        return 'http://jav.ksmart.vn/AppChiTietDonHang.aspx?&iddonhang=52640'
+    }
+
+    static getLinkReadMessage(id) {
+        let data = URlConfig.OBJLOGIN;
+        return data.urlserver + '/AppXuLyTinNhan.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idtinnhan=' + id + '&loai=capnhatdaxem '
+    }
     static getLinkTravel(dateFrom, dateTo, page, status, minutes = 5, timkiem) {
         let data = URlConfig.OBJLOGIN;
         let loctrangthai = ''
@@ -133,14 +155,15 @@ export default class URlConfig {
         return data.urlserver + '/AppKeHoachDiChuyen_v4.aspx?token=' + md5.hex_md5(Date.now()) + '&idct=' + data.idcongty + '&idquanly=' + data.id + '&from=' + dateFrom + '&to=' + dateTo + '&loai=chitietcacngaycokehoach&page=' + page + loctrangthai + timkiemStr;
     }
 
-    static getCustomerLink(page, keyword = '') {
+    static getCustomerLink(page, keyword = '', id) {
         let data = URlConfig.OBJLOGIN;
-        return data.urlserver + '/AppDanhSachCuaHang_v3.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idct=' + data.idcongty + '&lastid=' + page + '&loctatca=' + keyword;
+        return data.urlserver + '/AppDanhSachCuaHang_v3.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idct=' + data.idcongty + '&lastid=' + page + '&idloaikhachhang=' + id + '&loctatca=' + keyword;
     }
 
     static getMessageList(from, to) {
         // return 'http://jav.ksmart.vn/AppDanhSachDonHang.aspx?6e22b116f5111220741848ccd290e9e9e60cd16030852326e0ebdcf522be1393&idquanly=47&idct=1&from=01-05-2017&to=10-07-2017&trangthaigps=0'
         let data = URlConfig.OBJLOGIN;
+
         return data.urlserver + '/AppDanhSachTinNhan.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idct=' + data.idcongty + '&tungay=' + from + '&denngay=' + to;
     }
 
