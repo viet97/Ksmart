@@ -80,8 +80,6 @@ const Ksmart = StackNavigator({
     ChooseTypeCustomer: {screen: ChooseTypeCustomer},
     ChooseTypeTravel: {screen: ChooseTypeTravel},
     ChooseTypeReport: {screen: ChooseTypeReport},
-    }, {
-        mode: 'modal'
     }
 );
 AppRegistry.registerComponent('Ksmart', () => Ksmart);

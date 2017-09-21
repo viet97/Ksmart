@@ -211,7 +211,7 @@ export default class NewFeedScreen extends React.Component {
 
             <View
                 style={{flex: 1}}>
-                <Image source={require('../images/flyhight.png')}
+                <Image source={require('../images/bg.png')}
                        style={{
                            position: 'absolute',
                            top: 0,

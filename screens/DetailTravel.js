@@ -59,6 +59,7 @@ export default class DetailTravel extends React.Component {
 
     getDataFromSv() {
         const {params} = this.props.navigation.state
+        console.log(URlConfig.getLinkDetailTravel(params.id))
         fetch(URlConfig.getLinkDetailTravel(params.id))
             .then((response) => (response.json()))
             .then((responseJson) => {
@@ -79,6 +80,12 @@ export default class DetailTravel extends React.Component {
 
     }
     render() {
+        let come = new Date(this.state.data.ThoiGianVaoDiemDuKien);
+        let now = new Date();
+        let showSwipe = false;
+        if (come.getTime() - now.getTime() >= 5 * 60 * 1000) {
+            showSwipe = true;
+        }
         const {navigate} = this.props.navigation
         var strVaoDiem = '';
         var strRaDiem = '';
@@ -106,21 +113,32 @@ export default class DetailTravel extends React.Component {
                     </TouchableOpacity>
                     <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Thông
                         tin kế hoạch</Text>
-                    <TouchableOpacity
-                        onPress={() => navigate('EditTravel', {
-                            id: this.state.data.IDKeHoach,
-                            reload: () => this.getDataFromSv()
-                        })}
-                        style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
-                        <Icon2 style={{
-                            alignSelf: 'center',
-                            width: 24,
-                            height: 24,
-                            backgroundColor: "transparent",
-                            marginLeft: 16,
-                            marginTop: (Platform.OS === 'ios') ? 8 : 0,
-                        }} size={24} color="white" name="edit"/>
-                    </TouchableOpacity>
+                    {function () {
+                        if(showSwipe){
+                            return(
+                                <TouchableOpacity
+                                    onPress={() => navigate('EditTravel', {
+                                        id: this.state.data.IDKeHoach,
+                                        reload: () => this.getDataFromSv()
+                                    })}
+                                    style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
+                                    <Icon2 style={{
+                                        alignSelf: 'center',
+                                        width: 24,
+                                        height: 24,
+                                        backgroundColor: "transparent",
+                                        marginLeft: 16,
+                                        marginTop: (Platform.OS === 'ios') ? 8 : 0,
+                                    }} size={24} color="white" name="edit"/>
+                                </TouchableOpacity>
+                            )
+                        }
+                        else {
+                            return(
+                                <View/>
+                            )
+                        }
+                    }()}
                 </View>
                 <View style={{
                     marginTop: 4, marginBottom: 4, marginLeft: 8, marginRight: 8,
@@ -207,6 +225,7 @@ export default class DetailTravel extends React.Component {
                 </View>
                 <MapView
                     style={{flex: 5}}
+                    region={this.state.region}
                     initialRegion={this.state.region}>
                     <MapView.Marker.Animated
                         coordinate={{
