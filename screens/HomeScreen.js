@@ -417,7 +417,7 @@ export default class HomeScreen extends React.Component {
                             </TouchableOpacity>
                             <TouchableOpacity style={styles.itemSideMenuStyle}
                                               onPress={() => {
-                                                  this.setState({screenName: "AboutUs"});
+                                                  navigate('AboutUs');
                                                   this.closeControlPanel()
                                               }}>
                                 <IconMaterial size={ICON_SIZE} style={styles.iconStyle} color="white"
