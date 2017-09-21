@@ -11,7 +11,7 @@ import {
     FlatList,
     TouchableHightLight,
     ActivityIndicator,
-    Platform
+    Platform,DeviceEventEmitter
 } from "react-native";
 import PTRView from 'react-native-pull-to-refresh'
 import Modal from 'react-native-modalbox';
@@ -219,19 +219,15 @@ export default class OrderListScreen extends Component {
                     renderItem={({item}) =>
                         <TouchableOpacity
                             onPress={() =>
-                                fetch(URlConfig.getLinkReadMessage(item.ID_TINNHAN))
-                                    .then((response) => (response.json()))
-                                    .then((responseJson) => {
-                                        if (responseJson.status) {
-                                            navigate('DetailMessage',
-                                                {
-                                                    nguoigui: item.Ten_NGUOIGUI,
-                                                    thoigian: item.NgayGui,
-                                                    noidung: item.NoiDung,
-                                                    reload: () => this.getMessageListFromServer(this.state.dateFrom, this.state.dateTo)
-                                                })
-                                        }
-                                    }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+                                navigate('DetailMessage',
+                                    {
+                                        id:item.ID_TINNHAN,
+                                        nguoigui: item.Ten_NGUOIGUI,
+                                        thoigian: item.NgayGui,
+                                        noidung: item.NoiDung,
+                                        reload: () => this.getMessageListFromServer(this.state.dateFrom, this.state.dateTo)
+                                    })
+
                             }>
                             <View
                                 style={{
@@ -273,7 +269,7 @@ export default class OrderListScreen extends Component {
                 <View style={styles.titleStyle}>
                     <Image source={require('../images/bg.png')}
                            style={{position: 'absolute'}}/>
-                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}
+                    <TouchableOpacity onPress={() => {this.props.navigation.goBack();DeviceEventEmitter.emit('reloadMsg');}}
                                       style={styles.iconStyle}>
                         <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
                     </TouchableOpacity>
@@ -293,7 +289,6 @@ export default class OrderListScreen extends Component {
                         mode="date"
                         placeholder="select date"
                         format="DD-MM-YYYY"
-
                         confirmBtnText="Xác nhận"
                         cancelBtnText="Huỷ bỏ"
                         customStyles={{

@@ -11,21 +11,14 @@ import {
     FlatList,
     TouchableHightLight,
     ActivityIndicator,
-    Platform
+    Platform,
+    DeviceEventEmitter
 } from "react-native";
 import URlConfig from "../configs/url";
 import Color from '../configs/color'
 import Icon1 from 'react-native-vector-icons/Ionicons'
-import Icon from 'react-native-vector-icons/MaterialIcons'
-import Icon2 from 'react-native-vector-icons/Entypo'
 import Image from 'react-native-image-progress';
-import ProgressBar from 'react-native-progress/Bar';
-import DialogManager, {ScaleAnimation, DialogContent} from 'react-native-dialog-component';
-import {DialogComponent, SlideAnimation} from 'react-native-dialog-component';
-import Dialog from '../components/DialogOrder'
-import orderListData from '../dbcontext/orderListData'
-import AtoZListView from 'react-native-atoz-listview';
-import Search from 'react-native-search-box';
+
 
 var {height, width} = Dimensions.get('window');
 var GiftedListView = require('react-native-gifted-listview');
@@ -33,6 +26,15 @@ export default class DetailMessageScreen extends Component {
     static navigationOptions = ({navigation}) => ({
         header: null
     });
+    componentDidMount(){
+        const {params} = this.props.navigation.state;
+        const url=URlConfig.getLinkReadMessage(params.id);
+        fetch(url)
+            .then((response) => (response.json()))
+            .then((responseJson) => {
+                    console.log(url,responseJson)
+            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+    }
 
     render() {
         const {params} = this.props.navigation.state;
@@ -45,8 +47,9 @@ export default class DetailMessageScreen extends Component {
                            style={{position: 'absolute'}}/>
                     <TouchableOpacity
                         onPress={() => {
-                            params.reload()
-                            this.props.navigation.goBack()
+                            params.reload();
+                            this.props.navigation.goBack();
+
                         }}
                         style={styles.iconStyle}>
                         <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>

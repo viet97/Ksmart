@@ -130,7 +130,7 @@ export default class URlConfig {
 
     static getLinkReadMessage(id) {
         let data = URlConfig.OBJLOGIN;
-        return data.urlserver + '/AppXuLyTinNhan.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idtinnhan=' + id + '&loai=capnhatdaxem '
+        return data.urlserver + '/AppXuLyTinNhan.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idtinnhan=' + id + '&loai=capnhatdaxem'
     }
     static getLinkTravel(dateFrom, dateTo, page, status, minutes = 5, timkiem) {
         let data = URlConfig.OBJLOGIN;

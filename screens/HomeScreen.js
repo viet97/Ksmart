@@ -1,4 +1,3 @@
-import TabNavigator from 'react-native-tab-navigator';
 import IconMaterial from 'react-native-vector-icons/MaterialIcons'
 import Icon1 from 'react-native-vector-icons/Ionicons'
 import Icon2 from 'react-native-vector-icons/Entypo'
@@ -6,7 +5,6 @@ import Icon3 from 'react-native-vector-icons/FontAwesome'
 import Icon4 from 'react-native-vector-icons/Foundation'
 import React from 'react';
 import Drawer from 'react-native-drawer';
-import {Icon} from 'react-native-elements'
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import DetailMessageScreen from './DetailMessageScreen'
 import DetailNhanVien from './DetailNhanVien'
@@ -19,6 +17,7 @@ import {
     TouchableOpacity,
     Dimensions,
     Platform,
+    DeviceEventEmitter,
     ScrollView,
     Alert, Animated
 } from 'react-native';
@@ -51,7 +50,8 @@ import {shadowProps} from "../configs/shadow";
 import ChooseTypeNew from "./ChooseTypeNew";
 import ChooseCustomerScreen from "./ChooseCustomerScreen";
 import ChooseTypeCustomer from "./ChooseTypeCustomer";
-
+import {onChangeMessage} from "../networks/Network";
+const Realm = require('realm');
 var {height} = Dimensions.get('window');
 var func;
 var backcount = 0;
@@ -72,6 +72,20 @@ export default class HomeScreen extends React.Component {
             height: 0
         })
     };
+    componentWillMount(){
+        DeviceEventEmitter.addListener('reloadMsg', this.reloadMsg.bind(this))
+    }
+    async reloadMsg(){
+        let realm = new Realm();
+        let login = realm.objects('LoginSave');
+        console.log('didMount', login);
+        if (login.length !== 0) {
+            const loginOBJ = login[0];
+            await onChangeMessage(loginOBJ.username,loginOBJ.password,loginOBJ.idct);
+            this.forceUpdate();
+            console.log('update unread',URlConfig.OBJLOGIN.messageUnread)
+        }
+    }
 
     constructor(props) {
 
