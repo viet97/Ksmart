@@ -42,6 +42,7 @@ export default class ListNhanVienScreen extends React.Component {
     static navigationOptions = {
         header: null
     }
+
     constructor(props) {
         super(props)
         this.state = ({
@@ -353,11 +354,8 @@ export default class ListNhanVienScreen extends React.Component {
         return (
 
             <View style={{flex: 1}}>
-
-                <Image source={require('../images/blur_blue.jpg')}
-                       style={{position: 'absolute', top: 0, opacity: 0.2}}/>
                 <View style={styles.titleStyle}>
-                    <Image source={require('../images/blur_blue.jpg')}
+                    <Image source={require('../images/bg.png')}
                            style={{position: 'absolute', opacity: 0.4}}/>
                     <TouchableOpacity onPress={() => this.props.navigation.goBack()}
                                       style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
@@ -395,43 +393,36 @@ export default class ListNhanVienScreen extends React.Component {
                 <Dialog
                     visible={this.state.dialogVisible}
                     dialogStyle={{borderBottomLeftRadius: 10, borderBottomRightRadius: 10}}
-
                 >
-                    <ScrollView>
-                        <View style={{
-                            flexDirection: 'column',
-                            paddingBottom: 100,
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            backgroundColor: 'transparent',
-                        }}>
-                            <View style={{position: 'absolute', top: 0, right: 0, left: 0, bottom: 46}}>
-                                <Image source={require('../images/bg.png')} resizeMode='cover'
-                                />
-                            </View>
 
-                            <Text style={{color: 'white'}}>Chọn phòng ban</Text>
-                            <ModalDropdown
-                                options={this.state.partyNhanVienStatus}
-                                style={{
-                                    borderWidth: 0.4,
-                                    width: 200,
-                                    padding: 8,
-                                    borderRadius: 10,
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                    marginBottom: 16,
-                                    marginTop: 4
-                                }}
-                                textStyle={{color: 'white'}}
-                                defaultValue={this.state.partyNhanVienStatus[pickParty]}
-                                defaultIndex={Number(pickParty)}
-                                onSelect={(idx, value) => this._onSelectParty(idx, value)}
-                                renderRow={this._renderRowStatus.bind(this)}
-                                renderSeparator={(sectionID, rowID, adjacentRowHighlighted) => this._renderSeparatorParty(sectionID, rowID, adjacentRowHighlighted)}
-                            />
-                        </View>
-                    </ScrollView>
+                    <View style={{
+                        flexDirection: 'column',
+                        paddingBottom: 100,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        backgroundColor: 'transparent',
+                    }}>
+                        <Text style={{color: 'black'}}>Chọn phòng ban</Text>
+                        <ModalDropdown
+                            options={this.state.partyNhanVienStatus}
+                            style={{
+                                borderWidth: 1,
+                                width: 200,
+                                padding: 8,
+                                borderRadius: 10,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                marginBottom: 16,
+                                marginTop: 4
+                            }}
+                            textStyle={{color: 'black'}}
+                            defaultValue={this.state.partyNhanVienStatus[pickParty]}
+                            defaultIndex={Number(pickParty)}
+                            onSelect={(idx, value) => this._onSelectParty(idx, value)}
+                            renderRow={this._renderRowStatus.bind(this)}
+                            renderSeparator={(sectionID, rowID, adjacentRowHighlighted) => this._renderSeparatorParty(sectionID, rowID, adjacentRowHighlighted)}
+                        />
+                    </View>
                     <View style={{
                         flexDirection: 'row',
                         flex: 1,
@@ -547,9 +538,9 @@ export default class ListNhanVienScreen extends React.Component {
         fetch(URlConfig.getLinkNhomNhanVien())
             .then((response) => (response.json()))
             .then((responseJson) => {
-                arr = this.state.partyNhanVienStatus;
+                    arr = this.state.partyNhanVienStatus;
 
-                let dsnhom = {};
+                    let dsnhom = {};
                     if (responseJson.status) {
                         let data = responseJson.danhsachnhom;
                         for (let item in responseJson.danhsachnhom) {
@@ -576,7 +567,7 @@ export default class ListNhanVienScreen extends React.Component {
 
 const styles = StyleSheet.create({
     titleStyle: {
-        marginTop: Platform.OS === 'ios' ? 16 : 0,
+        paddingTop: Platform.OS === 'ios' ? 16 : 0,
         flex: 1,
         elevation: 15,
         justifyContent: 'space-between',

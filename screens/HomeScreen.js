@@ -116,18 +116,16 @@ export default class HomeScreen extends React.Component {
 
 
     menuScreen() {
-        const {navigate} = this.props.navigation
+        const {navigate} = this.props.navigation;
         return (
             <GestureRecognizer
                 onSwipeRight={(state) => this.onSwipeRight(state)}
                 style={{flex: 1}}>
+                <Image source={require('../images/bg.jpg')}
+                       style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, opacity: 0.4}}/>
                 <View style={{flex: 1}}>
-                    <Image source={require('../images/blur_blue.jpg')}
-                           style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, opacity: 0.4}}/>
                     <ScrollView style={{flex: 1}}>
                         <View style={styles.titleStyle}>
-                            <Image source={require('../images/bg.png')}
-                                   style={{position: 'absolute', left: 0, bottom: -height * 9 / 10, height: 50}}/>
                             <TouchableOpacity onPress={() => this.openControlPanel()}
                                               style={{
                                                   marginLeft: 16,

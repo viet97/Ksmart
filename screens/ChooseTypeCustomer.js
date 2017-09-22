@@ -60,8 +60,7 @@ export default class ChooseTypeCustomer extends Component {
                             color: 'white',
                             alignSelf: 'center',
                             backgroundColor: 'transparent'
-                        }}>Nhân
-                        viên</Text>
+                        }}>Khách hàng</Text>
                     <View style={{backgroundColor: 'transparent', width: 35, height: 35}}/>
                 </View>
                 {this.flatListorIndicator()}
@@ -70,7 +69,7 @@ export default class ChooseTypeCustomer extends Component {
     }
 
     flatListorIndicator() {
-        const {navigate} = this.props.navigation
+        const {navigate} = this.props.navigation;
         if (!this.state.data) {
             return (
                 <View style={{flex: 9}}>
