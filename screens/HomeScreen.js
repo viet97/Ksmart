@@ -124,7 +124,7 @@ export default class HomeScreen extends React.Component {
                 <Image source={require('../images/bg.jpg')}
                        style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, opacity: 0.4}}/>
                 <View style={{flex: 1}}>
-                    <ScrollView style={{flex: 1}}>
+                    <View style={{flex: 1}}>
                         <View style={styles.titleStyle}>
                             <TouchableOpacity onPress={() => this.openControlPanel()}
                                               style={{
@@ -293,7 +293,7 @@ export default class HomeScreen extends React.Component {
                                 </TouchableOpacity>
                             </View>
                         </View>
-                    </ScrollView>
+                    </View>
                 </View>
             </GestureRecognizer>
         )

@@ -79,6 +79,7 @@ export default class DetailTravel extends React.Component {
             }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
 
     }
+
     render() {
         let come = new Date(this.state.data.ThoiGianVaoDiemDuKien);
         let now = new Date();
@@ -114,8 +115,8 @@ export default class DetailTravel extends React.Component {
                     <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Thông
                         tin kế hoạch</Text>
                     {function () {
-                        if(showSwipe){
-                            return(
+                        if (showSwipe) {
+                            return (
                                 <TouchableOpacity
                                     onPress={() => navigate('EditTravel', {
                                         id: this.state.data.IDKeHoach,
@@ -134,7 +135,7 @@ export default class DetailTravel extends React.Component {
                             )
                         }
                         else {
-                            return(
+                            return (
                                 <View/>
                             )
                         }
@@ -209,7 +210,6 @@ export default class DetailTravel extends React.Component {
                         }}>{strRaDiem}</Text>
                     </View>
                     <View style={{
-
                         flexDirection: 'row',
                         marginLeft: 8,
                         marginTop: 4,
@@ -220,7 +220,7 @@ export default class DetailTravel extends React.Component {
                         <Text style={{
                             marginLeft: 8,
                             backgroundColor: 'transparent'
-                        }}>{this.state.data.text_color_mota}</Text>
+                        }}>{this._handleString()}</Text>
                     </View>
                 </View>
                 <MapView
@@ -238,6 +238,18 @@ export default class DetailTravel extends React.Component {
                 </MapView>
             </View>
         )
+    }
+
+    _handleString() {
+        const str = this.state.data.text_color_mota;
+        let arr = str.split(`<br/>`);
+        console.log(arr);
+        if (arr.length > 1) {
+            return (
+                `${arr[0]}
+${arr[1]}`);
+        }
+        return this.state.data.text_color_mota
     }
 
     _renderTitleIndicator() {

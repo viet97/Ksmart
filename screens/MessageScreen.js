@@ -165,9 +165,9 @@ export default class OrderListScreen extends Component {
 
     getIconMessage(item) {
         if (item.Loai)
-            return (<Icon3 style={{alignSelf: 'center', backgroundColor: 'transparent'}} size={36} color='yellow'
+            return (<Icon3 style={{alignSelf: 'center', backgroundColor: 'transparent'}} size={24} color='yellow'
                            name="email"/>)
-        else return (<Icon2 style={{alignSelf: 'center', backgroundColor: 'transparent'}} size={36} color='blue'
+        else return (<Icon2 style={{alignSelf: 'center', backgroundColor: 'transparent'}} size={24} color='blue'
                             name="paper-plane"/>)
     }
 

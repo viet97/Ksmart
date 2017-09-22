@@ -42,9 +42,9 @@
 		</dict>
 	</dict>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Access your location</string>
+	<string>Cấp quyền truy cập vị trí của bạn</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>Cấp quyền truy cập vị trí của bạn</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Entypo.ttf</string>

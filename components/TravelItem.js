@@ -7,6 +7,7 @@ import {
     Dimensions,
     FlatList,
     Platform,
+    WebView,
     Picker
 } from 'react-native';
 import Swipeout from 'react-native-swipeout';
@@ -37,6 +38,7 @@ export default class TravelItem extends React.Component {
         }
         this.deleteClick = this.deleteClick.bind(this);
         this.editClick = this.editClick.bind(this)
+        console.log('item', this.props.data)
     }
 
     getImage(url) {
@@ -88,6 +90,7 @@ export default class TravelItem extends React.Component {
                 alignItems: 'center'
             }}>
                 <Text style={{fontSize: 12, color: 'white'}}>{item.text_color_mota}</Text>
+
             </View>
         )
 
@@ -109,6 +112,7 @@ export default class TravelItem extends React.Component {
 
     render() {
         let item = this.props.data;
+
         var strVaoDiem = '';
         var strRaDiem = '';
         if (item.ThoiGianVaoDiemThucTe === '1900-01-01T00:00:00') {

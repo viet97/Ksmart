@@ -5,25 +5,12 @@ import {
     View,
     Button, ListView, StyleSheet, StatusBar,
     TouchableOpacity,
-    Dimensions,
-    BackHandler,
-    FlatList,
-    ActivityIndicator,
+    Dimensions, Image,
     Platform
 } from 'react-native';
-import Image from 'react-native-image-progress';
-import Icon from 'react-native-vector-icons/Entypo'
-import Icon1 from 'react-native-vector-icons/MaterialIcons'
 import Icon2 from 'react-native-vector-icons/Ionicons'
 
-import Color from '../configs/color'
-import URlConfig from "../configs/url";
-import {ButtonGroup} from "react-native-elements";
-
-import * as Animatable from 'react-native-animatable';
-import ChooseTypeItem from "../components/ChooseTypeItem";
 import ChooseTypeChartItem from "../components/ChooseTypeChartItem";
-import RevenuePerPersonnelScreen from "./RevenuePerPersonnelScreen";
 
 const propView = 7 / 8;
 const {width, height} = Dimensions.get('window');
@@ -36,11 +23,11 @@ export default class ChooseTypeChart extends React.Component {
         header: null
     };
 
-    constructor() {
-        super()
+    constructor(props) {
+        super(props);
         this.state = {
             selectedIndex: 2
-        }
+        };
         this.updateIndex = this.updateIndex.bind(this)
     }
 
@@ -73,26 +60,55 @@ export default class ChooseTypeChart extends React.Component {
                 </View>
                 <View style={{flex: 9}}>
                     <View style={styles.view1}>
-                        <ChooseTypeChartItem
-                            goToChart={() => navigate('Chart')}
-                            title='Doanh thu sản lượng'
-                        />
-                        <ChooseTypeChartItem
-                            goToChart={() => navigate('RevenuePerPersonnel')}
-                            title='Doanh thu sản lượng theo nhân viên'
-                        />
+                        <TouchableOpacity
+                            style={{flex: 1, justifyContent: 'center', alignItems: 'center', marginVertical: 8}}
+                            onPress={() => {
+                                navigate('Chart')
+                            }}
+                        >
+                            <Image source={require('../images/bd1.png')} style={{width: width / 6, height: width / 6}}/>
+                            <Text style={{height: 48, textAlign: 'center', fontSize: 16, color: 'white'}}>Doanh thu sản
+                                lượng</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={{flex: 1, justifyContent: 'center', alignItems: 'center', marginVertical: 8}}
+                            onPress={() => {
+                                navigate('RevenuePerPersonnel')
+                            }}
+                        >
+                            <Image source={require('../images/bd2.png')} style={{width: width / 6, height: width / 6}}/>
+                            <Text style={{height: 48, textAlign: 'center', fontSize: 16, color: 'white'}}>Doanh thu sản
+                                lượng theo nhân viên</Text>
+                        </TouchableOpacity>
                     </View>
                     <View style={styles.view1}>
-                        <ChooseTypeChartItem
-                            goToChart={() => navigate('TravelChart')}
-                            title='Tần suất nhân viên viếng thăm'
-                        />
-                        <ChooseTypeChartItem
-                            goToChart={() => navigate('OnlineChart')}
-                            title='Tần suất nhân viên online'
-                        />
+                        <TouchableOpacity
+                            style={{flex: 1, justifyContent: 'center', marginHorizontal: 8}}
+
+                            onPress={() => {
+                                navigate('TravelChart')
+                            }}>
+                            <Image source={require('../images/bd3.png')}
+                                   style={{width: width / 6, height: width / 6, alignSelf: 'center'}}/>
+                            <Text style={{height: 48, textAlign: 'center', fontSize: 16, color: 'white'}}>Tần suất nhân
+                                viên viếng thăm</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={{flex: 1, justifyContent: 'center', marginVertical: 8}}
+
+                            onPress={() => {
+                                navigate('OnlineChart')
+                            }}
+                        >
+                            <Image source={require('../images/bd4.png')}
+                                   style={{width: width / 6, height: width / 6, alignSelf: 'center'}}/>
+                            <Text style={{height: 48, textAlign: 'center', fontSize: 16, color: 'white'}}>Tần suất nhân
+                                viên online</Text>
+                        </TouchableOpacity>
                     </View>
+                    <View style={{flex: 2}}/>
                 </View>
+
 
             </View>
         )
@@ -102,7 +118,7 @@ export default class ChooseTypeChart extends React.Component {
 
 const styles = StyleSheet.create({
     view1: {
-        flexDirection: 'row'
+        flexDirection: 'row', flex: 1, backgroundColor: 'transparent'
     },
     textStyle: {
         color: 'white', backgroundColor: 'transparent', fontSize: 16, textAlign: 'center', width: width * propView

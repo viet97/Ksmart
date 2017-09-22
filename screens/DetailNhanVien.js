@@ -23,6 +23,7 @@ import {PagerTabIndicator, IndicatorViewPager, PagerTitleIndicator, PagerDotIndi
 import ultils from "../configs/ultils";
 import {Header} from 'react-navigation'
 import MapView from 'react-native-maps';
+import Communications from "react-native-communications";
 
 const MIN_HEIGHT = Header.HEIGHT;
 const MAX_HEIGHT = 250;
@@ -46,9 +47,9 @@ export default class DetailNhanVien extends React.Component {
     }
 
     getImage(url) {
-        console.log(url)
+        console.log(url);
         if (url === undefined) {
-            console.log('1')
+            console.log('1');
             return;
         } else {
             if (url.length === 0)
@@ -79,7 +80,7 @@ export default class DetailNhanVien extends React.Component {
 
     render() {
         const {navigate} = this.props.navigation;
-        let data = this.state.data
+        let data = this.state.data;
         let lastTime = ultils.getDate(data.thoigiandangnhapcuoicung);
         let sdt = '';
         if (data.DienThoai !== null) sdt = data.dienthoai
@@ -182,7 +183,7 @@ export default class DetailNhanVien extends React.Component {
                             </View>
                             <View style={styles.viewCover}>
                                 <Text style={styles.text1}>Cập nhật lần cuối:</Text>
-                                <Text style={styles.text2}>{lastTime}</Text>
+                                <Text style={styles.text2}>{data.thoigianguitoadocuoi}</Text>
                             </View>
                             <View style={styles.viewCover}>
                                 <Text style={styles.text1}>Thời gian gửi tọa độ cuối:</Text>
@@ -248,7 +249,7 @@ export default class DetailNhanVien extends React.Component {
         fetch(URlConfig.getLinkDetailNhanVien(params.idNhanVien))
             .then((response) => (response.json()))
             .then((responseJson) => {
-                if (responseJson.status)
+                if (responseJson.status) {
                     this.setState(
                         {
                             data: responseJson.data,
@@ -260,8 +261,10 @@ export default class DetailNhanVien extends React.Component {
                             }
                         }
                     );
+                    console.log('data', responseJson.data);
+                }
                 else {
-                    Toast.show("Có lỗi xảy ra, thử lại sau!");
+                    Toast.show("Có lỗi xảy ra, vui lòng liên hệ Admin!");
                 }
             }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
 
