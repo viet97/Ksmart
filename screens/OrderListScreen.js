@@ -69,7 +69,6 @@ export default class OrderListScreen extends Component {
                 dateFrom: today,
                 dateTo: today
             },
-            urlGetData: URlConfig.getLinkOrderList(today, today),
             dataRender: null,
             orderListDataFull: [],
             orderListDataFilt: []
@@ -78,24 +77,22 @@ export default class OrderListScreen extends Component {
 
 
     getOrderListFromServer(datef, datet) {
+        const {params} = this.props.navigation.state
         Page = 1
         ALL_LOADED = false
         this.setState({isEndList: false, dataRender: null})
-        fetch(URlConfig.getLinkOrderList(datef, datet, Page, SEARCH_STRING))
+        fetch(URlConfig.getLinkOrderList(params.dateFrom, params.dateTo, Page, SEARCH_STRING, params.tentrangthai, params.status))
             .then((response) => response.json())
             .then((responseJson) => {
-                console.log('url', URlConfig.getLinkOrderList(datef, datet, Page, SEARCH_STRING))
                 if (responseJson.status) {
+                    if (responseJson.endlist) {
+                        ALL_LOADED = true
+                        this.forceUpdate()
+                    }
                     this.setState({
                         orderListDataFull: responseJson.data,
-                        isEndList: responseJson.endlist
-                    }, function () {
-                        let dataFill = this.filtData(responseJson.data)
-                        if (dataFill.length < NUMBER_ITEM_PER_PAGE || this.state.isEndList) {
-                            ALL_LOADED = true;
-                            this.forceUpdate()
-                        }
-                        this.setState({dataRender: dataFill})
+                        isEndList: responseJson.endlist,
+                        dataRender: responseJson.data,
                     });
                 } else {
                     ALL_LOADED = true
@@ -109,48 +106,28 @@ export default class OrderListScreen extends Component {
         this.getOrderListFromServer(this.state.filtDialog.dateFrom, this.state.filtDialog.dateTo)
     }
 
-    filtData(data) {
-
-        var arr = []
-        var tttt = this.state.filtDialog.numberPicktttt
-        var ttdh = this.state.filtDialog.numberPickttdh
-        var ttgh = this.state.filtDialog.numberPickttgh
-        console.log(URlConfig.OBJLOGIN.ttdhid[ttdh])
-        for (var item in data)
-            if (URlConfig.OBJLOGIN.ttdhid[ttdh] === data[item].trangthaidonhang || ttdh === 0) {
-                if (URlConfig.OBJLOGIN.ttghid[ttgh] === data[item].trangthaigiaohang || ttgh === 0) {
-                    if (URlConfig.OBJLOGIN.ttttid[tttt] === data[item].trangthaithanhtoan || tttt === 0) {
-                        arr.push(data[item])
-                    }
-                }
-            }
-
-        return arr
-    }
 
     loadMoreDataFromSv() {
-
+        const {params} = this.props.navigation.state
         if (!this.state.onEndReach) {
             this.setState({onEndReach: true})
 
             if (!this.state.isEndList) {
                 Page = Page + 1;
-                fetch(URlConfig.getLinkOrderList(this.state.filtDialog.dateFrom, this.state.filtDialog.dateTo, Page, SEARCH_STRING))
+                fetch(URlConfig.getLinkOrderList(params.dateFrom, params.dateTo, Page, SEARCH_STRING, params.tentrangthai, params.status))
                     .then((response) => response.json())
                     .then((responseJson) => {
                         if (responseJson.status) {
+                            if (responseJson.endlist) {
+                                ALL_LOADED = true
+                                this.forceUpdate()
+                            }
                             let dataFull = this.state.orderListDataFull
                             dataFull = dataFull.concat(responseJson.data)
                             this.setState({
                                 orderListDataFull: dataFull,
-                                isEndList: responseJson.endlist
-                            }, function () {
-                                if (this.state.isEndList) {
-                                    ALL_LOADED = true
-                                    this.forceUpdate()
-                                }
-                                let dataFill = this.filtData(dataFull)
-                                this.setState({dataRender: dataFill})
+                                isEndList: responseJson.endlist,
+                                dataRender: dataFull
                             });
                         } else {
                             ALL_LOADED = true

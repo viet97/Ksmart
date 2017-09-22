@@ -11,7 +11,7 @@ import {
 import MapView from 'react-native-maps';
 import {Icon} from 'react-native-elements'
 import Color from '../configs/color'
-import * as Toast from "react-native-simple-toast";
+import Toast from "react-native-simple-toast";
 import {PagerTabIndicator, IndicatorViewPager, PagerTitleIndicator, PagerDotIndicator} from 'rn-viewpager';
 import URlConfig from "../configs/url";
 
@@ -77,9 +77,10 @@ export default class DetailCustomer extends React.Component {
                     width: width * 2 / 3 - 4,
                     marginRight: 4,
                     height: 30,
+                    padding: 4,
                     flexDirection: 'row'
                 }}>
-                    <Text style={{alignSelf: 'center', marginLeft: 4}}>{content} </Text>
+                    <Text style={{alignSelf: 'center',}}>{content} </Text>
                 </View>
             </View>
         )
@@ -108,7 +109,7 @@ export default class DetailCustomer extends React.Component {
                         color: 'white',
                         alignSelf: 'center',
                         backgroundColor: 'transparent'
-                    }}>{params.title}</Text>
+                    }}>Chi tiết khách hàng</Text>
                     <View/>
                 </View>
                 <IndicatorViewPager

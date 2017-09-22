@@ -45,7 +45,8 @@ export default class DoanhThuReportItem extends React.Component {
         let item = this.props.data
         return (
 
-            <View
+            <TouchableOpacity
+                onPress={() => this.props.goToDetail()}
                 onLayout={(e) => {
                     var {x, y, width, height} = e.nativeEvent.layout;
                     this.setState({height: height})
@@ -114,7 +115,7 @@ export default class DoanhThuReportItem extends React.Component {
                         backgroundColor: 'transparent'
                     }}>{ultils.getMoney(item.tongtien, 2)}</Text>
                 </View>
-            </View>
+            </TouchableOpacity>
         )
     }
 }

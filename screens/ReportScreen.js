@@ -206,8 +206,10 @@ export default class ReportScreen extends Component {
     }
 
     renderDoanhThuSanLuong(item) {
+        const {navigate} = this.props.navigation
         return (
             <DoanhThuReportItem
+                goToDetail={() => navigate('DetailBaoCaoDoanhThuSanLuong', {data: item})}
                 data={item}
             />
         )

@@ -26,6 +26,7 @@ export default class ModalDropdownCustom extends Component {
         this.onSelect = this.props.onSelect.bind(this);
         this.state = {
             width: 0,
+            height: 0,
         }
     }
 
@@ -33,6 +34,7 @@ export default class ModalDropdownCustom extends Component {
         return (
             <ModalDropdown
                 width={this.state.width}
+                dropdownHeight={this.state.height}
                 options={this.props.data}
                 style={{
                     borderWidth: 0.4,
@@ -61,6 +63,9 @@ export default class ModalDropdownCustom extends Component {
         if (this.props.width !== undefined)
             this.setState({width: this.props.width})
         else this.setState({width: 200})
+        if (this.props.data.length < 4)
+            this.setState({height: this.props.data.length * 40})
+        else this.setState({height: 160})
     }
     _renderRowStatus(rowData, rowID, highlighted) {
         return (

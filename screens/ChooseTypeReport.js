@@ -20,6 +20,7 @@ import DatePicker from 'react-native-datepicker'
 import ChooseTypeItem from "../components/ChooseTypeItem";
 import Color from '../configs/color'
 import URlConfig from "../configs/url";
+import Toast from "react-native-simple-toast";
 
 let {width, height} = Dimensions.get('window')
 export default class ChooseTypeReport extends Component {
