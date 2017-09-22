@@ -46,6 +46,7 @@ import ChooseTypeReport from "./screens/ChooseTypeReport";
 import OnlineReportScreen from "./screens/OnlineReportScreen";
 import AboutUsScreen from "./screens/AboutUsScreen";
 import ChooseTypeOrder from "./screens/ChooseTypeOrder";
+import DetailBaoCaoDoanhThuSanLuong from "./screens/DetailBaoCaoDoanhThuSanLuong";
 
 var {height, width} = Dimensions.get('window');
 const Ksmart = StackNavigator({
@@ -84,6 +85,7 @@ const Ksmart = StackNavigator({
     ChooseTypeTravel: {screen: ChooseTypeTravel},
     ChooseTypeReport: {screen: ChooseTypeReport},
     ChooseTypeOrder: {screen: ChooseTypeOrder},
+    DetailBaoCaoDoanhThuSanLuong: {screen: DetailBaoCaoDoanhThuSanLuong}
     }, {
         mode: 'modal'
     }

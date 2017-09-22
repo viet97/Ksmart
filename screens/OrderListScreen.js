@@ -85,7 +85,7 @@ export default class OrderListScreen extends Component {
             .then((response) => response.json())
             .then((responseJson) => {
                 if (responseJson.status) {
-                    if (responseJson.isEndList) {
+                    if (responseJson.endlist) {
                         ALL_LOADED = true
                         this.forceUpdate()
                     }
@@ -118,7 +118,7 @@ export default class OrderListScreen extends Component {
                     .then((response) => response.json())
                     .then((responseJson) => {
                         if (responseJson.status) {
-                            if (responseJson.isEndList) {
+                            if (responseJson.endlist) {
                                 ALL_LOADED = true
                                 this.forceUpdate()
                             }

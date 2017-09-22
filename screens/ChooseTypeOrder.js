@@ -97,7 +97,7 @@ export default class ChooseTypeOrder extends Component {
                             return (<Image source={require('../images/bg.png')}
                                            style={{position: 'absolute'}}/>)
                     }()}
-                    <TouchableOpacity onPress={() => this.props.backToHome()}
+                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}
                                       style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                         <Icon type={"ionicon"} style={styles.iconStyle} size={24} color="white"
                               name="ios-arrow-back"/>
