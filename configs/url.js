@@ -4,6 +4,7 @@
  */
 import {Platform} from 'react-native'
 import md5 from "react-native-md5";
+import Toast from "react-native-simple-toast";
 
 export default class URlConfig {
     static getRouterApp(idct) {
@@ -80,10 +81,17 @@ export default class URlConfig {
         return data.urlserver + '/AppDanhSachNhanVien.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&macongty=' + data.idct;
     }
 
-    static getLinkOrderList(from, to, page, keyword) {
+    static getLinkOrderList(from, to, page, keyword, ten, stt) {
         // return 'http://jav.ksmart.vn/AppDanhSachDonHang.aspx?6e22b116f5111220741848ccd290e9e9e60cd16030852326e0ebdcf522be1393&idquanly=47&idct=1&from=01-05-2017&to=10-07-2017&trangthaigps=0'
         let data = URlConfig.OBJLOGIN;
-        return data.urlserver + '/AppDanhSachDonHang_v2.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idct=' + data.idcongty + '&from=' + from + '&to=' + to + '&rangthaigps=0&page=' + page + '&timkiem=' + keyword;
+        let status = ''
+
+        if (ten !== "") {
+            status = '&' + ten
+            status = status + '=' + stt
+        }
+
+        return data.urlserver + '/AppDanhSachDonHang_v2.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idct=' + data.idcongty + '&from=' + from + '&to=' + to + '&rangthaigps=0&page=' + page + '&timkiem=' + keyword + status;
     }
 
     static getLinkDetailTravel(id) {
@@ -107,12 +115,12 @@ export default class URlConfig {
     static getLinkSoReport(dateF, dateT) {
         // return 'http://jav.ksmart.vn/AppDanhSachDonHang.aspx?6e22b116f5111220741848ccd290e9e9e60cd16030852326e0ebdcf522be1393&idquanly=47&idct=1&from=01-05-2017&to=10-07-2017&trangthaigps=0'
         let data = URlConfig.OBJLOGIN;
-        return data.urlserver + '/AppSoBaoCaoDoanhThu.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idcty=' + data.idcongty + '&tungay=' + dateF + '&denngay=' + dateT
+        return data.urlserver + '/AppSoBaoCaoDoanhThu.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idcty=' + data.idct + '&tungay=' + dateF + '&denngay=' + dateT
     }
 
     static getLinkSoDonHang(dateF, dateT) {
-        // return 'http://jav.ksmart.vn/AppDanhSachDonHang.aspx?6e22b116f5111220741848ccd290e9e9e60cd16030852326e0ebdcf522be1393&idquanly=47&idct=1&from=01-05-2017&to=10-07-2017&trangthaigps=0'
         let data = URlConfig.OBJLOGIN;
+
         return data.urlserver + '/AppBaoCaoTongQuan.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&macongty=' + data.idct + '&tungay=' + dateF + '&denngay=' + dateT
     }
 
@@ -177,6 +185,11 @@ export default class URlConfig {
 
     static getReportList(from, to, page, keyword) {
         // return 'http://jav.ksmart.vn/AppDanhSachDonHang.aspx?6e22b116f5111220741848ccd290e9e9e60cd16030852326e0ebdcf522be1393&idquanly=47&idct=1&from=01-05-2017&to=10-07-2017&trangthaigps=0'
+        let data = URlConfig.OBJLOGIN;
+        return data.urlserver + '/AppBaoCaoDoanhThu_v2.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idct=' + data.idcongty + '&tungay=' + from + '&denngay=' + to + '&page=' + page + '&timkiem=' + keyword;
+    }
+
+    static getReportList(from, to, page, keyword) {
         let data = URlConfig.OBJLOGIN;
         return data.urlserver + '/AppBaoCaoDoanhThu_v2.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idct=' + data.idcongty + '&tungay=' + from + '&denngay=' + to + '&page=' + page + '&timkiem=' + keyword;
     }

@@ -45,6 +45,7 @@ import TravelChartScreen from "./screens/TravelChartScreen";
 import ChooseTypeReport from "./screens/ChooseTypeReport";
 import OnlineReportScreen from "./screens/OnlineReportScreen";
 import AboutUsScreen from "./screens/AboutUsScreen";
+import ChooseTypeOrder from "./screens/ChooseTypeOrder";
 
 var {height, width} = Dimensions.get('window');
 const Ksmart = StackNavigator({
@@ -82,6 +83,7 @@ const Ksmart = StackNavigator({
     ChooseTypeCustomer: {screen: ChooseTypeCustomer},
     ChooseTypeTravel: {screen: ChooseTypeTravel},
     ChooseTypeReport: {screen: ChooseTypeReport},
+    ChooseTypeOrder: {screen: ChooseTypeOrder},
     }, {
         mode: 'modal'
     }

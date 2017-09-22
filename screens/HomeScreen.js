@@ -191,7 +191,7 @@ export default class HomeScreen extends React.Component {
                                         width: 90,
                                         backgroundColor: 'transparent', ...shadowProps
                                     }}
-                                    onPress={() => navigate('Order')}>
+                                    onPress={() => navigate('ChooseTypeOrder')}>
                                     <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
                                            source={require('../images/120-in-1-applets-2013.png')}/>
 
@@ -358,7 +358,7 @@ export default class HomeScreen extends React.Component {
                         </View>
                         <View style={styles.touchable}>
                             <TouchableOpacity style={styles.itemSideMenuStyle} onPress={() => {
-                                navigate('Order')
+                                navigate('ChooseTypeOrder')
                                 this.closeControlPanel()
                             }}>
                                 <Icon2 size={ICON_SIZE} style={styles.iconStyle} color="white" name="archive"/>

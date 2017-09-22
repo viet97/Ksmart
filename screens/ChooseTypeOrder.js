@@ -17,11 +17,49 @@ import Image from 'react-native-image-progress';
 import DatePicker from 'react-native-datepicker'
 import ChooseTypeItem from "../components/ChooseTypeItem";
 import Color from '../configs/color'
+import URlConfig from "../configs/url";
 
 let {width, height} = Dimensions.get('window')
 export default class ChooseTypeOrder extends Component {
     static navigationOptions = {
         header: null
+    }
+
+    flatListorIndicator() {
+        const {navigate} = this.props.navigation
+        if (!this.state.data) {
+            return (
+                <View style={{flex: 9}}>
+                    <ActivityIndicator
+                        animating={true}
+                        style={styles.indicator}
+                        size="large"/>
+                </View>)
+        }
+        return (
+            <View style={{flex: 9}}>
+                <FlatList
+                    onRefresh={() => this.getDataFromSv()}
+                    refreshing={this.state.refreshing}
+                    numColumns={2}
+                    keyboardDismissMode="on-drag"
+                    ref="listview"
+                    extraData={this.state.data}
+                    data={this.state.data}
+                    renderItem={({item}) =>
+                        <ChooseTypeItem
+                            data={item}
+                            goToDetail={() => navigate('Order', {
+                                tentrangthai: item.tentrangthai,
+                                status: item.trangthai,
+                                dateFrom: this.state.dateFrom,
+                                dateTo: this.state.dateTo
+                            })}
+                        />
+                    }
+                />
+
+            </View>)
     }
 
     constructor(props) {
@@ -41,6 +79,7 @@ export default class ChooseTypeOrder extends Component {
         today = dd + '-' + mm + '-' + yyyy;
         super(props)
         this.state = {
+            refreshing: false,
             data: [],
             dateFrom: today,
             dateTo: today,
@@ -69,7 +108,7 @@ export default class ChooseTypeOrder extends Component {
                             color: 'white',
                             alignSelf: 'center',
                             backgroundColor: 'transparent'
-                        }}>Báo cáo</Text>
+                        }}>Đơn hàng</Text>
                     <View style={{backgroundColor: 'transparent', width: 35, height: 35}}/>
                 </View>
                 <View style={{width: window.width, height: 60, elevation: 5}}>
@@ -124,38 +163,7 @@ export default class ChooseTypeOrder extends Component {
                 </View>
 
                 <View style={{flex: 9}}>
-                    <ScrollView>
-                        <View style={styles.view1}>
-                            <ChooseTypeItem
-                                goToDetail={() => this.props.goToOrder(0)}
-                                title='Tổng đơn hàng'
-                            />
-                            <ChooseTypeItem
-                                goToDetail={() => this.props.goToOrder(1)}
-                                title='Tổng giá trị'
-                            />
-                        </View>
-                        <View style={styles.view1}>
-                            <ChooseTypeItem
-                                goToDetail={() => this.props.goToOrder(2)}
-                                title='Đã thanh toán'
-                            />
-                            <ChooseTypeItem
-                                goToDetail={() => this.props.goToOrder(3)}
-                                title='Chưa xử lý'
-                            />
-                        </View>
-                        <View style={styles.view1}>
-                            <ChooseTypeItem
-                                goToDetail={() => this.props.goToOrder(2)}
-                                title='Đang xử lý'
-                            />
-                            <ChooseTypeItem
-                                goToDetail={() => this.props.goToOrder(3)}
-                                title='Đã hoàn thành'
-                            />
-                        </View>
-                    </ScrollView>
+                    {this.flatListorIndicator()}
                 </View>
             </View>
         )
@@ -177,16 +185,14 @@ export default class ChooseTypeOrder extends Component {
             .then((response) => (response.json()))
             .then((responseJson) => {
                 if (responseJson.status) {
-                    var arr = []
-
-                    this.setState({data: responseJson})
+                    this.setState({data: responseJson.lstTrangThai})
                 }
-            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e))
+            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
 
     }
 
     componentDidMount() {
-        // keo data tu server xuong
+        this.getDataFromSv()
     }
 }
 const styles = StyleSheet.create({
