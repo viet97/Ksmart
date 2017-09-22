@@ -130,9 +130,8 @@ export default class URlConfig {
     }
 
     static getLinkDetailOrder(id) {
-        // let data = URlConfig.OBJLOGIN;
-        // return data.urlserver + '/AppChiTietDonHang.aspx?iddonhang='+id
-        return 'http://jav.ksmart.vn/AppChiTietDonHang.aspx?&iddonhang=52640'
+        let data = URlConfig.OBJLOGIN;
+        return data.urlserver + '/AppChiTietDonHang.aspx?iddonhang=' + id
     }
 
     static getLinkReadMessage(id) {

@@ -22,7 +22,7 @@ DerivedData
 *.xcuserstate
 project.xcworkspace
 
-# Android/IntelliJ
+# Anzroid/IntelliJ
 #
 .idea
 .gradle
@@ -31,14 +31,13 @@ local.properties
 
 # node.js
 #
-node_modules/
 npm-debug.log
 yarn-error.log
 
 # BUCK
 buck-out/
 \.buckd/
-*.keystore
+
 
 # fastlane
 #

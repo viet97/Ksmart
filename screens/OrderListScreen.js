@@ -256,11 +256,7 @@ export default class OrderListScreen extends Component {
                     </TouchableOpacity>
                     <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Danh
                         sách đơn hàng</Text>
-                    <TouchableOpacity style={{alignSelf: 'center'}} onPress={() => {
-                        this.showDialog();
-                    }}>
-                        <Text style={{color: 'white', padding: 8, backgroundColor: 'transparent'}}>Bộ lọc</Text>
-                    </TouchableOpacity>
+                    <View></View>
                 </View>
                 <View style={{width: width}}>
                     <Search

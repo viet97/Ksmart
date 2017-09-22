@@ -158,12 +158,13 @@ export default class ListNhanVienScreen extends React.Component {
     }
 
     loadMoreDataFromSv() {
+        const {params} = this.props.navigation.state
         if (!this.state.onEndReach) {
             this.setState({onEndReach: true})
 
             if (!this.state.isEndList) {
                 Page = Page + 1
-                fetch(URlConfig.getListNhanVienLink(Page, id_nhom, SEARCH_STRING, this.props.status))
+                fetch(URlConfig.getListNhanVienLink(Page, id_nhom, SEARCH_STRING, params.status))
                     .then((response) => response.json())
                     .then((responseJson) => {
                         if (responseJson.status) {
@@ -277,7 +278,11 @@ export default class ListNhanVienScreen extends React.Component {
                         <ListNhanVienItem
                             data={item}
                             goToDetailNhanVien={() => navigate('DetailNhanVien', {idNhanVien: item.idnhanvien})}
-                            callback={() => this.props.callback(item.KinhDo, item.ViDo, 'Địa điểm Nhân Viên')}
+                            callback={() => navigate('Map', {
+                                kinhdo: item.KinhDo,
+                                vido: item.ViDo,
+                                title: 'Địa điểm Nhân Viên'
+                            })}
                         />
                     }
                 />
@@ -397,7 +402,7 @@ export default class ListNhanVienScreen extends React.Component {
 
                     <View style={{
                         flexDirection: 'column',
-                        paddingBottom: 100,
+                        paddingBottom: 40,
                         justifyContent: 'center',
                         alignItems: 'center',
                         backgroundColor: 'transparent',

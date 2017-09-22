@@ -36,7 +36,7 @@ export default class DetailOrderScreen extends React.Component {
     componentDidMount() {
         StatusBar.setBackgroundColor('gray', true)
         const {params} = this.props.navigation.state
-        fetch(URlConfig.getLinkDetailOrder())
+        fetch(URlConfig.getLinkDetailOrder(params.id))
             .then((response) => (response.json()))
             .then((responseJson) => {
                 if (responseJson.status) {
