@@ -242,14 +242,16 @@ export default class DetailTravel extends React.Component {
 
     _handleString() {
         const str = this.state.data.text_color_mota;
-        let arr = str.split(`<br/>`);
-        console.log(arr);
-        if (arr.length > 1) {
-            return (
-                `${arr[0]}
+        if (str) {
+            let arr = str.split(`<br/>`);
+            console.log(arr);
+            if (arr.length > 1) {
+                return (
+                    `${arr[0]}
 ${arr[1]}`);
+            }
         }
-        return this.state.data.text_color_mota
+        return this.state.data.text_color_mota || ''
     }
 
     _renderTitleIndicator() {
