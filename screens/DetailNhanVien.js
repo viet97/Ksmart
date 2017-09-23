@@ -83,7 +83,7 @@ export default class DetailNhanVien extends React.Component {
         let data = this.state.data;
         let lastTime = ultils.getDate(data.thoigiandangnhapcuoicung);
         let sdt = '';
-        if (data.DienThoai !== null) sdt = data.dienthoai
+        if (data.DienThoai !== null) sdt = data.dienthoai;
         console.log('tao do', this.state.region);
         return (
             <View style={{flex: 1}}>
@@ -205,9 +205,13 @@ export default class DetailNhanVien extends React.Component {
                                     marginRight: 8,
                                     justifyContent: 'space-between'
                                 }}>
-                                    <Text style={styles.text2}>1234@gmail.com</Text>
+                                    <Text style={styles.text2}>{data.Email || ''}</Text>
                                     <TouchableOpacity
-                                        onPress={() => Communications.email(['123@gmail.com'], null, null, 'My Subject', 'My body text')}>
+                                        onPress={() => {
+                                            if (data.Email)
+                                                Communications.email([data.Email], null, null, 'My Subject', 'My body text')
+                                        }
+                                        }>
                                         <Icon type={"foundation"} size={24} color="yellow" name="mail"/>
                                     </TouchableOpacity>
                                 </View>
@@ -221,7 +225,9 @@ export default class DetailNhanVien extends React.Component {
                                     justifyContent: 'space-between'
                                 }}>
                                     <Text style={styles.text2}>{sdt}</Text>
-                                    <TouchableOpacity onPress={() => Communications.phonecall('01663616055', true)}>
+                                    <TouchableOpacity onPress={() => {
+                                        if (sdt) Communications.phonecall(sdt, true)
+                                    }}>
                                         <Icon type={"font-awesome"} size={24} color="green" name="phone"/>
                                     </TouchableOpacity>
                                 </View>

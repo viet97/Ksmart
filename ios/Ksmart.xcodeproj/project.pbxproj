@@ -1422,7 +1422,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = vn.lachongmedia.KsmartQl;
+				PRODUCT_BUNDLE_IDENTIFIER = vn.lachongmedia.KsmartManager;
 				PRODUCT_NAME = Ksmart;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1454,7 +1454,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = vn.lachongmedia.KsmartQl;
+				PRODUCT_BUNDLE_IDENTIFIER = vn.lachongmedia.KsmartManager;
 				PRODUCT_NAME = Ksmart;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
