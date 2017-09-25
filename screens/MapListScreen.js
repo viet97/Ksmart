@@ -74,7 +74,7 @@ export default class MapListScreen extends Component {
         return (
             <View style={{flex: 1}}>
                 <View style={styles.titleStyle}>
-                    <Image source={require('../images/bg.png')}
+                    <Image source={require('../images/bg3.png')}
                            style={{position: 'absolute', top: 0}}/>
                     <TouchableOpacity onPress={() => this.props.backToHome()}
                                       style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>

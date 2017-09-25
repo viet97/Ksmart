@@ -51,7 +51,7 @@ export default class DetailBaoCaoDoanhThuSanLuong extends React.Component {
     render() {
         return (
             <View style={{flex: 1}}>
-                <Image source={require('../images/bg.png')}
+                <Image source={require('../images/bg3.png')}
                        style={{position: 'absolute', top: 0}}/>
                 <View style={styles.titleStyle}>
                     <TouchableOpacity onPress={() => this.props.navigation.goBack()}
@@ -71,7 +71,7 @@ export default class DetailBaoCaoDoanhThuSanLuong extends React.Component {
                     <View/>
                 </View>
                 <View style={{flex: 9}}>
-                    <Image source={require('../images/bg.png')}
+                    <Image source={require('../images/bg3.png')}
                            style={{position: 'absolute', top: 0}}/>
                     <ScrollView style={{flex: 1, marginBottom: 4}}>
                         {this.getElement('Tên khách hàng', this.state.data.tenkhachhang)}

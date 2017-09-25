@@ -86,7 +86,7 @@ export default class EditTravelScreen extends React.Component {
         if (Platform.OS === 'ios') {
             return (
                 <View style={styles.titleStyle}>
-                    <Image source={require('../images/bg.png')}
+                    <Image source={require('../images/bg3.png')}
                            style={{position: 'absolute'}}/>
                     <TouchableOpacity
                         onPress={() => this.props.navigation.goBack()}
@@ -119,6 +119,8 @@ export default class EditTravelScreen extends React.Component {
                                     .then((responseJson) => {
                                         if (responseJson.status) {
                                             Toast.show('Sửa thành công!')
+                                            const {params} = this.props.navigation.state
+                                            params.reload()
                                             this.props.navigation.goBack();
                                         }
                                     })
@@ -150,7 +152,7 @@ export default class EditTravelScreen extends React.Component {
             console.log('vaooooo')
             return (
                 <View style={styles.titleStyle}>
-                    <Image source={require('../images/bg.png')}
+                    <Image source={require('../images/bg3.png')}
                            style={{position: 'absolute'}}/>
                     <TouchableOpacity
                         onPress={() => this.props.navigation.goBack()}
@@ -189,7 +191,6 @@ export default class EditTravelScreen extends React.Component {
                                             if (responseJson.status) {
 
                                                 Toast.show('Sửa thành công!')
-                                                params.reload()
                                                 this.props.navigation.goBack();
                                             } else {
                                                 Toast.show('Sửa thất bại,vui lòng thử lại!')
@@ -218,7 +219,7 @@ export default class EditTravelScreen extends React.Component {
 
         return (
             <View style={{flex: 1, backgroundColor: 'transparent'}}>
-                <Image source={require('../images/bg.png')}
+                <Image source={require('../images/bg3.png')}
                        style={{position: 'absolute', top: 0}}/>
 
                 {this.renderHeader()}

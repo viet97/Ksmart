@@ -293,10 +293,10 @@ export default class ReportScreen extends Component {
     render() {
         return (
             <View style={{flex: 1}}>
-                <Image source={require('../images/bg.png')}
+                <Image source={require('../images/bg3.png')}
                        style={{position: 'absolute', top: 0}}/>
                 <View style={styles.titleStyle}>
-                    <Image source={require('../images/bg.png')}
+                    <Image source={require('../images/bg3.png')}
                            style={{position: 'absolute'}}/>
                     <TouchableOpacity onPress={() => this.props.navigation.goBack()}
                                       style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>

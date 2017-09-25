@@ -89,12 +89,12 @@ export default class ChooseTypeOrder extends Component {
     render() {
         return (
             <View style={{flex: 1}}>
-                <Image source={require('../images/bg.png')}
+                <Image source={require('../images/bg3.png')}
                        style={{position: 'absolute', top: 0}}/>
                 <View style={styles.titleStyle}>
                     {function () {
                         if (Platform.OS !== 'ios')
-                            return (<Image source={require('../images/bg.png')}
+                            return (<Image source={require('../images/bg3.png')}
                                            style={{position: 'absolute'}}/>)
                     }()}
                     <TouchableOpacity onPress={() => this.props.navigation.goBack()}
@@ -179,13 +179,28 @@ export default class ChooseTypeOrder extends Component {
         })
     }
 
+    sortData(arr) {
+        let temp
+        let lastIndex = arr.length - 1
+        temp = arr[lastIndex - 2]
+        arr[lastIndex - 2] = arr[1]
+        arr[1] = temp
+        temp = arr[lastIndex - 1]
+        arr[lastIndex - 1] = arr[2]
+        arr[2] = temp
+        temp = arr[lastIndex]
+        arr[lastIndex] = arr[3]
+        arr[3] = temp
+    }
     getDataFromSv() {
         this.setState({data: null})
         fetch(URlConfig.getLinkSoDonHang(this.state.dateFrom, this.state.dateTo))
             .then((response) => (response.json()))
             .then((responseJson) => {
                 if (responseJson.status) {
-                    this.setState({data: responseJson.lstTrangThai})
+                    let arr = responseJson.lstTrangThai
+                    this.sortData(arr)
+                    this.setState({data: arr})
                 }
             }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
 

@@ -34,7 +34,6 @@ export default class DetailOrderScreen extends React.Component {
 
 
     componentDidMount() {
-        StatusBar.setBackgroundColor('gray', true)
         const {params} = this.props.navigation.state
         fetch(URlConfig.getLinkDetailOrder(params.id))
             .then((response) => (response.json()))
@@ -71,7 +70,7 @@ export default class DetailOrderScreen extends React.Component {
         const {params} = this.props.navigation.state;
         return (
             <View style={{flex: 1}}>
-                <Image source={require('../images/bg.png')}
+                <Image source={require('../images/bg3.png')}
                        style={{position: 'absolute', top: 0}}/>
                 <View style={styles.titleStyle}>
                     <TouchableOpacity onPress={() => this.props.navigation.goBack()}
@@ -91,14 +90,14 @@ export default class DetailOrderScreen extends React.Component {
                     <View/>
                 </View>
                 <View style={{flex: 9,backgroundColor:'transparent'}}>
-                    <Image source={require('../images/bg.png')}
+                    <Image source={require('../images/bg3.png')}
                            style={{position: 'absolute', top: 0}}/>
                     <ScrollView style={{flex: 1, marginBottom: 4}}>
                         {this.getElement('Mã đơn hàng', this.state.data.mathamchieu)}
                         {this.getElement('Tên khách hàng', this.state.data.tenkhachhang)}
                         {this.getElement('Tổng tiền', ultil.getMoney(this.state.data.tongtien, 2))}
                         {this.getElement('Thời gian tạo', ultil.getDate(this.state.data.thoigiantao))}
-                        {this.getElement('Chiết khấu phần trăm', this.state.data.chietkhauphantram)}
+                        {this.getElement('Chiết khấu phần trăm', ultil.formatMoney(this.state.data.chietkhauphantram))}
                         {this.getElement('Chiết khấu tiền', ultil.getMoney(this.state.data.chietkhautien, 2))}
                         {this.getElement('Tổng tiền chiết khấu', ultil.getMoney(this.state.data.tongtienchietkhau))}
                         {this.getElement('Chương trình khuyến mại', this.state.data.tenctkm)}

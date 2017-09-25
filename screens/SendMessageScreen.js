@@ -50,7 +50,6 @@ export default class ModalSendMessage extends Component {
         this.requestSearch.bind(this);
         this.loadAllSearch.bind(this);
     }
-
     getImage(url) {
         if (url.length === 0) {
             return (
@@ -112,13 +111,13 @@ export default class ModalSendMessage extends Component {
         const {params} = this.props.navigation.state
         return (
             <View style={{flex: 1}}>
-                <Image source={require('../images/bg.png')}
+                <Image source={require('../images/bg3.png')}
                        style={{position: 'absolute', top: 0}}/>
                 <View style={styles.titleStyle}>
-                    <Image source={require('../images/bg.png')}
+                    <Image source={require('../images/bg3.png')}
                            style={{position: 'absolute'}}/>
                     <TouchableOpacity onPress={() => {
-                        params.reload()
+
                         this.props.navigation.goBack()
                     }}
                                       style={styles.iconStyle}>
@@ -270,6 +269,8 @@ export default class ModalSendMessage extends Component {
             .then((responseJson) => {
                 if (responseJson.status) {
                     Toast.show('Gửi tin nhắn thành công');
+                    const {params} = this.props.navigation.state
+                    params.reload()
                     this.props.navigation.goBack()
                 }
             }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))

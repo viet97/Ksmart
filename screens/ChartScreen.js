@@ -17,11 +17,13 @@ import Toast from 'react-native-simple-toast'
 import ultils from "../configs/ultils";
 import ModalDropdownCustom from "../components/ModalDropdownCustom";
 import {ProgressDialog} from 'react-native-simple-dialogs'
+
 let {height, width} = Dimensions.get('window');
 export default class ChartScreen extends React.Component {
     static navigationOptions = {
         header: null
     }
+
     constructor(props) {
         super(props);
         var now = new Date();
@@ -85,6 +87,23 @@ export default class ChartScreen extends React.Component {
         });
     }
 
+    sortData(arr) {
+        let data = arr
+        for (let i = 0; i < data.length; i++) {
+            for (let j = 0; j < data.length - 1; j++) {
+                let time1 = data[j].thoigian.split("/")
+                let time2 = data[j + 1].thoigian.split("/")
+                if (time1[0] > time2[0]) {
+                    let temp = data[j]
+                    data[j] = data[j + 1]
+                    data[j + 1] = temp
+                }
+            }
+        }
+
+        return data
+    }
+
     componentWillMount() {
         this.setMonthAndYear();
         this.getDataChart();
@@ -102,7 +121,7 @@ export default class ChartScreen extends React.Component {
             .then((responseJson) => {
                 if (responseJson.data !== null) {
                     this.setState({
-                        dataRender: responseJson.data
+                        dataRender: this.sortData(responseJson.data)
                     })
                     var res = responseJson.data;
                     var dt = []
@@ -140,7 +159,7 @@ export default class ChartScreen extends React.Component {
                 }
             ).catch((e) => {
             this.setState({progressVisible: false});
-            Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại')
+            Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e)
         })
     }
 
@@ -320,10 +339,10 @@ export default class ChartScreen extends React.Component {
         });
         return (
             <View style={{flex: 1}}>
-                <Image source={require('../images/bg.png')}
+                <Image source={require('../images/bg3.png')}
                        style={{position: 'absolute', top: 0}}/>
                 <View style={styles.titleStyle}>
-                    <Image source={require('../images/bg.png')}
+                    <Image source={require('../images/bg3.png')}
                            style={{position: 'absolute'}}/>
                     <TouchableOpacity onPress={() => this.props.navigation.goBack()}
                                       style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>

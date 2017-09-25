@@ -16,6 +16,10 @@ export default class Utils {
                 ('00000').substr(0, dp - d.length) : e) : e);
     };
 
+    static formatMoney(n) {
+        return Math.round(n * 100) / 100
+    };
+
     static getPersonsInGroup(allData, allGroup, idNhom) {
         var arrGroupChild = []
         for (let item of allGroup) {
@@ -27,7 +31,7 @@ export default class Utils {
 
     static getDate(d) {
         const moment = require('moment');
-        return moment(d).format('YYYY-MM-DD HH:mm:ss');
+        return moment(d).format('DD-MM-YYYY HH:mm:ss');
 
     }
 

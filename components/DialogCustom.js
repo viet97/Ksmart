@@ -152,7 +152,9 @@ export default class DialogCustom extends React.Component {
                 <View style={{flexDirection: 'column'}}>
                     <Text>Chọn phòng ban: </Text>
                     <ModalDropdown
+                        dropdownHeight={160}
                         options={this.state.listNameGroup}
+                        width={200}
                         style={{borderWidth: 0.4, width: 200, padding: 8, borderRadius: 10}}
                         defaultValue="- Chọn phòng ban- "
                         onSelect={(idx, value) => this._onSelect(idx, value)}
@@ -168,7 +170,8 @@ export default class DialogCustom extends React.Component {
                             if (this.state.positionGroupChoose === -1 || this.state.positionGroupChoose === '-1') {
                                 Toast.show('Vui long chon phong ban truoc')
                             } else {
-
+                                SEARCH_STRING = textSearch
+                                this.getListNhanVienFromSv(this.state.idNhom)
                             }
                             this.setState({textSearch})
                         }}
@@ -263,10 +266,6 @@ export default class DialogCustom extends React.Component {
         return (
             <TouchableHighlight underlayColor='cornflowerblue'>
                 <View style={[styles.dropdown_2_row, {backgroundColor: evenRow ? 'lemonchiffon' : 'white'}]}>
-                    <Image style={styles.dropdown_2_image}
-                           mode='stretch'
-                           source={icon}
-                    />
                     <Text style={[styles.dropdown_2_row_text, highlighted && {color: 'mediumaquamarine'}]}>
                         {rowData}
                     </Text>
@@ -289,10 +288,6 @@ export default class DialogCustom extends React.Component {
         return (
             <TouchableHighlight underlayColor='cornflowerblue'>
                 <View style={[styles.dropdown_2_row, {backgroundColor: evenRow ? 'lemonchiffon' : 'white'}]}>
-                    <Image style={styles.dropdown_2_image}
-                           mode='stretch'
-                           source={icon}
-                    />
                     <Text style={[styles.dropdown_2_row_text, highlighted && {color: 'mediumaquamarine'}]}>
                         {rowData}
                     </Text>

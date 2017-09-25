@@ -93,7 +93,7 @@ export default class DetailCustomer extends React.Component {
         const item = params.item;
         return (
             <View style={{flex: 1}}>
-                <Image source={require('../images/bg.png')}
+                <Image source={require('../images/bg3.png')}
                        style={{position: 'absolute', top: 0}}/>
                 <View style={styles.titleStyle}>
                     <TouchableOpacity onPress={() => this.props.navigation.goBack()}
@@ -118,11 +118,11 @@ export default class DetailCustomer extends React.Component {
                 >
 
                     <View style={{flex: 1}}>
-                        <Image source={require('../images/bg.png')}
+                        <Image source={require('../images/bg3.png')}
                                style={{position: 'absolute', top: 0}}/>
                         <ScrollView style={{flex: 1, marginBottom: 4}}>
                             {this.getElement('Tên cửa hàng', this.state.data.TenCuaHang)}
-                            {this.getElement('Website', this.state.data.tennhomkhachhang)}
+                            {this.getElement('Tên nhóm khách hàng', this.state.data.tennhomkhachhang)}
                             {this.getElement('Loại khách hàng', this.getLoaiKhachHang(this.state.data.idloaikhachhang))}
                             {this.getElement('Địa chỉ', this.state.data.DiaChi)}
                             {this.getElement('Số điện thoại 1', this.state.data.SoDienThoai)}

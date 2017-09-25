@@ -71,12 +71,12 @@ export default class ChooseTypeNew extends Component {
     render() {
         return (
             <View style={{flex: 1}}>
-                <Image source={require('../images/bg.png')}
+                <Image source={require('../images/bg3.png')}
                        style={{position: 'absolute', top: 0}}/>
                 <View style={styles.titleStyle}>
                     {function () {
                         if (Platform.OS !== 'ios')
-                            return (<Image source={require('../images/bg.png')}
+                            return (<Image source={require('../images/bg3.png')}
                                            style={{position: 'absolute'}}/>)
                     }()}
                     <TouchableOpacity onPress={() => this.props.navigation.goBack()}

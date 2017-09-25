@@ -79,7 +79,6 @@ export default class ReportScreen extends Component {
         timer.clearInterval(this)
         timer.setInterval(this, "123", () => this.getOnlineReportListFromServer(), 30000);
     }
-
     render() {
 
         let onlineReportStatusItem = this.state.onlineReportStatus.map((s, i) => {
@@ -87,10 +86,10 @@ export default class ReportScreen extends Component {
         });
         return (
             <View style={{flex: 1}}>
-                <Image source={require('../images/bg.png')}
+                <Image source={require('../images/bg3.png')}
                        style={{position: 'absolute', top: 0}}/>
                 <View style={styles.titleStyle}>
-                    <Image source={require('../images/bg.png')}
+                    <Image source={require('../images/bg3.png')}
                            style={{position: 'absolute'}}/>
                     <TouchableOpacity onPress={() => this.props.navigation.goBack()}
                                       style={styles.iconStyle}>
@@ -211,6 +210,42 @@ export default class ReportScreen extends Component {
                             </View>
                         </View>
                     </View>
+                    <Text style={{marginLeft: 16}}>Cài đặt thời gian cập nhập tin tức: </Text>
+                    <Picker style={{height: 44, width: width / 2, marginLeft: 16}}
+                            itemStyle={{color: 'red', height: 88}}
+                            selectedValue={this.state.numberPickType}
+                            onValueChange={(value) => {
+                                this.setState({numberPickType: value}, function () {
+                                        switch (value) {
+                                            case 0 :
+                                                timer.clearInterval(this)
+                                                break
+                                            case 1 :
+                                                timer.clearInterval(this)
+                                                timer.setInterval(this, "123", () => this.getOnlineReportListFromServer(), 10000);
+                                                break
+                                            case 2 :
+                                                timer.clearInterval(this)
+                                                timer.setInterval(this, "123", () => this.getOnlineReportListFromServer(), 30000);
+                                                break
+                                            case 3 :
+                                                timer.clearInterval(this)
+                                                timer.setInterval(this, "123", () => this.getOnlineReportListFromServer(), 60000);
+                                                break
+                                            case 4 :
+                                                timer.clearInterval(this)
+                                                timer.setInterval(this, "123", () => this.getOnlineReportListFromServer(), 180000);
+                                                break
+                                            case 5 :
+                                                timer.clearInterval(this)
+                                                timer.setInterval(this, "123", () => this.getOnlineReportListFromServer(), 300000);
+                                                break
+                                        }
+                                    }
+                                )
+                            }}>
+                        {onlineReportStatusItem}
+                    </Picker>
                 </View>
             </View>
 

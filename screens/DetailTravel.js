@@ -47,6 +47,8 @@ export default class DetailTravel extends React.Component {
                 longitudeDelta: 0.0421,
             }
         }
+        this.id = this.state.data.IDKeHoach
+        this.getData = this.getDataFromSv()
     }
 
     isOnline(dangtructuyen) {
@@ -59,7 +61,6 @@ export default class DetailTravel extends React.Component {
 
     getDataFromSv() {
         const {params} = this.props.navigation.state
-        console.log(URlConfig.getLinkDetailTravel(params.id))
         fetch(URlConfig.getLinkDetailTravel(params.id))
             .then((response) => (response.json()))
             .then((responseJson) => {
@@ -102,10 +103,10 @@ export default class DetailTravel extends React.Component {
         }
         return (
             <View style={{flex: 1}}>
-                <Image source={require('../images/bg.png')}
+                <Image source={require('../images/bg3.png')}
                        style={{position: 'absolute', top: 0}}/>
                 <View style={styles.titleStyle}>
-                    <Image source={require('../images/bg.png')}
+                    <Image source={require('../images/bg3.png')}
                            style={{position: 'absolute'}}/>
                     <TouchableOpacity
                         onPress={() => this.props.navigation.goBack()}
@@ -118,10 +119,13 @@ export default class DetailTravel extends React.Component {
                         if (showSwipe) {
                             return (
                                 <TouchableOpacity
-                                    onPress={() => navigate('EditTravel', {
-                                        id: this.state.data.IDKeHoach,
-                                        reload: () => this.getDataFromSv()
-                                    })}
+                                    onPress={() => {
+
+                                        navigate('EditTravel', {
+                                            id: this.id,
+                                            reload: () => this.getData
+                                        })
+                                    }}
                                     style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                                     <Icon2 style={{
                                         alignSelf: 'center',
@@ -267,7 +271,6 @@ ${arr[1]}`);
     }
 
     componentDidMount() {
-        const {params} = this.props.navigation.state;
         this.getDataFromSv()
     }
 }
@@ -333,4 +336,4 @@ const styles = StyleSheet.create({
     item: {
         margin: 3,
     }
-})
+});

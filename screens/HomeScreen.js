@@ -30,6 +30,7 @@ import ChooseTypeReport from "./ChooseTypeReport";
 import {shadowProps} from "../configs/shadow";
 import ChooseTypeCustomer from "./ChooseTypeCustomer";
 import {onChangeMessage} from "../networks/Network";
+import ultils from "../configs/ultils";
 const Realm = require('realm');
 var {height} = Dimensions.get('window');
 var func;
@@ -323,7 +324,7 @@ export default class HomeScreen extends React.Component {
                     flex: 1,
                     elevation: (Platform.OS === 'ios') ? 0 : 15,
                 }}>
-                    <Image style={{position: 'absolute'}} source={require('../images/bg.png')}/>
+                    <Image style={{position: 'absolute'}} source={require('../images/bg3.png')}/>
                     <Text style={{
                         alignSelf: 'center',
                         textAlign: 'center',
@@ -333,7 +334,7 @@ export default class HomeScreen extends React.Component {
                 </View>
 
                 <View style={{paddingTop: 15, flexDirection: 'column', flex: 9}}>
-                    <Image style={{position: 'absolute'}} source={require('../images/bg.png')}/>
+                    <Image style={{position: 'absolute'}} source={require('../images/bg3.png')}/>
                     <ScrollView style={{marginTop: (Platform.OS === 'ios') ? 16 : 0,}}>
                         <View style={styles.touchable}>
                             <TouchableOpacity style={styles.itemSideMenuStyle} onPress={() => {

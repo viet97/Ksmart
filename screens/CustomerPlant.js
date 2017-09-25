@@ -27,9 +27,9 @@ import CustomerPlantComponent from '../components/CustomerPlantComponent'
 import DialogCustom from "../components/DialogCustom";
 import {Icon} from "react-native-elements";
 
-var NUMBER_ROW_RENDER_PER_PAGE = 15
-var ALL_LOADED = false
-var SEARCH_STRING = '';
+let NUMBER_ROW_RENDER_PER_PAGE = 15
+let ALL_LOADED = false
+let SEARCH_STRING = '';
 let PAGE = 0;
 let IDNhanVien = '';
 var {height, width} = Dimensions.get('window');
@@ -255,10 +255,10 @@ export default class CustomerPlant extends Component {
 
         return (
             <View style={{flex: 1,}}>
-                <Image source={require('../images/bg.png')}
+                <Image source={require('../images/bg3.png')}
                        style={{position: 'absolute', top: 0}}/>
                 <View style={styles.titleStyle}>
-                    <Image source={require('../images/bg.png')}
+                    <Image source={require('../images/bg3.png')}
                            style={{position: 'absolute'}}/>
                     <TouchableOpacity onPress={() => this.props.navigation.goBack()}
                                       style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
@@ -410,7 +410,7 @@ export default class CustomerPlant extends Component {
                             Toast.show('Lập kế hoạch thành công')
                         else
                             Toast.show('Kế hoạch đã bị trùng , vui lòng thử lại')
-                        this.props.backToChooseTypeTravel()
+                        this.props.navigation.goBack()
                     }
                 }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
 

@@ -21,6 +21,7 @@ import ChooseTypeItem from "../components/ChooseTypeItem";
 import Color from '../configs/color'
 import URlConfig from "../configs/url";
 import Toast from "react-native-simple-toast";
+import ultils from "../configs/ultils";
 
 let {width, height} = Dimensions.get('window')
 export default class ChooseTypeReport extends Component {
@@ -58,6 +59,7 @@ export default class ChooseTypeReport extends Component {
             .then((response) => (response.json()))
             .then((responseJson) => {
                 if (responseJson.status) {
+                    responseJson.danhsach[0].tongso = ultils.formatMoney(responseJson.danhsach[0].tongso)
                     this.setState({data: responseJson.danhsach})
                 }
             }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
@@ -102,12 +104,12 @@ export default class ChooseTypeReport extends Component {
     render() {
         return (
             <View style={{flex: 1}}>
-                <Image source={require('../images/bg.png')}
+                <Image source={require('../images/bg3.png')}
                        style={{position: 'absolute', top: 0}}/>
                 <View style={styles.titleStyle}>
                     {function () {
                         if (Platform.OS !== 'ios')
-                            return (<Image source={require('../images/bg.png')}
+                            return (<Image source={require('../images/bg3.png')}
                                            style={{position: 'absolute'}}/>)
                     }()}
                     <TouchableOpacity onPress={() => this.props.navigation.goBack()}

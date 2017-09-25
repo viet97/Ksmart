@@ -57,7 +57,8 @@ export default class CustomerPlantComponent extends Component {
     getGiaTien() {
         let item = this.props.item
         let str = ''
-        str = str + this.state.giatien * item.soluong
+        let giatien = ultil.getMoney(this.state.giatien * item.soluong, 2)
+        str = str + giatien
         return str
     }
 
@@ -142,7 +143,7 @@ export default class CustomerPlantComponent extends Component {
                     marginBottom: 4
                 }}>
                     <Text>Đơn giá:</Text>
-                    <Text style={{marginLeft: 8}}>{this.state.giatien}</Text>
+                    <Text style={{marginLeft: 8}}>{ultil.getMoney(this.state.giatien, 2)}</Text>
                 </View>
                 <View style={{
                     flexDirection: 'row',

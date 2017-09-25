@@ -59,13 +59,22 @@ export default class ModalDropdownCustom extends Component {
         )
     }
 
+    setHeight() {
+        this.setState({height: 160})
+    }
+
+    componentDidUpdate(data) {
+        if (this.state.height === 0) {
+            if (this.props.data.length < 4)
+                this.setState({height: this.props.data.length * 40})
+            else this.setState({height: 160})
+        }
+    }
+
     componentDidMount() {
         if (this.props.width !== undefined)
             this.setState({width: this.props.width})
         else this.setState({width: 200})
-        if (this.props.data.length < 4)
-            this.setState({height: this.props.data.length * 40})
-        else this.setState({height: 160})
     }
     _renderRowStatus(rowData, rowID, highlighted) {
         return (

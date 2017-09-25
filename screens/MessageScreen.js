@@ -260,16 +260,21 @@ export default class OrderListScreen extends Component {
             </View>)
     }
 
+    componentWillUnmount() {
+        DeviceEventEmitter.emit('reloadMsg')
+    }
     render() {
         const {navigate} = this.props.navigation
         return (
             <View style={{flex: 1}}>
-                <Image source={require('../images/bg.png')}
+                <Image source={require('../images/bg3.png')}
                        style={{position: 'absolute', top: 0}}/>
                 <View style={styles.titleStyle}>
-                    <Image source={require('../images/bg.png')}
+                    <Image source={require('../images/bg3.png')}
                            style={{position: 'absolute'}}/>
-                    <TouchableOpacity onPress={() => {this.props.navigation.goBack();DeviceEventEmitter.emit('reloadMsg');}}
+                    <TouchableOpacity onPress={() => {
+                        this.props.navigation.goBack();
+                    }}
                                       style={styles.iconStyle}>
                         <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
                     </TouchableOpacity>

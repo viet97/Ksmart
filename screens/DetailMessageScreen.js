@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import DatePicker from 'react-native-datepicker'
 import {
+    BackHandler,
     Text,
     View,
     StyleSheet,
@@ -18,21 +19,31 @@ import URlConfig from "../configs/url";
 import Color from '../configs/color'
 import Icon1 from 'react-native-vector-icons/Ionicons'
 import Image from 'react-native-image-progress';
-
-
 var {height, width} = Dimensions.get('window');
 var GiftedListView = require('react-native-gifted-listview');
 export default class DetailMessageScreen extends Component {
     static navigationOptions = ({navigation}) => ({
         header: null
     });
-    componentDidMount(){
+
+    constructor(props) {
+        super(props)
+        const {params} = this.props.navigation.state
+
+    }
+
+    componentWillUnmount() {
         const {params} = this.props.navigation.state;
-        const url=URlConfig.getLinkReadMessage(params.id);
+        params.reload()
+    }
+
+    componentDidMount() {
+        const {params} = this.props.navigation.state;
+        const url = URlConfig.getLinkReadMessage(params.id);
         fetch(url)
             .then((response) => (response.json()))
             .then((responseJson) => {
-                    console.log(url,responseJson)
+                console.log(url, responseJson)
             }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
     }
 
@@ -40,14 +51,13 @@ export default class DetailMessageScreen extends Component {
         const {params} = this.props.navigation.state;
         return (
             <View style={{flex: 1}}>
-                <Image source={require('../images/bg.png')}
+                <Image source={require('../images/bg3.png')}
                        style={{position: 'absolute', top: 0}}/>
                 <View style={styles.titleStyle}>
-                    <Image source={require('../images/bg.png')}
+                    <Image source={require('../images/bg3.png')}
                            style={{position: 'absolute'}}/>
                     <TouchableOpacity
                         onPress={() => {
-                            params.reload();
                             this.props.navigation.goBack();
 
                         }}
