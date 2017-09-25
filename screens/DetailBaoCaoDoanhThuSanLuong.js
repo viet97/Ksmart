@@ -31,7 +31,7 @@ export default class DetailBaoCaoDoanhThuSanLuong extends React.Component {
 
     getElement(title, content) {
         return (
-            <View style={{flexDirection: 'row', marginTop: 8}}>
+            <View style={{flexDirection: 'row', marginTop: 8, backgroundColor: 'transparent'}}>
                 <Text style={{width: width / 3 - 4, marginLeft: 4, alignSelf: 'center'}}>{title}</Text>
                 <View style={{
                     backgroundColor: 'white',
@@ -89,7 +89,7 @@ export default class DetailBaoCaoDoanhThuSanLuong extends React.Component {
 
     }
 }
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
     tabContent: {
         flex: 1,
         alignItems: 'center',
