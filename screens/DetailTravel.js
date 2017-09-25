@@ -263,11 +263,10 @@ ${arr[1]}`);
     }
 
     millisToMinutes(from, to) {
-        var dateFrom = new Date(from)
-        var dateTo = new Date(to)
+        var dateFrom = new Date(from);
+        var dateTo = new Date(to);
         var millis = dateFrom - dateTo;
-        var minutes = Math.floor(millis / 60000);
-        return minutes;
+        return Math.floor(millis / 60000);
     }
 
     componentDidMount() {
