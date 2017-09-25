@@ -17,21 +17,9 @@ import {
 import URlConfig from "../configs/url";
 import Color from '../configs/color'
 import Icon1 from 'react-native-vector-icons/Ionicons'
-import Icon from 'react-native-vector-icons/MaterialIcons'
-import Icon2 from 'react-native-vector-icons/Entypo'
 import Icon3 from 'react-native-vector-icons/MaterialCommunityIcons'
 import Image from 'react-native-image-progress';
-import ProgressBar from 'react-native-progress/Bar';
-import DialogManager, {ScaleAnimation, DialogContent} from 'react-native-dialog-component';
-import {DialogComponent, SlideAnimation} from 'react-native-dialog-component';
-import Dialog from '../components/DialogOrder'
-import orderListData from '../dbcontext/orderListData'
-import AtoZListView from 'react-native-atoz-listview';
-import Search from 'react-native-search-box';
 import Toast from 'react-native-simple-toast';
-import ultils from "../configs/ultils";
-import Communications from 'react-native-communications';
-import ChooseTypeItem from "../components/ChooseTypeItem";
 
 var {height, width} = Dimensions.get('window');
 const timer = require('react-native-timer');
@@ -43,13 +31,13 @@ export default class ReportScreen extends Component {
 
     constructor(props) {
         super(props);
-        let arr = []
-        arr.push('không bao giờ')
-        arr.push('10 giây')
-        arr.push('30 giây')
-        arr.push('1 phút')
-        arr.push('3 phút')
-        arr.push('5 phút')
+        let arr = [];
+        arr.push('không bao giờ');
+        arr.push('10 giây');
+        arr.push('30 giây');
+        arr.push('1 phút');
+        arr.push('3 phút');
+        arr.push('5 phút');
 
         this.state = {
             numberPickType: 0,
@@ -210,36 +198,37 @@ export default class ReportScreen extends Component {
                             </View>
                         </View>
                     </View>
-                    <Text style={{marginLeft: 16}}>Cài đặt thời gian cập nhập tin tức: </Text>
+                    <Text style={{marginLeft: 16, backgroundColor: 'transparent'}}>Cài đặt thời gian cập nhập tin
+                        tức: </Text>
                     <Picker style={{height: 44, width: width / 2, marginLeft: 16}}
-                            itemStyle={{color: 'red', height: 88}}
+                            itemStyle={{color: 'black', height: 88}}
                             selectedValue={this.state.numberPickType}
                             onValueChange={(value) => {
                                 this.setState({numberPickType: value}, function () {
                                         switch (value) {
                                             case 0 :
-                                                timer.clearInterval(this)
-                                                break
+                                                timer.clearInterval(this);
+                                                break;
                                             case 1 :
-                                                timer.clearInterval(this)
+                                                timer.clearInterval(this);
                                                 timer.setInterval(this, "123", () => this.getOnlineReportListFromServer(), 10000);
-                                                break
+                                                break;
                                             case 2 :
-                                                timer.clearInterval(this)
+                                                timer.clearInterval(this);
                                                 timer.setInterval(this, "123", () => this.getOnlineReportListFromServer(), 30000);
-                                                break
+                                                break;
                                             case 3 :
-                                                timer.clearInterval(this)
+                                                timer.clearInterval(this);
                                                 timer.setInterval(this, "123", () => this.getOnlineReportListFromServer(), 60000);
-                                                break
+                                                break;
                                             case 4 :
-                                                timer.clearInterval(this)
+                                                timer.clearInterval(this);
                                                 timer.setInterval(this, "123", () => this.getOnlineReportListFromServer(), 180000);
-                                                break
+                                                break;
                                             case 5 :
-                                                timer.clearInterval(this)
+                                                timer.clearInterval(this);
                                                 timer.setInterval(this, "123", () => this.getOnlineReportListFromServer(), 300000);
-                                                break
+                                                break;
                                         }
                                     }
                                 )
