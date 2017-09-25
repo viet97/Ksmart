@@ -14,6 +14,7 @@ import Color from '../configs/color'
 import Toast from "react-native-simple-toast";
 import {PagerTabIndicator, IndicatorViewPager, PagerTitleIndicator, PagerDotIndicator} from 'rn-viewpager';
 import URlConfig from "../configs/url";
+import Communications from 'react-native-communications';
 
 let {width, height} = Dimensions.get('window')
 export default class DetailCustomer extends React.Component {
@@ -87,12 +88,37 @@ export default class DetailCustomer extends React.Component {
 
     }
 
+    getElementPhoneNumber(title, phoneNumber) {
+        return (
+            <View style={{flexDirection: 'row', marginTop: 8}}>
+                <Text style={{width: width / 3 - 4, marginLeft: 4, alignSelf: 'center'}}>{title}</Text>
+                <TouchableOpacity
+                    style={{
+                        backgroundColor: 'white',
+                        width: width * 2 / 3 - 4,
+                        marginRight: 4,
+                        height: 30,
+                        padding: 4,
+                        flexDirection: 'row'
+                    }}
+                    onPress={() => {
+                        if (phoneNumber) {
+                            Communications.phonecall(phoneNumber, true)
+                        }
+                    }}
+                >
+                    <Text style={{alignSelf: 'center',}}>{phoneNumber} </Text>
+                </TouchableOpacity>
+            </View>
+        )
+    }
+
     render() {
         const {params} = this.props.navigation.state;
 
         const item = params.item;
         return (
-            <View style={{flex: 1}}>
+            <View style={{flex: 1, backgroundColor: 'transparent'}}>
                 <Image source={require('../images/bg3.png')}
                        style={{position: 'absolute', top: 0}}/>
                 <View style={styles.titleStyle}>
@@ -117,7 +143,7 @@ export default class DetailCustomer extends React.Component {
                     indicator={this._renderTitleIndicator()}
                 >
 
-                    <View style={{flex: 1}}>
+                    <View style={{flex: 1, backgroundColor: 'transparent'}}>
                         <Image source={require('../images/bg3.png')}
                                style={{position: 'absolute', top: 0}}/>
                         <ScrollView style={{flex: 1, marginBottom: 4}}>
@@ -125,10 +151,9 @@ export default class DetailCustomer extends React.Component {
                             {this.getElement('Tên nhóm khách hàng', this.state.data.tennhomkhachhang)}
                             {this.getElement('Loại khách hàng', this.getLoaiKhachHang(this.state.data.idloaikhachhang))}
                             {this.getElement('Địa chỉ', this.state.data.DiaChi)}
-                            {this.getElement('Số điện thoại 1', this.state.data.SoDienThoai)}
-                            {this.getElement('Số điện thoại 2', this.state.data.SoDienThoai2)}
-                            {this.getElement('Số điện thoại 3', this.state.data.SoDienThoai3)}
-                            {this.getElement('Số điện thoại mặc định', this.state.data.SoDienThoaiMacDinh)}
+                            {this.getElementPhoneNumber('Số điện thoại 1', this.state.data.SoDienThoai)}
+                            {this.getElementPhoneNumber('Số điện thoại 2', this.state.data.SoDienThoai2)}
+                            {this.getElementPhoneNumber('Số điện thoại 3', this.state.data.SoDienThoai3)}
                             {this.getElement('Email', this.state.data.Email)}
                             {this.getElement('Fax', this.state.data.Fax)}
                             {this.getElement('Website', this.state.data.Website)}
@@ -220,6 +245,7 @@ var styles = StyleSheet.create({
         elevation: 15,
         justifyContent: 'space-between',
         flexDirection: 'row',
+        backgroundColor: 'transparent'
     },
     iconStyle: {
         alignSelf: 'center',
