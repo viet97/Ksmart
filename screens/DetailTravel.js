@@ -77,6 +77,7 @@ export default class DetailTravel extends React.Component {
                         }
                     )
                 }
+                console.log(URlConfig.getLinkDetailTravel(params.id))
             }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
 
     }
@@ -250,9 +251,7 @@ export default class DetailTravel extends React.Component {
             let arr = str.split(`<br/>`);
             console.log(arr);
             if (arr.length > 1) {
-                return (
-                    `${arr[0]}
-${arr[1]}`);
+                return arr[1];
             }
         }
         return this.state.data.text_color_mota || ''
