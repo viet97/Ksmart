@@ -1,33 +1,25 @@
 import React, {Component} from 'react';
 import {
-    AppRegistry,
     Text,
-    View,
-    Button, ListView, StyleSheet, StatusBar,
-    TouchableOpacity,
+    View, StyleSheet,
     Dimensions,
-    BackHandler,
-    FlatList,
-    ActivityIndicator,
     TextInput
 } from 'react-native';
-import Toast from 'react-native-simple-toast';
 import Image from 'react-native-image-progress';
 import Icon from 'react-native-vector-icons/Entypo'
 import Icon1 from 'react-native-vector-icons/MaterialIcons'
-import Icon2 from 'react-native-vector-icons/Ionicons'
 import DatePicker from "react-native-datepicker";
 import Color from '../configs/color'
-import URlConfig from "../configs/url";
-import Search from "react-native-search-box";
 import CheckBox from 'react-native-checkbox'
+
+import Toast from 'react-native-simple-toast';
 
 let {height, width} = Dimensions.get('window');
 
 export default class CustomerPlantComponent extends Component {
 
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
             height: 0,
             ghichu: '',
@@ -48,9 +40,9 @@ export default class CustomerPlantComponent extends Component {
                     this.setState({height: height})
                 }}
                 style={{
-                borderRadius: 10,
-                    marginTop: 4, marginBottom: 4, marginLeft: 8, marginRight: 8,
-            }}>
+                    borderRadius: 10,
+                    marginTop: 4, marginBottom: 4, marginLeft: 8, marginRight: 8, backgroundColor: 'transparent'
+                }}>
                 <Image source={require('../images/bg1.png')}
                        style={{
                            height: this.state.height,
@@ -76,7 +68,7 @@ export default class CustomerPlantComponent extends Component {
                             fontWeight: "bold"
                         }}>{item.TenCuaHang}</Text>
                     </View>
-                    <View >
+                    <View>
                         <CheckBox
                             checkedImage={require("../images/checked.png")}
                             uncheckedImage={require("../images/noncheck.png")}
@@ -130,7 +122,8 @@ export default class CustomerPlantComponent extends Component {
                         onDateChange={(time) => {
                             if (this.checkTime(time))
                                 this.onDateChange(time, this.state.timeOut);
-                            else Toast.show('Thời gian nhỏ hơn hiện tại')
+                            else
+                                Toast.show('Thời gian nhỏ hơn hiện tại', Toast.LONG)
                         }}
                     />
                 </View>
@@ -162,7 +155,7 @@ export default class CustomerPlantComponent extends Component {
                         onDateChange={(time) => {
                             if (this.checkTime(time))
                                 this.onDateChange(this.state.timeCome, time);
-                            else Toast.show('Thời gian ko hợp lý')
+                            else Toast.show('Thời gian ko hợp lý', Toast.LONG)
                         }}
                     />
                 </View>
@@ -238,11 +231,9 @@ export default class CustomerPlantComponent extends Component {
     }
 
     checkTime(time) {
-        console.log(typeof time);
         let currentDate = new Date();
-
         console.log(this.props.date + ' ' + time + ':00')
-        var moment = require('moment')
+        var moment = require('moment');
         var dateInput = moment(this.props.date + ' ' + time + ':00', 'DD-MM-YYYY HH:mm:ss').toDate();
         if (dateInput.getTime() - currentDate.getTime() > 0) {
             console.log('return', true);
@@ -265,31 +256,39 @@ export default class CustomerPlantComponent extends Component {
         }
         return true
     }
+
     chooseCustomer(item) {
 
         var timeOut = this.state.timeOut + ':00'
-            var timeCome = this.state.timeCome + ':00'
-            var data = {
-                idkhachhang: item.idcuahang, idnhanvien: this.props.idnhanvien, idkehoach: 0, giovaodukien: timeCome,
-                gioradukien: timeOut, ghichu: this.state.ghichu, vieccanlam: this.state.vieccanlam
-            }
-            this.props.choseCustomer(data, this.state.checkOfCheckBox)
+        var timeCome = this.state.timeCome + ':00'
+        var data = {
+            idkhachhang: item.idcuahang,
+            idnhanvien: this.props.idnhanvien,
+            idkehoach: 0,
+            giovaodukien: timeCome,
+            gioradukien: timeOut,
+            ghichu: this.state.ghichu,
+            vieccanlam: this.state.vieccanlam,
+            tenkhachhang: item.TenCuaHang
+        }
+
+        this.props.choseCustomer(data, this.state.checkOfCheckBox)
 
     }
 
     onDateChange(from, to) {
         var item = this.props.item;
         console.log(this.compareTime(from, to))
-        if (this.compareTime(from, to) === true || this.state.timeCome === '00:00') {
+        if (this.compareTime(from, to) || this.state.timeCome === '00:00') {
             console.log(this.compareTime(from, to))
-                this.setState({
-                    timeOut: to,
-                    timeCome: from
-                }, function () {
-                    this.chooseCustomer(item)
-                })
+            this.setState({
+                timeOut: to,
+                timeCome: from
+            }, function () {
+                this.chooseCustomer(item)
+            })
 
-        } else Toast.show('giờ ra điểm nhỏ hơn giờ vào điểm')
+        } else Toast.show('giờ ra điểm nhỏ hơn giờ vào điểm', Toast.LONG)
     }
 
 

@@ -37,6 +37,7 @@ export default class CustomerPlant extends Component {
     static navigationOptions = {
         header: null
     }
+
     constructor(props) {
         super(props)
         var today = new Date();
@@ -218,7 +219,7 @@ export default class CustomerPlant extends Component {
     getDataFromSv() {
         ALL_LOADED = false
         this.setState({dataRender: null})
-        PAGE = 0
+        PAGE = 0;
         fetch(URlConfig.getCustomerLink(PAGE, SEARCH_STRING, -1))
             .then((response) => (response.json()))
             .then((responseJson) => {
@@ -244,7 +245,7 @@ export default class CustomerPlant extends Component {
 
         return new Promise((resolve, reject) => {
             resolve();
-            var keyWord = text.toLowerCase()
+            let keyWord = text.toLowerCase();
             SEARCH_STRING = keyWord
             this.getDataFromSv()
         });
@@ -254,7 +255,7 @@ export default class CustomerPlant extends Component {
     render() {
 
         return (
-            <View style={{flex: 1,}}>
+            <View style={{flex: 1, backgroundColor: 'transparent'}}>
                 <Image source={require('../images/bg3.png')}
                        style={{position: 'absolute', top: 0}}/>
                 <View style={styles.titleStyle}>
@@ -267,7 +268,14 @@ export default class CustomerPlant extends Component {
                     <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Lập kế hoạch</Text>
                     <TouchableOpacity
                         onPress={() => {
-                            this.sendPlantToServer()
+                            const itemFail = this.checkDuLieuKeHoach();
+                            if (!itemFail) {
+                                this.sendPlantToServer();
+                            } else {
+                                console.log(itemFail, 'vcvws')
+                                Toast.show(itemFail.msg)
+                            }
+
                         }}
                         style={styles.iconStyle}>
                         <Text style={{color: 'white', paddingRight: 8, paddingTop: 4}}>OK</Text>
@@ -323,7 +331,7 @@ export default class CustomerPlant extends Component {
                     <View style={{width: width / 2, justifyContent: 'center'}}>
                         <TouchableOpacity onPress={() => this.showDialogChoosePerson()} style={{
                             alignSelf: 'center',
-                            backgroundColor: 'transparent',
+
                             borderWidth: 0.5,
                             borderRadius: 5,
                             height: 45,
@@ -392,14 +400,36 @@ export default class CustomerPlant extends Component {
         });
     }
 
+    checkDuLieuKeHoach() {
+        const data = this.state.dataChoose;
+        console.log('haha',);
+        const now = new Date();
+        const moment = require('moment');
+        for (let item of data) {
+            const _to = moment(`${this.state.datePlant} ${item.gioradukien}`, 'DD-MM-YYYY HH:mm:ss').toDate();
+            const from = moment(`${this.state.datePlant} ${item.giovaodukien}`, 'DD-MM-YYYY HH:mm:ss').toDate();
+            console.log(_to, "ccd", from);
+            if (from.getTime() <= now.getTime()) {
+                item['msg'] = `Kế hoạch của khách hàng ${item.tenkhachhang} thời gian vào điểm nhỏ hơn thời gian hiện tại!`;
+                return item;
+            }
+            if (_to.getTime() - from.getTime() <= 0) {
+                item['msg'] = `Kế hoạch của khách hàng ${item.tenkhachhang} thời gian vào điểm nhỏ hơn thời gian ra điểm!`;
+                return item;
+            }
+        }
+        return null;
+    }
+
     sendPlantToServer() {
-        var obj = {
+        let obj = {
             ngaylapkehoach: this.state.datePlant,
             dulieulapkehoach: this.state.dataChoose,
             idnhanvien: this.state.idNhanvien
-        }
-        console.log(obj);
-        if (obj.dulieulapkehoach.length === 0 || this.state.idNhanvien.length === 0) Toast.show('Vui lòng chọn kế hoạch cho nhân viên trước khi lập kế hoạch')
+        };
+
+        if (obj.dulieulapkehoach.length === 0 || this.state.idNhanvien.length === 0)
+            Toast.show('Vui lòng chọn kế hoạch cho nhân viên trước khi lập kế hoạch');
         else
             fetch(URlConfig.getLinkLapKeHoach(obj))
                 .then((response) => (response.json()))
@@ -413,8 +443,8 @@ export default class CustomerPlant extends Component {
                         this.props.navigation.goBack()
                     }
                 }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
-
     }
+
 
     componentDidMount() {
         SEARCH_STRING = ''
