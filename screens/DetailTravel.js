@@ -47,8 +47,8 @@ export default class DetailTravel extends React.Component {
                 longitudeDelta: 0.0421,
             }
         }
-        this.id = this.state.data.IDKeHoach
-        this.getData = this.getDataFromSv()
+        this.getEditButton.bind(this);
+        this.getDataFromSv.bind(this)
     }
 
     isOnline(dangtructuyen) {
@@ -82,6 +82,37 @@ export default class DetailTravel extends React.Component {
 
     }
 
+    getEditButton(showSwipe) {
+        const {navigate} = this.props.navigation
+        if (showSwipe) {
+            return (
+                <TouchableOpacity
+                    onPress={() => {
+                        navigate('EditTravel', {
+
+                            id: this.state.data.IDKeHoach,
+                            reload: () => this.getDataFromSv()
+                        })
+                    }}
+                    style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
+                    <Icon2 style={{
+                        alignSelf: 'center',
+                        width: 24,
+                        height: 24,
+                        backgroundColor: "transparent",
+                        marginLeft: 16,
+                        marginTop: (Platform.OS === 'ios') ? 8 : 0,
+                    }} size={24} color="white" name="edit"/>
+                </TouchableOpacity>
+            )
+        }
+        else {
+            return (
+                <View/>
+            )
+        }
+
+    }
     render() {
         let come = new Date(this.state.data.ThoiGianVaoDiemDuKien);
         let now = new Date();
@@ -116,35 +147,7 @@ export default class DetailTravel extends React.Component {
                     </TouchableOpacity>
                     <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Thông
                         tin kế hoạch</Text>
-                    {function () {
-                        if (showSwipe) {
-                            return (
-                                <TouchableOpacity
-                                    onPress={() => {
-
-                                        navigate('EditTravel', {
-                                            id: this.id,
-                                            reload: () => this.getData
-                                        })
-                                    }}
-                                    style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
-                                    <Icon2 style={{
-                                        alignSelf: 'center',
-                                        width: 24,
-                                        height: 24,
-                                        backgroundColor: "transparent",
-                                        marginLeft: 16,
-                                        marginTop: (Platform.OS === 'ios') ? 8 : 0,
-                                    }} size={24} color="white" name="edit"/>
-                                </TouchableOpacity>
-                            )
-                        }
-                        else {
-                            return (
-                                <View/>
-                            )
-                        }
-                    }()}
+                    {this.getEditButton(showSwipe)}
                 </View>
                 <View style={{
                     marginTop: 4, marginBottom: 4, marginLeft: 8, marginRight: 8,

@@ -11,7 +11,7 @@ import {
     FlatList,
     TouchableHightLight,
     ActivityIndicator,
-    Platform,DeviceEventEmitter
+    Platform, DeviceEventEmitter
 } from "react-native";
 import PTRView from 'react-native-pull-to-refresh'
 import Modal from 'react-native-modalbox';
@@ -160,7 +160,9 @@ export default class OrderListScreen extends Component {
         var string = item.NoiDung.slice(0, 50)
         if (item.NoiDung.length > 50)
             string = string + '...'
-        return (<Text style={{marginTop: 4, backgroundColor: 'transparent'}}>{string}</Text>)
+        if (item.TrangThai) {
+            return (<Text style={{marginTop: 4, backgroundColor: 'transparent'}}>{string}</Text>)
+        } else return <Text style={{marginTop: 4, backgroundColor: 'transparent', fontWeight: 'bold'}}>{string}</Text>
     }
 
     getIconMessage(item) {
@@ -169,6 +171,21 @@ export default class OrderListScreen extends Component {
                            name="email"/>)
         else return (<Icon2 style={{alignSelf: 'center', backgroundColor: 'transparent'}} size={24} color='blue'
                             name="paper-plane"/>)
+    }
+
+    getTimeSent(item) {
+        if (item.TrangThai)
+            return (<Text
+                style={{
+                    marginTop: 4,
+                    backgroundColor: 'transparent'
+                }}>{ultils.getDate(item.NgayGui)}</Text>)
+        return (<Text
+            style={{
+                fontWeight: 'bold',
+                marginTop: 4,
+                backgroundColor: 'transparent'
+            }}>{ultils.getDate(item.NgayGui)}</Text>)
     }
 
     flatListorIndicator() {
@@ -221,7 +238,7 @@ export default class OrderListScreen extends Component {
                             onPress={() =>
                                 navigate('DetailMessage',
                                     {
-                                        id:item.ID_TINNHAN,
+                                        id: item.ID_TINNHAN,
                                         nguoigui: item.Ten_NGUOIGUI,
                                         thoigian: item.NgayGui,
                                         noidung: item.NoiDung,
@@ -243,14 +260,10 @@ export default class OrderListScreen extends Component {
                                     <View style={{flexDirection: 'column', flex: 6, margin: 4}}>
                                         {this.getTenNguoigui(item)}
                                         {this.getNoiDungBenNgoai(item)}
-                                        <Text
-                                            style={{
-                                                marginTop: 4,
-                                                backgroundColor: 'transparent'
-                                            }}>{ultils.getDate(item.NgayGui)}</Text>
-                                    </View>
-                                    <View style={{flex: 1, justifyContent: 'center'}}>
-                                        {this.getIconMessage(item)}
+                                        {this.getTimeSent(item)}
+                                        <View style={{flex: 1, justifyContent: 'center'}}>
+                                            {this.getIconMessage(item)}
+                                        </View>
                                     </View>
                                 </Image>
                             </View>
@@ -263,6 +276,7 @@ export default class OrderListScreen extends Component {
     componentWillUnmount() {
         DeviceEventEmitter.emit('reloadMsg')
     }
+
     render() {
         const {navigate} = this.props.navigation
         return (

@@ -65,7 +65,7 @@ export default class DoanhThuReportItem extends React.Component {
                        }}/>
                 <View style={{
                     flexDirection: 'row',
-                    marginLeft: 4,
+                    marginLeft: 8,
                     marginTop: 8,
                     marginRight: 8,
                     marginBottom: 4

@@ -36,10 +36,11 @@ export default class EditTravelScreen extends React.Component {
 
     constructor(props) {
         super(props);
+        const {params} = this.props.navigation.state
         this.state = {
-            idnhanvien: null,
+            idnhanvien: '',
             idkehoach: null,
-            idkhachhang: null,
+            idkhachhang: '',
             tennhanvien: '',
             tenkhachhang: '',
             dateCome: '',
@@ -416,7 +417,7 @@ export default class EditTravelScreen extends React.Component {
     }
 
     componentDidMount() {
-        const {params} = this.props.navigation.state
+        const {params} = this.props.navigation.state;
         fetch(URlConfig.getLinkDetailTravel(params.id))
             .then((response) => (response.json()))
             .then((responseJson) => {

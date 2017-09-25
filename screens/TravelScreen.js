@@ -220,7 +220,14 @@ export default class TravelScreen extends React.Component {
                                 () => navigate('DetailTravel', {id: item.IDKeHoach})
                             }
                             goToEditTravel={
-                                () => navigate('EditTravel', {id: item.IDKeHoach, reload: () => this.getDataFromSv()})
+                                () => navigate('EditTravel', {
+                                    idnhanvien: item.IDNhanVien,
+                                    idkhachhang: item.IDCuaHang,
+                                    tennhanvien: item.TenNhanVien,
+                                    tenkhachhang: item.TenCuaHang,
+                                    id: item.IDKeHoach,
+                                    reload: () => this.getDataFromSv()
+                                })
                             }
                         />
                     }
