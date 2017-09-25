@@ -86,8 +86,6 @@ const Ksmart = StackNavigator({
     ChooseTypeReport: {screen: ChooseTypeReport},
     ChooseTypeOrder: {screen: ChooseTypeOrder},
     DetailBaoCaoDoanhThuSanLuong: {screen: DetailBaoCaoDoanhThuSanLuong}
-    }, {
-        mode: 'modal'
     }
 );
 AppRegistry.registerComponent('Ksmart', () => Ksmart);
