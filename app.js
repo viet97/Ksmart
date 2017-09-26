@@ -17,15 +17,12 @@ import MenuScreen from "./screens/MenuScreen";
 import LoginScreen from "./screens/LoginScreen";
 import MapScreen from "./screens/MapScreen";
 import ChartScreen from "./screens/ChartScreen";
-import MapListScreen from "./screens/MapListScreen";
 import OrderListScreen from "./screens/OrderListScreen";
 import ChooseTypeChart from "./screens/ChooseTypeChart";
 import OnlineChartScreen from "./screens/OnlineChartScreen";
 import ListNhanVienScreen from "./screens/ListNhanVienScreen";
 import DetailNhanVien from "./screens/DetailNhanVien";
 import DetailMessageScreen from "./screens/DetailMessageScreen";
-import Icon1 from 'react-native-vector-icons/Ionicons'
-import Color from './configs/color'
 import DetailCustomer from "./screens/DetailCustomer";
 import DetailTravel from "./screens/DetailTravel";
 import SendMessageScreen from "./screens/SendMessageScreen";
@@ -48,7 +45,6 @@ import AboutUsScreen from "./screens/AboutUsScreen";
 import ChooseTypeOrder from "./screens/ChooseTypeOrder";
 import DetailBaoCaoDoanhThuSanLuong from "./screens/DetailBaoCaoDoanhThuSanLuong";
 
-var {height, width} = Dimensions.get('window');
 const Ksmart = StackNavigator({
     Splash: {screen: SplashScreen},
     NewFeed: {screen: NewFeedScreen},
@@ -58,7 +54,6 @@ const Ksmart = StackNavigator({
     Menu: {screen: MenuScreen},
     Map: {screen: MapScreen,},
     Travel: {screen: TravelScreen},
-    NewFeed: {screen: NewFeedScreen},
     Message: {screen: MessageScreen},
     Report: {screen: ReportScreen},
     OnlineReport: {screen: OnlineReportScreen},

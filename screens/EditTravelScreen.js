@@ -98,7 +98,7 @@ export default class EditTravelScreen extends React.Component {
                         sửa kế hoạch</Text>
                     <TouchableOpacity
                         onPress={() => {
-                            let moment = require('moment')
+                            let moment = require('moment');
                             let date1 = moment(this.state.dateCome, 'DD-MM-YYYY HH:mm:ss').toDate();
                             let date2 = moment(this.state.dateOut, 'DD-MM-YYYY HH:mm:ss').toDate();
                             let now = new Date();

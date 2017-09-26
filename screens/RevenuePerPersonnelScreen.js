@@ -8,17 +8,12 @@ import {
 } from "react-native";
 import Icon1 from 'react-native-vector-icons/Ionicons'
 import Bar from "react-native-pathjs-charts/src/Bar";
-import Radar from "react-native-pathjs-charts/src/Radar";
 import StockLine from "react-native-pathjs-charts/src/StockLine";
 import DatePicker from "react-native-datepicker";
 import URlConfig from "../configs/url";
-import Color from "../configs/color";
 import Toast from 'react-native-simple-toast'
-import ultils from "../configs/ultils";
 import DoanhThuTheoNVItem from "../components/DoanhThuTheoNVItem";
 import ModalDropdownCustom from "../components/ModalDropdownCustom";
-import PTRView from 'react-native-pull-to-refresh'
-let {height, width} = Dimensions.get('window');
 export default class RevenuePerPersonnelScreen extends React.Component {
     static navigationOptions = {
         header: null
@@ -26,10 +21,10 @@ export default class RevenuePerPersonnelScreen extends React.Component {
 
     constructor(props) {
         super(props);
-        var today = new Date();
-        var dd = today.getDate();
-        var mm = today.getMonth() + 1; //January is 0!
-        var yyyy = today.getFullYear();
+        let today = new Date();
+        let dd = today.getDate();
+        let mm = today.getMonth() + 1; //January is 0!
+        let yyyy = today.getFullYear();
         if (dd < 10) {
             dd = '0' + dd
         }
@@ -40,7 +35,6 @@ export default class RevenuePerPersonnelScreen extends React.Component {
         today = dd + '-' + mm + '-' + yyyy;
         var now = new Date();
         this.state = {
-            refreshing: false,
             date: today,
             dateto: today,
             isEmpty: true,
@@ -51,8 +45,8 @@ export default class RevenuePerPersonnelScreen extends React.Component {
             dataRender: null,
             refreshing: false,
             type: [],
-        }
-        this.state.type.push('Dạng chữ')
+        };
+        this.state.type.push('Dạng chữ');
         this.state.type.push('Biểu đồ')
     }
 
@@ -61,7 +55,7 @@ export default class RevenuePerPersonnelScreen extends React.Component {
     }
 
     refreshData() {
-        this.setState({dataRender: null})
+        this.setState({dataRender: null});
         fetch(URlConfig.getRevenuePerson(this.state.date, this.state.dateto))
             .then((response) => (response.json()))
             .then((responseJson) => {

@@ -36,9 +36,8 @@ export default class Utils {
     }
 
     static changeDateFormat(d, format = 'DD-MM-YYYY HH:mm:ss') {
-        let date = new Date(d);
         let moment = require('moment');
-        return moment(date).format(format);
+        return moment(d).format(format);
     }
 
 }

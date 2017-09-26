@@ -22,6 +22,7 @@ import {CheckBox} from 'react-native-elements'
 import Communications from 'react-native-communications';
 import {Icon} from 'react-native-elements'
 import {shadowProps} from '../configs/shadow'
+import LinearGradient from 'react-native-linear-gradient';
 
 let {width, height} = Dimensions.get('window')
 const Realm = require('realm');
@@ -101,109 +102,100 @@ export default class LoginScreen extends React.Component {
         let windowWidth = Dimensions.get('window').width;
         return (
             <View
-                style={{flex: 1, justifyContent: 'space-between', flexDirection: 'column', backgroundColor: 'white',}}>
-                <Animatable.Image
-                    source={require('../images/blur_blue.jpg')}
-                    style={styles.image}
-                    resizeMode={Image.resizeMode.cover}
-                    blurRadius={1}
-                >
-                    <View style={{alignSelf: 'center', backgroundColor: 'transparent'}}>
-                        <Image source={require('../images/logoksmart.png')}
-                               style={{alignSelf: 'center', width: 100, height: 100}}/>
-                        <Text style={{
-                            color: 'white',
-                            fontSize: 30,
-                            alignSelf: 'center',
-                            marginTop: 8,
-                            fontFamily: 'GillSans-Light'
-                        }}>Ksmart Manager</Text>
-                    </View>
-                </Animatable.Image>
-                <View style={{
-                    flexDirection: 'column',
-                    position: 'absolute',
-                    backgroundColor: 'white',
-                    padding: 8,
-                    top: height * 0.32, left: width * 0.05, right: width * 0.05, borderRadius: 8, ...shadowProps
+                style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white',}}>
+
+                <LinearGradient
+                    colors={['#1b60ad', '#3dc4ea']} style={{
+                    flex: 6,
+                    width: '130%',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    overflow: 'hidden',
+                    borderBottomRightRadius: width / 2,
+                    borderBottomLeftRadius: width / 1.5
                 }}>
+                    <Image source={require('../design/Layer 1.png')}
+                           style={{resizeMode: 'contain', width: width / 3.5, height: width / 3.5}}/>
+                    <Text style={{color: 'white', backgroundColor: 'transparent', fontSize: 18, marginTop: 24}}>KSMART
+                        MANAGER</Text>
+                </LinearGradient>
 
-                    <View style={{alignSelf: 'center', width: windowWidth,}}>
-                        <View style={styles.viewborder}>
-                            <TextInput
-                                underlineColorAndroid="transparent"
-                                hintColor='gray' focusColor='black'
-                                returnKeyType={"next"}
-                                value={this.state.idct}
-                                style={styles.textInput}
-                                placeholder={'Mã công ty'}
-                                secureTextEntry={false}
-                                onChangeText={(text) => this.setState({idct: text})}
-                                onSubmitEditing={(event) => {
-                                    this.refs.ipPass.focus();
-                                }}
 
-                            />
-                            <Icon name="account-balance" size={24} color="#90CAF9"/>
-                        </View>
-                        <View style={styles.viewborder}>
-                            <TextInput
-                                ref="ipPass"
-                                underlineColorAndroid="transparent"
-                                returnKeyType={"next"}
-                                value={this.state.username}
-                                style={styles.textInput}
-                                placeholder={'Tên đăng nhập'}
-                                secureTextEntry={false}
-                                onChangeText={(text) => this.setState({username: text})}
-                                onSubmitEditing={(event) => {
-                                    this.refs.ipRePass.focus();
-                                }}
-                            />
-                            <Icon name="user-circle-o" type="font-awesome" size={24} color="#90CAF9"/>
-                        </View>
-                        <View style={styles.viewborder}>
-                            <TextInput
-                                ref="ipRePass"
-                                underlineColorAndroid="transparent"
-                                value={this.state.password}
-                                style={styles.textInput}
-                                returnKeyType={"done"}
-                                placeholder={'Mật khẩu'}
-                                secureTextEntry={true}
-                                onChangeText={(text) => this.setState({password: text})}
-                            />
-                            <Icon name="security" size={24} color="#90CAF9"/>
-                        </View>
-
-                    </View>
-                    <View
-                        style={{flexDirection: 'column', alignSelf: 'center', marginTop: 16, alignItems: 'center'}}>
-                        <CheckBox
-                            textStyle={{color: 'gray', fontFamily: 'System'}}
-                            title='Ghi nhớ đăng nhập'
-                            checked={this.state.checkOfCheckBox}
-                            onPress={() => this.setState({checkOfCheckBox: !this.state.checkOfCheckBox})}
-                            style={{backgroundColor: 'transparent'}}
-                        />
-                        <TouchableOpacity
-                            activeOpacity={0.6}
-                            underlayColor="transparent"
-                            style={{
-
-                                height: 48,
-                                marginTop: 16,
-                                borderRadius: 24,
-                                backgroundColor: '#4c91f8',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                padding: 16,
-                                width: width - width * 0.2, ...shadowProps
+                <View style={{alignSelf: 'center', width: windowWidth, flex: 7}}>
+                    <View style={styles.viewborder}>
+                        <TextInput
+                            underlineColorAndroid="transparent"
+                            hintColor='gray' focusColor='black'
+                            returnKeyType={"next"}
+                            value={this.state.idct}
+                            style={styles.textInput}
+                            placeholder={'Mã công ty'}
+                            secureTextEntry={false}
+                            onChangeText={(text) => this.setState({idct: text})}
+                            onSubmitEditing={(event) => {
+                                this.refs.ipPass.focus();
                             }}
-                            onPress={() => this.startLogin()}>
-                            <Animatable.Text style={styles.loginTextButton}>Đăng nhập</Animatable.Text>
-                        </TouchableOpacity>
+
+                        />
+                        <Icon name="account-balance" size={24} color="#90CAF9"/>
                     </View>
+                    <View style={styles.viewborder}>
+                        <TextInput
+                            ref="ipPass"
+                            underlineColorAndroid="transparent"
+                            returnKeyType={"next"}
+                            value={this.state.username}
+                            style={styles.textInput}
+                            placeholder={'Tên đăng nhập'}
+                            secureTextEntry={false}
+                            onChangeText={(text) => this.setState({username: text})}
+                            onSubmitEditing={(event) => {
+                                this.refs.ipRePass.focus();
+                            }}
+                        />
+                        <Icon name="user-circle-o" type="font-awesome" size={24} color="#90CAF9"/>
+                    </View>
+                    <View style={styles.viewborder}>
+                        <TextInput
+                            ref="ipRePass"
+                            underlineColorAndroid="transparent"
+                            value={this.state.password}
+                            style={styles.textInput}
+                            returnKeyType={"done"}
+                            placeholder={'Mật khẩu'}
+                            secureTextEntry={true}
+                            onChangeText={(text) => this.setState({password: text})}
+                        />
+                        <Icon name="security" size={24} color="#90CAF9"/>
+                    </View>
+
+                </View>
+                <View
+                    style={{flexDirection: 'column', alignSelf: 'center', marginTop: 16, alignItems: 'center'}}>
+                    <CheckBox
+                        textStyle={{color: 'gray', fontFamily: 'System'}}
+                        title='Ghi nhớ đăng nhập'
+                        checked={this.state.checkOfCheckBox}
+                        onPress={() => this.setState({checkOfCheckBox: !this.state.checkOfCheckBox})}
+                        style={{backgroundColor: 'transparent'}}
+                    />
+                    <TouchableOpacity
+                        activeOpacity={0.6}
+                        underlayColor="transparent"
+                        style={{
+
+                            height: 48,
+                            marginTop: 16,
+                            borderRadius: 24,
+                            backgroundColor: '#4c91f8',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            padding: 16,
+                            width: width - width * 0.2, ...shadowProps
+                        }}
+                        onPress={() => this.startLogin()}>
+                        <Animatable.Text style={styles.loginTextButton}>Đăng nhập</Animatable.Text>
+                    </TouchableOpacity>
                 </View>
                 <View style={{
                     position: 'absolute',

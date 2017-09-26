@@ -412,12 +412,6 @@ export default class ChartScreen extends React.Component {
                     </View>
                     {this.getChartorFlatListorNull(options)}
                 </View>
-                <ProgressDialog
-                    visible={this.state.progressVisible}
-                    title=""
-                    activityIndicatorStyle={{padding: 24}}
-                    message="Đang tải"
-                />
             </View>
         )
 
