@@ -112,7 +112,7 @@ export default class LoginScreen extends React.Component {
                     alignItems: 'center',
                     overflow: 'hidden',
                     borderBottomRightRadius: width / 2,
-                    borderBottomLeftRadius: width / 1.5
+                    borderBottomLeftRadius: width / 1.5, marginBottom: 48
                 }}>
                     <Image source={require('../design/Layer 1.png')}
                            style={{resizeMode: 'contain', width: width / 2.7, height: width / 2.7}}/>
@@ -128,6 +128,7 @@ export default class LoginScreen extends React.Component {
                 </LinearGradient>
                 <View style={{alignSelf: 'center', width: windowWidth, flex: 7}}>
                     <View style={styles.viewborder}>
+                        <Icon name="account-balance" size={24} color="#2F3A51"/>
                         <TextInput
                             underlineColorAndroid="transparent"
                             hintColor='gray' focusColor='black'
@@ -142,9 +143,10 @@ export default class LoginScreen extends React.Component {
                             }}
 
                         />
-                        <Icon name="account-balance" size={24} color="#90CAF9"/>
+
                     </View>
                     <View style={styles.viewborder}>
+                        <Icon name="user-circle-o" type="font-awesome" size={24} color="#2F3A51"/>
                         <TextInput
                             ref="ipPass"
                             underlineColorAndroid="transparent"
@@ -158,9 +160,10 @@ export default class LoginScreen extends React.Component {
                                 this.refs.ipRePass.focus();
                             }}
                         />
-                        <Icon name="user-circle-o" type="font-awesome" size={24} color="#90CAF9"/>
+
                     </View>
                     <View style={styles.viewborder}>
+                        <Icon name="security" size={24} color="#2F3A51"/>
                         <TextInput
                             ref="ipRePass"
                             underlineColorAndroid="transparent"
@@ -171,38 +174,66 @@ export default class LoginScreen extends React.Component {
                             secureTextEntry={true}
                             onChangeText={(text) => this.setState({password: text})}
                         />
-                        <Icon name="security" size={24} color="#90CAF9"/>
+
                     </View>
+                    <View
+                        style={{flexDirection: 'column', alignSelf: 'center', marginTop: 16, alignItems: 'center'}}>
+                        <CheckBox
+                            textStyle={{color: 'gray', fontFamily: 'System'}}
+                            title='Ghi nhớ đăng nhập'
+                            checked={this.state.checkOfCheckBox}
+                            onPress={() => this.setState({checkOfCheckBox: !this.state.checkOfCheckBox})}
+                            style={{backgroundColor: 'transparent'}}
+                        />
+                        <TouchableOpacity
+                            activeOpacity={0.6}
+                            underlayColor="transparent"
+                            style={{
 
-                </View>
-                <View
-                    style={{flexDirection: 'column', alignSelf: 'center', marginTop: 16, alignItems: 'center'}}>
-                    <CheckBox
-                        textStyle={{color: 'gray', fontFamily: 'System'}}
-                        title='Ghi nhớ đăng nhập'
-                        checked={this.state.checkOfCheckBox}
-                        onPress={() => this.setState({checkOfCheckBox: !this.state.checkOfCheckBox})}
-                        style={{backgroundColor: 'transparent'}}
+                                height: 48,
+                                marginTop: 16,
+                                borderRadius: 24,
+                                backgroundColor: '#3dc4ea',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                padding: 16,
+                                width: width - width * 0.2, ...shadowProps
+                            }}
+                            onPress={() => this.startLogin()}>
+                            <Animatable.Text style={styles.loginTextButton}>Đăng nhập</Animatable.Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={{
+                        position: 'absolute',
+                        bottom: 8,
+                        left: 0,
+                        right: 0,
+                        flexDirection: 'row',
+                        justifyContent: 'center'
+                    }}>
+                        <Text style={{
+                            color: 'gray', fontFamily: 'Roboto-Thin'
+                        }}>Copyright © <Text style={{}} onPress={() => {
+                            Communications.web(website)
+                        }}>Ksmart.vn</Text>. Hotline: </Text>
+                        <Text style={{
+                            color: 'gray', fontFamily: 'Roboto-Thin'
+                        }} onPress={() => {
+                            Communications.phonecall(hotline, true)
+                        }}>{hotline}</Text></View>
+                    <ProgressDialog
+                        visible={this.state.progressVisible}
+                        title=""
+                        activityIndicatorStyle={{padding: 24}}
+                        message="Đang đăng nhập"
                     />
-                    <TouchableOpacity
-                        activeOpacity={0.6}
-                        underlayColor="transparent"
-                        style={{
-
-                            height: 48,
-                            marginTop: 16,
-                            borderRadius: 24,
-                            backgroundColor: '#4c91f8',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            padding: 16,
-                            width: width - width * 0.2, ...shadowProps
-                        }}
-                        onPress={() => this.startLogin()}>
-                        <Animatable.Text style={styles.loginTextButton}>Đăng nhập</Animatable.Text>
-                    </TouchableOpacity>
                 </View>
-                <View style={{
+            </View>
+        );
+    }
+
+    /*
+    <View style={{
                     position: 'absolute',
                     bottom: 16,
                     width: Dimensions.get('window').width,
@@ -226,15 +257,7 @@ export default class LoginScreen extends React.Component {
                         <Text style={styles.textStyle}>Phiên bản: 1.0.0</Text>
                     </View>
                 </View>
-                <ProgressDialog
-                    visible={this.state.progressVisible}
-                    title=""
-                    activityIndicatorStyle={{padding: 24}}
-                    message="Đang đăng nhập"
-                />
-            </View>
-        );
-    }
+     */
 
     getBaseURL() {
 
@@ -389,8 +412,10 @@ const styles = StyleSheet.create({
         paddingTop: 100
     },
     textInput: {
+        color: '#2c3e50',
         fontSize: 16,
         height: 40,
+        marginLeft: 8,
         paddingHorizontal: 8,
         width: width - width * 0.1 - 80,
     },
@@ -409,11 +434,12 @@ const styles = StyleSheet.create({
         fontSize: 15
     },
     viewborder: {
-        borderBottomWidth: 0.5,
         marginTop: 16,
         marginHorizontal: 48,
+        borderRadius: 24,
+        paddingHorizontal: 16,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        borderBottomColor: '#90CAF9',
+        backgroundColor: '#ecf0f1',
     }
 })
