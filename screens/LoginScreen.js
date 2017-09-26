@@ -107,7 +107,7 @@ export default class LoginScreen extends React.Component {
                 <LinearGradient
                     colors={['#1b60ad', '#3dc4ea']} style={{
                     flex: 6,
-                    width: '130%',
+                    width: '122%',
                     justifyContent: 'center',
                     alignItems: 'center',
                     overflow: 'hidden',
@@ -115,12 +115,17 @@ export default class LoginScreen extends React.Component {
                     borderBottomLeftRadius: width / 1.5
                 }}>
                     <Image source={require('../design/Layer 1.png')}
-                           style={{resizeMode: 'contain', width: width / 3.5, height: width / 3.5}}/>
-                    <Text style={{color: 'white', backgroundColor: 'transparent', fontSize: 18, marginTop: 24}}>KSMART
-                        MANAGER</Text>
+                           style={{resizeMode: 'contain', width: width / 2.7, height: width / 2.7}}/>
+                    <Text
+                        style=
+                            {{
+                                color: 'white',
+                                backgroundColor: 'transparent',
+                                fontSize: 22,
+                                marginTop: 24,
+                                fontFamily: 'Roboto-Medium'
+                            }}>KSMART MANAGER</Text>
                 </LinearGradient>
-
-
                 <View style={{alignSelf: 'center', width: windowWidth, flex: 7}}>
                     <View style={styles.viewborder}>
                         <TextInput

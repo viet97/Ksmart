@@ -89,7 +89,6 @@ export default class DetailTravel extends React.Component {
                 <TouchableOpacity
                     onPress={() => {
                         navigate('EditTravel', {
-
                             id: this.state.data.IDKeHoach,
                             reload: () => this.getDataFromSv()
                         })
@@ -114,7 +113,9 @@ export default class DetailTravel extends React.Component {
 
     }
     render() {
-        let come = new Date(this.state.data.ThoiGianVaoDiemDuKien);
+        const moment = require('moment');
+        let come = moment(this.state.data.ThoiGianVaoDiemDuKien, 'YYYY-MM-DDTHH:mm:ss').toDate();
+
         let now = new Date();
         let showSwipe = false;
         if (come.getTime() - now.getTime() >= 5 * 60 * 1000) {
