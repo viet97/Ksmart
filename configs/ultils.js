@@ -32,11 +32,11 @@ export default class Utils {
     static getDate(d) {
         const moment = require('moment');
         return moment(d).format('DD-MM-YYYY HH:mm:ss');
-
     }
 
     static changeDateFormat(d, format = 'DD-MM-YYYY HH:mm:ss') {
-        let moment = require('moment');
+
+        const moment = require('moment');
         return moment(d).format(format);
     }
 
