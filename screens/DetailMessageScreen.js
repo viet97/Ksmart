@@ -34,7 +34,6 @@ export default class DetailMessageScreen extends Component {
 
     componentWillUnmount() {
         const {params} = this.props.navigation.state;
-        params.reload()
     }
 
     componentDidMount() {
@@ -44,7 +43,7 @@ export default class DetailMessageScreen extends Component {
             .then((response) => (response.json()))
             .then((responseJson) => {
                 console.log(url, responseJson)
-            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'));
     }
 
     render() {
@@ -59,7 +58,6 @@ export default class DetailMessageScreen extends Component {
                     <TouchableOpacity
                         onPress={() => {
                             this.props.navigation.goBack();
-
                         }}
                         style={styles.iconStyle}>
                         <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>

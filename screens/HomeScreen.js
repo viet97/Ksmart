@@ -141,8 +141,7 @@ export default class HomeScreen extends React.Component {
                             backgroundColor: '#3cbdef', borderRadius: 10, width: width / 4,
                             height: width / 4, justifyContent: 'center', alignItems: 'center'
                         }}>
-                            <Icon color={"white"} name={item.iconName} type={"font-awesome"} size={24}
-                            />
+                            <Icon color={"white"} name={item.iconName} type={"font-awesome"} size={24}/>
                         </View>
 
                         <Text numberOfLines={1} style={styles.titleIconsMenu}>{item.title}</Text>

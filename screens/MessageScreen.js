@@ -13,25 +13,14 @@ import {
     ActivityIndicator,
     Platform, DeviceEventEmitter
 } from "react-native";
-import PTRView from 'react-native-pull-to-refresh'
-import Modal from 'react-native-modalbox';
 import URlConfig from "../configs/url";
 import Color from '../configs/color'
 import Icon1 from 'react-native-vector-icons/Ionicons'
-import {Icon} from "react-native-elements";
 import Icon2 from 'react-native-vector-icons/Entypo'
 import Icon3 from 'react-native-vector-icons/MaterialCommunityIcons'
 import Image from 'react-native-image-progress';
 import Toast from 'react-native-simple-toast'
-import ProgressBar from 'react-native-progress/Bar';
-import DialogManager, {ScaleAnimation, DialogContent} from 'react-native-dialog-component';
-import {DialogComponent, SlideAnimation} from 'react-native-dialog-component';
-import Dialog from '../components/DialogOrder'
-import orderListData from '../dbcontext/orderListData'
-import AtoZListView from 'react-native-atoz-listview';
-import Search from 'react-native-search-box';
 import ultils from "../configs/ultils";
-import ModalSendMessage from "../components/ModalSendMessage";
 
 var {height, width} = Dimensions.get('window');
 
@@ -74,12 +63,12 @@ export default class OrderListScreen extends Component {
 
 
     componentDidMount() {
-
         this.getMessageListFromServer(this.state.dateFrom, this.state.dateTo)
     }
 
     getMessageListFromServer(dateFrom, dateTo) {
-        this.setState({dataRender: null})
+        console.log('load lai nao`');
+        this.setState({dataRender: null});
         console.log(URlConfig.getMessageList(dateFrom, dateTo))
         fetch(URlConfig.getMessageList(dateFrom, dateTo))
             .then((response) => response.json())
@@ -189,7 +178,7 @@ export default class OrderListScreen extends Component {
     }
 
     flatListorIndicator() {
-        const {navigate} = this.props.navigation
+        const {navigate} = this.props.navigation;
 
         if (!this.state.dataRender) {
             return (
@@ -235,7 +224,10 @@ export default class OrderListScreen extends Component {
                     data={this.state.dataRender}
                     renderItem={({item}) =>
                         <TouchableOpacity
-                            onPress={() =>
+                            onPress={() => {
+                                console.log(item);
+                                item.TrangThai = 1;
+                                this.forceUpdate();
                                 navigate('DetailMessage',
                                     {
                                         id: item.ID_TINNHAN,
@@ -244,6 +236,7 @@ export default class OrderListScreen extends Component {
                                         noidung: item.NoiDung,
                                         reload: () => this.getMessageListFromServer(this.state.dateFrom, this.state.dateTo)
                                     })
+                            }
 
                             }>
                             <View
@@ -261,7 +254,13 @@ export default class OrderListScreen extends Component {
                                         {this.getTenNguoigui(item)}
                                         {this.getNoiDungBenNgoai(item)}
                                         {this.getTimeSent(item)}
-                                        <View style={{flex: 1, justifyContent: 'center'}}>
+                                        <View style={{
+                                            position: 'absolute',
+                                            right: 2,
+                                            top: 0,
+                                            bottom: 0,
+                                            justifyContent: 'center'
+                                        }}>
                                             {this.getIconMessage(item)}
                                         </View>
                                     </View>
