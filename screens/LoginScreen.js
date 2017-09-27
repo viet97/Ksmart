@@ -4,27 +4,21 @@
 
 import React from 'react';
 import {
-    Text, Alert, ScrollView,
-    View, Platform, Switch, Animated,
-    Button, ListView, Image, StyleSheet, StatusBar, TouchableHighlight,
-    TouchableOpacity, findNodeHandle, TextInput, Dimensions
+    Text,
+    View, Platform, Image, StyleSheet,
+    TouchableOpacity, TextInput, Dimensions
 } from 'react-native';
-import {TextInputLayout} from 'rn-textinputlayout';
 import Toast from 'react-native-root-toast';
 import URlConfig from "../configs/url";
 import * as Animatable from 'react-native-animatable';
-import DialogManager, {ScaleAnimation, DialogContent} from 'react-native-dialog-component';
 import {NavigationActions} from "react-navigation";
-import LoginDialog from "../components/LoginDialog";
 import {ProgressDialog} from 'react-native-simple-dialogs';
-import ultils from "../configs/ultils";
 import {CheckBox} from 'react-native-elements'
 import Communications from 'react-native-communications';
 import {Icon} from 'react-native-elements'
 import {shadowProps} from '../configs/shadow'
-import LinearGradient from 'react-native-linear-gradient';
 
-let {width, height} = Dimensions.get('window')
+let {width, height} = Dimensions.get('window');
 const Realm = require('realm');
 export default class LoginScreen extends React.Component {
 
@@ -104,28 +98,26 @@ export default class LoginScreen extends React.Component {
             <View
                 style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white',}}>
 
-                <LinearGradient
-                    colors={['#1b60ad', '#3dc4ea']} style={{
-                    flex: 6,
-                    width: '122%',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    overflow: 'hidden',
-                    borderBottomRightRadius: width / 2,
-                    borderBottomLeftRadius: width / 1.5, marginBottom: 48
-                }}>
-                    <Image source={require('../design/Layer 1.png')}
-                           style={{resizeMode: 'contain', width: width / 2.7, height: width / 2.7}}/>
-                    <Text
-                        style=
-                            {{
-                                color: 'white',
-                                backgroundColor: 'transparent',
-                                fontSize: 22,
-                                marginTop: 24,
-                                fontFamily: 'Roboto-Medium'
-                            }}>KSMART MANAGER</Text>
-                </LinearGradient>
+
+                <Image source={require('../design/bg_logo.png')}
+                       style={{
+                           flex: 6,
+                           resizeMode: 'stretch',
+                           width: width,
+                           justifyContent: 'center',
+                           alignItems: 'center'
+                       }}>
+                    <Image source={require('../design/logo_ks.png')}
+                           style={{width: width / 2.5, height: width / 2.5, resizeMode: 'stretch'}}/>
+                    <Text style={{
+                        color: 'white',
+                        fontFamily: 'Roboto-Medium',
+                        fontSize: 20,
+                        backgroundColor: 'transparent',
+                        marginTop: 16
+                    }}>KSMART MANAGER</Text>
+                </Image>
+
                 <View style={{alignSelf: 'center', width: windowWidth, flex: 7}}>
                     <View style={styles.viewborder}>
                         <Icon name="account-balance" size={24} color="#2F3A51"/>
@@ -231,33 +223,6 @@ export default class LoginScreen extends React.Component {
             </View>
         );
     }
-
-    /*
-    <View style={{
-                    position: 'absolute',
-                    bottom: 16,
-                    width: Dimensions.get('window').width,
-                    flexDirection: 'column', backgroundColor: 'transparent'
-                }}>
-                    <View style={{alignSelf: 'center', flexDirection: 'row'}}>
-                        <Text style={styles.textStyle}>Website: </Text>
-                        <TouchableOpacity onPress={() => Communications.web(website)}>
-                            <Text style={styles.textStyle}>{website}</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{alignSelf: 'center', flexDirection: 'row'}}>
-                        <Text style={styles.textStyle}>Hotline: </Text>
-                        <TouchableOpacity activeOpacity={0.6} onPress={() => {
-                            Communications.phonecall(hotline, true)
-                        }}>
-                            <Text style={styles.textStyle}>{hotline}</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{alignSelf: 'center'}}>
-                        <Text style={styles.textStyle}>Phiên bản: 1.0.0</Text>
-                    </View>
-                </View>
-     */
 
     getBaseURL() {
 
