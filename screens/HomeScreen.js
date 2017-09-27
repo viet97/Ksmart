@@ -3,6 +3,7 @@ import Icon1 from 'react-native-vector-icons/Ionicons'
 import Icon2 from 'react-native-vector-icons/Entypo'
 import Icon3 from 'react-native-vector-icons/FontAwesome'
 import Icon4 from 'react-native-vector-icons/Foundation'
+import {Icon} from 'react-native-elements';
 import React from 'react';
 import Drawer from 'react-native-drawer';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
@@ -11,7 +12,7 @@ import {
     AppRegistry,
     Text,
     View, BackHandler,
-    Button, ListView, Image, StyleSheet, StatusBar,
+    Button, FlatList, Image, StyleSheet, StatusBar,
     TouchableOpacity,
     Dimensions,
     Platform,
@@ -27,10 +28,11 @@ import ChooseTypeChart from "./ChooseTypeChart";
 import ChooseTypeListNV from "./ChooseTypeListNV";
 import ChooseTypeTravel from "./ChooseTypeTravel";
 import ChooseTypeReport from "./ChooseTypeReport";
-import {shadowProps} from "../configs/shadow";
 import ChooseTypeCustomer from "./ChooseTypeCustomer";
 import {onChangeMessage} from "../networks/Network";
-import ultils from "../configs/ultils";
+import menus from "../configs/menus";
+import LinearGradient from 'react-native-linear-gradient';
+
 const Realm = require('realm');
 var {height} = Dimensions.get('window');
 var func;
@@ -42,7 +44,7 @@ export default class HomeScreen extends React.Component {
         header: null
     };
     closeControlPanel = () => {
-        this._drawer.close()
+        this._drawer.close();
         backcount = 0
     };
     openControlPanel = () => {
@@ -52,18 +54,20 @@ export default class HomeScreen extends React.Component {
             height: 0
         })
     };
-    componentWillMount(){
+
+    componentWillMount() {
         DeviceEventEmitter.addListener('reloadMsg', this.reloadMsg.bind(this))
     }
-    async reloadMsg(){
+
+    async reloadMsg() {
         let realm = new Realm();
         let login = realm.objects('LoginSave');
         console.log('didMount', login);
         if (login.length !== 0) {
             const loginOBJ = login[0];
-            await onChangeMessage(loginOBJ.username,loginOBJ.password,loginOBJ.idct);
+            await onChangeMessage(loginOBJ.username, loginOBJ.password, loginOBJ.idct);
             this.forceUpdate();
-            console.log('update unread',URlConfig.OBJLOGIN.messageUnread)
+            console.log('update unread', URlConfig.OBJLOGIN.messageUnread)
         }
     }
 
@@ -110,9 +114,43 @@ export default class HomeScreen extends React.Component {
     }
 
     onSwipeRight(gestureState) {
-        console.log("onSwipeRight")
+        console.log("onSwipeRight");
         this.setState({myText: 'You swiped right!'});
         this.openControlPanel()
+    }
+
+    renderContentMenu(navigate) {
+        let width = Dimensions.get('window').width;
+        return (
+            <FlatList
+                scrollEnabled={false}
+                numColumns={3}
+                contentContainerStyle={{flex: 1, alignItems: 'center', backgroundColor: 'white'}}
+                keyboardDismissMode="on-drag"
+                data={menus}
+                keyExtractor={(item) => item.screenName}
+                renderItem={({item}) =>
+                    <TouchableOpacity
+                        activeOpacity={0.7}
+                        style={{
+                            backgroundColor: 'transparent',
+                            margin: width / 40
+                        }}
+                        onPress={() => navigate(item.screenName)}>
+                        <View style={{
+                            backgroundColor: '#3cbdef', borderRadius: 10, width: width / 4,
+                            height: width / 4, justifyContent: 'center', alignItems: 'center'
+                        }}>
+                            <Icon color={"white"} name={item.iconName} type={"font-awesome"} size={24}
+                            />
+                        </View>
+
+                        <Text numberOfLines={1} style={styles.titleIconsMenu}>{item.title}</Text>
+
+                    </TouchableOpacity>
+                }
+            />
+        );
     }
 
 
@@ -122,21 +160,24 @@ export default class HomeScreen extends React.Component {
             <GestureRecognizer
                 onSwipeRight={(state) => this.onSwipeRight(state)}
                 style={{flex: 1}}>
-                <Image source={require('../images/bg.jpg')}
-                       style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, opacity: 0.4}}/>
                 <View style={{flex: 1}}>
                     <View style={{flex: 1}}>
-                        <View style={styles.titleStyle}>
+                        <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
                             <TouchableOpacity onPress={() => this.openControlPanel()}
                                               style={{
                                                   marginLeft: 16,
                                                   width: 40,
                                                   height: 40,
                                                   alignSelf: 'center',
-                                                  backgroundColor: 'transparent', ...shadowProps
+                                                  backgroundColor: 'transparent',
                                               }}>
                                 <Icon1
-                                    style={{alignSelf: 'center', backgroundColor: 'transparent'}}
+                                    style={{
+                                        alignSelf: 'center',
+                                        backgroundColor: 'transparent',
+                                        paddingBottom: 16,
+                                        paddingRight: 16
+                                    }}
                                     size={35}
                                     color="white" name="ios-menu"
                                 />
@@ -151,148 +192,10 @@ export default class HomeScreen extends React.Component {
                                              }}>Trang chủ</Animatable.Text>
 
                             <View style={{width: 50, height: 50, backgroundColor: 'transparent'}}/>
-                        </View>
+                        </LinearGradient>
 
                         <View style={{flex: 9}}>
-                            <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 16}}>
-                                <TouchableOpacity
-                                    style={{
-                                        alignSelf: 'center',
-                                        width: 90,
-                                        backgroundColor: 'transparent', ...shadowProps
-                                    }}
-                                    onPress={() => navigate('ChooseTypeNewFeed')}>
-                                    <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
-                                           source={require('../images/newfeed2.png')}/>
-
-                                    <Animatable.Text animation="slideInLeft" style={styles.titleIconsMenu}>Hoạt
-                                        động</Animatable.Text>
-
-                                </TouchableOpacity>
-                                <TouchableOpacity
-                                    style={{
-                                        alignSelf: 'center',
-                                        width: 90,
-                                        backgroundColor: 'transparent', ...shadowProps
-                                    }}
-                                    onPress={() => navigate('ChooseTypeListNV')}>
-                                    <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
-
-                                           source={require('../images/linkedin-contacts-2013.png')}/>
-
-                                    <Animatable.Text animation="zoomIn" style={styles.titleIconsMenu}>Nhân
-                                        viên</Animatable.Text>
-
-                                </TouchableOpacity>
-                                <TouchableOpacity
-                                    style={{
-                                        alignSelf: 'center',
-                                        width: 90,
-                                        backgroundColor: 'transparent', ...shadowProps
-                                    }}
-                                    onPress={() => navigate('ChooseTypeOrder')}>
-                                    <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
-                                           source={require('../images/120-in-1-applets-2013.png')}/>
-
-                                    <Animatable.Text animation="slideInRight" style={styles.titleIconsMenu}>Đơn
-                                        hàng </Animatable.Text>
-
-                                </TouchableOpacity>
-                            </View>
-                            <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 16}}>
-                                <TouchableOpacity
-                                    style={{
-                                        alignSelf: 'center',
-                                        width: 90,
-                                        backgroundColor: 'transparent', ...shadowProps
-                                    }}
-                                    onPress={() => navigate('ChooseTypeCustomer')}>
-                                    <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
-                                           source={require('../images/myface-for-facebook-2013.png')}/>
-
-                                    <Animatable.Text animation="slideInLeft" style={styles.titleIconsMenu}>Khách
-                                        hàng </Animatable.Text>
-
-                                </TouchableOpacity>
-                                <TouchableOpacity
-                                    style={{
-                                        alignSelf: 'center',
-                                        width: 90,
-                                        backgroundColor: 'transparent', ...shadowProps
-                                    }}
-                                    onPress={() => navigate('ChooseTypeTravel')}>
-                                    <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
-                                           source={require('../images/flight-live-status-weather-2014.png')}/>
-                                    <Animatable.Text animation="flipInY" style={styles.titleIconsMenu}>Viếng
-                                        thăm</Animatable.Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity
-                                    style={{
-                                        alignSelf: 'center',
-                                        width: 90,
-                                        backgroundColor: 'transparent', ...shadowProps
-                                    }}
-                                    onPress={() => navigate('ChooseTypeChart')}>
-                                    <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
-                                           source={require('../images/moneybook-2011.png')}/>
-
-                                    <Animatable.Text animation="flipInY" style={styles.titleIconsMenu}>Biểu
-                                        đồ</Animatable.Text>
-
-                                </TouchableOpacity>
-                            </View>
-                            <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 16}}>
-                                <TouchableOpacity
-                                    style={{
-                                        alignSelf: 'center',
-                                        width: 90,
-                                        backgroundColor: 'transparent', ...shadowProps
-                                    }}
-                                    onPress={() => navigate('ChooseTypeReport')}>
-                                    <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
-                                           source={require('../images/appadvice-2017.png')}/>
-
-                                    <Animatable.Text animation="slideInLeft" style={styles.titleIconsMenu}>Báo
-                                        cáo</Animatable.Text>
-
-                                </TouchableOpacity>
-                                <TouchableOpacity
-                                    style={{
-                                        alignSelf: 'center',
-                                        width: 90,
-                                        backgroundColor: 'transparent', ...shadowProps
-                                    }}
-                                    onPress={() => navigate('OnlineReport')}>
-                                    <Image style={{width: 60, height: 60, borderRadius: 10, alignSelf: 'center'}}
-                                           source={require('../images/turboscan-2015.png')}/>
-
-                                    <Animatable.Text animation="bounceIn"
-                                                     style={styles.titleIconsMenu}>Online</Animatable.Text>
-
-                                </TouchableOpacity>
-                                <TouchableOpacity
-                                    style={{
-                                        alignSelf: 'center',
-                                        width: 90,
-                                        backgroundColor: 'transparent', ...shadowProps
-                                    }}
-                                    onPress={() => navigate('Message')}>
-                                    <Image style={{
-                                        width: 60,
-                                        height: 60,
-                                        borderRadius: 10,
-                                        alignSelf: 'center',
-                                        justifyContent: 'flex-end',
-                                        flexDirection: 'row'
-                                    }}
-                                           source={require('../images/webmail-2012.png')}
-                                    />
-
-                                    <Animatable.Text animation="slideInRight" style={styles.titleIconsMenu}>Tin
-                                        nhắn</Animatable.Text>
-                                    {this.renderBagde(14)}
-                                </TouchableOpacity>
-                            </View>
+                            {this.renderContentMenu(navigate)}
                         </View>
                     </View>
                 </View>
@@ -319,22 +222,18 @@ export default class HomeScreen extends React.Component {
         const {navigate} = this.props.navigation;
         return (
             <View style={{flex: 1}}>
-                <View style={{
-                    justifyContent: 'center',
-                    flex: 1,
-                    elevation: (Platform.OS === 'ios') ? 0 : 15,
-                }}>
-                    <Image style={{position: 'absolute'}} source={require('../images/bg3.png')}/>
+                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
+                    <View/>
                     <Text style={{
                         alignSelf: 'center',
                         textAlign: 'center',
                         backgroundColor: 'transparent',
                         fontSize: 18
                     }}>{URlConfig.OBJLOGIN.tendangnhap} </Text>
-                </View>
+                    <View/>
+                </LinearGradient>
 
                 <View style={{paddingTop: 15, flexDirection: 'column', flex: 9}}>
-                    <Image style={{position: 'absolute'}} source={require('../images/bg3.png')}/>
                     <ScrollView style={{marginTop: (Platform.OS === 'ios') ? 16 : 0,}}>
                         <View style={styles.touchable}>
                             <TouchableOpacity style={styles.itemSideMenuStyle} onPress={() => {
@@ -506,11 +405,13 @@ const styles = StyleSheet.create({
         marginTop: 32,
     },
     titleStyle: {
-        marginTop: Platform.OS === 'ios' ? 16 : 0,
+        paddingTop: Platform.OS === 'ios' ? 16 : 0,
         flex: 1,
         elevation: 15,
         justifyContent: 'space-between',
+        alignItems: 'center',
         flexDirection: 'row',
+        backgroundColor: '#123'
     },
     headerStyle: {
         elevation: 15, height: this.height / 7
@@ -531,15 +432,20 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent'
     },
     titleIconsMenu: {
+        marginTop: 4,
         alignSelf: 'center',
         textAlign: 'center',
-        color: 'white',
-        fontSize: 16,
+        fontFamily: 'Roboto-Medium',
+        color: 'black',
+        fontSize: 12,
         backgroundColor: 'transparent',
-
-        fontFamily: 'Al Nile'
-    }, absolute: {
-        top: 0, bottom: 0, left: 0, right: 0, position: 'absolute',
+    },
+    absolute: {
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
+        position: 'absolute',
     },
     touchable: {
         flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 8, flex: 1

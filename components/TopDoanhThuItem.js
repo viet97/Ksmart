@@ -61,8 +61,6 @@ export default class TopDoanhThuItem extends React.Component {
                            width: width - 8
                        }}/>
                 <View
-
-
                     style={{
                         flexDirection: 'row',
                         justifyContent: 'space-between',

@@ -133,7 +133,6 @@ export default class LoginScreen extends React.Component {
                             onSubmitEditing={(event) => {
                                 this.refs.ipPass.focus();
                             }}
-
                         />
 
                     </View>

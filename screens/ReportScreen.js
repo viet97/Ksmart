@@ -102,7 +102,7 @@ export default class ReportScreen extends Component {
         ALL_LOADED = false
         this.setState({isEndList: false, dataRender: null})
         PAGE = 1;
-        let url = this.getTypeLinkOfReport()
+        let url = this.getTypeLinkOfReport();
         fetch(url)
             .then((response) => (response.json()))
             .then((responseJson) => {
@@ -248,8 +248,7 @@ export default class ReportScreen extends Component {
                         textAlign: 'center',
                         fontSize: 20,
                         backgroundColor: 'transparent'
-                    }}>Không
-                        có dữ liệu</Text>
+                    }}>Không có dữ liệu</Text>
 
                 </View>
             )
@@ -283,7 +282,6 @@ export default class ReportScreen extends Component {
                                 return this.renderTopDoanhThu(item)
                             case 3:
                                 return this.renderKhongCoDoanhThu(item)
-
                         }
                     }}
                 />

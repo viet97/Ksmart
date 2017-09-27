@@ -252,6 +252,7 @@ export default class DetailNhanVien extends React.Component {
 
     componentWillMount() {
         const {params} = this.props.navigation.state;
+        console.log(URlConfig.getLinkDetailNhanVien(params.idNhanVien));
         fetch(URlConfig.getLinkDetailNhanVien(params.idNhanVien))
             .then((response) => (response.json()))
             .then((responseJson) => {
