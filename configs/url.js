@@ -161,7 +161,7 @@ export default class URlConfig {
         return data.urlserver + '/AppKeHoachDiChuyen_v4.aspx?token=' + md5.hex_md5(Date.now()) + '&idct=' + data.idcongty + '&idquanly=' + data.id + '&from=' + dateFrom + '&to=' + dateTo + '&loai=chitietcacngaycokehoach&page=' + page + loctrangthai + timkiemStr;
     }
 
-    static getCustomerLink(page, keyword = '', id) {
+    static getCustomerLink(page, keyword = '', id = -1) {
         let data = URlConfig.OBJLOGIN;
         return data.urlserver + '/AppDanhSachCuaHang_v3.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idct=' + data.idcongty + '&lastid=' + page + '&idloaikhachhang=' + id + '&loctatca=' + keyword;
     }
