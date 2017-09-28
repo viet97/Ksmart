@@ -160,6 +160,10 @@ export default class HomeScreen extends React.Component {
                 onSwipeRight={(state) => this.onSwipeRight(state)}
                 style={{flex: 1}}>
                 <View style={{flex: 1}}>
+                    <StatusBar
+                        backgroundColor="#1b60ad"
+                        barStyle="light-content"
+                    />
                     <View style={{flex: 1}}>
                         <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
                             <TouchableOpacity onPress={() => this.openControlPanel()}
@@ -410,7 +414,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         flexDirection: 'row',
-        backgroundColor: '#123'
     },
     headerStyle: {
         elevation: 15, height: this.height / 7

@@ -171,10 +171,10 @@ export default class DialogCustom extends React.Component {
                         ref='textinput'
                         style={{height: 40, borderColor: 'gray', borderWidth: 0.4, borderRadius: 10, paddingLeft: 8}}
                         onChangeText={(textSearch) => {
+                            SEARCH_STRING = textSearch
                             if (this.state.positionGroupChoose === -1 || this.state.positionGroupChoose === '-1') {
-                                Toast.show('Vui long chon phong ban truoc')
+                                Toast.show('Vui lòng chọn phòng ban trước')
                             } else {
-                                SEARCH_STRING = textSearch
                                 this.getListNhanVienFromSv(this.state.idNhom)
                             }
                             this.setState({textSearch})

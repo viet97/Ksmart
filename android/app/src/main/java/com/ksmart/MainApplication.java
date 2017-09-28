@@ -4,7 +4,6 @@ package com.ksmart;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.airbnb.android.react.maps.MapsPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.horcrux.svg.SvgPackage;
 import com.airbnb.android.react.maps.MapsPackage;
@@ -34,7 +33,6 @@ public class MainApplication extends Application implements ReactApplication {
             new MapsPackage(),
             new LinearGradientPackage(),
             new SvgPackage(),
-            new MapsPackage(),
             new RealmReactPackage(),
             new RNDeviceInfo(),
             new VectorIconsPackage()
