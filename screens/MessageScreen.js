@@ -140,7 +140,7 @@ export default class OrderListScreen extends Component {
     };
 
     getTenNguoigui(item) {
-        if (item.TrangThai) {
+        if (item.TrangThai || !item.Loai) {
             return (<Text style={{backgroundColor: 'transparent'}}>{item.Ten_NGUOIGUI}</Text>)
         } else return (<Text style={{fontWeight: "bold", backgroundColor: 'transparent'}}>{item.Ten_NGUOIGUI}</Text>)
     }
@@ -149,7 +149,7 @@ export default class OrderListScreen extends Component {
         var string = item.NoiDung.slice(0, 50)
         if (item.NoiDung.length > 50)
             string = string + '...'
-        if (item.TrangThai) {
+        if (item.TrangThai || !item.Loai) {
             return (<Text style={{marginTop: 4, backgroundColor: 'transparent'}}>{string}</Text>)
         } else return <Text style={{marginTop: 4, backgroundColor: 'transparent', fontWeight: 'bold'}}>{string}</Text>
     }
@@ -163,7 +163,7 @@ export default class OrderListScreen extends Component {
     }
 
     getTimeSent(item) {
-        if (item.TrangThai)
+        if (item.TrangThai || !item.Loai)
             return (<Text
                 style={{
                     marginTop: 4,
@@ -230,6 +230,7 @@ export default class OrderListScreen extends Component {
                                 this.forceUpdate();
                                 navigate('DetailMessage',
                                     {
+                                        typeSend: item.TypeSend,
                                         id: item.ID_TINNHAN,
                                         nguoigui: item.Ten_NGUOIGUI,
                                         thoigian: item.NgayGui,

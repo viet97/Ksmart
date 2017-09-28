@@ -125,7 +125,7 @@ export default class HomeScreen extends React.Component {
             <FlatList
                 scrollEnabled={false}
                 numColumns={3}
-                contentContainerStyle={{flex: 1, alignItems: 'center', backgroundColor: 'white'}}
+                contentContainerStyle={{flex: 1, alignItems: 'center', backgroundColor: 'white', paddingTop: 16}}
                 keyboardDismissMode="on-drag"
                 data={menus}
                 keyExtractor={(item) => item.screenName}

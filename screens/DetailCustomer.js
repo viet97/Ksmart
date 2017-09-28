@@ -81,7 +81,7 @@ export default class DetailCustomer extends React.Component {
                     padding: 4,
                     flexDirection: 'row'
                 }}>
-                    <Text style={{alignSelf: 'center',}}>{content} </Text>
+                    <Text numberOfLines={2} style={{alignSelf: 'center',}}>{content} </Text>
                 </View>
             </View>
         )
@@ -93,6 +93,7 @@ export default class DetailCustomer extends React.Component {
             <View style={{flexDirection: 'row', marginTop: 8}}>
                 <Text style={{width: width / 3 - 4, marginLeft: 4, alignSelf: 'center'}}>{title}</Text>
                 <TouchableOpacity
+                    activeOpacity={0.8}
                     style={{
                         backgroundColor: 'white',
                         width: width * 2 / 3 - 4,

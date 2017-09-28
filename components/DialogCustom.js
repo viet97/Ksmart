@@ -34,7 +34,7 @@ export default class DialogCustom extends React.Component {
             isEndList: false,
             progressVisible: false,
             listGroup: [],
-            positionGroupChoose: -1,
+            positionGroupChoose: 0,
             listNameGroup: [],
             listNhanVien: [],
             listNameNhanVien: [],
@@ -43,6 +43,7 @@ export default class DialogCustom extends React.Component {
             idNhanVien: '',
         }
     }
+
 
     componentWillMount() {
         fetch(URlConfig.getLinkNhomNhanVien())
@@ -53,7 +54,9 @@ export default class DialogCustom extends React.Component {
                     for (let item of dsnhom) {
                         arr.push(item.TenHienThi_NhanVien)
                     }
-                    this.setState({listGroup: responseJson.danhsachnhom, listNameGroup: arr})
+                this.setState({listGroup: responseJson.danhsachnhom, listNameGroup: arr}, function () {
+                    this.forceUpdate();
+                })
                 }
             ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
         this.getListNhanVienFromSv(this.state.idNhom)
@@ -155,8 +158,9 @@ export default class DialogCustom extends React.Component {
                         dropdownHeight={160}
                         options={this.state.listNameGroup}
                         width={200}
+                        defaultValue={"Tất cả"}
                         style={{borderWidth: 0.4, width: 200, padding: 8, borderRadius: 10}}
-                        defaultValue="- Chọn phòng ban- "
+                        defaultIndex={0}
                         onSelect={(idx, value) => this._onSelect(idx, value)}
                         renderRow={this._renderRowGroup.bind(this)}
                         renderSeparator={(sectionID, rowID, adjacentRowHighlighted) => this._renderSeparatorGroup(sectionID, rowID, adjacentRowHighlighted)}
@@ -174,9 +178,6 @@ export default class DialogCustom extends React.Component {
                                 this.getListNhanVienFromSv(this.state.idNhom)
                             }
                             this.setState({textSearch})
-                        }}
-                        onSubmitEditing={() => {
-                            this.refs.nhanvien.show();
                         }}
                         value={this.state.textSearch}
                         placeholder={'Nhap ten nhan vien'}

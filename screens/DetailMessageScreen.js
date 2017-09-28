@@ -19,6 +19,7 @@ import URlConfig from "../configs/url";
 import Color from '../configs/color'
 import Icon1 from 'react-native-vector-icons/Ionicons'
 import Image from 'react-native-image-progress';
+
 var {height, width} = Dimensions.get('window');
 var GiftedListView = require('react-native-gifted-listview');
 export default class DetailMessageScreen extends Component {
@@ -39,11 +40,14 @@ export default class DetailMessageScreen extends Component {
     componentDidMount() {
         const {params} = this.props.navigation.state;
         const url = URlConfig.getLinkReadMessage(params.id);
-        fetch(url)
-            .then((response) => (response.json()))
-            .then((responseJson) => {
-                console.log(url, responseJson)
-            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'));
+        console.log(params.typeSend)
+        if (params.typeSend === 1) {
+            fetch(url)
+                .then((response) => (response.json()))
+                .then((responseJson) => {
+                    console.log(url, responseJson)
+                }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'));
+        }
     }
 
     render() {
