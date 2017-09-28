@@ -403,8 +403,9 @@ export default class HomeScreen extends React.Component {
 }
 const styles = StyleSheet.create({
     buttonContainer: {
-        justifyContent: 'center', alignItems: 'center', backgroundColor: 'yellow',
-
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'yellow',
         marginTop: 32,
     },
     titleStyle: {
