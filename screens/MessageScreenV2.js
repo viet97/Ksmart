@@ -83,7 +83,7 @@ export default class MessageScreenV2 extends React.Component {
                             </Send>
                         );
                     }}
-                    renderChatFooter={() => {
+                    renderFooter={() => {
                         return (<Text style={{alignSelf: 'flex-end', margin: 8}}>✔ Đã xem lúc 13:13</Text>)
                     }}
                     locale={'vi'}
