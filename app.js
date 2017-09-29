@@ -44,6 +44,7 @@ import OnlineReportScreen from "./screens/OnlineReportScreen";
 import AboutUsScreen from "./screens/AboutUsScreen";
 import ChooseTypeOrder from "./screens/ChooseTypeOrder";
 import DetailBaoCaoDoanhThuSanLuong from "./screens/DetailBaoCaoDoanhThuSanLuong";
+import MessageScreenV2 from "./screens/MessageScreenV2";
 
 const Ksmart = StackNavigator({
     Splash: {screen: SplashScreen},
@@ -54,7 +55,7 @@ const Ksmart = StackNavigator({
     Menu: {screen: MenuScreen},
     Map: {screen: MapScreen,},
     Travel: {screen: TravelScreen},
-    Message: {screen: MessageScreen},
+    Message: {screen: MessageScreenV2},
     Report: {screen: ReportScreen},
     OnlineReport: {screen: OnlineReportScreen},
     ListNhanVien: {screen: ListNhanVienScreen},
