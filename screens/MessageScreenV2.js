@@ -13,7 +13,8 @@ import {
     ActivityIndicator,
     Platform, DeviceEventEmitter
 } from "react-native";
-import {GiftedChat} from "react-native-gifted-chat";
+import {Icon} from 'react-native-elements'
+import {GiftedChat, Send} from "react-native-gifted-chat";
 
 export default class MessageScreenV2 extends React.Component {
     constructor(props) {
@@ -65,11 +66,25 @@ export default class MessageScreenV2 extends React.Component {
         return (
             <View style={{flex: 1}}>
                 <GiftedChat
+                    isLoadingEarlier={true}
                     style={{flex: 1}}
                     messages={this.state.messages}
                     onSend={(messages) => this.onSend(messages)}
                     user={{
                         _id: 2,
+                    }}
+                    renderSend={(props) => {
+                        return (
+                            <Send
+                                {...props}
+                                containerStyle={{alignItems: 'center', justifyContent: 'center', alignSelf: 'center'}}
+                            >
+                                <Icon name={'send'} color={"blue"} size={24}/>
+                            </Send>
+                        );
+                    }}
+                    renderChatFooter={() => {
+                        return (<Text style={{alignSelf: 'flex-end', margin: 8}}>✔ Đã xem lúc 13:13</Text>)
                     }}
                     locale={'vi'}
                     dateFormat={"LLL"}
