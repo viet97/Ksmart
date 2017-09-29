@@ -298,7 +298,8 @@ export default class OrderListScreen extends Component {
                 </View>
                 <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: 80}}>
                     <DatePicker
-                        style={{marginLeft: 8}}
+                        style={{flex: 1}}
+
                         date={this.state.dateFrom}
                         mode="date"
                         placeholder="select date"
@@ -310,12 +311,11 @@ export default class OrderListScreen extends Component {
                         }}
                     />
                     <DatePicker
-                        style={{marginLeft: 8}}
+                        style={{flex: 1}}
                         date={this.state.dateTo}
                         mode="date"
                         placeholder="select date"
                         format="DD-MM-YYYY"
-
                         confirmBtnText="Xác nhận"
                         cancelBtnText="Huỷ bỏ"
                         onDateChange={(date) => {
