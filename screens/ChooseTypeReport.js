@@ -103,15 +103,8 @@ export default class ChooseTypeReport extends Component {
 
     render() {
         return (
-            <View style={{flex: 1}}>
-                <Image source={require('../images/bg3.png')}
-                       style={{position: 'absolute', top: 0}}/>
+            <View style={{flex: 1, backgroundColor: 'white'}}>
                 <View style={styles.titleStyle}>
-                    {function () {
-                        if (Platform.OS !== 'ios')
-                            return (<Image source={require('../images/bg3.png')}
-                                           style={{position: 'absolute'}}/>)
-                    }()}
                     <TouchableOpacity onPress={() => this.props.navigation.goBack()}
                                       style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                         <Icon2 style={styles.iconStyle} size={24} color="white"
@@ -126,9 +119,8 @@ export default class ChooseTypeReport extends Component {
                         }}>Báo cáo</Text>
                     <View style={{backgroundColor: 'transparent', width: 35, height: 35}}/>
                 </View>
-                <View style={{width: window.width, height: 60, elevation: 5}}>
-                    <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: 60}}>
-                        <Text style={{backgroundColor: 'transparent'}}>Từ</Text>
+                <View style={{width: window.width, height: 80, elevation: 5}}>
+                    <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: 80}}>
                         <DatePicker
                             style={{marginLeft: 8}}
                             date={this.state.dateFrom}
@@ -138,20 +130,11 @@ export default class ChooseTypeReport extends Component {
 
                             confirmBtnText="Xác nhận"
                             cancelBtnText="Huỷ bỏ"
-                            customStyles={{
-                                dateIcon: {},
-                                dateInput: {
-                                    backgroundColor: 'white',
-                                    borderWidth: 1,
-                                    borderColor: 'gray',
-                                    borderRadius: 4,
-                                },
-                            }}
                             onDateChange={(date) => {
                                 this.ondateChange(date, this.state.dateTo);
                             }}
                         />
-                        <Text style={{backgroundColor: 'transparent'}}>đến</Text>
+
                         <DatePicker
                             style={{marginLeft: 8}}
                             date={this.state.dateTo}
@@ -161,15 +144,6 @@ export default class ChooseTypeReport extends Component {
 
                             confirmBtnText="Xác nhận"
                             cancelBtnText="Huỷ bỏ"
-                            customStyles={{
-                                dateIcon: {},
-                                dateInput: {
-                                    backgroundColor: 'white',
-                                    borderWidth: 1,
-                                    borderColor: 'gray',
-                                    borderRadius: 4,
-                                },
-                            }}
                             onDateChange={(date) => {
                                 this.ondateChange(this.state.dateFrom, date);
                             }}
