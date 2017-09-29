@@ -119,7 +119,7 @@ export default class HomeScreen extends React.Component {
         this.openControlPanel()
     }
 
-    renderContentSwiper() {
+    renderContentSwiper(navigate) {
         let width = Dimensions.get('window').width;
         console.log(menuSwiper)
         return (
@@ -279,7 +279,7 @@ export default class HomeScreen extends React.Component {
                 </LinearGradient>
 
                 <View style={{paddingTop: 8, flexDirection: 'column', flex: 9}}>
-                    {this.renderContentSwiper()}
+                    {this.renderContentSwiper(navigate)}
                 </View>
 
             </View>
