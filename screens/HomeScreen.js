@@ -30,7 +30,7 @@ import ChooseTypeTravel from "./ChooseTypeTravel";
 import ChooseTypeReport from "./ChooseTypeReport";
 import ChooseTypeCustomer from "./ChooseTypeCustomer";
 import {onChangeMessage} from "../networks/Network";
-import menus from "../configs/menus";
+import menus, {menuSwiper} from "../configs/menus";
 import LinearGradient from 'react-native-linear-gradient';
 
 const Realm = require('realm');
@@ -117,6 +117,48 @@ export default class HomeScreen extends React.Component {
         console.log("onSwipeRight");
         this.setState({myText: 'You swiped right!'});
         this.openControlPanel()
+    }
+
+    renderContentSwiper() {
+        let width = Dimensions.get('window').width;
+        console.log(menuSwiper)
+        return (
+            <FlatList
+                scrollEnabled={true}
+                numColumns={1}
+                contentContainerStyle={{flex: 1, backgroundColor: '#3d94d8'}}
+                keyboardDismissMode="on-drag"
+                data={menuSwiper}
+                keyExtractor={(item) => item.screenName}
+                renderItem={({item}) =>
+                    <TouchableOpacity
+                        activeOpacity={0.7}
+                        style={{
+                            backgroundColor: 'transparent',
+                            flexDirection: 'row', marginLeft: 24, marginTop: 16
+                        }}
+                        onPress={() => {
+                            item.screenName === 'SignOut' ? this.logout() : navigate(item.screenName)
+                        }}>
+                        <Icon containerStyle={{width: 24, height: 24}} color={"white"} name={item.iconName}
+                              type={"font-awesome"} size={24}/>
+                        <Text numberOfLines={1} style={{
+                            fontSize: 16,
+                            color: 'white',
+                            paddingLeft: 16,
+                            alignSelf: 'center'
+                        }}>{item.title}</Text>
+                        {
+                            function () {
+                                if (item.screenName === 'Message') {
+                                    return <Badge style={{marginLeft: 4}}>{URlConfig.OBJLOGIN.messageUnread}</Badge>
+                                }
+                            }()
+                        }
+                    </TouchableOpacity>
+                }
+            />
+        );
     }
 
     renderContentMenu(navigate) {
@@ -224,7 +266,7 @@ export default class HomeScreen extends React.Component {
     sideMenuView() {
         const {navigate} = this.props.navigation;
         return (
-            <View style={{flex: 1}}>
+            <View style={{flex: 1, backgroundColor: '#3d94d8', height: height - 56}}>
                 <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
                     <View/>
                     <Text style={{
@@ -236,108 +278,8 @@ export default class HomeScreen extends React.Component {
                     <View/>
                 </LinearGradient>
 
-                <View style={{paddingTop: 15, flexDirection: 'column', flex: 9}}>
-                    <ScrollView style={{marginTop: (Platform.OS === 'ios') ? 16 : 0,}}>
-                        <View style={styles.touchable}>
-                            <TouchableOpacity style={styles.itemSideMenuStyle} onPress={() => {
-                                navigate('ChooseTypeNewFeed');
-                                this.closeControlPanel();
-                            }}>
-                                <IconMaterial size={ICON_SIZE} style={styles.iconStyle} color="white" name="payment"/>
-                                <Text style={styles.textStyle}>Hoạt động</Text>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity style={styles.itemSideMenuStyle} onPress={() => {
-                                navigate('ChooseTypeListNV')
-                                this.closeControlPanel();
-                            }}>
-                                <Icon1 size={ICON_SIZE} style={styles.iconStyle} color="white"
-                                       name="ios-people-outline"/>
-                                <Text style={styles.textStyle}>Nhân viên</Text>
-
-                            </TouchableOpacity>
-                        </View>
-                        <View style={styles.touchable}>
-                            <TouchableOpacity style={styles.itemSideMenuStyle} onPress={() => {
-                                navigate('ChooseTypeOrder')
-                                this.closeControlPanel()
-                            }}>
-                                <Icon2 size={ICON_SIZE} style={styles.iconStyle} color="white" name="archive"/>
-                                <Text style={styles.textStyle}>Đơn hàng</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.itemSideMenuStyle} onPress={() => {
-                                navigate('ChooseTypeCustomer'), this.closeControlPanel()
-                            }}>
-                                <Icon2 size={ICON_SIZE} style={styles.iconStyle} color="white" name="user"/>
-                                <Text style={styles.textStyle}>Khách hàng</Text>
-                            </TouchableOpacity>
-                        </View>
-                        <View style={styles.touchable}>
-                            <TouchableOpacity style={styles.itemSideMenuStyle}
-                                              onPress={() => {
-                                                  navigate('ChooseTypeTravel')
-                                                  this.closeControlPanel()
-                                              }}>
-                                <Icon2 size={ICON_SIZE} style={styles.iconStyle} color="white"
-                                       name="aircraft-take-off"/>
-                                <Text style={styles.textStyle}>Viếng thăm</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.itemSideMenuStyle} onPress={() => {
-                                navigate('ChooseTypeChart')
-                                this.closeControlPanel()
-                            }}>
-                                <Icon3 size={ICON_SIZE} style={styles.iconStyle} color="white" name="bar-chart"/>
-                                <Text style={styles.textStyle}>Biểu đồ</Text>
-                            </TouchableOpacity>
-                        </View>
-                        <View style={styles.touchable}>
-                            <TouchableOpacity style={styles.itemSideMenuStyle}
-                                              onPress={() => {
-                                                  this.closeControlPanel()
-                                                  navigate('ChooseTypeReport')
-                                              }}>
-                                <Icon3 size={ICON_SIZE} style={styles.iconStyle} color="white" name="file-text-o"/>
-                                <Text style={styles.textStyle}>Báo cáo</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.itemSideMenuStyle}
-                                              onPress={() => {
-                                                  navigate('OnlineReport')
-                                                  this.closeControlPanel()
-                                              }}>
-                                <Icon2 size={ICON_SIZE} style={styles.iconStyle} color="white" name="laptop"/>
-                                <Text style={styles.textStyle}>Online</Text>
-                            </TouchableOpacity>
-                        </View>
-                        <View style={styles.touchable}>
-                            <TouchableOpacity style={styles.itemSideMenuStyle}
-                                              onPress={() => {
-                                                  navigate('Message')
-                                                  this.closeControlPanel()
-                                              }}>
-                                <Icon2 size={ICON_SIZE} style={styles.iconStyle} color="white" name="mail"/>
-                                <Text style={styles.textStyle}>Tin nhắn</Text>
-                                {this.renderBagde(16)}
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.itemSideMenuStyle}
-                                              onPress={() => {
-                                                  navigate('AboutUs');
-                                                  this.closeControlPanel()
-                                              }}>
-                                <IconMaterial size={ICON_SIZE} style={styles.iconStyle} color="white"
-                                              name="info-outline"/>
-                                <Text style={styles.textStyle}>Liên hệ</Text>
-                            </TouchableOpacity>
-                        </View>
-                        <View style={styles.touchable}>
-                            <TouchableOpacity style={styles.itemSideMenuStyle} onPress={() => {
-                                this.closeControlPanel()
-                                this.logout()
-                            }}>
-                                <Icon4 size={ICON_SIZE} style={styles.iconStyle} color="white" name="power"/>
-                                <Text style={styles.textStyle}>Đăng xuất</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </ScrollView>
+                <View style={{paddingTop: 8, flexDirection: 'column', flex: 9}}>
+                    {this.renderContentSwiper()}
                 </View>
 
             </View>
@@ -348,7 +290,7 @@ export default class HomeScreen extends React.Component {
     renderBagde(size) {
 
         if (URlConfig.OBJLOGIN.messageUnread > 0) {
-            console.log('vao day rrrrr')
+            console.log('vao day rrrrr');
             return (
                 <Badge textStyle={{
                     color: '#fff', fontSize: size
