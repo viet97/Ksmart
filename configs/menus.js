@@ -1,4 +1,4 @@
-export default [
+const menus = [
     {
         iconName: 'calendar',
         screenName: 'ChooseTypeNewFeed',
@@ -99,3 +99,4 @@ const menuSwiper = [
     },
 ];
 export {menuSwiper};
+export default menus;
