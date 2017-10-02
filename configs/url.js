@@ -187,10 +187,7 @@ export default class URlConfig {
         return data.urlserver + '/AppBaoCaoDoanhThu_v2.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idct=' + data.idcongty + '&tungay=' + from + '&denngay=' + to + '&page=' + page + '&timkiem=' + keyword;
     }
 
-    static getReportList(from, to, page, keyword) {
-        let data = URlConfig.OBJLOGIN;
-        return data.urlserver + '/AppBaoCaoDoanhThu_v2.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idct=' + data.idcongty + '&tungay=' + from + '&denngay=' + to + '&page=' + page + '&timkiem=' + keyword;
-    }
+
 
     static getLinkLapKeHoach(obj) {
         let data = URlConfig.OBJLOGIN;
@@ -244,6 +241,11 @@ export default class URlConfig {
         ///AppSuaKeHoachDiChuyen.aspx?token=abc&idct=1&idquanly=47&dulieukehoach=%7B"idkehoach"%20%3A%205231%2C%20"idnhanvien"%20%3A%20317%2C%20"idkhachhang"%20%3A%202864%2C%20"thoigiandukien"%20%3A%20"18%2F08%2F2017%2012%3A12%3A12"%2C%20"thoigiancheckoutdukien"%20%3A%20"18%2F08%2F2017%2012%3A12%3A12"%7D
         let data = URlConfig.OBJLOGIN;
         return data.urlserver + '/AppSuaKeHoachDiChuyen.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idct=' + data.idcongty + '&dulieukehoach=' + encodeURI(JSON.stringify(obj));
+    }
+
+    static getLinkConvestation() {
+        let data = URlConfig.OBJLOGIN;
+        return data.urlserver + '/AppDanhSachTinNhan_v3.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idct=' + data.idcongty;
     }
 
 }

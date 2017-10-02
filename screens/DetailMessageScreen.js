@@ -25,13 +25,14 @@ var GiftedListView = require('react-native-gifted-listview');
 export default class DetailMessageScreen extends Component {
     static navigationOptions = ({navigation}) => ({
         header: null
-    });
+    })
 
     constructor(props) {
         super(props)
         const {params} = this.props.navigation.state
 
     }
+
 
     componentWillUnmount() {
         const {params} = this.props.navigation.state;

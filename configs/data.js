@@ -6,5 +6,5 @@ const dateOfWeek = [
     "Th 6",
     "Th 7",
     "CN"
-]
+];
 export {dateOfWeek}
