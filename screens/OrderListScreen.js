@@ -25,6 +25,7 @@ import Toast from 'react-native-simple-toast'
 import OrderListItem from "../components/OrderListItem";
 import PTRView from 'react-native-pull-to-refresh'
 import {ConfirmDialog} from 'react-native-simple-dialogs';
+import LinearGradient from "react-native-linear-gradient";
 
 let {height, width} = Dimensions.get('window');
 let NUMBER_ITEM_PER_PAGE = 10;
@@ -244,12 +245,8 @@ export default class OrderListScreen extends Component {
     render() {
 
         return (
-            <View style={{flex: 1}}>
-                <Image source={require('../images/bg3.png')}
-                       style={{position: 'absolute', top: 0}}/>
-                <View style={styles.titleStyle}>
-                    <Image source={require('../images/bg3.png')}
-                           style={{position: 'absolute'}}/>
+            <View style={{flex: 1,backgroundColor:'white'}}>
+                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
                     <TouchableOpacity onPress={() => this.props.navigation.goBack()}
                                       style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                         <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
@@ -257,8 +254,8 @@ export default class OrderListScreen extends Component {
                     <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Danh
                         sách đơn hàng</Text>
                     <View></View>
-                </View>
-                <View style={{width: width}}>
+                </LinearGradient>
+                <View style={{width: width,marginTop:16,marginBottom:16}}>
                     <Search
                         ref="search_box"
                         placeholder="Tìm kiếm"

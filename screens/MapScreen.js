@@ -11,6 +11,7 @@ import MapView from 'react-native-maps';
 import Icon1 from 'react-native-vector-icons/Ionicons'
 import Color from '../configs/color'
 import * as Toast from "react-native-simple-toast";
+import LinearGradient from "react-native-linear-gradient";
 
 var {height, width} = Dimensions.get('window');
 var title = '12312321'
@@ -66,9 +67,7 @@ export default class MapScreen extends Component {
 
         return (
             <View style={{flex: 1}}>
-                <Image source={require('../images/bg3.png')}
-                       style={{position: 'absolute', top: 0}}/>
-                <View style={styles.titleStyle}>
+                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
                     <TouchableOpacity onPress={() => this.props.navigation.goBack()}
                                       style={styles.iconStyle}>
                         <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
@@ -80,7 +79,7 @@ export default class MapScreen extends Component {
                         backgroundColor: 'transparent'
                     }}>{params.title}</Text>
                     <View/>
-                </View>
+                </LinearGradient>
                 <MapView
                     style={{flex: 9}}
                     initialRegion={this.state.region}>

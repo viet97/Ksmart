@@ -23,6 +23,7 @@ import DatePicker from 'react-native-datepicker'
 import TravelItem from "../components/TravelItem";
 import ModalDropdownCustom from "../components/ModalDropdownCustom";
 import {shadowProps} from "../configs/shadow";
+import LinearGradient from "react-native-linear-gradient";
 
 let SEARCH_STRING = '';
 let {width, height} = Dimensions.get('window');
@@ -238,12 +239,8 @@ export default class TravelScreen extends React.Component {
     render() {
 
         return (
-            <View style={{flex: 1}}>
-                <Image source={require('../images/bg3.png')}
-                       style={{position: 'absolute', top: 0}}/>
-                <View style={styles.titleStyle}>
-                    <Image source={require('../images/bg3.png')}
-                           style={{position: 'absolute'}}/>
+            <View style={{flex: 1,backgroundColor:'white'}}>
+                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
                     <TouchableOpacity onPress={() => this.props.navigation.goBack()}
                                       style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                         <Icon1 style={styles.iconStyle} size={24} color="white"
@@ -262,8 +259,8 @@ export default class TravelScreen extends React.Component {
                         <View style={{width: 50, height: 50, justifyContent: 'center', alignSelf: 'center'}}>
                         </View>
                     </TouchableOpacity>
-                </View>
-                <View style={{width: width}}>
+                </LinearGradient>
+                <View style={{width: width,marginTop:16,marginBottom:16}}>
                     <Search
                         placeholder="Tìm kiếm"
                         cancelTitle="Huỷ bỏ"

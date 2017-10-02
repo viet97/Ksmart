@@ -22,6 +22,7 @@ import Dialog from './DialogOrder'
 import Search from 'react-native-search-box';
 import ultils from "../configs/ultils";
 import Toast from 'react-native-simple-toast'
+import {shadowProps} from "../configs/shadow";
 
 let {height, width} = Dimensions.get('window');
 export default class OrderListItem extends Component {
@@ -63,15 +64,16 @@ export default class OrderListItem extends Component {
         return (
             <View style={{flexDirection: 'row', flex: 1, margin: 8}}>
                 <View style={{
+                    borderRadius: 16,
                     paddingBottom: 8,
                     paddingTop: 8,
                     flexDirection: 'row',
-                    backgroundColor: 'white',
+                    backgroundColor: colorGH,
                     marginRight: 4,
                     width: width / 2 - 12,
                     justifyContent: 'center'
                 }}>
-                    <Icon2 style={{alignSelf: 'center', marginRight: 8}} size={12} color={colorGH}
+                    <Icon2 style={{alignSelf: 'center', marginRight: 8}} size={12} color={'white'}
                            name="controller-record"/>
                     <Text style={{
                         fontSize: 15,
@@ -79,20 +81,21 @@ export default class OrderListItem extends Component {
                         backgroundColor: 'transparent',
                         alignSelf: 'center',
                         textAlign: 'center',
-                        color: colorGH,
+                        color: 'white',
                     }}>{URlConfig.OBJLOGIN.ttgh[rowData.trangthaigiaohang]}</Text>
                 </View>
                 <View style={{
+                    borderRadius: 16,
                     paddingBottom: 8,
                     paddingTop: 8,
                     flexDirection: 'row',
-                    backgroundColor: 'white',
+                    backgroundColor: colorTT,
                     marginLeft: 4,
                     width: width / 2 - 12,
-                    justifyContent: 'center'
+                    justifyContent: 'center',
 
                 }}>
-                    <Icon2 style={{alignSelf: 'center', marginRight: 8}} size={12} color={colorTT}
+                    <Icon2 style={{alignSelf: 'center', marginRight: 8}} size={12} color={'white'}
                            name="controller-record"/>
                     <Text style={{
                         fontSize: 15,
@@ -100,7 +103,7 @@ export default class OrderListItem extends Component {
                         backgroundColor: 'transparent',
                         textAlign: 'center',
                         alignSelf: 'center',
-                        color: colorTT,
+                        color: 'white',
                     }}>{URlConfig.OBJLOGIN.tttt[rowData.trangthaithanhtoan]}</Text>
                 </View>
             </View>
@@ -141,6 +144,7 @@ export default class OrderListItem extends Component {
         let info = URlConfig.OBJLOGIN.ttdh[rowData.trangthaidonhang]
         return (
             <View style={{
+                borderRadius: 16,
                 paddingTop: 8,
                 paddingBottom: 8,
                 backgroundColor: color,
@@ -149,7 +153,7 @@ export default class OrderListItem extends Component {
                 justifyContent: 'center'
             }}>
                 <Text numberOfLines={1}
-                      style={{textAlign: 'center', width: width / 2 - 20, paddingLeft: 4}}>{info}</Text>
+                      style={{textAlign: 'center', width: width / 2 - 20, paddingLeft: 4,color:'white'}}>{info}</Text>
             </View>
         )
     }
@@ -158,22 +162,17 @@ export default class OrderListItem extends Component {
         let item = this.props.data
         return (
             <TouchableOpacity
+                activeOpacity={1}
                 onPress={() => this.props.goToDetail()}
                 onLayout={(e) => {
                     var {x, y, width, height} = e.nativeEvent.layout;
                     this.setState({height: height})
                 }}
                 style={{
-                    margin: 4,
+                    backgroundColor: '#f7f7f7',
+                    fontSize: 20, ...shadowProps,
                 }}>
-                <Image source={require('../images/bg1.png')}
-                       style={{
-                           height: this.state.height,
-                           flexWrap: 'wrap',
-                           position: 'absolute',
-                           width: width - 8
 
-                       }}/>
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 8}}>
                     <Text numberOfLines={1} style={{
                         fontWeight: "bold",

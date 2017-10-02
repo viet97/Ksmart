@@ -14,6 +14,7 @@ import Color from '../configs/color'
 import Toast from "react-native-simple-toast";
 import {PagerTabIndicator, IndicatorViewPager, PagerTitleIndicator, PagerDotIndicator} from 'rn-viewpager';
 import URlConfig from "../configs/url";
+import LinearGradient from "react-native-linear-gradient";
 
 let {width, height} = Dimensions.get('window')
 export default class DetailBaoCaoDoanhThuSanLuong extends React.Component {
@@ -31,10 +32,10 @@ export default class DetailBaoCaoDoanhThuSanLuong extends React.Component {
 
     getElement(title, content) {
         return (
-            <View style={{flexDirection: 'row', marginTop: 8, backgroundColor: 'transparent'}}>
+            <View style={{flexDirection: 'row', marginTop: 8, backgroundColor: 'white'}}>
                 <Text style={{width: width / 3 - 4, marginLeft: 4, alignSelf: 'center'}}>{title}</Text>
                 <View style={{
-                    backgroundColor: 'white',
+                    backgroundColor: '#ECF0F1',
                     width: width * 2 / 3 - 4,
                     marginRight: 4,
                     padding: 4,
@@ -50,10 +51,8 @@ export default class DetailBaoCaoDoanhThuSanLuong extends React.Component {
 
     render() {
         return (
-            <View style={{flex: 1}}>
-                <Image source={require('../images/bg3.png')}
-                       style={{position: 'absolute', top: 0}}/>
-                <View style={styles.titleStyle}>
+            <View style={{flex: 1,backgroundColor:'white'}}>
+                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
                     <TouchableOpacity onPress={() => this.props.navigation.goBack()}
                                       style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                         <Icon style={styles.iconStyle}
@@ -69,10 +68,9 @@ export default class DetailBaoCaoDoanhThuSanLuong extends React.Component {
                         backgroundColor: 'transparent'
                     }}>Chi tiết báo cáo</Text>
                     <View/>
-                </View>
+                </LinearGradient>
                 <View style={{flex: 9}}>
-                    <Image source={require('../images/bg3.png')}
-                           style={{position: 'absolute', top: 0}}/>
+
                     <ScrollView style={{flex: 1, marginBottom: 4}}>
                         {this.getElement('Tên khách hàng', this.state.data.tenkhachhang)}
                         {this.getElement('Địa chỉ', this.state.data.diachikhachhang)}

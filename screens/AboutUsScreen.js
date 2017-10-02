@@ -9,6 +9,7 @@ import Icon1 from 'react-native-vector-icons/Ionicons'
 import React from 'react';
 import Color from '../configs/color'
 import Communications from 'react-native-communications';
+import LinearGradient from "react-native-linear-gradient";
 
 export default class AboutUsScreen extends React.Component {
     static navigationOptions = {
@@ -24,11 +25,7 @@ export default class AboutUsScreen extends React.Component {
         const email = 'phanmem@lachongmedia.vn';
         return (
             <View style={{flexDirection: 'column', flex: 1}}>
-                <Image source={require('../images/bg3.png')}
-                       style={{position: 'absolute', top: 0}}/>
-                <View style={styles.titleStyle}>
-                    <Image source={require('../images/bg3.png')}
-                           style={{position: 'absolute'}}/>
+                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
                     <TouchableOpacity onPress={() => this.props.navigation.goBack()}
                                       style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                         <Icon1 style={styles.iconStyle} size={24} color="white"
@@ -41,7 +38,7 @@ export default class AboutUsScreen extends React.Component {
                         backgroundColor: 'transparent',
                     }}>Liên hệ</Text>
                     <View/>
-                </View>
+                </LinearGradient>
                 <View style={{flex: 9, flexDirection: 'column', backgroundColor: 'transparent', margin: 16}}>
                     <Image source={require('../images/logolh.png')}
                            style={{width: 250, height: 100, alignSelf: 'center'}}
@@ -54,7 +51,7 @@ export default class AboutUsScreen extends React.Component {
                         <TouchableOpacity onPress={() => {
                             Communications.phonecall(phonenumber, true)
                         }}>
-                            <Text style={{color: 'white'}}>{phonenumber}</Text>
+                            <Text style={{color: 'blue'}}>{phonenumber}</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={{flexDirection: 'row', backgroundColor: 'transparent'}}>
@@ -62,20 +59,20 @@ export default class AboutUsScreen extends React.Component {
                         <TouchableOpacity onPress={() => {
                             Communications.phonecall(hotline, true)
                         }}>
-                            <Text style={{color: 'white'}}>{hotline}</Text>
+                            <Text style={{color: 'blue'}}>{hotline}</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={{flexDirection: 'row', backgroundColor: 'transparent'}}>
                         <Text>Website: </Text>
                         <TouchableOpacity onPress={() => Communications.web('http://ksmart.vn')}>
-                            <Text style={{color: 'white'}}>http://ksmart.vn</Text>
+                            <Text style={{color: 'blue'}}>http://ksmart.vn</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={{flexDirection: 'row', backgroundColor: 'transparent'}}>
                         <Text>Email: </Text>
                         <TouchableOpacity
                             onPress={() => Communications.email([email], null, null, 'My Subject', 'My body text')}>
-                            <Text style={{color: 'white'}}>{email}</Text>
+                            <Text style={{color: 'blue'}}>{email}</Text>
                         </TouchableOpacity>
                     </View>
 

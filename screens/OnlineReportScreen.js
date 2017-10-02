@@ -20,6 +20,7 @@ import Icon1 from 'react-native-vector-icons/Ionicons'
 import Icon3 from 'react-native-vector-icons/MaterialCommunityIcons'
 import Image from 'react-native-image-progress';
 import Toast from 'react-native-simple-toast';
+import LinearGradient from "react-native-linear-gradient";
 
 var {height, width} = Dimensions.get('window');
 const timer = require('react-native-timer');
@@ -74,11 +75,7 @@ export default class ReportScreen extends Component {
         });
         return (
             <View style={{flex: 1}}>
-                <Image source={require('../images/bg3.png')}
-                       style={{position: 'absolute', top: 0}}/>
-                <View style={styles.titleStyle}>
-                    <Image source={require('../images/bg3.png')}
-                           style={{position: 'absolute'}}/>
+                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
                     <TouchableOpacity onPress={() => this.props.navigation.goBack()}
                                       style={styles.iconStyle}>
                         <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
@@ -92,7 +89,7 @@ export default class ReportScreen extends Component {
                                name="reload"/>
                     </TouchableOpacity>
 
-                </View>
+                </LinearGradient>
                 <View style={{flex: 9}}>
                     <View style={styles.view1}>
                         <View

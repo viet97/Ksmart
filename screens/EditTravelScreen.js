@@ -28,6 +28,7 @@ import CustomerScreen from "./CustomerScreen";
 import ChooseTypeChart from "./ChooseTypeChart";
 import ChooseCustomerScreen from "./ChooseCustomerScreen";
 import Utils from '../configs/ultils'
+import LinearGradient from "react-native-linear-gradient";
 
 export default class EditTravelScreen extends React.Component {
     static navigationOptions = ({navigation}) => ({
@@ -86,9 +87,7 @@ export default class EditTravelScreen extends React.Component {
 
         if (Platform.OS === 'ios') {
             return (
-                <View style={styles.titleStyle}>
-                    <Image source={require('../images/bg3.png')}
-                           style={{position: 'absolute'}}/>
+                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
                     <TouchableOpacity
                         onPress={() => this.props.navigation.goBack()}
                         style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
@@ -147,14 +146,11 @@ export default class EditTravelScreen extends React.Component {
                             OK
                         </Text>
                     </TouchableOpacity>
-                </View>
-            )
+                </LinearGradient>            )
         } else if (this.state.showHeader) {
             console.log('vaooooo')
             return (
-                <View style={styles.titleStyle}>
-                    <Image source={require('../images/bg3.png')}
-                           style={{position: 'absolute'}}/>
+                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
                     <TouchableOpacity
                         onPress={() => this.props.navigation.goBack()}
                         style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
@@ -208,7 +204,7 @@ export default class EditTravelScreen extends React.Component {
                         }}>
                         <Text style={{color: 'white', paddingRight: 8, paddingTop: 8}}>OK</Text>
                     </TouchableOpacity>
-                </View>
+                </LinearGradient>
             )
         }
     }
@@ -219,9 +215,7 @@ export default class EditTravelScreen extends React.Component {
         const {params} = this.props.navigation.state;
 
         return (
-            <View style={{flex: 1, backgroundColor: 'transparent'}}>
-                <Image source={require('../images/bg3.png')}
-                       style={{position: 'absolute', top: 0}}/>
+            <View style={{flex: 1, backgroundColor: 'white'}}>
 
                 {this.renderHeader()}
                 <View style={{
@@ -316,21 +310,25 @@ export default class EditTravelScreen extends React.Component {
 
                         <Text style={{backgroundColor: 'transparent', alignSelf: 'center'}}>Thời gian: </Text>
                         <DatePicker
-                            style={{marginLeft: 8, width: 120}}
+                            style={{width:240}}
+                            customStyles={{
+                                dateTouchBody: {
+                                    flexDirection: 'row',
+                                    height: 50,
+                                    width: 240,
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    backgroundColor: 'red',
+                                    backgroundColor: "#ECF0F1",
+                                    borderRadius: 25,
+                                    alignSelf: 'center'
+                                }
+                            }}
                             date={this.state.dateCome}
                             mode="datetime"
                             format="DD-MM-YYYY HH:mm:ss"
                             confirmBtnText="Xác nhận"
                             cancelBtnText="Huỷ bỏ"
-                            customStyles={{
-                                dateIcon: {},
-                                dateInput: {
-                                    backgroundColor: 'white',
-                                    borderWidth: 1,
-                                    borderColor: 'gray',
-                                    borderRadius: 4, width: 120
-                                },
-                            }}
                             onDateChange={(date) => {
                                 this.setState({dateCome: date})
                             }}
@@ -357,21 +355,25 @@ export default class EditTravelScreen extends React.Component {
                     }}>
                         <Text style={{backgroundColor: 'transparent', alignSelf: 'center'}}>Thời gian: </Text>
                         <DatePicker
-                            style={{marginLeft: 8, width: 120}}
+                            style={{width:240}}
+                            customStyles={{
+                                dateTouchBody: {
+                                    flexDirection: 'row',
+                                    height: 50,
+                                    width: 240,
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    backgroundColor: 'red',
+                                    backgroundColor: "#ECF0F1",
+                                    borderRadius: 25,
+                                    alignSelf: 'center'
+                                }
+                            }}
                             date={this.state.dateOut}
                             mode="datetime"
                             format="DD-MM-YYYY HH:mm:ss"
                             confirmBtnText="Xác nhận"
                             cancelBtnText="Huỷ bỏ"
-                            customStyles={{
-                                dateIcon: {},
-                                dateInput: {
-                                    backgroundColor: 'white',
-                                    borderWidth: 1,
-                                    borderColor: 'gray',
-                                    borderRadius: 4, width: 120,
-                                },
-                            }}
                             onDateChange={(date) => {
                                 this.setState({dateOut: date})
                             }}

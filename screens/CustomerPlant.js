@@ -26,6 +26,7 @@ import CheckBox from 'react-native-checkbox'
 import CustomerPlantComponent from '../components/CustomerPlantComponent'
 import DialogCustom from "../components/DialogCustom";
 import {Icon} from "react-native-elements";
+import LinearGradient from "react-native-linear-gradient";
 
 let NUMBER_ROW_RENDER_PER_PAGE = 15
 let ALL_LOADED = false
@@ -255,12 +256,8 @@ export default class CustomerPlant extends Component {
     render() {
 
         return (
-            <View style={{flex: 1, backgroundColor: 'transparent'}}>
-                <Image source={require('../images/bg3.png')}
-                       style={{position: 'absolute', top: 0}}/>
-                <View style={styles.titleStyle}>
-                    <Image source={require('../images/bg3.png')}
-                           style={{position: 'absolute'}}/>
+            <View style={{flex: 1, backgroundColor: ''}}>
+                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
                     <TouchableOpacity onPress={() => this.props.navigation.goBack()}
                                       style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                         <Icon2 style={styles.iconStyle} size={24} color="white"
@@ -280,7 +277,7 @@ export default class CustomerPlant extends Component {
                         style={styles.iconStyle}>
                         <Text style={{color: 'white', paddingRight: 8, paddingTop: 4}}>OK</Text>
                     </TouchableOpacity>
-                </View>
+                </LinearGradient>
                 <View style={{
                     marginLeft: 8,
                     marginTop: 8,
@@ -314,15 +311,6 @@ export default class CustomerPlant extends Component {
 
                             confirmBtnText="Xác nhận"
                             cancelBtnText="Huỷ bỏ"
-                            customStyles={{
-                                dateIcon: {},
-                                dateInput: {
-                                    backgroundColor: 'white',
-                                    borderWidth: 1,
-                                    borderColor: 'gray',
-                                    borderRadius: 4,
-                                },
-                            }}
                             onDateChange={(date) => {
                                 this.setState({datePlant: date})
                             }}

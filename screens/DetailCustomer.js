@@ -15,6 +15,7 @@ import Toast from "react-native-simple-toast";
 import {PagerTabIndicator, IndicatorViewPager, PagerTitleIndicator, PagerDotIndicator} from 'rn-viewpager';
 import URlConfig from "../configs/url";
 import Communications from 'react-native-communications';
+import LinearGradient from "react-native-linear-gradient";
 
 let {width, height} = Dimensions.get('window')
 export default class DetailCustomer extends React.Component {
@@ -71,10 +72,10 @@ export default class DetailCustomer extends React.Component {
 
     getElement(title, content) {
         return (
-            <View style={{flexDirection: 'row', marginTop: 8}}>
+            <View style={{flexDirection: 'row', marginTop: 8,backgroundColor:'white'}}>
                 <Text style={{width: width / 3 - 4, marginLeft: 4, alignSelf: 'center'}}>{title}</Text>
                 <View style={{
-                    backgroundColor: 'white',
+                    backgroundColor: '#ECF0F1',
                     width: width * 2 / 3 - 4,
                     marginRight: 4,
                     height: 30,
@@ -90,12 +91,12 @@ export default class DetailCustomer extends React.Component {
 
     getElementPhoneNumber(title, phoneNumber) {
         return (
-            <View style={{flexDirection: 'row', marginTop: 8}}>
+            <View style={{flexDirection: 'row', marginTop: 8,backgroundColor:"white"}}>
                 <Text style={{width: width / 3 - 4, marginLeft: 4, alignSelf: 'center'}}>{title}</Text>
                 <TouchableOpacity
                     activeOpacity={0.8}
                     style={{
-                        backgroundColor: 'white',
+                        backgroundColor: '#ECF0F1',
                         width: width * 2 / 3 - 4,
                         marginRight: 4,
                         height: 30,
@@ -119,10 +120,8 @@ export default class DetailCustomer extends React.Component {
 
         const item = params.item;
         return (
-            <View style={{flex: 1, backgroundColor: 'transparent'}}>
-                <Image source={require('../images/bg3.png')}
-                       style={{position: 'absolute', top: 0}}/>
-                <View style={styles.titleStyle}>
+            <View style={{flex: 1, backgroundColor: 'white'}}>
+                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
                     <TouchableOpacity onPress={() => this.props.navigation.goBack()}
                                       style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                         <Icon style={styles.iconStyle}
@@ -138,15 +137,13 @@ export default class DetailCustomer extends React.Component {
                         backgroundColor: 'transparent'
                     }}>Chi tiết khách hàng</Text>
                     <View/>
-                </View>
+                </LinearGradient>
                 <IndicatorViewPager
                     style={{flex: 9, backgroundColor: 'white'}}
                     indicator={this._renderTitleIndicator()}
                 >
 
-                    <View style={{flex: 1, backgroundColor: 'transparent'}}>
-                        <Image source={require('../images/bg3.png')}
-                               style={{position: 'absolute', top: 0}}/>
+                    <View style={{flex: 1, backgroundColor: 'white'}}>
                         <ScrollView style={{flex: 1, marginBottom: 4}}>
                             {this.getElement('Tên cửa hàng', this.state.data.TenCuaHang)}
                             {this.getElement('Tên nhóm khách hàng', this.state.data.tennhomkhachhang)}

@@ -17,12 +17,14 @@ import {Icon} from 'react-native-elements'
 import {GiftedChat, Send} from "react-native-gifted-chat";
 import URlConfig from "../configs/url";
 import Utils from "../configs/ultils";
-
+import LinearGradient from "react-native-linear-gradient";
+import {Header} from 'react-navigation'
 const moment = require('moment');
 export default class DetailMessageScreenV2 extends React.Component {
 
     static navigationOptions = ({navigation}) => ({
-        title: navigation.state.title
+        title: navigation.state.title,
+        header:null
     });
     constructor(props) {
         super(props);
@@ -78,8 +80,20 @@ export default class DetailMessageScreenV2 extends React.Component {
 
     render() {
         console.log(this.state.messages);
+        const {params} = this.props.navigation.state;
         return (
             <View style={{flex: 1}}>
+                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
+                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}
+                                      style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
+                        <Icon type={'ionicon'} style={styles.iconStyle} size={24} color="white"
+                               name="ios-arrow-back"/>
+                    </TouchableOpacity>
+                    <Text
+                        style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>{params.title}</Text>
+                    <View/>
+                </LinearGradient>
+
                 <GiftedChat
                     isLoadingEarlier={true}
                     style={{flex: 1}}
@@ -118,3 +132,46 @@ export default class DetailMessageScreenV2 extends React.Component {
         )
     }
 }
+const styles = StyleSheet.create({
+    titleStyle: {
+        height:Header.height,
+        marginTop: Platform.OS === 'ios' ? 16 : 0,
+        elevation: 15,
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+    },
+    headerStyle: {
+        elevation: 15, height: this.height / 7
+    },
+    itemSideMenuStyle: {
+        borderBottomWidth: 0.5,
+        borderBottomColor: 'white',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        margin: 8,
+        paddingBottom: 8
+    }, iconStyle: {
+        alignSelf: 'center',
+        width: 24,
+        height: 24,
+        backgroundColor: "transparent",
+        paddingLeft: 8,
+        paddingTop: (Platform.OS === 'ios') ? 4 : 0
+    },
+    textStyle: {
+        fontSize: 18,
+        color: 'white',
+        backgroundColor: 'transparent'
+    },
+    titleIconsMenu: {
+        textAlign: 'center',
+        color: 'white'
+    },
+    indicator: {
+        alignSelf: 'center',
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: 80
+    }
+})

@@ -29,6 +29,7 @@ import MapView from 'react-native-maps';
 import {PagerTabIndicator, IndicatorViewPager, PagerTitleIndicator, PagerDotIndicator} from 'rn-viewpager';
 import MapScreen from "./MapScreen";
 import Utils from "../configs/ultils";
+import LinearGradient from "react-native-linear-gradient";
 
 var {width, height} = Dimensions.get('window');
 export default class DetailTravel extends React.Component {
@@ -135,13 +136,9 @@ export default class DetailTravel extends React.Component {
             strRaDiem = 'Ra điểm lúc: ' + Utils.changeDateFormat(this.state.data.ThoiGianRaDiemThucTe);
         }
         return (
-            <View style={{flex: 1}}>
-                <Image source={require('../images/bg3.png')}
-                       style={{position: 'absolute', top: 0}}/>
-                <View style={styles.titleStyle}>
-                    <Image source={require('../images/bg3.png')}
-                           style={{position: 'absolute'}}/>
-                    <TouchableOpacity
+            <View style={{flex: 1,backgroundColor:'white'}}>
+                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
+                <TouchableOpacity
                         onPress={() => this.props.navigation.goBack()}
                         style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                         <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
@@ -149,7 +146,7 @@ export default class DetailTravel extends React.Component {
                     <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Thông
                         tin kế hoạch</Text>
                     {this.getEditButton(showSwipe)}
-                </View>
+                </LinearGradient>
                 <View style={{
                     marginTop: 4, marginBottom: 4, marginLeft: 8, marginRight: 8,
                 }}>

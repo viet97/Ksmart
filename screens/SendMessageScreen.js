@@ -15,7 +15,6 @@ import {
     Alert,
 } from 'react-native';
 import {Keyboard} from 'react-native';
-import DialogManager, {ScaleAnimation, DialogContent} from 'react-native-dialog-component';
 import Image from 'react-native-image-progress';
 import Icon3 from 'react-native-vector-icons/Entypo'
 import Icon1 from 'react-native-vector-icons/MaterialIcons'

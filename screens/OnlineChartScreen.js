@@ -17,6 +17,7 @@ import Toast from 'react-native-simple-toast'
 import ultils from "../configs/ultils";
 import ModalDropdownCustom from "../components/ModalDropdownCustom";
 import PTRView from 'react-native-pull-to-refresh'
+import LinearGradient from "react-native-linear-gradient";
 let {height, width} = Dimensions.get('window');
 export default class OnlineChartScreen extends React.Component {
     static navigationOptions = {
@@ -272,12 +273,8 @@ export default class OnlineChartScreen extends React.Component {
             }
         }
         return (
-            <View style={{flex: 1}}>
-                <Image source={require('../images/bg3.png')}
-                       style={{position: 'absolute', top: 0}}/>
-                <View style={styles.titleStyle}>
-                    <Image source={require('../images/bg3.png')}
-                           style={{position: 'absolute'}}/>
+            <View style={{flex: 1,backgroundColor:'white'}}>
+                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
                     <TouchableOpacity onPress={() => this.props.navigation.goBack()}
                                       style={styles.iconStyle}>
                         <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
@@ -292,7 +289,7 @@ export default class OnlineChartScreen extends React.Component {
                         this.showDialog();
                     }}>
                     </TouchableOpacity>
-                </View>
+                </LinearGradient>
                 <View style={{flexDirection: 'column', flex: 9}}>
                     <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: 60}}>
                         <Text style={{backgroundColor: 'transparent'}}>Chọn ngày </Text>
@@ -305,15 +302,6 @@ export default class OnlineChartScreen extends React.Component {
 
                             confirmBtnText="Xác nhận"
                             cancelBtnText="Huỷ bỏ"
-                            customStyles={{
-                                dateIcon: {},
-                                dateInput: {
-                                    backgroundColor: 'white',
-                                    borderWidth: 1,
-                                    borderColor: 'gray',
-                                    borderRadius: 4,
-                                },
-                            }}
                             onDateChange={(date) => {
                                 this.ondateChange(date);
                             }}

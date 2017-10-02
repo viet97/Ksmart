@@ -9,14 +9,12 @@ import {
     ScrollView, FlatList,
     StatusBar
 } from 'react-native';
-import MapView from 'react-native-maps';
 import {Icon} from 'react-native-elements'
-import Color from '../configs/color'
 import Toast from "react-native-simple-toast";
-import {PagerTabIndicator, IndicatorViewPager, PagerTitleIndicator, PagerDotIndicator} from 'rn-viewpager';
 import URlConfig from "../configs/url";
 import ultil from "../configs/ultils";
 import ListDetailOrderItem from "../components/ListDetailOrderItem";
+import LinearGradient from "react-native-linear-gradient";
 
 let {width, height} = Dimensions.get('window')
 export default class DetailOrderScreen extends React.Component {
@@ -48,11 +46,11 @@ export default class DetailOrderScreen extends React.Component {
 
     getElement(title, content) {
         return (
-            <View style={{marginTop: 8,backgroundColor:'transparent'}}>
+            <View style={{marginTop: 8,backgroundColor:'white'}}>
                 <Text style={{flexDirection: 'row', marginLeft: 4, fontSize: 16}}>{title}</Text>
                 <View style={{
                     marginTop: 4,
-                    backgroundColor: 'white',
+                    backgroundColor: '#ECF0F1',
                     width: width - 16,
                     marginRight: 8,
                     marginLeft: 8,
@@ -69,10 +67,8 @@ export default class DetailOrderScreen extends React.Component {
     render() {
         const {params} = this.props.navigation.state;
         return (
-            <View style={{flex: 1}}>
-                <Image source={require('../images/bg3.png')}
-                       style={{position: 'absolute', top: 0}}/>
-                <View style={styles.titleStyle}>
+            <View style={{flex: 1,backgroundColor:'white'}}>
+                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
                     <TouchableOpacity onPress={() => this.props.navigation.goBack()}
                                       style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                         <Icon style={styles.iconStyle}
@@ -88,10 +84,8 @@ export default class DetailOrderScreen extends React.Component {
                         backgroundColor: 'transparent'
                     }}>Chi tiết đơn hàng</Text>
                     <View/>
-                </View>
+                </LinearGradient>
                 <View style={{flex: 9,backgroundColor:'transparent'}}>
-                    <Image source={require('../images/bg3.png')}
-                           style={{position: 'absolute', top: 0}}/>
                     <ScrollView style={{flex: 1, marginBottom: 4}}>
                         {this.getElement('Mã đơn hàng', this.state.data.mathamchieu)}
                         {this.getElement('Tên khách hàng', this.state.data.tenkhachhang)}

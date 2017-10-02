@@ -13,10 +13,12 @@ import Toast from 'react-native-simple-toast'
 const moment = require('moment');
 import {dateOfWeek} from "../configs/data";
 import URlConfig from "../configs/url";
-
+import LinearGradient from "react-native-linear-gradient";
+import {Header} from 'react-navigation'
 export default class ConversationScreen extends React.Component {
     static navigationOptions = ({navigation}) => ({
-        title: 'Danh sách tin nhắn'
+        title: 'Danh sách tin nhắn',
+        header:null
     });
 
     constructor(props) {
@@ -81,8 +83,24 @@ export default class ConversationScreen extends React.Component {
 
     render() {
         const {navigate} = this.props.navigation;
+
         return (
             <View style={{flex: 1, backgroundColor: 'white'}}>
+                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
+                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}
+                                      style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
+                        <Icon type={'ionicon'} style={styles.iconStyle} size={24} color="white"
+                               name="ios-arrow-back"/>
+                    </TouchableOpacity>
+                    <Text style={{
+                        fontSize: 20,
+                        color: 'white',
+                        alignSelf: 'center',
+                        backgroundColor: 'transparent'
+                    }}>Danh sách tin nhắn</Text>
+                    <View style={{backgroundColor: 'transparent', width: 35, height: 35}}/>
+                </LinearGradient>
+
                 <FlatList
                     keyboardDismissMode="on-drag"
                     data={this.state.convestationList}
@@ -154,3 +172,46 @@ export default class ConversationScreen extends React.Component {
         return Math.floor(diff / (60000 * 60));
     }
 }
+const styles = StyleSheet.create({
+    titleStyle: {
+        height:Header.height,
+        marginTop: Platform.OS === 'ios' ? 16 : 0,
+        elevation: 15,
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+    },
+    headerStyle: {
+        elevation: 15, height: this.height / 7
+    },
+    itemSideMenuStyle: {
+        borderBottomWidth: 0.5,
+        borderBottomColor: 'white',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        margin: 8,
+        paddingBottom: 8
+    }, iconStyle: {
+        alignSelf: 'center',
+        width: 24,
+        height: 24,
+        backgroundColor: "transparent",
+        paddingLeft: 8,
+        paddingTop: (Platform.OS === 'ios') ? 4 : 0
+    },
+    textStyle: {
+        fontSize: 18,
+        color: 'white',
+        backgroundColor: 'transparent'
+    },
+    titleIconsMenu: {
+        textAlign: 'center',
+        color: 'white'
+    },
+    indicator: {
+        alignSelf: 'center',
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: 80
+    }
+})

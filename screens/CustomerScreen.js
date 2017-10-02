@@ -22,6 +22,7 @@ import Search from "react-native-search-box";
 import {StackNavigator} from 'react-navigation';
 import CustomerItem from "../components/CustomerItem";
 import PTRView from 'react-native-pull-to-refresh'
+import LinearGradient from "react-native-linear-gradient";
 var ALL_LOADED = false
 var SEARCH_STRING = '';
 var PAGE = 0;
@@ -191,12 +192,8 @@ export default class CustomerScreen extends Component {
     render() {
 
         return (
-            <View style={{flex: 1}}>
-                <Image source={require('../images/bg3.png')}
-                       style={{position: 'absolute', top: 0}}/>
-                <View style={styles.titleStyle}>
-                    <Image source={require('../images/bg3.png')}
-                           style={{position: 'absolute'}}/>
+            <View style={{flex: 1,backgroundColor:'white'}}>
+                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
                     <TouchableOpacity onPress={() => this.props.navigation.goBack()}
                                       style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                         <Icon2 style={styles.iconStyle} size={24} color="white"
@@ -204,7 +201,7 @@ export default class CustomerScreen extends Component {
                     <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Thông
                         tin khách hàng</Text>
                     <View style={{width: 35, height: 35}}/>
-                </View>
+                </LinearGradient>
 
                 <View style={{
                     marginLeft: 8,
@@ -212,7 +209,7 @@ export default class CustomerScreen extends Component {
                     marginBottom: 4,
                     marginRight: 4
                 }}>
-                    <Text style={{fontSize: 18, color: 'white', textAlign: 'center', backgroundColor: "transparent"}}>Tổng
+                    <Text style={{fontSize: 18, color: 'black', textAlign: 'center', backgroundColor: "transparent"}}>Tổng
                         số khách hàng
                         : {this.state.customerCount}</Text>
                 </View>

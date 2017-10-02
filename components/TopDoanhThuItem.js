@@ -30,6 +30,7 @@ import Search from 'react-native-search-box';
 import Toast from 'react-native-simple-toast';
 import ultils from "../configs/ultils";
 import Communications from 'react-native-communications';
+import {shadowProps} from "../configs/shadow";
 
 let {width, height} = Dimensions.get('window');
 export default class TopDoanhThuItem extends React.Component {
@@ -50,16 +51,12 @@ export default class TopDoanhThuItem extends React.Component {
                     this.setState({height: height})
                 }}
                 style={{
-                    marginTop: 4, marginBottom: 4, marginLeft: 8, marginRight: 8,
-                    borderTopColor: '#227878'
-                }}>
-                <Image source={require('../images/bg1.png')}
-                       style={{
-                           height: this.state.height,
-                           flexWrap: 'wrap',
-                           position: 'absolute',
-                           width: width - 8
-                       }}/>
+                    marginTop:2,
+                    backgroundColor: '#f7f7f7',
+                    fontSize: 20, ...shadowProps,
+                }}
+>
+
                 <View
                     style={{
                         flexDirection: 'row',

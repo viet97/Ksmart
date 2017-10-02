@@ -16,6 +16,7 @@ import Image from 'react-native-image-progress';
 import Icon2 from 'react-native-vector-icons/Ionicons'
 import ChooseTypeItem from "../components/ChooseTypeItem";
 import URlConfig from "../configs/url";
+import LinearGradient from "react-native-linear-gradient";
 
 let {width, height} = Dimensions.get('window')
 export default class ChooseTypeNew extends Component {
@@ -66,14 +67,7 @@ export default class ChooseTypeNew extends Component {
     render() {
         return (
             <View style={{flex: 1}}>
-                <Image source={require('../images/bg3.png')}
-                       style={{position: 'absolute', top: 0}}/>
-                <View style={styles.titleStyle}>
-                    {function () {
-                        if (Platform.OS !== 'ios')
-                            return (<Image source={require('../images/bg3.png')}
-                                           style={{position: 'absolute'}}/>)
-                    }()}
+                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
                     <TouchableOpacity onPress={() => this.props.navigation.goBack()}
                                       style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                         <Icon2 style={styles.iconStyle} size={24} color="white"
@@ -87,7 +81,7 @@ export default class ChooseTypeNew extends Component {
                             backgroundColor: 'transparent'
                         }}>Hoạt động</Text>
                     <View style={{backgroundColor: 'transparent', width: 35, height: 35}}/>
-                </View>
+                </LinearGradient>
                 {this.flatListorIndicator()}
             </View>
         )

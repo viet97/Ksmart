@@ -17,6 +17,7 @@ import Toast from 'react-native-simple-toast'
 import ultils from "../configs/ultils";
 import ModalDropdownCustom from "../components/ModalDropdownCustom";
 import {ProgressDialog} from 'react-native-simple-dialogs'
+import LinearGradient from "react-native-linear-gradient";
 
 let {height, width} = Dimensions.get('window');
 export default class ChartScreen extends React.Component {
@@ -338,12 +339,8 @@ export default class ChartScreen extends React.Component {
             return <Picker.Item key={i} value={i} label={s + ''}/>
         });
         return (
-            <View style={{flex: 1}}>
-                <Image source={require('../images/bg3.png')}
-                       style={{position: 'absolute', top: 0}}/>
-                <View style={styles.titleStyle}>
-                    <Image source={require('../images/bg3.png')}
-                           style={{position: 'absolute'}}/>
+            <View style={{flex: 1,backgroundColor:'white'}}>
+                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
                     <TouchableOpacity onPress={() => this.props.navigation.goBack()}
                                       style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                         <Icon1 style={styles.iconStyle} size={24} color="white"
@@ -352,14 +349,14 @@ export default class ChartScreen extends React.Component {
                     <TouchableOpacity style={{alignSelf: 'center'}} onPress={() => {
                         this.showDialog();
                     }}/>
-                </View>
+                </LinearGradient>
 
                 <View style={{flexDirection: 'column', flex: 9}}>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', height: 44}}>
                         <Text style={{
                             alignSelf: 'center',
                             backgroundColor: 'transparent',
-                            color: 'white'
+                            color: 'black'
                         }}>Tháng</Text>
                         <ModalDropdownCustom
                             width={40}
@@ -371,7 +368,7 @@ export default class ChartScreen extends React.Component {
 
                         </ModalDropdownCustom>
                         <Text
-                            style={{alignSelf: 'center', backgroundColor: 'transparent', color: 'white'}}>Năm</Text>
+                            style={{alignSelf: 'center', backgroundColor: 'transparent', color: 'black'}}>Năm</Text>
                         <ModalDropdownCustom
                             width={60}
                             data={this.state.yearArr}
@@ -383,7 +380,7 @@ export default class ChartScreen extends React.Component {
                         <Text style={{
                             alignSelf: 'center',
                             backgroundColor: 'transparent',
-                            color: 'white'
+                            color: 'black'
                         }}>Theo</Text>
                         <ModalDropdownCustom
                             width={100}

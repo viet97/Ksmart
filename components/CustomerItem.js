@@ -20,6 +20,7 @@ import Color from '../configs/color'
 import URlConfig from "../configs/url";
 import Search from "react-native-search-box";
 import Communications from 'react-native-communications';
+import {shadowProps} from "../configs/shadow";
 
 var {height, width} = Dimensions.get('window');
 export default class NewFeedItem extends React.Component {
@@ -36,25 +37,21 @@ export default class NewFeedItem extends React.Component {
         return (
 
             <TouchableOpacity
-                onPress={() => this.props.callback()}>
+                onPress={() => this.props.callback()}
+                style={{marginTop:2}}>
 
                 <View
+                    style={{
+                        backgroundColor: '#f7f7f7',
+                        fontSize: 20, ...shadowProps,
+                    }}
+                    activeOpacity={1}
                     onLayout={(e) => {
                         var {x, y, width, height} = e.nativeEvent.layout;
                         this.setState({height: height})
                         console.log(height)
                     }}
-                    style={{
-                        marginTop: 4, marginBottom: 4, marginLeft: 4, marginRight: 4,
-                    }}>
-                    <Image source={require('../images/bg1.png')}
-                           style={{
-                               height: this.state.height,
-                               flexWrap: 'wrap',
-                               position: 'absolute',
-                               width: width - 8
-
-                           }}/>
+>
                     <View style={{
                         flexDirection: 'row',
                         marginLeft: 8,

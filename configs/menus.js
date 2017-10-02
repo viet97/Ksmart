@@ -97,6 +97,11 @@ const menuSwiper = [
         screenName: 'SignOut',
         title: 'Đăng xuất'
     },
+    {
+        iconName: 'info-outline',
+        screenName: 'AboutUs',
+        title: 'Về chúng tôi'
+    },
 ];
 export {menuSwiper};
 export default menus;

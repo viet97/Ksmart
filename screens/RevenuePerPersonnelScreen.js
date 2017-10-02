@@ -14,6 +14,7 @@ import URlConfig from "../configs/url";
 import Toast from 'react-native-simple-toast'
 import DoanhThuTheoNVItem from "../components/DoanhThuTheoNVItem";
 import ModalDropdownCustom from "../components/ModalDropdownCustom";
+import LinearGradient from "react-native-linear-gradient";
 export default class RevenuePerPersonnelScreen extends React.Component {
     static navigationOptions = {
         header: null
@@ -213,12 +214,8 @@ export default class RevenuePerPersonnelScreen extends React.Component {
             return <Picker.Item key={i} value={i} label={s + ''}/>
         });
         return (
-            <View style={{flex: 1}}>
-                <Image source={require('../images/bg3.png')}
-                       style={{position: 'absolute', top: 0}}/>
-                <View style={styles.titleStyle}>
-                    <Image source={require('../images/bg3.png')}
-                           style={{position: 'absolute'}}/>
+            <View style={{flex: 1,backgroundColor:'white'}}>
+                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
                     <TouchableOpacity onPress={() => this.props.navigation.goBack()}
                                       style={styles.iconStyle}>
                         <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
@@ -234,7 +231,7 @@ export default class RevenuePerPersonnelScreen extends React.Component {
                         this.showDialog();
                     }}>
                     </TouchableOpacity>
-                </View>
+                </LinearGradient>
                 <View style={{flexDirection: 'column', flex: 9}}>
                     <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: 60}}>
                         <Text style={{backgroundColor: 'transparent'}}>Từ</Text>
@@ -247,15 +244,6 @@ export default class RevenuePerPersonnelScreen extends React.Component {
 
                             confirmBtnText="Xác nhận"
                             cancelBtnText="Huỷ bỏ"
-                            customStyles={{
-                                dateIcon: {},
-                                dateInput: {
-                                    backgroundColor: 'white',
-                                    borderWidth: 1,
-                                    borderColor: 'gray',
-                                    borderRadius: 4,
-                                },
-                            }}
                             onDateChange={(date) => {
                                 this.setState({date: date}, function () {
                                     this.getDataChart()
@@ -272,15 +260,6 @@ export default class RevenuePerPersonnelScreen extends React.Component {
 
                             confirmBtnText="Xác nhận"
                             cancelBtnText="Huỷ bỏ"
-                            customStyles={{
-                                dateIcon: {},
-                                dateInput: {
-                                    backgroundColor: 'white',
-                                    borderWidth: 1,
-                                    borderColor: 'gray',
-                                    borderRadius: 4,
-                                },
-                            }}
                             onDateChange={(date) => {
                                 this.setState({dateto: date}, function () {
                                     this.getDataChart()
@@ -375,7 +354,6 @@ const styles = StyleSheet.create({
         elevation: 15,
         justifyContent: 'space-between',
         flexDirection: 'row',
-        backgroundColor: 'transparent'
     },
     headerStyle: {
         elevation: 15, height: this.height / 7

@@ -35,6 +35,7 @@ import TopDoanhThuItem from "../components/TopDoanhThuItem";
 import KhongCoDoanhThuItem from "../components/KhongCoDoanhThuItem";
 import ModalDropdownCustom from "../components/ModalDropdownCustom";
 import PTRView from 'react-native-pull-to-refresh'
+import LinearGradient from "react-native-linear-gradient";
 let SEARCH_STRING = '';
 let {width, height} = Dimensions.get('window');
 let ALL_LOADED = false
@@ -290,12 +291,8 @@ export default class ReportScreen extends Component {
 
     render() {
         return (
-            <View style={{flex: 1}}>
-                <Image source={require('../images/bg3.png')}
-                       style={{position: 'absolute', top: 0}}/>
-                <View style={styles.titleStyle}>
-                    <Image source={require('../images/bg3.png')}
-                           style={{position: 'absolute'}}/>
+            <View style={{flex: 1,backgroundColor:'white'}}>
+                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
                     <TouchableOpacity onPress={() => this.props.navigation.goBack()}
                                       style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                         <Icon1 style={styles.iconStyle} size={24} color="white"
@@ -308,9 +305,9 @@ export default class ReportScreen extends Component {
                         backgroundColor: 'transparent'
                     }}>{this.state.title}</Text>
                     <View style={{backgroundColor: 'transparent', width: 35, height: 35}}/>
-                </View>
+                </LinearGradient>
                 <View>
-                    <View style={{width: width}}>
+                    <View style={{width: width,marginTop:16,marginBottom:16}}>
                         <Search
                             ref="search_box"
                             placeholder="Tìm kiếm"

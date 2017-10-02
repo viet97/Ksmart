@@ -24,6 +24,7 @@ import Search from "react-native-search-box";
 import CheckBox from 'react-native-checkbox'
 import {SegmentedControls} from 'react-native-radio-buttons'
 import ultil from "../configs/ultils";
+import {shadowProps} from "../configs/shadow";
 
 let {height, width} = Dimensions.get('window');
 
@@ -77,16 +78,11 @@ export default class CustomerPlantComponent extends Component {
                     this.setState({height: height})
                 }}
                 style={{
-                    borderRadius: 10,
-                    marginTop: 4, marginBottom: 4, marginLeft: 8, marginRight: 8,backgroundColor:'transparent'
-                }}>
-                <Image source={require('../images/bg1.png')}
-                       style={{
-                           height: this.state.height,
-                           flexWrap: 'wrap',
-                           position: 'absolute',
-                           width: width - 16
-                       }}/>
+                    marginTop:2,
+                    backgroundColor: '#f7f7f7',
+                    fontSize: 20, ...shadowProps,
+                }}
+>
                 <View style={{
                     flexDirection: 'row',
                     marginLeft: 8,

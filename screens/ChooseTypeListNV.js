@@ -23,6 +23,7 @@ import myStyles from '../configs/myStyles'
 import ChooseTypeItem from "../components/ChooseTypeItem";
 import URlConfig from "../configs/url";
 import Toast from "react-native-simple-toast";
+import LinearGradient from "react-native-linear-gradient";
 
 let {width, height} = Dimensions.get('window')
 export default class ChooseTypeListNV extends Component {
@@ -44,7 +45,7 @@ export default class ChooseTypeListNV extends Component {
             <TabNavigator
                 tabBarStyle={{backgroundColor: '#90CAF9'}}>
                 <TabNavigator.Item
-                    titleStyle={{color:'black'}}
+                    titleStyle={{color: 'black'}}
 
                     selected={this.state.selectedTab === 'ListNhanVien'}
                     title="Nhân Viên"
@@ -52,14 +53,7 @@ export default class ChooseTypeListNV extends Component {
                     renderSelectedIcon={() => <Icon2 size={24} color="white" name="ios-people-outline"/>}
                     onPress={() => this.setState({selectedTab: 'ListNhanVien'})}>
                     <View style={{flex: 1}}>
-                        <Image source={require('../images/bg3.png')}
-                               style={{position: 'absolute', top: 0}}/>
-                        <View style={styles.titleStyle}>
-                            {function () {
-                                if (Platform.OS !== 'ios')
-                                    return (<Image source={require('../images/bg3.png')}
-                                                   style={{position: 'absolute'}}/>)
-                            }()}
+                        <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
                             <TouchableOpacity onPress={() => this.props.navigation.goBack()}
                                               style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                                 <Icon2 style={styles.iconStyle} size={24} color="white"
@@ -73,7 +67,7 @@ export default class ChooseTypeListNV extends Component {
                                     backgroundColor: 'transparent'
                                 }}>Nhân viên</Text>
                             <View style={{backgroundColor: 'transparent', width: 35, height: 35}}/>
-                        </View>
+                        </LinearGradient>
                         {this.flatListorIndicator()}
                     </View>
                 </TabNavigator.Item>

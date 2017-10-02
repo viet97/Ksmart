@@ -19,6 +19,7 @@ import NewFeedItem from "../components/NewFeedItem";
 
 import {ConfirmDialog} from 'react-native-simple-dialogs';
 import {colors} from "../configs/color";
+import LinearGradient from "react-native-linear-gradient";
 
 let SEARCH_STRING = '';
 let {width, height} = Dimensions.get('window');
@@ -209,21 +210,8 @@ export default class NewFeedScreen extends React.Component {
     render() {
         return (
 
-            <View
-                style={{flex: 1}}>
-                <Image source={require('../images/bg3.png')}
-                       style={{
-                           position: 'absolute',
-                           top: 0,
-                           bottom: 0,
-                           left: 0,
-                           right: 0,
-                           resizeMode: 'cover',
-                           width: '100%',
-                           height: '100%',
-                           opacity: 0.6
-                       }}/>
-                <View style={styles.titleStyle}>
+            <View style={{flex: 1,backgroundColor:'white'}}>
+                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
                     <TouchableOpacity onPress={() => this.props.navigation.goBack()}
                                       style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                         <Icon1 style={styles.iconStyle} size={24} color="white"
@@ -233,8 +221,8 @@ export default class NewFeedScreen extends React.Component {
                         style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Hoạt
                         động</Text>
                     <View/>
-                </View>
-                <View style={{width: width}}>
+                </LinearGradient>
+                <View style={{width: width,marginTop:16,marginBottom:16}}>
                     <Search
                         ref="search_box"
                         placeholder="Tìm kiếm"

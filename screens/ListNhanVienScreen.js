@@ -29,6 +29,7 @@ import MapListScreen from "./MapListScreen";
 import {Dialog} from 'react-native-simple-dialogs';
 import PTRView from 'react-native-pull-to-refresh'
 import ListNhanVienItem from "../components/ListNhanVienItem";
+import LinearGradient from "react-native-linear-gradient";
 
 let {height, width} = Dimensions.get('window');
 
@@ -358,10 +359,8 @@ export default class ListNhanVienScreen extends React.Component {
 
         return (
 
-            <View style={{flex: 1}}>
-                <View style={styles.titleStyle}>
-                    <Image source={require('../images/bg3.png')}
-                           style={{position: 'absolute', opacity: 0.4}}/>
+            <View style={{flex: 1,backgroundColor:'white'}}>
+                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
                     <TouchableOpacity onPress={() => this.props.navigation.goBack()}
                                       style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                         <Icon1 style={styles.iconStyle} size={24} color="white"
@@ -382,10 +381,9 @@ export default class ListNhanVienScreen extends React.Component {
                             backgroundColor: 'transparent'
                         }}>Bộ lọc</Text>
                     </TouchableOpacity>
-                </View>
+                </LinearGradient>
 
-
-                <View style={{width: width}}>
+                <View style={{width: width,marginTop:16,marginBottom:16}}>
                     <Search
                         placeholder="Tìm kiếm"
                         cancelTitle="Huỷ bỏ"
@@ -577,7 +575,6 @@ const styles = StyleSheet.create({
         elevation: 15,
         justifyContent: 'space-between',
         flexDirection: 'row',
-        backgroundColor: Color.backgroundNewFeed,
     },
     headerStyle: {
         elevation: 15, height: this.height / 7

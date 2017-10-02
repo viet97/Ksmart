@@ -18,6 +18,7 @@ import DatePicker from 'react-native-datepicker'
 import ChooseTypeItem from "../components/ChooseTypeItem";
 import Color from '../configs/color'
 import URlConfig from "../configs/url";
+import LinearGradient from "react-native-linear-gradient";
 
 let {width, height} = Dimensions.get('window')
 export default class ChooseTypeOrder extends Component {
@@ -89,7 +90,7 @@ export default class ChooseTypeOrder extends Component {
     render() {
         return (
             <View style={{flex: 1, backgroundColor: 'white'}}>
-                <View style={styles.titleStyle}>
+                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
                     <TouchableOpacity onPress={() => this.props.navigation.goBack()}
                                       style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                         <Icon type={"ionicon"} style={styles.iconStyle} size={24} color="white"
@@ -103,7 +104,7 @@ export default class ChooseTypeOrder extends Component {
                             backgroundColor: 'transparent'
                         }}>Đơn hàng</Text>
                     <View style={{backgroundColor: 'transparent', width: 35, height: 35}}/>
-                </View>
+                </LinearGradient>
                 <View style={{width: window.width, height: 80, elevation: 5}}>
                     <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: 80}}>
                         <DatePicker

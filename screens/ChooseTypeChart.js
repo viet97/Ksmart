@@ -11,6 +11,7 @@ import {
 import Icon2 from 'react-native-vector-icons/Ionicons'
 
 import ChooseTypeChartItem from "../components/ChooseTypeChartItem";
+import LinearGradient from "react-native-linear-gradient";
 
 const propView = 7 / 8;
 const {width, height} = Dimensions.get('window');
@@ -44,11 +45,7 @@ export default class ChooseTypeChart extends React.Component {
             <View style={{
                 flex: 1,
             }}>
-                <Image source={require('../images/bg3.png')}
-                       style={{position: 'absolute', top: 0}}/>
-                <View style={styles.titleStyle}>
-                    <Image source={require('../images/bg3.png')}
-                           style={{position: 'absolute'}}/>
+                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
                     <TouchableOpacity onPress={() => this.props.navigation.goBack()}
                                       style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                         <Icon2 style={styles.iconStyle} size={24} color="white"
@@ -57,7 +54,7 @@ export default class ChooseTypeChart extends React.Component {
                     <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Chọn
                         loại biểu đồ</Text>
                     <View style={{width: 35, height: 35}}/>
-                </View>
+                </LinearGradient>
                 <View style={{flex: 9}}>
                     <View style={styles.view1}>
                         <TouchableOpacity
@@ -67,7 +64,7 @@ export default class ChooseTypeChart extends React.Component {
                             }}
                         >
                             <Image source={require('../images/bd1.png')} style={{width: width / 6, height: width / 6}}/>
-                            <Text style={{height: 48, textAlign: 'center', fontSize: 16, color: 'white'}}>Doanh thu sản
+                            <Text style={{height: 48, textAlign: 'center', fontSize: 16, color: 'black'}}>Doanh thu sản
                                 lượng</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
@@ -77,7 +74,7 @@ export default class ChooseTypeChart extends React.Component {
                             }}
                         >
                             <Image source={require('../images/bd2.png')} style={{width: width / 6, height: width / 6}}/>
-                            <Text style={{height: 48, textAlign: 'center', fontSize: 16, color: 'white'}}>Doanh thu sản
+                            <Text style={{height: 48, textAlign: 'center', fontSize: 16, color: 'black'}}>Doanh thu sản
                                 lượng theo nhân viên</Text>
                         </TouchableOpacity>
                     </View>
@@ -90,7 +87,7 @@ export default class ChooseTypeChart extends React.Component {
                             }}>
                             <Image source={require('../images/bd3.png')}
                                    style={{width: width / 6, height: width / 6, alignSelf: 'center'}}/>
-                            <Text style={{height: 48, textAlign: 'center', fontSize: 16, color: 'white'}}>Tần suất nhân
+                            <Text style={{height: 48, textAlign: 'center', fontSize: 16, color: 'black'}}>Tần suất nhân
                                 viên viếng thăm</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
@@ -102,7 +99,7 @@ export default class ChooseTypeChart extends React.Component {
                         >
                             <Image source={require('../images/bd4.png')}
                                    style={{width: width / 6, height: width / 6, alignSelf: 'center'}}/>
-                            <Text style={{height: 48, textAlign: 'center', fontSize: 16, color: 'white'}}>Tần suất nhân
+                            <Text style={{height: 48, textAlign: 'center', fontSize: 16, color: 'black'}}>Tần suất nhân
                                 viên online</Text>
                         </TouchableOpacity>
                     </View>
