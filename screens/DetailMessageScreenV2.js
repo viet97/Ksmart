@@ -19,13 +19,15 @@ import URlConfig from "../configs/url";
 import Utils from "../configs/ultils";
 import LinearGradient from "react-native-linear-gradient";
 import {Header} from 'react-navigation'
+
 const moment = require('moment');
 export default class DetailMessageScreenV2 extends React.Component {
 
     static navigationOptions = ({navigation}) => ({
         title: navigation.state.title,
-        header:null
+        header: null
     });
+
     constructor(props) {
         super(props);
     }
@@ -66,16 +68,14 @@ export default class DetailMessageScreenV2 extends React.Component {
         this.setState((previousState) => ({
             messages: GiftedChat.append(previousState.messages, messages),
         }));
-        console.log('truoc gui', this.state.id_nv)
         fetch(URlConfig.getLinkSendMessage(this.state.id_nv, '', messages[0].text))
             .then((response) => (response.json()))
             .then((responseJson) => {
-                    console.log(responseJson)
+                    console.log(URlConfig.getLinkSendMessage(this.state.id_nv, '', messages[0].text));
                 }
             ).catch((e) => {
             Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e)
         })
-
     }
 
     render() {
@@ -87,10 +87,15 @@ export default class DetailMessageScreenV2 extends React.Component {
                     <TouchableOpacity onPress={() => this.props.navigation.goBack()}
                                       style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                         <Icon type={'ionicon'} style={styles.iconStyle} size={24} color="white"
-                               name="ios-arrow-back"/>
+                              name="ios-arrow-back"/>
                     </TouchableOpacity>
                     <Text
-                        style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>{params.title}</Text>
+                        style={{
+                            fontSize: 20,
+                            color: 'white',
+                            alignSelf: 'center',
+                            backgroundColor: 'transparent'
+                        }}>{params.title}</Text>
                     <View/>
                 </LinearGradient>
 
@@ -134,8 +139,8 @@ export default class DetailMessageScreenV2 extends React.Component {
 }
 const styles = StyleSheet.create({
     titleStyle: {
-        height:Header.height,
-        marginTop: Platform.OS === 'ios' ? 16 : 0,
+        height: Header.height,
+        paddingTop: Platform.OS === 'ios' ? 16 : 0,
         elevation: 15,
         justifyContent: 'space-between',
         flexDirection: 'row',
@@ -156,7 +161,6 @@ const styles = StyleSheet.create({
         height: 24,
         backgroundColor: "transparent",
         paddingLeft: 8,
-        paddingTop: (Platform.OS === 'ios') ? 4 : 0
     },
     textStyle: {
         fontSize: 18,

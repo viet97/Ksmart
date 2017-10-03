@@ -175,7 +175,7 @@ export default class ConversationScreen extends React.Component {
 const styles = StyleSheet.create({
     titleStyle: {
         height:Header.height,
-        marginTop: Platform.OS === 'ios' ? 16 : 0,
+        paddingTop: Platform.OS === 'ios' ? 16 : 0,
         elevation: 15,
         justifyContent: 'space-between',
         flexDirection: 'row',
@@ -196,7 +196,6 @@ const styles = StyleSheet.create({
         height: 24,
         backgroundColor: "transparent",
         paddingLeft: 8,
-        paddingTop: (Platform.OS === 'ios') ? 4 : 0
     },
     textStyle: {
         fontSize: 18,

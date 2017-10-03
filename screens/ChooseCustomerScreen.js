@@ -233,7 +233,7 @@ export default class ChooseCustomerScreen extends Component {
 }
 const styles = StyleSheet.create({
     titleStyle: {
-        marginTop: Platform.OS === 'ios' ? 16 : 0,
+        paddingTop: Platform.OS === 'ios' ? 16 : 0,
         flex: 1,
         elevation: 15,
         justifyContent: 'space-between',
@@ -256,7 +256,6 @@ const styles = StyleSheet.create({
         height: 35,
         backgroundColor: "transparent",
         marginLeft: 8,
-        marginTop: (Platform.OS === 'ios') ? 4 : 0
     },
     textStyle: {
         fontSize: 18,

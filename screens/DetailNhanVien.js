@@ -280,7 +280,7 @@ export default class DetailNhanVien extends React.Component {
 
 const styles = StyleSheet.create({
     titleStyle: {
-        marginTop: Platform.OS === 'ios' ? 16 : 0,
+        paddingTop: Platform.OS === 'ios' ? 16 : 0,
         flex: 1,
         elevation: 15,
         justifyContent: 'space-between',
@@ -303,7 +303,6 @@ const styles = StyleSheet.create({
         height: 24,
         backgroundColor: "transparent",
         marginLeft: 16,
-        marginTop: (Platform.OS === 'ios') ? 8 : 0
     },
     textStyle: {
         fontSize: 18,

@@ -127,6 +127,7 @@ const styles = StyleSheet.create({
         paddingVertical: 16,
         elevation: 10
     }, titleStyle: {
+        paddingTop: Platform.OS === 'ios' ? 16 : 0,
         flex: 1,
         elevation: 15,
         justifyContent: 'space-between',
@@ -145,7 +146,6 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         backgroundColor: "transparent",
         marginLeft: 8,
-        marginTop: (Platform.OS === 'ios') ? 8 : 0
     }
 
 });
