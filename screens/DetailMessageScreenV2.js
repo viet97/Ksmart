@@ -68,6 +68,7 @@ export default class DetailMessageScreenV2 extends React.Component {
         this.setState((previousState) => ({
             messages: GiftedChat.append(previousState.messages, messages),
         }));
+        console.log('truoc gui', this.state.id_nv)
         fetch(URlConfig.getLinkSendMessage(this.state.id_nv, '', messages[0].text))
             .then((response) => (response.json()))
             .then((responseJson) => {

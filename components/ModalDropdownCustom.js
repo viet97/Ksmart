@@ -37,15 +37,15 @@ export default class ModalDropdownCustom extends Component {
                 dropdownHeight={this.state.height}
                 options={this.props.data}
                 style={{
-                    borderWidth: 0.4,
+                    borderWidth:1,
                     width: this.state.width,
                     padding: 8,
                     borderRadius: 10,
                     justifyContent: 'center',
                     alignItems: 'center',
-                    borderRightWidth: 0.4,
                     marginTop: 4, backgroundColor: 'transparent'
                 }}
+                textStyle={{color: 'black'}}
                 defaultValue={this.props.defaultValue}
                 defaultIndex={0}
                 onSelect={(idx, value) => {
