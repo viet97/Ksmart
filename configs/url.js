@@ -50,7 +50,7 @@ export default class URlConfig {
 
     static getLinkSendMessage(id, tieude, noidung) {
         let data = URlConfig.OBJLOGIN;
-        return data.urlserver + '/AppGuiTinNhan.aspx?token=' + md5.hex_md5(Date.now()) + '&idct=' + data.idcongty +'&idquanly=' + data.id + '&noidung=' + noidung + '&tieude=' + tieude + '&idnhanvien=' + id + '&loai=quanlyguinhanvien'
+        return data.urlserver + '/AppGuiTinNhan.aspx?token=' + md5.hex_md5(Date.now()) + '&idct=' + data.idcongty + '&idquanly=' + data.id + '&noidung=' + noidung + '&tieude=' + tieude + '&idnhanvien=' + id + '&loaigui=quanlyguinhanvien'
     }
 
     static getNewFeedLink(page, keyWord, status) {

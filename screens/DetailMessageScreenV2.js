@@ -19,7 +19,12 @@ import URlConfig from "../configs/url";
 import Utils from "../configs/ultils";
 import LinearGradient from "react-native-linear-gradient";
 import {Header} from 'react-navigation'
+import {nhanVienToQuanLy, quanLyToNhanVien} from "../configs/type";
+import Toast from "react-native-simple-toast";
 
+const failed = 'ios-warning';
+const ok = 'ios-checkmark-outline';
+const onSend = 'ios-refresh-circle-outline'
 const moment = require('moment');
 export default class DetailMessageScreenV2 extends React.Component {
 
@@ -30,21 +35,23 @@ export default class DetailMessageScreenV2 extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            iconName: ok
+        }
     }
 
-    componentWillMount() {
+    handleMessage(listMsg = []) {
         let messages = [];
         let bottomMessage = '';
+        console.log(listMsg)
 
-        const {params} = this.props.navigation.state;
-        console.log('iddddd', params._id)
-        for (let item of params.data) {
+        for (let item of listMsg) {
             let user = {};
 
             item['text'] = item.NoiDung;
             item['_id'] = item['ID_TINNHAN'];
             item['createdAt'] = moment(item.NgayGui, 'YYYY-MM-DDTHH:mm:ss').toDate();
-            user['_id'] = item['ID_NHANVIEN'];
+            user['_id'] = item['Loai'];
             if (item['AnhDaiDien']) {
                 user['avatar'] = URlConfig.BASE_URL_APP + item['AnhDaiDien']
             } else {
@@ -55,27 +62,54 @@ export default class DetailMessageScreenV2 extends React.Component {
             item['user'] = user;
             messages.push(item)
         }
-        bottomMessage = "Đã gửi lúc " + Utils.getDate(params.data[0].NgayGui)
+        if (listMsg[0].Loai === quanLyToNhanVien) {
+            bottomMessage = "Đã gửi lúc " + Utils.getDate(listMsg[0].NgayGui)
+        } else {
+            bottomMessage = "Đã nhận lúc " + Utils.getDate(listMsg[0].NgayGui)
+        }
         this.setState({
             messages: messages,
-            id_nv: params._id,
+            id_nv: listMsg._id,
             bottomMessage: bottomMessage
         })
     }
 
+    componentWillMount() {
+        const {params} = this.props.navigation.state;
+        this.handleMessage(params.data);
+    }
+
     onSend(messages = []) {
-        console.log(messages);
+        const {params} = this.props.navigation.state;
+        this.setState({
+            iconName: onSend,
+            bottomMessage: "Đang gửi"
+        });
         this.setState((previousState) => ({
             messages: GiftedChat.append(previousState.messages, messages),
         }));
-        console.log('truoc gui', this.state.id_nv)
+        console.log('truoc gui', this.state.id_nv);
         fetch(URlConfig.getLinkSendMessage(this.state.id_nv, '', messages[0].text))
             .then((response) => (response.json()))
             .then((responseJson) => {
+                if (responseJson.status) {
                     console.log(URlConfig.getLinkSendMessage(this.state.id_nv, '', messages[0].text));
+                    this.setState({
+                        bottomMessage: "Đã gửi lúc " + Utils.getDate(params.data[0].NgayGui),
+                        iconName: ok
+                    });
+                } else {
+                    this.setState({
+                        iconName: failed
+                    });
+                    Toast.show('Có lỗi xảy ra, vui lòng liên hệ quản trị viên!');
+                }
                 }
             ).catch((e) => {
-            Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e)
+            Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e);
+            this.setState({
+                iconName: failed
+            });
         })
     }
 
@@ -101,12 +135,13 @@ export default class DetailMessageScreenV2 extends React.Component {
                 </LinearGradient>
 
                 <GiftedChat
+                    keyboardDismissMode="on-drag"
                     isLoadingEarlier={true}
                     style={{flex: 1}}
                     messages={this.state.messages}
                     onSend={(messages) => this.onSend(messages)}
                     user={{
-                        _id: this.state.id_nv,
+                        _id: quanLyToNhanVien,
                     }}
                     renderSend={(props) => {
                         return (
@@ -114,20 +149,28 @@ export default class DetailMessageScreenV2 extends React.Component {
                                 {...props}
                                 containerStyle={{alignItems: 'center', justifyContent: 'center', alignSelf: 'center'}}
                             >
-                                <Icon name={'send'} color={"blue"} size={24}/>
+                                <Icon name={'send'} color={"blue"} size={24} type={this}/>
                             </Send>
                         );
                     }}
                     renderFooter={() => {
                         return (
-                            <View style={{flexDirection: 'row', alignSelf: 'flex-end'}}>
-                                <Icon name={'ios-checkmark-outline'} size={24} color={'gray'} type={"ionicon"}/>
+                            <TouchableOpacity
+                                activeOpacity={1}
+                                style={{flexDirection: 'row', alignSelf: 'flex-end'}}
+                                onPress={() => {
+                                    if (this.state.iconName === failed) {
+
+                                    }
+                                }}
+                            >
+                                <Icon name={this.state.iconName} size={24} color={'gray'} type={"ionicon"}/>
                                 <Text style={{
                                     alignSelf: 'flex-end',
                                     margin: 8,
                                     fontSize: 11
                                 }}>{this.state.bottomMessage}</Text>
-                            </View>
+                            </TouchableOpacity>
                         )
                     }}
                     locale={'vi'}

@@ -15,10 +15,11 @@ import {dateOfWeek} from "../configs/data";
 import URlConfig from "../configs/url";
 import LinearGradient from "react-native-linear-gradient";
 import {Header} from 'react-navigation'
+
 export default class ConversationScreen extends React.Component {
     static navigationOptions = ({navigation}) => ({
         title: 'Danh sách tin nhắn',
-        header:null
+        header: null
     });
 
     constructor(props) {
@@ -32,6 +33,7 @@ export default class ConversationScreen extends React.Component {
 
     componentDidMount() {
         this.getConvestation();
+        //0 quan ly gui, 1 nhan vien
     }
 
     getConvestation() {
@@ -52,19 +54,18 @@ export default class ConversationScreen extends React.Component {
                         }
 
                         if (item.DANHSACH[0]) {
-                            item['lastmsg'] = item.DANHSACH[0].NoiDung;
+                            item['lastmsg'] = item.NoiDung;
                             item['isSeen'] = item['DANHSACH'][0].NgayXem !== '0001-01-01T00:00:00';
                             let lastUser = {};
                             if (item['DANHSACH'][0].AnhDaiDien)
                                 lastUser['avatar'] = URlConfig.BASE_URL_APP + item['DANHSACH'][0].AnhDaiDien;
                             else
                                 lastUser['avatar'] = null;
-                            lastUser['name'] = item['DANHSACH'][0].TenNhanVien;
-                            lastUser['_id'] = item['DANHSACH'][0].ID_NHANVIEN;
+                            lastUser['name'] = item.TenNhanVien;
+                            lastUser['_id'] = item.ID_NHANVIEN;
                             item['lastUser'] = lastUser;
 
                         }
-
                         convestationList.push(item);
                     }
                     this.setState({convestationList});
@@ -90,7 +91,7 @@ export default class ConversationScreen extends React.Component {
                     <TouchableOpacity onPress={() => this.props.navigation.goBack()}
                                       style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                         <Icon type={'ionicon'} style={styles.iconStyle} size={24} color="white"
-                               name="ios-arrow-back"/>
+                              name="ios-arrow-back"/>
                     </TouchableOpacity>
                     <Text style={{
                         fontSize: 20,
@@ -110,8 +111,9 @@ export default class ConversationScreen extends React.Component {
                             style={{
                                 flexDirection: 'row',
                                 justifyContent: "space-between",
-                                marginTop: 16,
+                                marginTop: 32,
                                 marginLeft: 16,
+                                marginRight: 8,
                                 flex: 1,
                             }}
                             onPress={() => {
@@ -126,11 +128,11 @@ export default class ConversationScreen extends React.Component {
                             <GiftedAvatar user={item} style={{width: 40, height: 40, borderRadius: 20}}/>
                             <View style={{flex: 1, marginRight: 4, marginLeft: 8}}>
                                 <View style={{flex: 1, justifyContent: 'space-between', flexDirection: 'row'}}>
-                                    <Text style={{
-                                        fontSize: 16,
+                                    <Text numberOfLines={1} style={{
+                                        fontSize: 16, width: '50%',
                                         fontWeight: item.isSeen ? '200' : 'bold'
                                     }}>{item.name}</Text>
-                                    <Text style={{
+                                    <Text numberOfLines={1} style={{
                                         fontSize: 14,
                                         fontWeight: item.isSeen ? '100' : 'bold'
                                     }}>{this.getTimeString(item.ThoiGian)}</Text>
@@ -141,12 +143,13 @@ export default class ConversationScreen extends React.Component {
                                     flexDirection: 'row',
                                     marginTop: 4
                                 }}>
-                                    <Text style={{
-                                        fontSize: 16,
-                                        fontWeight: item.isSeen ? '100' : 'bold'
-                                    }}>{item.lastmsg}</Text>
+                                    <Text numberOfLines={1}
+                                          style={{
+                                              fontSize: 16, width: '73%',
+                                              fontWeight: item.isSeen ? '100' : 'bold'
+                                          }}>{item.lastmsg}</Text>
                                     <GiftedAvatar user={item.lastUser} textStyle={{fontSize: 8}}
-                                                  avatarStyle={{width: 15, height: 15, borderRadius: 7.5}}/>
+                                                  avatarStyle={{width: 15, height: 15, borderRadius: 7.5,}}/>
                                 </View>
                             </View>
                         </TouchableOpacity>
@@ -174,7 +177,7 @@ export default class ConversationScreen extends React.Component {
 }
 const styles = StyleSheet.create({
     titleStyle: {
-        height:Header.height,
+        height: Header.height,
         paddingTop: Platform.OS === 'ios' ? 16 : 0,
         elevation: 15,
         justifyContent: 'space-between',
