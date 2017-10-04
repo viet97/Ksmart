@@ -97,18 +97,19 @@ export default class ChooseTypeCustomer extends Component {
 
     getDataFromSv() {
         this.setState({data: null})
+        console.log(URlConfig.getLinkSoKhachHang())
         fetch(URlConfig.getLinkSoKhachHang())
             .then((response) => (response.json()))
             .then((responseJson) => {
                 if (responseJson.status) {
                     var arr = []
-                    for (let item in responseJson.danhsach) {
+                    for (let i in responseJson.danhsach) {
                         let obj = {
-                            tongso: responseJson.danhsach[item].TongKhachHang,
-                            trangthai: responseJson.danhsach[item].ID_LoaiKhachHang,
-                            tenloai: responseJson.danhsach[item].TenLoaiKhachHang
+                            tongso: responseJson.danhsach[i].TongKhachHang,
+                            trangthai: responseJson.danhsach[i].ID_LoaiKhachHang,
+                            tenloai: responseJson.danhsach[i].TenLoaiKhachHang
                         }
-                        arr.push(obj)
+                        arr.push(obj);
                     }
                     this.setState({data: arr})
                 }

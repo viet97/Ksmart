@@ -24,7 +24,7 @@ import Toast from "react-native-simple-toast";
 
 const failed = 'ios-warning';
 const ok = 'ios-checkmark-outline';
-const onSend = 'ios-refresh-circle-outline'
+const onSend = 'ios-refresh-circle-outline';
 const moment = require('moment');
 export default class DetailMessageScreenV2 extends React.Component {
 
@@ -35,8 +35,10 @@ export default class DetailMessageScreenV2 extends React.Component {
 
     constructor(props) {
         super(props);
+        const {params} = this.props.navigation.state;
         this.state = {
-            iconName: ok
+            iconName: ok,
+            id_nv: params._id
         }
     }
 
@@ -69,7 +71,6 @@ export default class DetailMessageScreenV2 extends React.Component {
         }
         this.setState({
             messages: messages,
-            id_nv: listMsg._id,
             bottomMessage: bottomMessage
         })
     }
@@ -95,6 +96,7 @@ export default class DetailMessageScreenV2 extends React.Component {
                 if (responseJson.status) {
                     console.log(URlConfig.getLinkSendMessage(this.state.id_nv, '', messages[0].text));
                     this.setState({
+
                         bottomMessage: "Đã gửi lúc " + Utils.getDate(params.data[0].NgayGui),
                         iconName: ok
                     });
