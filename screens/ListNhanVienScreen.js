@@ -30,6 +30,7 @@ import {Dialog} from 'react-native-simple-dialogs';
 import PTRView from 'react-native-pull-to-refresh'
 import ListNhanVienItem from "../components/ListNhanVienItem";
 import LinearGradient from "react-native-linear-gradient";
+import ModalDropdownCustom from "../components/ModalDropdownCustom";
 
 let {height, width} = Dimensions.get('window');
 
@@ -406,25 +407,11 @@ export default class ListNhanVienScreen extends React.Component {
                         backgroundColor: 'transparent',
                     }}>
                         <Text style={{color: 'black'}}>Chọn phòng ban</Text>
-                        <ModalDropdown
-                            options={this.state.partyNhanVienStatus}
-                            style={{
-                                borderWidth: 1,
-                                width: 200,
-                                padding: 8,
-                                borderRadius: 10,
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                marginBottom: 16,
-                                marginTop: 4
-                            }}
-                            textStyle={{color: 'black'}}
+                        <ModalDropdownCustom
+                            data={this.state.partyNhanVienStatus}
                             defaultValue={this.state.partyNhanVienStatus[pickParty]}
-                            defaultIndex={Number(pickParty)}
                             onSelect={(idx, value) => this._onSelectParty(idx, value)}
-                            renderRow={this._renderRowStatus.bind(this)}
-                            renderSeparator={(sectionID, rowID, adjacentRowHighlighted) => this._renderSeparatorParty(sectionID, rowID, adjacentRowHighlighted)}
-                        />
+                           />
                     </View>
                     <View style={{
                         flexDirection: 'row',

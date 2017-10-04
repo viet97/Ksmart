@@ -1,7 +1,7 @@
 const menus = [
     {
         iconName: 'calendar',
-        screenName: 'ChooseTypeNewFeed',
+        screenName: 'NewFeed',
         title: 'HOẠT ĐỘNG'
     },
     {
@@ -49,7 +49,7 @@ const menus = [
 const menuSwiper = [
     {
         iconName: 'calendar',
-        screenName: 'ChooseTypeNewFeed',
+        screenName: 'NewFeed',
         title: 'Hoạt động'
     },
     {
@@ -93,15 +93,16 @@ const menuSwiper = [
         title: 'Tin nhắn'
     },
     {
-        iconName: 'sign-out',
-        screenName: 'SignOut',
-        title: 'Đăng xuất'
-    },
-    {
         iconName: 'info-outline',
         screenName: 'AboutUs',
         title: 'Về chúng tôi'
     },
+    {
+        iconName: 'sign-out',
+        screenName: 'SignOut',
+        title: 'Đăng xuất'
+    },
+
 ];
 export {menuSwiper};
 export default menus;

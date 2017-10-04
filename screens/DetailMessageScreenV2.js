@@ -90,7 +90,7 @@ export default class DetailMessageScreenV2 extends React.Component {
                                name="ios-arrow-back"/>
                     </TouchableOpacity>
                     <Text
-                        style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>{params.title}</Text>
+                        style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>{<params className="title563"></params>}</Text>
                     <View/>
                 </LinearGradient>
 

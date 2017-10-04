@@ -49,10 +49,13 @@ export default class NewFeedScreen extends React.Component {
 
     getDataFromSv() {
         const {params} = this.props.navigation.state
+        let status=0
+        if(params!==undefined)
+            status =params.status
         ALL_LOADED = false;
         this.setState({isEndList: false, dataRender: null})
         PAGE = 1;
-        let url = URlConfig.getNewFeedLink(PAGE, SEARCH_STRING, params.status)
+        let url = URlConfig.getNewFeedLink(PAGE, SEARCH_STRING, status)
         console.log(url)
         fetch(url)
             .then((response) => (response.json()))
@@ -73,12 +76,15 @@ export default class NewFeedScreen extends React.Component {
 
     loadMoreDataFromSv() {
         const {params} = this.props.navigation.state
+        let status=0
+        if(params!==undefined)
+            status =params.status
         if (!this.state.onEndReach) {
             this.setState({onEndReach: true})
 
             if (!this.state.isEndList) {
                 PAGE = PAGE + 1
-                let url = URlConfig.getNewFeedLink(PAGE, SEARCH_STRING, params.status)
+                let url = URlConfig.getNewFeedLink(PAGE, SEARCH_STRING, status)
                 console.log(url)
                 fetch(url)
                     .then((response) => (response.json()))
@@ -208,8 +214,8 @@ export default class NewFeedScreen extends React.Component {
     }
 
     render() {
+        const {navigate} = this.props.navigation
         return (
-
             <View style={{flex: 1,backgroundColor:'white'}}>
                 <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
                     <TouchableOpacity onPress={() => this.props.navigation.goBack()}
@@ -220,7 +226,17 @@ export default class NewFeedScreen extends React.Component {
                     <Text
                         style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Hoạt
                         động</Text>
-                    <View/>
+                    <TouchableOpacity style={{alignSelf: 'center',padding:8}}
+                                      onPress={() => navigate('ChooseTypeNewFeed')}
+                    >
+                        <Text style={{
+                            textAlign: 'center',
+                            color: 'white',
+                            alignSelf: 'center',
+                            backgroundColor: 'transparent'
+                        }}>Chi tiết</Text>
+                    </TouchableOpacity>
+
                 </LinearGradient>
                 <View style={{width: width,marginTop:16,marginBottom:16}}>
                     <Search
