@@ -52,7 +52,7 @@ export default class ReportScreen extends Component {
         fetch(URlConfig.getLinkOnlinePerson())
             .then((response) => (response.json()))
             .then((responseJson) => {
-                    console.log(responseJson)
+                console.log(responseJson);
                     if (responseJson.status)
                         this.setState({data: responseJson})
                 }
@@ -197,7 +197,7 @@ export default class ReportScreen extends Component {
                     </View>
                     <Text style={{marginLeft: 16, backgroundColor: 'transparent'}}>Cài đặt thời gian cập nhập tin
                         tức: </Text>
-                    <Picker style={{height: 44, width: width / 2, marginLeft: 16}}
+                    <Picker style={{height: 44, width: width / 2, marginLeft: 16, alignSelf: 'center'}}
                             itemStyle={{color: 'black', height: 88}}
                             selectedValue={this.state.numberPickType}
                             onValueChange={(value) => {
@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
         height: 80
     },
     titleStyle: {
-        marginTop: Platform.OS === 'ios' ? 16 : 0,
+        paddingTop: Platform.OS === 'ios' ? 16 : 0,
         flex: 1,
         elevation: 15,
         justifyContent: 'space-between',
@@ -274,7 +274,6 @@ const styles = StyleSheet.create({
         height: 24,
         backgroundColor: "transparent",
         marginLeft: 8,
-        marginTop: (Platform.OS === 'ios') ? 8 : 0
     },
     textStyle: {
         fontSize: 18,

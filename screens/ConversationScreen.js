@@ -25,17 +25,22 @@ export default class ConversationScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            convestationList: null
+            convestationList: null,
+            refreshing:false,
         }
         this.refechScreen.bind(this)
+        this.flatListOrIndicator.bind(this)
 
     }
 
     componentDidMount() {
         this.getConvestation();
+        //0 quan ly gui, 1 nhan vien
     }
 
     getConvestation() {
+        const {navigate} = this.props.navigation
+        this.setState({convestationList:null})
         let url = URlConfig.getLinkConvestation();
         console.log('url', url);
         fetch(url)
@@ -53,22 +58,23 @@ export default class ConversationScreen extends React.Component {
                         }
 
                         if (item.DANHSACH[0]) {
-                            item['lastmsg'] = item.DANHSACH[0].NoiDung;
+                            item['lastmsg'] = item.NoiDung;
                             item['isSeen'] = item['DANHSACH'][0].NgayXem !== '0001-01-01T00:00:00';
                             let lastUser = {};
                             if (item['DANHSACH'][0].AnhDaiDien)
                                 lastUser['avatar'] = URlConfig.BASE_URL_APP + item['DANHSACH'][0].AnhDaiDien;
                             else
                                 lastUser['avatar'] = null;
-                            lastUser['name'] = item['DANHSACH'][0].TenNhanVien;
-                            lastUser['_id'] = item['DANHSACH'][0].ID_NHANVIEN;
+                            lastUser['name'] = item.TenNhanVien;
+                            lastUser['_id'] = item.ID_NHANVIEN;
                             item['lastUser'] = lastUser;
 
                         }
-
+                        console.log(item,"item")
                         convestationList.push(item);
+                        console.log("12312312",convestationList)
                     }
-                    console.log("12312312",convestationList)
+
 
                     this.setState({convestationList:convestationList});
 
@@ -81,20 +87,21 @@ export default class ConversationScreen extends React.Component {
     }
 
     refechScreen() {
-
+        this.getConvestation()
     }
 
     flatListOrIndicator() {
+        const {navigate} = this.props.navigation
         if (!this.state.convestationList) {
-            return(
+            return (
                 <ActivityIndicator
                     animating={true}
                     style={styles.indicator}
                     size="large"/>
 
             )
-        } else if(this.state.convestationList.length=0)
-            return(
+        } else if (this.state.convestationList.length === 0)
+            return (
                 <Text style={{
                     alignSelf: 'center',
                     textAlign: 'center',
@@ -103,59 +110,62 @@ export default class ConversationScreen extends React.Component {
                 }}>Không có dữ liệu</Text>
 
             )
-            return (
-                <FlatList
-                    keyboardDismissMode="on-drag"
-                    data={this.state.convestationList}
-                    renderItem={({item}) =>
-                        <TouchableOpacity
-                            activeOpacity={0.7}
-                            style={{
-                                flexDirection: 'row',
-                                justifyContent: "space-between",
-                                marginTop: 16,
-                                marginLeft: 16,
-                                flex: 1,
-                            }}
-                            onPress={() => {
-                                item['isSeen'] = true;
-                                this.forceUpdate();
-                                navigate('DetailMessage', {
-                                    data: item.DANHSACH,
-                                    _id: item.ID_NHANVIEN,
-                                    title: item.TenNhanVien
-                                })
-                            }}>
-                            <GiftedAvatar user={item} style={{width: 40, height: 40, borderRadius: 20}}/>
-                            <View style={{flex: 1, marginRight: 4, marginLeft: 8}}>
-                                <View style={{flex: 1, justifyContent: 'space-between', flexDirection: 'row'}}>
-                                    <Text style={{
-                                        fontSize: 16,
-                                        fontWeight: item.isSeen ? '200' : 'bold'
-                                    }}>{item.name}</Text>
-                                    <Text style={{
-                                        fontSize: 14,
-                                        fontWeight: item.isSeen ? '100' : 'bold'
-                                    }}>{this.getTimeString(item.ThoiGian)}</Text>
-                                </View>
-                                <View style={{
-                                    flex: 1,
-                                    justifyContent: 'space-between',
-                                    flexDirection: 'row',
-                                    marginTop: 4
-                                }}>
-                                    <Text style={{
-                                        fontSize: 16,
-                                        fontWeight: item.isSeen ? '100' : 'bold'
-                                    }}>{item.lastmsg}</Text>
-                                    <GiftedAvatar user={item.lastUser} textStyle={{fontSize: 8}}
-                                                  avatarStyle={{width: 15, height: 15, borderRadius: 7.5}}/>
-                                </View>
+        return (
+            <FlatList
+                keyboardDismissMode="on-drag"
+                refreshing = {this.state.refreshing}
+                onRefresh={()=>this.refechScreen()}
+                data={this.state.convestationList}
+                renderItem={({item}) =>
+                    <TouchableOpacity
+                        activeOpacity={0.7}
+                        style={{
+                            flexDirection: 'row',
+                            justifyContent: "space-between",
+                            marginTop: 32,
+                            marginLeft: 16,
+                            marginRight: 8,
+                            flex: 1,
+                        }}
+                        onPress={() => {
+                            item['isSeen'] = true;
+                            this.forceUpdate();
+                            navigate('DetailMessage', {
+                                data: item.DANHSACH,
+                                _id: item.ID_NHANVIEN,
+                                title: item.TenNhanVien
+                            })
+                        }}>
+                        <GiftedAvatar user={item} style={{width: 40, height: 40, borderRadius: 20}}/>
+                        <View style={{flex: 1, marginRight: 4, marginLeft: 8}}>
+                            <View style={{flex: 1, justifyContent: 'space-between', flexDirection: 'row'}}>
+                                <Text numberOfLines={1} style={{
+                                    fontSize: 16, width: '50%',
+                                    fontWeight: item.isSeen ? '200' : 'bold'
+                                }}>{item.name}</Text>
+                                <Text numberOfLines={1} style={{
+                                    fontSize: 14,
+                                    fontWeight: item.isSeen ? '100' : 'bold'
+                                }}>{this.getTimeString(item.ThoiGian)}</Text>
                             </View>
-                        </TouchableOpacity>
-                    }/>
-
-            )
+                            <View style={{
+                                flex: 1,
+                                justifyContent: 'space-between',
+                                flexDirection: 'row',
+                                marginTop: 4
+                            }}>
+                                <Text numberOfLines={1}
+                                      style={{
+                                          fontSize: 16, width: '73%',
+                                          fontWeight: item.isSeen ? '100' : 'bold'
+                                      }}>{item.lastmsg}</Text>
+                                <GiftedAvatar user={item.lastUser} textStyle={{fontSize: 8}}
+                                              avatarStyle={{width: 15, height: 15, borderRadius: 7.5,}}/>
+                            </View>
+                        </View>
+                    </TouchableOpacity>
+                }/>
+        )
     }
 
     render() {
@@ -177,9 +187,9 @@ export default class ConversationScreen extends React.Component {
                     }}>Danh sách tin nhắn</Text>
                     <View style={{backgroundColor: 'transparent', width: 35, height: 35}}/>
                 </LinearGradient>
+                {this.flatListOrIndicator()}
             </View>
-        )
-
+            )
     }
 
     getTimeString(strDate, format = 'YYYY-MM-DDTHH:mm:ss') {
@@ -201,7 +211,7 @@ export default class ConversationScreen extends React.Component {
 const styles = StyleSheet.create({
     titleStyle: {
         height: Header.height,
-        marginTop: Platform.OS === 'ios' ? 16 : 0,
+        paddingTop: Platform.OS === 'ios' ? 16 : 0,
         elevation: 15,
         justifyContent: 'space-between',
         flexDirection: 'row',
@@ -222,7 +232,6 @@ const styles = StyleSheet.create({
         height: 24,
         backgroundColor: "transparent",
         paddingLeft: 8,
-        paddingTop: (Platform.OS === 'ios') ? 4 : 0
     },
     textStyle: {
         fontSize: 18,

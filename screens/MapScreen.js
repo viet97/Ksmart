@@ -47,56 +47,48 @@ export default class MapScreen extends Component {
 
     }
 
-    _renderContent(color: string, pageText: string, num?: number) {
-        return (
+
+
+onRegionChange(region) {
+    this.setState({region: region});
+}
+
+render() {
+
+    const {params} = this.props.navigation.state;
+
+    return (
+        <View style={{flex: 1}}>
+            <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
+                <TouchableOpacity onPress={() => this.props.navigation.goBack()}
+                                  style={styles.iconStyle}>
+                    <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
+                </TouchableOpacity>
+                <Text style={{
+                    fontSize: 20,
+                    color: 'white',
+                    alignSelf: 'center',
+                    backgroundColor: 'transparent'
+                }}>{params.title}</Text>
+                <View/>
+            </LinearGradient>
             <MapView
-                style={{flex: 1}}
-                region={this.state.region}
-                onRegionChange={this.onRegionChange.bind(this)}
-            />
-        );
-    }
+                style={{flex: 9}}
+                initialRegion={this.state.region}>
+                <MapView.Marker.Animated
+                    coordinate={{
+                        latitude: params.vido,
+                        longitude: params.kinhdo,
+                        latitudeDelta: 0.0922,
+                        longitudeDelta: 0.0421
+                    }}
+                />
+            </MapView>
 
-    onRegionChange(region) {
-        this.setState({region: region});
-    }
+        </View>
+    );
 
-    render() {
-
-        const {params} = this.props.navigation.state;
-
-        return (
-            <View style={{flex: 1}}>
-                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
-                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}
-                                      style={styles.iconStyle}>
-                        <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
-                    </TouchableOpacity>
-                    <Text style={{
-                        fontSize: 20,
-                        color: 'white',
-                        alignSelf: 'center',
-                        backgroundColor: 'transparent'
-                    }}>{params.title}</Text>
-                    <View/>
-                </LinearGradient>
-                <MapView
-                    style={{flex: 9}}
-                    initialRegion={this.state.region}>
-                    <MapView.Marker.Animated
-                        coordinate={{
-                            latitude: params.vido,
-                            longitude: params.kinhdo,
-                            latitudeDelta: 0.0922,
-                            longitudeDelta: 0.0421
-                        }}
-                    />
-                </MapView>
-
-            </View>
-        );
-
-    }
+}
 }
 //Header
 var styles = StyleSheet.create({
@@ -109,7 +101,7 @@ var styles = StyleSheet.create({
         margin: 50,
     },
     titleStyle: {
-        marginTop: Platform.OS === 'ios' ? 16 : 0,
+        paddingTop: Platform.OS === 'ios' ? 16 : 0,
         flex: 1,
         elevation: 15,
         justifyContent: 'space-between',

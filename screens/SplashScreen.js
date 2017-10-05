@@ -18,6 +18,8 @@ export default class SplashScreen extends React.Component {
         state = {
             onDone: false,
         };
+        var randomColor = require('randomcolor'); // import the script
+        console.log(randomColor());
 
     }
 
@@ -28,7 +30,6 @@ export default class SplashScreen extends React.Component {
                        style={{flex: 1, opacity: 0.6}}/>
                 <Image source={require('../images/logoksmart.png') }
                        style={{alignSelf: 'center', position: 'absolute'}}/>
-
             </View>
         );
     }

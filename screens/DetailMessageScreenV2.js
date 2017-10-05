@@ -19,30 +19,41 @@ import URlConfig from "../configs/url";
 import Utils from "../configs/ultils";
 import LinearGradient from "react-native-linear-gradient";
 import {Header} from 'react-navigation'
+import {nhanVienToQuanLy, quanLyToNhanVien} from "../configs/type";
+import Toast from "react-native-simple-toast";
+
+const failed = 'ios-warning';
+const ok = 'ios-checkmark-outline';
+const onSend = 'ios-refresh-circle-outline';
 const moment = require('moment');
 export default class DetailMessageScreenV2 extends React.Component {
 
     static navigationOptions = ({navigation}) => ({
         title: navigation.state.title,
-        header:null
+        header: null
     });
+
     constructor(props) {
         super(props);
+        const {params} = this.props.navigation.state;
+        this.state = {
+            iconName: ok,
+            id_nv: params._id
+        }
     }
 
-    componentWillMount() {
+    handleMessage(listMsg = []) {
         let messages = [];
         let bottomMessage = '';
+        console.log(listMsg)
 
-        const {params} = this.props.navigation.state;
-        console.log('iddddd', params._id)
-        for (let item of params.data) {
+        for (let item of listMsg) {
             let user = {};
 
             item['text'] = item.NoiDung;
             item['_id'] = item['ID_TINNHAN'];
             item['createdAt'] = moment(item.NgayGui, 'YYYY-MM-DDTHH:mm:ss').toDate();
-            user['_id'] = item['ID_NHANVIEN'];
+            user['_id'] = item['Loai'];
             if (item['AnhDaiDien']) {
                 user['avatar'] = URlConfig.BASE_URL_APP + item['AnhDaiDien']
             } else {
@@ -53,29 +64,55 @@ export default class DetailMessageScreenV2 extends React.Component {
             item['user'] = user;
             messages.push(item)
         }
-        bottomMessage = "Đã gửi lúc " + Utils.getDate(params.data[0].NgayGui)
+        if (listMsg[0].Loai === quanLyToNhanVien) {
+            bottomMessage = "Đã gửi lúc " + Utils.getDate(listMsg[0].NgayGui)
+        } else {
+            bottomMessage = "Đã nhận lúc " + Utils.getDate(listMsg[0].NgayGui)
+        }
         this.setState({
             messages: messages,
-            id_nv: params._id,
             bottomMessage: bottomMessage
         })
     }
 
+    componentWillMount() {
+        const {params} = this.props.navigation.state;
+        this.handleMessage(params.data);
+    }
+
     onSend(messages = []) {
-        console.log(messages);
+        const {params} = this.props.navigation.state;
+        this.setState({
+            iconName: onSend,
+            bottomMessage: "Đang gửi"
+        });
         this.setState((previousState) => ({
             messages: GiftedChat.append(previousState.messages, messages),
         }));
-        console.log('truoc gui', this.state.id_nv)
+        console.log('truoc gui', this.state.id_nv);
         fetch(URlConfig.getLinkSendMessage(this.state.id_nv, '', messages[0].text))
             .then((response) => (response.json()))
             .then((responseJson) => {
-                    console.log(responseJson)
+                if (responseJson.status) {
+                    console.log(URlConfig.getLinkSendMessage(this.state.id_nv, '', messages[0].text));
+                    this.setState({
+
+                        bottomMessage: "Đã gửi lúc " + Utils.getDate(params.data[0].NgayGui),
+                        iconName: ok
+                    });
+                } else {
+                    this.setState({
+                        iconName: failed
+                    });
+                    Toast.show('Có lỗi xảy ra, vui lòng liên hệ quản trị viên!');
+                }
                 }
             ).catch((e) => {
-            Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e)
+            Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e);
+            this.setState({
+                iconName: failed
+            });
         })
-
     }
 
     render() {
@@ -87,20 +124,26 @@ export default class DetailMessageScreenV2 extends React.Component {
                     <TouchableOpacity onPress={() => this.props.navigation.goBack()}
                                       style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                         <Icon type={'ionicon'} style={styles.iconStyle} size={24} color="white"
-                               name="ios-arrow-back"/>
+                              name="ios-arrow-back"/>
                     </TouchableOpacity>
                     <Text
-                        style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>{<params className="title563"></params>}</Text>
+                        style={{
+                            fontSize: 20,
+                            color: 'white',
+                            alignSelf: 'center',
+                            backgroundColor: 'transparent'
+                        }}>{params.title}</Text>
                     <View/>
                 </LinearGradient>
 
                 <GiftedChat
+                    keyboardDismissMode="on-drag"
                     isLoadingEarlier={true}
                     style={{flex: 1}}
                     messages={this.state.messages}
                     onSend={(messages) => this.onSend(messages)}
                     user={{
-                        _id: this.state.id_nv,
+                        _id: quanLyToNhanVien,
                     }}
                     renderSend={(props) => {
                         return (
@@ -108,20 +151,28 @@ export default class DetailMessageScreenV2 extends React.Component {
                                 {...props}
                                 containerStyle={{alignItems: 'center', justifyContent: 'center', alignSelf: 'center'}}
                             >
-                                <Icon name={'send'} color={"blue"} size={24}/>
+                                <Icon name={'send'} color={"blue"} size={24} type={this}/>
                             </Send>
                         );
                     }}
                     renderFooter={() => {
                         return (
-                            <View style={{flexDirection: 'row', alignSelf: 'flex-end'}}>
-                                <Icon name={'ios-checkmark-outline'} size={24} color={'gray'} type={"ionicon"}/>
+                            <TouchableOpacity
+                                activeOpacity={1}
+                                style={{flexDirection: 'row', alignSelf: 'flex-end'}}
+                                onPress={() => {
+                                    if (this.state.iconName === failed) {
+
+                                    }
+                                }}
+                            >
+                                <Icon name={this.state.iconName} size={24} color={'gray'} type={"ionicon"}/>
                                 <Text style={{
                                     alignSelf: 'flex-end',
                                     margin: 8,
                                     fontSize: 11
                                 }}>{this.state.bottomMessage}</Text>
-                            </View>
+                            </TouchableOpacity>
                         )
                     }}
                     locale={'vi'}
@@ -134,8 +185,8 @@ export default class DetailMessageScreenV2 extends React.Component {
 }
 const styles = StyleSheet.create({
     titleStyle: {
-        height:Header.height,
-        marginTop: Platform.OS === 'ios' ? 16 : 0,
+        height: Header.height,
+        paddingTop: Platform.OS === 'ios' ? 16 : 0,
         elevation: 15,
         justifyContent: 'space-between',
         flexDirection: 'row',
@@ -156,7 +207,6 @@ const styles = StyleSheet.create({
         height: 24,
         backgroundColor: "transparent",
         paddingLeft: 8,
-        paddingTop: (Platform.OS === 'ios') ? 4 : 0
     },
     textStyle: {
         fontSize: 18,
