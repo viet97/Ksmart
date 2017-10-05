@@ -30,6 +30,7 @@ export default class NewFeedScreen extends React.Component {
     static navigationOptions = {
         header: null,
     };
+
     constructor(props) {
         super(props)
         this.state = ({
@@ -49,9 +50,9 @@ export default class NewFeedScreen extends React.Component {
 
     getDataFromSv() {
         const {params} = this.props.navigation.state
-        let status=0
-        if(params!==undefined)
-            status =params.status
+        let status = 0
+        if (params !== undefined)
+            status = params.status
         ALL_LOADED = false;
         this.setState({isEndList: false, dataRender: null})
         PAGE = 1;
@@ -71,14 +72,21 @@ export default class NewFeedScreen extends React.Component {
                             this.forceUpdate()
                         }
                     })
+                else {
+
+                    this.setState({dataRender:[],dataFull:[],isEndList:true})
+                    ALL_LOADED = true;
+                    this.forceUpdate()
+                }
             }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e))
     }
 
     loadMoreDataFromSv() {
+        console.log('load more data')
         const {params} = this.props.navigation.state
-        let status=0
-        if(params!==undefined)
-            status =params.status
+        let status = 0
+        if (params !== undefined)
+            status = params.status
         if (!this.state.onEndReach) {
             this.setState({onEndReach: true})
 
@@ -89,20 +97,22 @@ export default class NewFeedScreen extends React.Component {
                 fetch(url)
                     .then((response) => (response.json()))
                     .then((responseJson) => {
-                        let arr = this.state.dataFull
-                        arr = arr.concat(responseJson.data)
-                        this.setState({
-                            dataFull: arr,
-                            isEndList: responseJson.endlist,
-                            dataRender: arr
-                        }, function () {
-                            console.log(this.state.dataRender.length)
-                            if (this.state.isEndList) {
-                                ALL_LOADED = true;
-                                this.forceUpdate()
+                            if (responseJson.status) {
+                                let arr = this.state.dataFull
+                                arr = arr.concat(responseJson.data)
+                                this.setState({
+                                    dataFull: arr,
+                                    isEndList: responseJson.endlist,
+                                    dataRender: arr
+                                }, function () {
+                                    if (this.state.isEndList) {
+                                        ALL_LOADED = true;
+                                        this.forceUpdate()
+                                    }
+                                })
                             }
-                        })
-                    })
+                        }
+                    )
                     .catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e))
             }
         }
@@ -133,7 +143,7 @@ export default class NewFeedScreen extends React.Component {
     };
 
     flatListorIndicator() {
-
+        console.log(this.state.dataRender,this.state.dataFull)
         if (!this.state.dataRender) {
             return (
                 <View style={{flex: 9}}>
@@ -216,7 +226,7 @@ export default class NewFeedScreen extends React.Component {
     render() {
         const {navigate} = this.props.navigation
         return (
-            <View style={{flex: 1,backgroundColor:'white'}}>
+            <View style={{flex: 1, backgroundColor: 'white'}}>
                 <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
                     <TouchableOpacity onPress={() => this.props.navigation.goBack()}
                                       style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
@@ -226,7 +236,7 @@ export default class NewFeedScreen extends React.Component {
                     <Text
                         style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Hoạt
                         động</Text>
-                    <TouchableOpacity style={{alignSelf: 'center',padding:8}}
+                    <TouchableOpacity style={{alignSelf: 'center', padding: 8}}
                                       onPress={() => navigate('ChooseTypeNewFeed')}
                     >
                         <Text style={{
@@ -238,7 +248,7 @@ export default class NewFeedScreen extends React.Component {
                     </TouchableOpacity>
 
                 </LinearGradient>
-                <View style={{width: width,marginTop:16,marginBottom:16}}>
+                <View style={{width: width, marginTop: 16, marginBottom: 16}}>
                     <Search
                         ref="search_box"
                         placeholder="Tìm kiếm"

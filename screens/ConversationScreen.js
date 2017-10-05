@@ -3,7 +3,7 @@ import {
     Text,
     View,
     Button, FlatList, Image, StyleSheet, StatusBar,
-    TouchableOpacity, Platform
+    TouchableOpacity, Platform, ActivityIndicator
 } from 'react-native';
 import {Icon} from 'react-native-elements'
 import React from 'react';
@@ -15,16 +15,17 @@ import {dateOfWeek} from "../configs/data";
 import URlConfig from "../configs/url";
 import LinearGradient from "react-native-linear-gradient";
 import {Header} from 'react-navigation'
+
 export default class ConversationScreen extends React.Component {
     static navigationOptions = ({navigation}) => ({
         title: 'Danh sách tin nhắn',
-        header:null
+        header: null
     });
 
     constructor(props) {
         super(props);
         this.state = {
-            convestationList: []
+            convestationList: null
         }
         this.refechScreen.bind(this)
 
@@ -67,8 +68,10 @@ export default class ConversationScreen extends React.Component {
 
                         convestationList.push(item);
                     }
-                    this.setState({convestationList});
-                    console.log(convestationList);
+                    console.log("12312312",convestationList)
+
+                    this.setState({convestationList:convestationList});
+
                 } else {
                     Toast.show('Có lỗi xảy ra, vui lòng liên hệ quản trị viên!')
                 }
@@ -81,26 +84,26 @@ export default class ConversationScreen extends React.Component {
 
     }
 
-    render() {
-        const {navigate} = this.props.navigation;
+    flatListOrIndicator() {
+        if (!this.state.convestationList) {
+            return(
+                <ActivityIndicator
+                    animating={true}
+                    style={styles.indicator}
+                    size="large"/>
 
-        return (
-            <View style={{flex: 1, backgroundColor: 'white'}}>
-                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
-                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}
-                                      style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
-                        <Icon type={'ionicon'} style={styles.iconStyle} size={24} color="white"
-                               name="ios-arrow-back"/>
-                    </TouchableOpacity>
-                    <Text style={{
-                        fontSize: 20,
-                        color: 'white',
-                        alignSelf: 'center',
-                        backgroundColor: 'transparent'
-                    }}>Danh sách tin nhắn</Text>
-                    <View style={{backgroundColor: 'transparent', width: 35, height: 35}}/>
-                </LinearGradient>
+            )
+        } else if(this.state.convestationList.length=0)
+            return(
+                <Text style={{
+                    alignSelf: 'center',
+                    textAlign: 'center',
+                    fontSize: 20,
+                    backgroundColor: 'transparent'
+                }}>Không có dữ liệu</Text>
 
+            )
+            return (
                 <FlatList
                     keyboardDismissMode="on-drag"
                     data={this.state.convestationList}
@@ -151,6 +154,29 @@ export default class ConversationScreen extends React.Component {
                             </View>
                         </TouchableOpacity>
                     }/>
+
+            )
+    }
+
+    render() {
+        const {navigate} = this.props.navigation;
+
+        return (
+            <View style={{flex: 1, backgroundColor: 'white'}}>
+                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
+                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}
+                                      style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
+                        <Icon type={'ionicon'} style={styles.iconStyle} size={24} color="white"
+                              name="ios-arrow-back"/>
+                    </TouchableOpacity>
+                    <Text style={{
+                        fontSize: 20,
+                        color: 'white',
+                        alignSelf: 'center',
+                        backgroundColor: 'transparent'
+                    }}>Danh sách tin nhắn</Text>
+                    <View style={{backgroundColor: 'transparent', width: 35, height: 35}}/>
+                </LinearGradient>
             </View>
         )
 
@@ -174,7 +200,7 @@ export default class ConversationScreen extends React.Component {
 }
 const styles = StyleSheet.create({
     titleStyle: {
-        height:Header.height,
+        height: Header.height,
         marginTop: Platform.OS === 'ios' ? 16 : 0,
         elevation: 15,
         justifyContent: 'space-between',
