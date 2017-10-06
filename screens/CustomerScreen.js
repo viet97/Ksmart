@@ -72,7 +72,6 @@ export default class CustomerScreen extends Component {
                 this.setState({customerCount: responseJson.tongsoitem})
                 if (responseJson.status) {
                     PAGE = responseJson.lastid
-
                     if (responseJson.endlist) {
                         ALL_LOADED = true
                         this.forceUpdate()
@@ -124,7 +123,10 @@ export default class CustomerScreen extends Component {
 
     flatListorIndicator() {
         const {navigate} = this.props.navigation;
-
+        const {params} = this.props.navigation.state
+        let mamau = '#f7f7f7'
+        if (params.mamau !== null)
+            mamau = '#' + params.mamau
         if (!this.state.dataRender) {
             return (
                 <View style={{flex: 9}}>
@@ -161,6 +163,7 @@ export default class CustomerScreen extends Component {
                     renderItem={({item}) =>
 
                         <CustomerItem
+                            mamau={mamau}
                             data={item}
                             callback={() => navigate('DetailCustomer', {
                                 id: item.idcuahang,
