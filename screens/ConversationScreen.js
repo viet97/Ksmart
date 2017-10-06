@@ -3,7 +3,7 @@ import {
     Text,
     View,
     Button, FlatList, Image, StyleSheet, StatusBar,
-    TouchableOpacity, Platform, ActivityIndicator
+    TouchableOpacity, Platform, ActivityIndicator, DeviceEventEmitter
 } from 'react-native';
 import {Icon} from 'react-native-elements'
 import React from 'react';
@@ -15,6 +15,7 @@ import {dateOfWeek} from "../configs/data";
 import URlConfig from "../configs/url";
 import LinearGradient from "react-native-linear-gradient";
 import {Header} from 'react-navigation'
+import {quanLyToNhanVien} from "../configs/type";
 
 export default class ConversationScreen extends React.Component {
     static navigationOptions = ({navigation}) => ({
@@ -90,6 +91,10 @@ export default class ConversationScreen extends React.Component {
         this.getConvestation()
     }
 
+    componentWillUnmount() {
+        DeviceEventEmitter.emit('reloadMsg')
+    }
+
     flatListOrIndicator() {
         const {navigate} = this.props.navigation
         if (!this.state.convestationList) {
@@ -135,17 +140,18 @@ export default class ConversationScreen extends React.Component {
                                 _id: item.ID_NHANVIEN,
                                 title: item.TenNhanVien
                             })
+                            console.log('click', item);
                         }}>
                         <GiftedAvatar user={item} style={{width: 40, height: 40, borderRadius: 20}}/>
                         <View style={{flex: 1, marginRight: 4, marginLeft: 8}}>
                             <View style={{flex: 1, justifyContent: 'space-between', flexDirection: 'row'}}>
                                 <Text numberOfLines={1} style={{
                                     fontSize: 16, width: '50%',
-                                    fontWeight: item.isSeen ? '200' : 'bold'
+                                    fontWeight: item.isSeen || item.DANHSACH[0].Loai === quanLyToNhanVien ? '200' : 'bold'
                                 }}>{item.name}</Text>
                                 <Text numberOfLines={1} style={{
                                     fontSize: 14,
-                                    fontWeight: item.isSeen ? '100' : 'bold'
+                                    fontWeight: item.isSeen || item.DANHSACH[0].Loai === quanLyToNhanVien ? '100' : 'bold'
                                 }}>{this.getTimeString(item.ThoiGian)}</Text>
                             </View>
                             <View style={{
@@ -157,7 +163,7 @@ export default class ConversationScreen extends React.Component {
                                 <Text numberOfLines={1}
                                       style={{
                                           fontSize: 16, width: '73%',
-                                          fontWeight: item.isSeen ? '100' : 'bold'
+                                          fontWeight: item.isSeen || item.DANHSACH[0].Loai === quanLyToNhanVien ? '100' : 'bold'
                                       }}>{item.lastmsg}</Text>
                                 <GiftedAvatar user={item.lastUser} textStyle={{fontSize: 8}}
                                               avatarStyle={{width: 15, height: 15, borderRadius: 7.5,}}/>

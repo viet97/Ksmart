@@ -32,8 +32,9 @@ import ChooseTypeCustomer from "./ChooseTypeCustomer";
 import {onChangeMessage} from "../networks/Network";
 import menus, {menuSwiper} from "../configs/menus";
 import LinearGradient from 'react-native-linear-gradient';
+import {getPrefData} from "../sharePref/SharePref";
+import {COMPANY_KEY, PASSWORD_KEY, USERNAME_KEY} from "../configs/type";
 
-const Realm = require('realm');
 var {height} = Dimensions.get('window');
 var func;
 var backcount = 0;
@@ -60,12 +61,11 @@ export default class HomeScreen extends React.Component {
     }
 
     async reloadMsg() {
-        let realm = new Realm();
-        let login = realm.objects('LoginSave');
-        console.log('didMount', login);
-        if (login.length !== 0) {
-            const loginOBJ = login[0];
-            await onChangeMessage(loginOBJ.username, loginOBJ.password, loginOBJ.idct);
+        let username = await getPrefData(USERNAME_KEY);
+        let password = await getPrefData(PASSWORD_KEY);
+        let idct = await getPrefData(COMPANY_KEY);
+        if (username && password && idct) {
+            await onChangeMessage(username, password, idct);
             this.forceUpdate();
             console.log('update unread', URlConfig.OBJLOGIN.messageUnread)
         }

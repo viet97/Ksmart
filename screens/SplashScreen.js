@@ -18,9 +18,6 @@ export default class SplashScreen extends React.Component {
         state = {
             onDone: false,
         };
-        var randomColor = require('randomcolor'); // import the script
-        console.log(randomColor());
-
     }
 
     render() {

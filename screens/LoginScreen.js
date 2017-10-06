@@ -17,9 +17,10 @@ import {CheckBox} from 'react-native-elements'
 import Communications from 'react-native-communications';
 import {Icon} from 'react-native-elements'
 import {shadowProps} from '../configs/shadow'
+import {getPrefData, savePrefData} from "../sharePref/SharePref";
+import {COMPANY_KEY, PASSWORD_KEY, USERNAME_KEY} from "../configs/type";
 
 let {width, height} = Dimensions.get('window');
-const Realm = require('realm');
 export default class LoginScreen extends React.Component {
 
     static navigationOptions = {
@@ -65,25 +66,15 @@ export default class LoginScreen extends React.Component {
     }
 
 
-    componentWillMount() {
-        let realm = new Realm({
-            schema: [{
-                name: 'LoginSave',
-                properties: {idct: 'string', username: 'string', password: 'string'}
-            }]
-        });
-    }
-
-    componentDidMount() {
-        let realm = new Realm();
-        let login = realm.objects('LoginSave');
-        console.log('didMount', login)
-        if (login.length !== 0) {
-            var loginOBJ = login[0];
+    async componentDidMount() {
+        let username = await getPrefData(USERNAME_KEY);
+        let password = await getPrefData(PASSWORD_KEY);
+        let idct = await getPrefData(COMPANY_KEY);
+        if (username && password && idct) {
             this.setState({
-                idct: loginOBJ.idct,
-                username: loginOBJ.username,
-                password: loginOBJ.password,
+                idct,
+                username,
+                password,
                 checkOfCheckBox: true
             })
         }
@@ -258,30 +249,18 @@ export default class LoginScreen extends React.Component {
                         this.showToast(responseJson.msg);
                     } else {
                         if (this.state.checkOfCheckBox) {
+                            savePrefData(USERNAME_KEY, this.state.username);
+                            savePrefData(COMPANY_KEY, this.state.idct);
+                            savePrefData(PASSWORD_KEY, this.state.password);
 
-                            let realm = new Realm();
-                            let allLogin = realm.objects('LoginSave');
-
-                            realm.write(() => {
-                                realm.delete(allLogin);
-                                realm.create('LoginSave', {
-                                    idct: this.state.idct,
-                                    username: this.state.username,
-                                    password: this.state.password
-                                });
-                            });
-                            realm.close()
                         } else {
-                            let realm = new Realm();
-                            let allLogin = realm.objects('LoginSave');
-                            realm.write(() => {
-                                realm.delete(allLogin);
-                            })
-
+                            savePrefData(USERNAME_KEY);
+                            savePrefData(COMPANY_KEY);
+                            savePrefData(PASSWORD_KEY);
                         }
                         this.handlDataLogin(responseJson)
                         const {navigate} = this.props.navigation;
-                        this.setState({progressVisible: false})
+                        this.setState({progressVisible: false});
                         this.props
                             .navigation
                             .dispatch(NavigationActions.reset(

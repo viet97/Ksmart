@@ -154,7 +154,6 @@ dependencies {
     compile 'com.google.android.gms:play-services-base:11.0.1'
     compile 'com.google.android.gms:play-services-maps:11.0.1'
 
-    compile project(':realm')
     compile project(':react-native-device-info')
     compile project(':react-native-vector-icons')
     compile fileTree(dir: "libs", include: ["*.jar"])

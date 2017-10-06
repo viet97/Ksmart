@@ -26,7 +26,7 @@ var {height, width} = Dimensions.get('window');
 export default class NewFeedItem extends React.Component {
 
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
             height: 0
         }
@@ -38,8 +38,7 @@ export default class NewFeedItem extends React.Component {
 
             <TouchableOpacity
                 onPress={() => this.props.callback()}
-                style={{marginTop:2}}>
-
+                style={{marginTop: 2}}>
                 <View
                     style={{
                         backgroundColor: '#f7f7f7',
@@ -47,11 +46,11 @@ export default class NewFeedItem extends React.Component {
                     }}
                     activeOpacity={1}
                     onLayout={(e) => {
-                        var {x, y, width, height} = e.nativeEvent.layout;
-                        this.setState({height: height})
+                        let {x, y, width, height} = e.nativeEvent.layout;
+                        this.setState({height: height});
                         console.log(height)
                     }}
->
+                >
                     <View style={{
                         flexDirection: 'row',
                         marginLeft: 8,
@@ -100,8 +99,7 @@ export default class NewFeedItem extends React.Component {
                                 backgroundColor: 'transparent',
                                 marginLeft: 8,
                                 marginRight: 20, alignSelf: 'center'
-                            }}>
-                            {item.DiaChi}</Text>
+                            }}>{item.DiaChi}</Text>
                     </View>
                     <View style={{
                         flexDirection: 'row',
@@ -123,11 +121,9 @@ export default class NewFeedItem extends React.Component {
                                 marginLeft: 8,
                                 marginRight: 20,
                                 alignSelf: 'center'
-                            }}>
-                            {item.DienThoai}</Text>
+                            }}>{item.DienThoai}</Text>
                     </View>
                 </View>
-
             </TouchableOpacity>
 
         )

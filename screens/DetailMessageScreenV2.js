@@ -45,7 +45,7 @@ export default class DetailMessageScreenV2 extends React.Component {
     handleMessage(listMsg = []) {
         let messages = [];
         let bottomMessage = '';
-        console.log(listMsg)
+        console.log(listMsg);
 
         for (let item of listMsg) {
             let user = {};
@@ -80,6 +80,18 @@ export default class DetailMessageScreenV2 extends React.Component {
         this.handleMessage(params.data);
     }
 
+    componentDidMount() {
+        const {params} = this.props.navigation.state;
+        fetch(URlConfig.getLinkReadMessage(params.data[0].ID_TINNHAN))
+            .then((response) => (response.json()))
+            .then((responseJson) => {
+                    console.log('doc tin nhan ok')
+                }
+            ).catch((e) => {
+            Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + String(e));
+        })
+    }
+
     onSend(messages = []) {
         const {params} = this.props.navigation.state;
         this.setState({
@@ -96,7 +108,6 @@ export default class DetailMessageScreenV2 extends React.Component {
                 if (responseJson.status) {
                     console.log(URlConfig.getLinkSendMessage(this.state.id_nv, '', messages[0].text));
                     this.setState({
-
                         bottomMessage: "Đã gửi lúc " + Utils.getDate(params.data[0].NgayGui),
                         iconName: ok
                     });
@@ -149,7 +160,11 @@ export default class DetailMessageScreenV2 extends React.Component {
                         return (
                             <Send
                                 {...props}
-                                containerStyle={{alignItems: 'center', justifyContent: 'center', alignSelf: 'center'}}
+                                containerStyle={{
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    alignSelf: 'center'
+                                }}
                             >
                                 <Icon name={'send'} color={"blue"} size={24} type={this}/>
                             </Send>
@@ -183,45 +198,47 @@ export default class DetailMessageScreenV2 extends React.Component {
         )
     }
 }
-const styles = StyleSheet.create({
-    titleStyle: {
-        height: Header.height,
-        paddingTop: Platform.OS === 'ios' ? 16 : 0,
-        elevation: 15,
-        justifyContent: 'space-between',
-        flexDirection: 'row',
-    },
-    headerStyle: {
-        elevation: 15, height: this.height / 7
-    },
-    itemSideMenuStyle: {
-        borderBottomWidth: 0.5,
-        borderBottomColor: 'white',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        margin: 8,
-        paddingBottom: 8
-    }, iconStyle: {
-        alignSelf: 'center',
-        width: 24,
-        height: 24,
-        backgroundColor: "transparent",
-        paddingLeft: 8,
-    },
-    textStyle: {
-        fontSize: 18,
-        color: 'white',
-        backgroundColor: 'transparent'
-    },
-    titleIconsMenu: {
-        textAlign: 'center',
-        color: 'white'
-    },
-    indicator: {
-        alignSelf: 'center',
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: 80
-    }
-})
+
+const
+    styles = StyleSheet.create({
+        titleStyle: {
+            height: Header.height,
+            paddingTop: Platform.OS === 'ios' ? 16 : 0,
+            elevation: 15,
+            justifyContent: 'space-between',
+            flexDirection: 'row',
+        },
+        headerStyle: {
+            elevation: 15, height: this.height / 7
+        },
+        itemSideMenuStyle: {
+            borderBottomWidth: 0.5,
+            borderBottomColor: 'white',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            margin: 8,
+            paddingBottom: 8
+        }, iconStyle: {
+            alignSelf: 'center',
+            width: 24,
+            height: 24,
+            backgroundColor: "transparent",
+            paddingLeft: 8,
+        },
+        textStyle: {
+            fontSize: 18,
+            color: 'white',
+            backgroundColor: 'transparent'
+        },
+        titleIconsMenu: {
+            textAlign: 'center',
+            color: 'white'
+        },
+        indicator: {
+            alignSelf: 'center',
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: 80
+        }
+    })
