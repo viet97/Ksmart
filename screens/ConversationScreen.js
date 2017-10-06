@@ -138,7 +138,12 @@ export default class ConversationScreen extends React.Component {
                             navigate('DetailMessage', {
                                 data: item.DANHSACH,
                                 _id: item.ID_NHANVIEN,
-                                title: item.TenNhanVien
+                                title: item.TenNhanVien,
+                                updateLastMsg: (message) => {
+                                    item.lastmsg = message.NoiDung;
+                                    item.DANHSACH.unshift(message);
+                                    this.forceUpdate();
+                                }
                             })
                             console.log('click', item);
                         }}>

@@ -113,6 +113,8 @@ export default class DetailMessageScreenV2 extends React.Component {
                         bottomMessage: "Đã gửi lúc " + Utils.getDate(params.data[0].NgayGui),
                         iconName: ok
                     });
+                    console.log('cc11', responseJson);
+                    params.updateLastMsg(responseJson.tinnhan);
                 } else {
                     this.setState({
                         iconName: failed
