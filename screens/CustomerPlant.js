@@ -262,7 +262,8 @@ export default class CustomerPlant extends Component {
                                       style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
                         <Icon2 style={styles.iconStyle} size={24} color="white"
                                name="ios-arrow-back"/></TouchableOpacity>
-                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>Lập kế hoạch</Text>
+                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Lập
+                        kế hoạch</Text>
                     <TouchableOpacity
                         onPress={() => {
                             const itemFail = this.checkDuLieuKeHoach();
@@ -298,11 +299,11 @@ export default class CustomerPlant extends Component {
                         flexDirection: 'row',
                         justifyContent: 'space-between',
                         marginLeft: 8,
-                        height: 45
+                        height: 45,
+                        marginBottom: 8
                     }}>
                     <View style={{width: width / 2, flexDirection: 'row'}}>
-                        <Text style={{textAlign: 'center', alignSelf: 'center', backgroundColor: 'transparent'}}>Chọn
-                            ngày</Text>
+
                         <DatePicker
                             date={this.state.datePlant}
                             mode="date"
