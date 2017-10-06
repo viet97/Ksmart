@@ -87,8 +87,9 @@ export default class ChooseTypeCustomer extends Component {
                     renderItem={({item}) =>
                         <ChooseTypeItem
                             data={item}
-                            goToDetail={() => navigate('Customer', {id: item.trangthai})}
+                            goToDetail={() => navigate('Customer', {id: item.trangthai, mamau: item.MaMau})}
                         />
+
                     }
                 />
 
@@ -107,7 +108,8 @@ export default class ChooseTypeCustomer extends Component {
                         let obj = {
                             tongso: responseJson.danhsach[i].TongKhachHang,
                             trangthai: responseJson.danhsach[i].ID_LoaiKhachHang,
-                            tenloai: responseJson.danhsach[i].TenLoaiKhachHang
+                            tenloai: responseJson.danhsach[i].TenLoaiKhachHang,
+                            MaMau: responseJson.danhsach[i].MaMau
                         }
                         arr.push(obj);
                     }

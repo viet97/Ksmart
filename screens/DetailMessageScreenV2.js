@@ -38,7 +38,8 @@ export default class DetailMessageScreenV2 extends React.Component {
         const {params} = this.props.navigation.state;
         this.state = {
             iconName: ok,
-            id_nv: params._id
+            id_nv: params._id,
+            ALL_LOADED: false,
         }
     }
 
@@ -71,7 +72,8 @@ export default class DetailMessageScreenV2 extends React.Component {
         }
         this.setState({
             messages: messages,
-            bottomMessage: bottomMessage
+            bottomMessage: bottomMessage,
+            ALL_LOADED: true
         })
     }
 
@@ -108,11 +110,69 @@ export default class DetailMessageScreenV2 extends React.Component {
                 }
                 }
             ).catch((e) => {
-            Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e);
+            Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại');
             this.setState({
                 iconName: failed
             });
         })
+    }
+
+    chatListOrIndicator() {
+        if (!this.state.ALL_LOADED) {
+            return (
+                <ActivityIndicator
+                    animating={true}
+                    style={styles.indicator}
+                    size="large"/>
+
+            )
+        }
+        return (
+            <GiftedChat
+                keyboardDismissMode="on-drag"
+                isLoadingEarlier={true}
+                style={{flex: 1}}
+                messages={this.state.messages}
+                onSend={(messages) => this.onSend(messages)}
+                user={{
+                    _id: quanLyToNhanVien,
+                }}
+                renderSend={(props) => {
+                    return (
+                        <Send
+                            {...props}
+                            containerStyle={{alignItems: 'center', justifyContent: 'center', alignSelf: 'center'}}
+                        >
+                            <Icon name={'send'} color={"blue"} size={24} type={this}/>
+                        </Send>
+                    );
+                }}
+                renderFooter={() => {
+                    return (
+                        <TouchableOpacity
+                            activeOpacity={1}
+                            style={{flexDirection: 'row', alignSelf: 'flex-end'}}
+                            onPress={() => {
+                                if (this.state.iconName === failed) {
+
+                                }
+                            }}
+                        >
+                            <Icon name={this.state.iconName} size={24} color={'gray'} type={"ionicon"}/>
+                            <Text style={{
+                                alignSelf: 'flex-end',
+                                margin: 8,
+                                fontSize: 11
+                            }}>{this.state.bottomMessage}</Text>
+                        </TouchableOpacity>
+                    )
+                }}
+                locale={'vi'}
+                dateFormat={"LLL"}
+                placeholder={"Nhập tin nhắn . . ."}
+            />
+
+        )
     }
 
     render() {
@@ -135,50 +195,7 @@ export default class DetailMessageScreenV2 extends React.Component {
                         }}>{params.title}</Text>
                     <View/>
                 </LinearGradient>
-
-                <GiftedChat
-                    keyboardDismissMode="on-drag"
-                    isLoadingEarlier={true}
-                    style={{flex: 1}}
-                    messages={this.state.messages}
-                    onSend={(messages) => this.onSend(messages)}
-                    user={{
-                        _id: quanLyToNhanVien,
-                    }}
-                    renderSend={(props) => {
-                        return (
-                            <Send
-                                {...props}
-                                containerStyle={{alignItems: 'center', justifyContent: 'center', alignSelf: 'center'}}
-                            >
-                                <Icon name={'send'} color={"blue"} size={24} type={this}/>
-                            </Send>
-                        );
-                    }}
-                    renderFooter={() => {
-                        return (
-                            <TouchableOpacity
-                                activeOpacity={1}
-                                style={{flexDirection: 'row', alignSelf: 'flex-end'}}
-                                onPress={() => {
-                                    if (this.state.iconName === failed) {
-
-                                    }
-                                }}
-                            >
-                                <Icon name={this.state.iconName} size={24} color={'gray'} type={"ionicon"}/>
-                                <Text style={{
-                                    alignSelf: 'flex-end',
-                                    margin: 8,
-                                    fontSize: 11
-                                }}>{this.state.bottomMessage}</Text>
-                            </TouchableOpacity>
-                        )
-                    }}
-                    locale={'vi'}
-                    dateFormat={"LLL"}
-                    placeholder={"Nhập tin nhắn . . ."}
-                />
+                {this.chatListOrIndicator()}
             </View>
         )
     }

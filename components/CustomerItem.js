@@ -34,6 +34,7 @@ export default class NewFeedItem extends React.Component {
 
     render() {
         let item = this.props.data;
+
         return (
 
             <TouchableOpacity
@@ -42,7 +43,7 @@ export default class NewFeedItem extends React.Component {
 
                 <View
                     style={{
-                        backgroundColor: '#f7f7f7',
+                        backgroundColor: this.props.mamau,
                         fontSize: 20, ...shadowProps,
                     }}
                     activeOpacity={1}
