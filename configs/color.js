@@ -1,7 +1,7 @@
 /**
  * Created by Quoc Viet Dang on 7/4/2017.
  */
-export  default class Color{
+export default class Color {
     static red = '#123456';
     static backgroundNewFeed = '#7FC7BD';
     static tabbarColor = '#1695A3';
@@ -22,5 +22,22 @@ const colors = [
     '#2e9a48',
     "#C5CAE9"
 ];
+let colorCustomers = {};
 
-export {colors}
+function getColorCustomers(id) {
+    const randomColor = require('randomcolor');
+    if (colorCustomers[id]) {
+        colorCustomers[id] = randomColor();
+    }
+    return colorCustomers[id];
+}
+
+function setColorCustomer(id, color) {
+    colorCustomers[id] = color;
+}
+
+function resetColorCustomer() {
+    colorCustomers = {}
+}
+
+export {colors, getColorCustomers, setColorCustomer,}

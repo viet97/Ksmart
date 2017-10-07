@@ -273,7 +273,6 @@ export default class CustomerPlant extends Component {
                                 console.log(itemFail, 'vcvws')
                                 Toast.show(itemFail.msg)
                             }
-
                         }}
                         style={styles.iconStyle}>
                         <Text style={{color: 'white', paddingRight: 8, paddingTop: 4}}>OK</Text>

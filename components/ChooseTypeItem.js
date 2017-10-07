@@ -15,7 +15,7 @@ import {
 import React from 'react';
 import Color from '../configs/color'
 
-let {width, height} = Dimensions.get('window')
+let {width, height} = Dimensions.get('window');
 export default class ChooseTypeItem extends React.Component {
     constructor(props) {
         super(props)

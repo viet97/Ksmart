@@ -18,12 +18,13 @@ import Icon1 from 'react-native-vector-icons/MaterialIcons'
 import Icon2 from 'react-native-vector-icons/Ionicons'
 import Icon3 from 'react-native-vector-icons/MaterialCommunityIcons'
 import TabNavigator from 'react-native-tab-navigator';
-import Color from '../configs/color'
+import Color, {setColorCustomer} from '../configs/color'
 import myStyles from '../configs/myStyles'
 import ChooseTypeItem from "../components/ChooseTypeItem";
 import URlConfig from "../configs/url";
 import Toast from "react-native-simple-toast";
 import LinearGradient from "react-native-linear-gradient";
+import {setCustomer} from "../configs/customer";
 
 let {width, height} = Dimensions.get('window')
 export default class ChooseTypeCustomer extends Component {
@@ -111,6 +112,7 @@ export default class ChooseTypeCustomer extends Component {
                             tenloai: responseJson.danhsach[i].TenLoaiKhachHang,
                             MaMau: responseJson.danhsach[i].MaMau
                         }
+                        setCustomer(responseJson.danhsach[i].ID_LoaiKhachHang, responseJson.danhsach[i].TenLoaiKhachHang, responseJson.danhsach[i].MaMau);
                         arr.push(obj);
                     }
                     this.setState({data: arr})
