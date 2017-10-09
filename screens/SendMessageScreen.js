@@ -27,6 +27,7 @@ import {Icon} from "react-native-elements";
 import DialogCustom from "../components/DialogCustom";
 import Autocomplete from "react-native-autocomplete-input";
 import Modal from 'react-native-modalbox';
+import LinearGradient from "react-native-linear-gradient";
 
 let {height, width} = Dimensions.get('window')
 export default class ModalSendMessage extends Component {
@@ -110,11 +111,8 @@ export default class ModalSendMessage extends Component {
         const {params} = this.props.navigation.state
         return (
             <View style={{flex: 1}}>
-                <Image source={require('../images/bg3.png')}
-                       style={{position: 'absolute', top: 0}}/>
-                <View style={styles.titleStyle}>
-                    <Image source={require('../images/bg3.png')}
-                           style={{position: 'absolute'}}/>
+                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
+
                     <TouchableOpacity onPress={() => {
 
                         this.props.navigation.goBack()
@@ -128,7 +126,7 @@ export default class ModalSendMessage extends Component {
                                       onPress={() => this.showDialog()}>
                         <Icon3 style={{alignSelf: 'center'}} size={24} color="white" name="add-user"/>
                     </TouchableOpacity>
-                </View>
+                </LinearGradient>
                 <View style={{flex: 9}}>
                     <View style={styles.autocompleteContainer}>
                         <Autocomplete
@@ -306,7 +304,6 @@ const styles = StyleSheet.create({
         elevation: 15,
         justifyContent: 'space-between',
         flexDirection: 'row',
-        backgroundColor: Color.backgroundNewFeed,
     },
     headerStyle: {
         elevation: 15, height: this.height / 7

@@ -91,7 +91,7 @@ export default class DetailOrderScreen extends React.Component {
                         {this.getElement('Tên khách hàng', this.state.data.tenkhachhang)}
                         {this.getElement('Tổng tiền', ultil.getMoney(this.state.data.tongtien, 2))}
                         {this.getElement('Thời gian tạo', ultil.getDate(this.state.data.thoigiantao))}
-                        {this.getElement('Chiết khấu phần trăm', ultil.formatMoney(this.state.data.chietkhauphantram))}
+                        {this.getElement('Chiết khấu phần trăm', ultil.getMoney(this.state.data.chietkhauphantram, 2))}
                         {this.getElement('Chiết khấu tiền', ultil.getMoney(this.state.data.chietkhautien, 2))}
                         {this.getElement('Tổng tiền chiết khấu', ultil.getMoney(this.state.data.tongtienchietkhau))}
                         {this.getElement('Chương trình khuyến mại', this.state.data.tenctkm)}

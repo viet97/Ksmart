@@ -36,7 +36,9 @@ export default class ChooseTypeCustomer extends Component {
         this.state = {
             refreshing: false,
             data: [],
+            mamau: [],
         }
+        this.getDataFromSv.bind(this)
     }
 
     render() {
@@ -87,7 +89,7 @@ export default class ChooseTypeCustomer extends Component {
                     renderItem={({item}) =>
                         <ChooseTypeItem
                             data={item}
-                            goToDetail={() => navigate('Customer', {id: item.trangthai, mamau: item.MaMau})}
+                            goToDetail={() => navigate('Customer', {id: item.trangthai, mamau: this.state.mamau})}
                         />
 
                     }
@@ -98,6 +100,8 @@ export default class ChooseTypeCustomer extends Component {
 
     getDataFromSv() {
         this.setState({data: null})
+        let arrMaMau = []
+        arrMaMau[0] = '#f7f7f7'
         console.log(URlConfig.getLinkSoKhachHang())
         fetch(URlConfig.getLinkSoKhachHang())
             .then((response) => (response.json()))
@@ -105,15 +109,17 @@ export default class ChooseTypeCustomer extends Component {
                 if (responseJson.status) {
                     var arr = []
                     for (let i in responseJson.danhsach) {
+                        if (responseJson.danhsach[i].MaMau !== null) {
+                            arrMaMau[responseJson.danhsach[i].ID_LoaiKhachHang] = '#' + responseJson.danhsach[i].MaMau
+                        }
                         let obj = {
                             tongso: responseJson.danhsach[i].TongKhachHang,
                             trangthai: responseJson.danhsach[i].ID_LoaiKhachHang,
                             tenloai: responseJson.danhsach[i].TenLoaiKhachHang,
-                            MaMau: responseJson.danhsach[i].MaMau
                         }
                         arr.push(obj);
                     }
-                    this.setState({data: arr})
+                    this.setState({data: arr, mamau: arrMaMau})
                 }
             }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
     }

@@ -19,6 +19,8 @@ import ChooseTypeItem from "../components/ChooseTypeItem";
 import Color from '../configs/color'
 import URlConfig from "../configs/url";
 import LinearGradient from "react-native-linear-gradient";
+import Toast from "react-native-simple-toast";
+import ultils from "../configs/ultils";
 
 let {width, height} = Dimensions.get('window')
 export default class ChooseTypeOrder extends Component {
@@ -174,6 +176,10 @@ export default class ChooseTypeOrder extends Component {
                 if (responseJson.status) {
                     let arr = responseJson.lstTrangThai
                     this.sortData(arr)
+                    console.log(arr[1], arr[2], arr[3])
+                    arr[1].tongso = ultils.formatMoney(arr[1].tongso)
+                    arr[2].tongso = ultils.formatMoney(arr[2].tongso)
+                    arr[3].tongso = ultils.formatMoney(arr[3].tongso)
                     this.setState({data: arr})
                 }
             }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))

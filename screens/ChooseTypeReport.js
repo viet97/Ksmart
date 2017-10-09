@@ -11,14 +11,9 @@ import {
     ActivityIndicator,
     Platform
 } from 'react-native';
-import Image from 'react-native-image-progress';
-import Icon from 'react-native-vector-icons/Entypo'
-import Icon1 from 'react-native-vector-icons/MaterialIcons'
 import Icon2 from 'react-native-vector-icons/Ionicons'
-import Icon3 from 'react-native-vector-icons/MaterialCommunityIcons'
 import DatePicker from 'react-native-datepicker'
 import ChooseTypeItem from "../components/ChooseTypeItem";
-import Color from '../configs/color'
 import URlConfig from "../configs/url";
 import Toast from "react-native-simple-toast";
 import ultils from "../configs/ultils";

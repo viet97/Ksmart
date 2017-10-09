@@ -124,9 +124,6 @@ export default class CustomerScreen extends Component {
     flatListorIndicator() {
         const {navigate} = this.props.navigation;
         const {params} = this.props.navigation.state
-        let mamau = '#f7f7f7'
-        if (params.mamau !== null)
-            mamau = '#' + params.mamau
         if (!this.state.dataRender) {
             return (
                 <View style={{flex: 9}}>
@@ -163,7 +160,7 @@ export default class CustomerScreen extends Component {
                     renderItem={({item}) =>
 
                         <CustomerItem
-                            mamau={mamau}
+                            mamau={params.mamau[item.idloaikhachhang]}
                             data={item}
                             callback={() => navigate('DetailCustomer', {
                                 id: item.idcuahang,

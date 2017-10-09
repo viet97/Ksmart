@@ -24,11 +24,6 @@ import Badge from 'react-native-smart-badge'
 import {NavigationActions} from "react-navigation";
 import Toast from 'react-native-simple-toast';
 import URlConfig from "../configs/url";
-import ChooseTypeChart from "./ChooseTypeChart";
-import ChooseTypeListNV from "./ChooseTypeListNV";
-import ChooseTypeTravel from "./ChooseTypeTravel";
-import ChooseTypeReport from "./ChooseTypeReport";
-import ChooseTypeCustomer from "./ChooseTypeCustomer";
 import {onChangeMessage} from "../networks/Network";
 import menus, {menuSwiper} from "../configs/menus";
 import LinearGradient from 'react-native-linear-gradient';
