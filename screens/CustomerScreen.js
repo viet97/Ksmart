@@ -12,8 +12,7 @@ import {
     Platform
 } from 'react-native';
 import Image from 'react-native-image-progress';
-import Icon from 'react-native-vector-icons/Entypo'
-import Icon1 from 'react-native-vector-icons/MaterialIcons'
+import {Icon} from 'react-native-elements';
 import Icon2 from 'react-native-vector-icons/Ionicons'
 import Toast from 'react-native-simple-toast'
 import Color from '../configs/color'
@@ -23,6 +22,9 @@ import {StackNavigator} from 'react-navigation';
 import CustomerItem from "../components/CustomerItem";
 import PTRView from 'react-native-pull-to-refresh'
 import LinearGradient from "react-native-linear-gradient";
+import {getListCustomer} from "../configs/customer";
+import {Dialog} from "react-native-simple-dialogs";
+
 var ALL_LOADED = false
 var SEARCH_STRING = '';
 var PAGE = 0;
@@ -31,6 +33,7 @@ export default class CustomerScreen extends Component {
     static navigationOptions = {
         header: null
     }
+
     constructor(props) {
         super(props)
         this.state = {
@@ -41,8 +44,9 @@ export default class CustomerScreen extends Component {
             dataFull: [],
             dataRender: null,
             onEndReach: true,
+            dialogVisible: false
         }
-
+        console.log('ccqqkk', getListCustomer());
     }
 
     renderFooter = () => {
@@ -64,8 +68,9 @@ export default class CustomerScreen extends Component {
     getDataFromSv() {
         PAGE = 0;
         this.setState({dataRender: null})
-        ALL_LOADED = false
-        const {params} = this.props.navigation.state
+        ALL_LOADED = false;
+        const {params} = this.props.navigation.state;
+        console.log('url', URlConfig.getCustomerLink(PAGE, SEARCH_STRING, params.id))
         fetch(URlConfig.getCustomerLink(PAGE, SEARCH_STRING, params.id))
             .then((response) => (response.json()))
             .then((responseJson) => {
@@ -86,7 +91,7 @@ export default class CustomerScreen extends Component {
                     ALL_LOADED = true
                     this.forceUpdate()
                 }
-            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại ' + e))
     }
 
     refreshData() {
@@ -133,11 +138,17 @@ export default class CustomerScreen extends Component {
                         size="large"/>
                 </View>)
         } else if (this.state.dataFull.length === 0)
-            return (    <View style={{flex: 9}}>
-                <Text style={{alignSelf: 'center', textAlign: 'center', fontSize: 20, backgroundColor: 'transparent'}}>Không
-                    có dữ liệu</Text>
+            return (
+                <View style={{flex: 9}}>
+                    <Text style={{
+                        alignSelf: 'center',
+                        textAlign: 'center',
+                        fontSize: 20,
+                        backgroundColor: 'transparent'
+                    }}>Không
+                        có dữ liệu</Text>
 
-            </View>)
+                </View>)
 
         return (
             <View style={{flex: 9}}>
@@ -148,7 +159,7 @@ export default class CustomerScreen extends Component {
                     ref="listview"
                     onEndReachedThreshold={0.2}
                     onEndReached={() => {
-                            this.loadMoreData()
+                        this.loadMoreData()
                     }}
                     onMomentumScrollBegin={() => {
                         this.setState({onEndReach: false})
@@ -192,7 +203,7 @@ export default class CustomerScreen extends Component {
     render() {
 
         return (
-            <View style={{flex: 1,backgroundColor:'white'}}>
+            <View style={{flex: 1, backgroundColor: 'white'}}>
                 <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
                     <TouchableOpacity onPress={() => this.props.navigation.goBack()}
                                       style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
@@ -200,7 +211,12 @@ export default class CustomerScreen extends Component {
                                name="ios-arrow-back"/></TouchableOpacity>
                     <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Thông
                         tin khách hàng</Text>
-                    <View style={{width: 35, height: 35}}/>
+                    <TouchableOpacity activeOpacity={0.7} style={{alignSelf: 'center'}}
+                                      onPress={() => {
+                                          this.setState({dialogVisible: true})
+                                      }}>
+                        <Text style={{color: 'white', backgroundColor: 'transparent'}}>Chi tiết</Text>
+                    </TouchableOpacity>
                 </LinearGradient>
 
                 <View style={{
@@ -228,6 +244,37 @@ export default class CustomerScreen extends Component {
                     />
                 </View>
                 {this.flatListorIndicator()}
+                <Dialog
+                    visible={this.state.dialogVisible}
+                    onTouchOutside={() => this.setState({dialogVisible: false})}>
+                    <View style={{}}>
+                        <FlatList
+                            keyboardDismissMode="on-drag"
+                            ref="listview"
+                            data={getListCustomer()}
+                            renderItem={({item}) =>
+
+                                <View style={{flexDirection: 'row', marginTop: 16}}>
+                                    <View
+                                        style={{width: 30, height: 30, borderRadius: 15, backgroundColor: item.color}}/>
+                                    <Text style={{alignSelf: 'center', marginLeft: 8}}>{item.name}</Text>
+                                </View>
+                            }
+                        />
+                    </View>
+                    <TouchableOpacity
+                        style={{
+                            position: 'absolute',
+                            alignSelf: 'center',
+                            right: 8,
+                            top: 8
+                        }}
+                        onPress={() => {
+                            this.setState({dialogVisible: false})
+                        }}>
+                        <Icon name={'x'} size={24} type={'foundation'} color={'red'}/>
+                    </TouchableOpacity>
+                </Dialog>
             </View>
         )
     }
