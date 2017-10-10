@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import React from 'react';
 import Color from '../configs/color'
+import Utils from "../configs/ultils";
 
 let {width, height} = Dimensions.get('window');
 export default class ChooseTypeItem extends React.Component {
@@ -44,7 +45,11 @@ export default class ChooseTypeItem extends React.Component {
                         borderBottomRightRadius: 5
                     }}>
                         <Text
-                            style={{textAlign: 'center', color: 'white', fontSize: 20}}>{this.props.data.tongso}</Text>
+                            style={{
+                                textAlign: 'center',
+                                color: 'white',
+                                fontSize: 20
+                            }}>{this.props.data.tenloai === 'Doanh thu sản lượng' ? Utils.getMoney(this.props.data.tongso) : this.props.data.tongso}</Text>
                     </View>
                 </TouchableOpacity>
             </View>

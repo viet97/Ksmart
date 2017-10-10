@@ -21,6 +21,7 @@ import Icon3 from 'react-native-vector-icons/MaterialCommunityIcons'
 import Image from 'react-native-image-progress';
 import Toast from 'react-native-simple-toast';
 import LinearGradient from "react-native-linear-gradient";
+import Utils from "../configs/ultils";
 
 var {height, width} = Dimensions.get('window');
 const timer = require('react-native-timer');
@@ -146,7 +147,7 @@ export default class ReportScreen extends Component {
                                     textAlign: 'center',
                                     color: 'white',
                                     fontSize: 20
-                                }}>{this.state.data.tongdoanhthu}</Text>
+                                }}>{Utils.getMoney(this.state.data.tongdoanhthu)}</Text>
                             </View>
                         </View>
                     </View>
