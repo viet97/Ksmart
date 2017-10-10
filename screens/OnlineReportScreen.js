@@ -48,6 +48,13 @@ export default class ReportScreen extends Component {
         }
     }
 
+    refresh() {
+
+        this.setState({data: ''}, function () {
+            this.getOnlineReportListFromServer()
+        })
+    }
+
     getOnlineReportListFromServer() {
         fetch(URlConfig.getLinkOnlinePerson())
             .then((response) => (response.json()))
@@ -83,7 +90,7 @@ export default class ReportScreen extends Component {
                     <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Báo
                         cáo online</Text>
                     <TouchableOpacity
-                        onPress={() => this.getOnlineReportListFromServer()}
+                        onPress={() => this.refresh()}
                         style={{backgroundColor: 'transparent', width: 35, height: 35, alignSelf: 'center'}}>
                         <Icon3 style={{alignSelf: 'center'}} size={24} color="white"
                                name="reload"/>

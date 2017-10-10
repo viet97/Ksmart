@@ -93,7 +93,7 @@ const menuSwiper = [
         title: 'Tin nhắn'
     },
     {
-        iconName: 'info-outline',
+        iconName: 'info-circle',
         screenName: 'AboutUs',
         title: 'Về chúng tôi'
     },

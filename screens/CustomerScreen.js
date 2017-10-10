@@ -25,10 +25,10 @@ import LinearGradient from "react-native-linear-gradient";
 import {getListCustomer} from "../configs/customer";
 import {Dialog} from "react-native-simple-dialogs";
 
-var ALL_LOADED = false
-var SEARCH_STRING = '';
-var PAGE = 0;
-var {height, width} = Dimensions.get('window');
+let ALL_LOADED = false
+let SEARCH_STRING = '';
+let PAGE = 0;
+let {height, width} = Dimensions.get('window');
 export default class CustomerScreen extends Component {
     static navigationOptions = {
         header: null

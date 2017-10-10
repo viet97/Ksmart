@@ -17,6 +17,9 @@ import LinearGradient from "react-native-linear-gradient";
 import {Header} from 'react-navigation'
 import {quanLyToNhanVien} from "../configs/type";
 
+let LAST_ID
+let ALL_LOADED = false
+
 export default class ConversationScreen extends React.Component {
     static navigationOptions = ({navigation}) => ({
         title: 'Danh sách tin nhắn',
@@ -26,6 +29,7 @@ export default class ConversationScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            onEndReach: true,
             convestationList: null,
             refreshing:false,
         }
@@ -39,10 +43,76 @@ export default class ConversationScreen extends React.Component {
         //0 quan ly gui, 1 nhan vien
     }
 
+    renderFooter = () => {
+
+        console.log("Footer")
+        if (ALL_LOADED) return null
+        return (
+            <View
+                style={{
+                    justifyContent: 'center',
+                    borderColor: "green"
+                }}
+            >
+                <ActivityIndicator animating={true} size="large"/>
+            </View>
+        );
+    };
+
+    loadMoreConvestation() {
+        const {navigate} = this.props.navigation
+        let url = URlConfig.getLinkConvestation(LAST_ID);
+        fetch(url)
+            .then((response) => (response.json()))
+            .then((responseJson) => {
+                if (responseJson.status) {
+                    if (responseJson.endlist) {
+                        ALL_LOADED = true
+                        this.forceUpdate()
+                    }
+
+                    let convestationList = this.state.convestationList;
+                    for (let item of responseJson.data) {
+                        item['_id'] = item['ID_NHANVIEN'];
+                        item['name'] = item['TenNhanVien'];
+                        if (item['AnhDaiDien']) {
+                            item['avatar'] = URlConfig.BASE_URL_APP + item['AnhDaiDien'];
+                        } else {
+                            item['avatar'] = null;
+                        }
+
+                        if (item.DANHSACH[0]) {
+                            item['lastmsg'] = item.NoiDung;
+                            item['isSeen'] = item['DANHSACH'][0].NgayXem !== '0001-01-01T00:00:00';
+                            let lastUser = {};
+                            if (item['DANHSACH'][0].AnhDaiDien)
+                                lastUser['avatar'] = URlConfig.BASE_URL_APP + item['DANHSACH'][0].AnhDaiDien;
+                            else
+                                lastUser['avatar'] = null;
+                            lastUser['name'] = item.TenNhanVien;
+                            lastUser['_id'] = item.ID_NHANVIEN;
+                            item['lastUser'] = lastUser;
+
+                        }
+                        LAST_ID = LAST_ID + 3
+                        convestationList.push(item);
+                    }
+                    this.setState({convestationList: convestationList});
+
+                } else {
+                    Toast.show('Có lỗi xảy ra, vui lòng liên hệ quản trị viên!')
+                }
+            }).catch((e) => {
+            Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại')
+        })
+
+    }
     getConvestation() {
+        LAST_ID = 0
+        ALL_LOADED = false;
         const {navigate} = this.props.navigation
         this.setState({convestationList:null})
-        let url = URlConfig.getLinkConvestation();
+        let url = URlConfig.getLinkConvestation(LAST_ID);
         console.log('url', url);
         fetch(url)
             .then((response) => (response.json()))
@@ -71,14 +141,14 @@ export default class ConversationScreen extends React.Component {
                             item['lastUser'] = lastUser;
 
                         }
-                        console.log(item,"item")
+                        LAST_ID = LAST_ID + 3
                         convestationList.push(item);
-                        console.log("12312312",convestationList)
                     }
-
-
                     this.setState({convestationList:convestationList});
-
+                    if (responseJson.endlist) {
+                        ALL_LOADED = true
+                        this.forceUpdate()
+                    }
                 } else {
                     Toast.show('Có lỗi xảy ra, vui lòng liên hệ quản trị viên!')
                 }
@@ -118,6 +188,15 @@ export default class ConversationScreen extends React.Component {
         return (
             <FlatList
                 keyboardDismissMode="on-drag"
+                ListFooterComponent={this.renderFooter}
+                ref="listview"
+                onEndReachedThreshold={0.2}
+                onEndReached={() => {
+                    this.loadMoreConvestation()
+                }}
+                onMomentumScrollBegin={() => {
+                    this.setState({onEndReach: false})
+                }}
                 refreshing = {this.state.refreshing}
                 onRefresh={()=>this.refechScreen()}
                 data={this.state.convestationList}

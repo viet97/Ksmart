@@ -243,9 +243,9 @@ export default class URlConfig {
         return data.urlserver + '/AppSuaKeHoachDiChuyen.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idct=' + data.idcongty + '&dulieukehoach=' + encodeURI(JSON.stringify(obj));
     }
 
-    static getLinkConvestation() {
+    static getLinkConvestation(id) {
         let data = URlConfig.OBJLOGIN;
-        return data.urlserver + '/AppDanhSachTinNhan_QuanLy_v3.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idct=' + data.idcongty;
+        return data.urlserver + '/AppDanhSachTinNhan_QuanLy_v3_Paging.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idct=' + data.idcongty + '&lastid=' + id;
     }
 
 }
