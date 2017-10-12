@@ -2,9 +2,7 @@ let customers = {}
 const randomColor = require('randomcolor');
 
 function setCustomer(id, name, color) {
-    if (name.toLowerCase() === 'tất cả') {
-        return;
-    }
+
     if (color) {
         customers[id] = {
             name: name,
@@ -19,6 +17,7 @@ function setCustomer(id, name, color) {
 }
 
 function getCustomer(id) {
+    console.log(id, customers[id])
     return customers[id];
 }
 

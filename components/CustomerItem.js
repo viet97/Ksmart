@@ -17,6 +17,7 @@ import Color, {} from '../configs/color'
 import Communications from 'react-native-communications';
 import {shadowProps} from "../configs/shadow";
 import {getCustomer} from "../configs/customer";
+import Toast from "react-native-simple-toast"
 
 var {height, width} = Dimensions.get('window');
 export default class NewFeedItem extends React.Component {
