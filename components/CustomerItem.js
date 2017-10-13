@@ -63,6 +63,7 @@ export default class NewFeedItem extends React.Component {
                             backgroundColor: 'transparent',
                             marginLeft: 8,
                             fontSize: 18,
+                            color: 'gray',
                             fontWeight: "500", alignSelf: 'center',
                             marginRight: 20,
                         }}>{item.TenCuaHang}</Text>
@@ -74,7 +75,7 @@ export default class NewFeedItem extends React.Component {
                         marginRight: 8,
                         marginBottom: 4
                     }}>
-                        <Icon1 style={{backgroundColor: 'transparent',}} size={24} color={'black'}
+                        <Icon1 style={{backgroundColor: 'transparent',}} size={24} color={this.state.color}
                                name="people-outline"/>
                         <Text numberOfLines={1} style={{
                             backgroundColor: 'transparent',
@@ -91,7 +92,7 @@ export default class NewFeedItem extends React.Component {
                         marginRight: 8,
                         marginBottom: 4
                     }}>
-                        <Icon style={{backgroundColor: 'transparent',}} size={24} color={'black'}
+                        <Icon style={{backgroundColor: 'transparent',}} size={24} color={this.state.color}
                               name="location-pin"/>
                         <Text
                             numberOfLines={1}
@@ -110,7 +111,9 @@ export default class NewFeedItem extends React.Component {
                         marginBottom: 4,
                     }}>
                         <TouchableOpacity onPress={() => {
-                            item.DienThoai !== undefined && item.DienThoai === null && item.DienThoai.length > 0 ? Communications.phonecall(item.DienThoai, true) : console.log('rong');
+                            if (item.DienThoai) {
+                                Communications.phonecall(item.DienThoai, true)
+                            }
                         }}>
                             <Icon style={{backgroundColor: 'transparent',}} size={24} color={this.state.color}
                                   name="phone"/>
@@ -122,7 +125,8 @@ export default class NewFeedItem extends React.Component {
                                 marginLeft: 8,
                                 marginRight: 20,
                                 alignSelf: 'center',
-                                fontWeight: '100'
+                                fontWeight: '100',
+
                             }}>{item.DienThoai}</Text>
                     </View>
                 </View>

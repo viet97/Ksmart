@@ -40,7 +40,6 @@ export default class ChooseCustomerScreen extends Component {
             dataRender: null,
             onEndReach: true,
         }
-
     }
 
     renderFooter = () => {
@@ -63,6 +62,7 @@ export default class ChooseCustomerScreen extends Component {
         PAGE = 0;
         this.setState({dataRender: null})
         ALL_LOADED = false
+        console.log('khach hang', URlConfig.getCustomerLink(PAGE, SEARCH_STRING))
         fetch(URlConfig.getCustomerLink(PAGE, SEARCH_STRING))
             .then((response) => (response.json()))
             .then((responseJson) => {
