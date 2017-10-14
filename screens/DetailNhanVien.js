@@ -111,7 +111,17 @@ export default class DetailNhanVien extends React.Component {
                                       size={24}
                                       color="white" name="ios-arrow-back"/>
                             </TouchableOpacity>
-
+                            <TouchableOpacity style={{position: 'absolute', top: 8, right: 0, padding: 16}}
+                                              onPress={() => {
+                                                  navigate('SendMessage', {
+                                                      data: this.state.data,
+                                                      reload: () => console.log("de day cho vui thoi")
+                                                  })
+                                              }}>
+                                <Icon type="entypo"
+                                      size={24}
+                                      color="white" name="new-message"/>
+                            </TouchableOpacity>
                             <Text style={styles.navTitle}>{this.state.data.tennhanvien}</Text>
                         </Animatable.View>}
                     renderForeground={() =>
@@ -126,6 +136,14 @@ export default class DetailNhanVien extends React.Component {
                                       size={24}
                                       color="white" name="ios-arrow-back"/>
 
+                            </TouchableOpacity>
+                            <TouchableOpacity style={{position: 'absolute', top: 8, right: 0, padding: 16}}
+                                              onPress={() => {
+                                                  navigate('SendMessage', {data: this.state.data})
+                                              }}>
+                                <Icon type="entypo"
+                                      size={24}
+                                      color="white" name="new-message"/>
                             </TouchableOpacity>
                             <Image source={{uri: this.state.data.AnhDaiDien}}
                                    style={{width: 60, height: 60, borderRadius: 30}}/>

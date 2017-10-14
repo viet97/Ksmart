@@ -71,12 +71,14 @@ export default class ModalSendMessage extends Component {
 
     componentDidMount() {
         const {params} = this.props.navigation.state;
-        if (params.data !== undefined)
+        if (params.data !== undefined) {
             this.setState({
                 IDNhanVien: params.data.idnhanvien,
                 receiver: params.data.tennhanvien,
                 nameInput: params.data.tennhanvien
             })
+        }
+
     }
 
     requestSearch(text) {
@@ -261,13 +263,14 @@ export default class ModalSendMessage extends Component {
     }
 
     startSendMessage() {
+        const {params} = this.props.navigation.state
         fetch(URlConfig.getLinkSendMessage(this.state.IDNhanVien, this.state.title, this.state.text))
             .then((response) => (response.json()))
             .then((responseJson) => {
                 if (responseJson.status) {
                     Toast.show('Gửi tin nhắn thành công');
-                    const {params} = this.props.navigation.state
-                    params.reload()
+                    if (params.data === undefined)
+                        params.reload();
                     this.props.navigation.goBack()
                 }
             }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))

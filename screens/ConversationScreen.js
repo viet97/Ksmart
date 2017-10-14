@@ -9,7 +9,6 @@ import {Icon} from 'react-native-elements'
 import React from 'react';
 import {GiftedAvatar} from 'react-native-gifted-chat'
 import Toast from 'react-native-simple-toast'
-
 const moment = require('moment');
 import {dateOfWeek} from "../configs/data";
 import URlConfig from "../configs/url";
@@ -31,7 +30,7 @@ export default class ConversationScreen extends React.Component {
         this.state = {
             onEndReach: true,
             convestationList: null,
-            refreshing:false,
+            refreshing: false,
         }
         this.refechScreen.bind(this)
         this.flatListOrIndicator.bind(this)
@@ -107,11 +106,12 @@ export default class ConversationScreen extends React.Component {
         })
 
     }
+
     getConvestation() {
         LAST_ID = 0
         ALL_LOADED = false;
         const {navigate} = this.props.navigation
-        this.setState({convestationList:null})
+        this.setState({convestationList: null})
         let url = URlConfig.getLinkConvestation(LAST_ID);
         console.log('url', url);
         fetch(url)
@@ -144,7 +144,7 @@ export default class ConversationScreen extends React.Component {
                         LAST_ID = LAST_ID + 3
                         convestationList.push(item);
                     }
-                    this.setState({convestationList:convestationList});
+                    this.setState({convestationList: convestationList});
                     if (responseJson.endlist) {
                         ALL_LOADED = true
                         this.forceUpdate()
@@ -153,12 +153,57 @@ export default class ConversationScreen extends React.Component {
                     Toast.show('Có lỗi xảy ra, vui lòng liên hệ quản trị viên!')
                 }
             }).catch((e) => {
-            Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e)
+            Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại')
         })
     }
 
     refechScreen() {
-        this.getConvestation()
+        LAST_ID = 0
+        ALL_LOADED = false;
+        const {navigate} = this.props.navigation
+        let url = URlConfig.getLinkConvestation(LAST_ID);
+        console.log('url', url);
+        fetch(url)
+            .then((response) => (response.json()))
+            .then((responseJson) => {
+                if (responseJson.status) {
+                    let convestationList = [];
+                    for (let item of responseJson.data) {
+                        item['_id'] = item['ID_NHANVIEN'];
+                        item['name'] = item['TenNhanVien'];
+                        if (item['AnhDaiDien']) {
+                            item['avatar'] = URlConfig.BASE_URL_APP + item['AnhDaiDien'];
+                        } else {
+                            item['avatar'] = null;
+                        }
+
+                        if (item.DANHSACH[0]) {
+                            item['lastmsg'] = item.NoiDung;
+                            item['isSeen'] = item['DANHSACH'][0].NgayXem !== '0001-01-01T00:00:00';
+                            let lastUser = {};
+                            if (item['DANHSACH'][0].AnhDaiDien)
+                                lastUser['avatar'] = URlConfig.BASE_URL_APP + item['DANHSACH'][0].AnhDaiDien;
+                            else
+                                lastUser['avatar'] = null;
+                            lastUser['name'] = item.TenNhanVien;
+                            lastUser['_id'] = item.ID_NHANVIEN;
+                            item['lastUser'] = lastUser;
+
+                        }
+                        LAST_ID = LAST_ID + 3
+                        convestationList.push(item);
+                    }
+                    this.setState({convestationList: convestationList});
+                    if (responseJson.endlist) {
+                        ALL_LOADED = true
+                        this.forceUpdate()
+                    }
+                } else {
+                    Toast.show('Có lỗi xảy ra, vui lòng liên hệ quản trị viên!')
+                }
+            }).catch((e) => {
+            Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại')
+        })
     }
 
     componentWillUnmount() {
@@ -197,8 +242,8 @@ export default class ConversationScreen extends React.Component {
                 onMomentumScrollBegin={() => {
                     this.setState({onEndReach: false})
                 }}
-                refreshing = {this.state.refreshing}
-                onRefresh={()=>this.refechScreen()}
+                refreshing={this.state.refreshing}
+                onRefresh={() => this.refechScreen()}
                 data={this.state.convestationList}
                 renderItem={({item}) =>
                     <TouchableOpacity
@@ -275,11 +320,19 @@ export default class ConversationScreen extends React.Component {
                         alignSelf: 'center',
                         backgroundColor: 'transparent'
                     }}>Danh sách tin nhắn</Text>
-                    <View style={{backgroundColor: 'transparent', width: 35, height: 35}}/>
+                    <TouchableOpacity style={{padding: 16,}}
+                                      onPress={() => {
+                                          navigate('SendMessage', {reload: () => this.refechScreen()})
+                                      }}>
+                        <Icon type="entypo"
+                              size={24}
+                              color="white" name="new-message"/>
+                    </TouchableOpacity>
+
                 </LinearGradient>
                 {this.flatListOrIndicator()}
             </View>
-            )
+        )
     }
 
     getTimeString(strDate, format = 'YYYY-MM-DDTHH:mm:ss') {
