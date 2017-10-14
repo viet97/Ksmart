@@ -216,23 +216,23 @@ export default class ReportScreen extends Component {
                                                 break;
                                             case 1 :
                                                 timer.clearInterval(this);
-                                                timer.setInterval(this, "123", () => this.getOnlineReportListFromServer(), 10000);
+                                                timer.setInterval(this, "123", () => this.refresh(), 10000);
                                                 break;
                                             case 2 :
                                                 timer.clearInterval(this);
-                                                timer.setInterval(this, "123", () => this.getOnlineReportListFromServer(), 30000);
+                                                timer.setInterval(this, "123", () => this.refresh(), 30000);
                                                 break;
                                             case 3 :
                                                 timer.clearInterval(this);
-                                                timer.setInterval(this, "123", () => this.getOnlineReportListFromServer(), 60000);
+                                                timer.setInterval(this, "123", () => this.refresh(), 60000);
                                                 break;
                                             case 4 :
                                                 timer.clearInterval(this);
-                                                timer.setInterval(this, "123", () => this.getOnlineReportListFromServer(), 180000);
+                                                timer.setInterval(this, "123", () => this.refresh(), 180000);
                                                 break;
                                             case 5 :
                                                 timer.clearInterval(this);
-                                                timer.setInterval(this, "123", () => this.getOnlineReportListFromServer(), 300000);
+                                                timer.setInterval(this, "123", () => this.refresh(), 300000);
                                                 break;
                                         }
                                     }

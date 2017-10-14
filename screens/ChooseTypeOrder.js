@@ -177,9 +177,9 @@ export default class ChooseTypeOrder extends Component {
                     let arr = responseJson.lstTrangThai
                     this.sortData(arr)
                     console.log(arr[1], arr[2], arr[3])
-                    arr[1].tongso = ultils.formatMoney(arr[1].tongso)
-                    arr[2].tongso = ultils.formatMoney(arr[2].tongso)
-                    arr[3].tongso = ultils.formatMoney(arr[3].tongso)
+                    arr[1].tongso = ultils.getMoney(arr[1].tongso)
+                    arr[2].tongso = ultils.getMoney(arr[2].tongso)
+                    arr[3].tongso = ultils.getMoney(arr[3].tongso)
                     this.setState({data: arr})
                 }
             }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))

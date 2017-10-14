@@ -102,7 +102,7 @@ export default class CustomerPlantComponent extends Component {
                     marginRight: 8,
                     marginBottom: 4
                 }}>
-                    <Text>Thời gian vào điểm dự kiến: </Text>
+                    <Text style={{alignSelf: 'center'}}>Thời gian vào điểm dự kiến: </Text>
                     <DatePicker
                         date={this.state.timeCome}
                         mode="time"
@@ -121,7 +121,7 @@ export default class CustomerPlantComponent extends Component {
                         }}
                         onDateChange={(time) => {
                             if (this.checkTime(time))
-                                this.onDateChange(time, this.state.timeOut);
+                                this.onDateComeChange(time)
                             else
                                 Toast.show('Thời gian nhỏ hơn hiện tại', Toast.LONG)
                         }}
@@ -135,7 +135,7 @@ export default class CustomerPlantComponent extends Component {
                     marginRight: 8,
                     marginBottom: 4
                 }}>
-                    <Text>Thời gian ra điểm dự kiến: </Text>
+                    <Text style={{alignSelf: 'center'}}>Thời gian ra điểm dự kiến: </Text>
                     <DatePicker
                         date={this.state.timeOut}
                         mode="time"
@@ -154,8 +154,8 @@ export default class CustomerPlantComponent extends Component {
                         }}
                         onDateChange={(time) => {
                             if (this.checkTime(time))
-                                this.onDateChange(this.state.timeCome, time);
-                            else Toast.show('Thời gian ko hợp lý', Toast.LONG)
+                                this.onDateToChange(time)
+                            else Toast.show('Thời gian nhỏ hơn hiện tại', Toast.LONG)
                         }}
                     />
                 </View>
@@ -276,22 +276,27 @@ export default class CustomerPlantComponent extends Component {
 
     }
 
-    onDateChange(from, to) {
-        var item = this.props.item;
-        console.log(this.compareTime(from, to))
-        if (this.compareTime(from, to) || this.state.timeCome === '00:00') {
-            console.log(this.compareTime(from, to))
-            this.setState({
-                timeOut: to,
-                timeCome: from
-            }, function () {
-                this.chooseCustomer(item)
-            })
-
-        } else Toast.show('giờ ra điểm nhỏ hơn giờ vào điểm', Toast.LONG)
+    onDateComeChange(from) {
+        let item = this.props.item;
+        if (this.state.timeOut === '00:00') this.setState({timeCome: from}, function () {
+            this.chooseCustomer(item)
+        })
+        else if (this.compareTime(from, this.state.timeOut)) this.setState({timeCome: from}, function () {
+            this.chooseCustomer(item)
+        })
+        else Toast.show('giờ ra điểm nhỏ hơn giờ vào điểm', Toast.LONG)
     }
 
-
+    onDateToChange(to) {
+        let item = this.props.item;
+        if (this.state.timeCome === '00:00' && this.state.timeOut === '00:00') this.setState({timeOut: to}, function () {
+            this.chooseCustomer(item)
+        })
+        else if (this.compareTime(this.state.timeCome, to)) this.setState({timeOut: to}, function () {
+            this.chooseCustomer(item)
+        })
+        else Toast.show('giờ ra điểm nhỏ hơn giờ vào điểm', Toast.LONG)
+    }
 }
 const styles = StyleSheet.create({
     titleStyle: {

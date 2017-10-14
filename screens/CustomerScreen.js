@@ -9,8 +9,12 @@ import {
     BackHandler,
     FlatList,
     ActivityIndicator,
-    Platform
+    Platform,
+    TextInput
 } from 'react-native';
+
+const timer = require('react-native-timer');
+
 import Image from 'react-native-image-progress';
 import {Icon} from 'react-native-elements';
 import Icon2 from 'react-native-vector-icons/Ionicons'
@@ -195,10 +199,11 @@ export default class CustomerScreen extends Component {
             console.log("promise")
             var keyword = text.toLowerCase()
             SEARCH_STRING = keyword
-            this.getDataFromSv()
-
+            timer.clearTimeout(this)
+            timer.setTimeout(this, "123", () => this.getDataFromSv(), 500);
         });
     }
+
 
     render() {
 
@@ -236,6 +241,7 @@ export default class CustomerScreen extends Component {
                     marginRight: 4
                 }}>
                     <Search
+
                         ref="search_box"
                         placeholder="Tìm kiếm"
                         cancelTitle="Huỷ bỏ"

@@ -2,6 +2,10 @@ import Toast from "react-native-simple-toast";
 
 export default class Utils {
     static getMoney(n, dp = 2) {
+        if (n === undefined) {
+            n = ''
+            return n
+        }
         if (!n) {
             n = 0;
         }
