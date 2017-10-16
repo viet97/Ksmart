@@ -25,6 +25,8 @@ import ModalDropdownCustom from "../components/ModalDropdownCustom";
 import {shadowProps} from "../configs/shadow";
 import LinearGradient from "react-native-linear-gradient";
 
+const timer = require('react-native-timer');
+
 let SEARCH_STRING = '';
 let {width, height} = Dimensions.get('window');
 let ALL_LOADED = false
@@ -83,7 +85,8 @@ export default class TravelScreen extends React.Component {
             var arr = []
             var keyWord = text.toLowerCase();
             SEARCH_STRING = keyWord
-            this.getDataFromSv()
+            timer.clearTimeout(this)
+            timer.setTimeout(this, "123", () => this.getDataFromSv(), 500);
         });
     }
 

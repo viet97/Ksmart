@@ -36,6 +36,9 @@ import KhongCoDoanhThuItem from "../components/KhongCoDoanhThuItem";
 import ModalDropdownCustom from "../components/ModalDropdownCustom";
 import PTRView from 'react-native-pull-to-refresh'
 import LinearGradient from "react-native-linear-gradient";
+
+const timer = require('react-native-timer');
+
 let SEARCH_STRING = '';
 let {width, height} = Dimensions.get('window');
 let ALL_LOADED = false
@@ -172,7 +175,9 @@ export default class ReportScreen extends Component {
             resolve();
             var a = text.toLowerCase()
             SEARCH_STRING = a
-            this.getReportListFromServer()
+            timer.clearTimeout(this)
+            timer.setTimeout(this, "123", () => this.getReportListFromServer(), 500);
+
         });
     }
 

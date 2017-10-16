@@ -28,6 +28,8 @@ import DialogCustom from "../components/DialogCustom";
 import {Icon} from "react-native-elements";
 import LinearGradient from "react-native-linear-gradient";
 
+const timer = require('react-native-timer');
+
 let NUMBER_ROW_RENDER_PER_PAGE = 15
 let ALL_LOADED = false
 let SEARCH_STRING = '';
@@ -248,7 +250,8 @@ export default class CustomerPlant extends Component {
             resolve();
             let keyWord = text.toLowerCase();
             SEARCH_STRING = keyWord
-            this.getDataFromSv()
+            timer.clearTimeout(this)
+            timer.setTimeout(this, "123", () => this.getDataFromSv(), 500);
         });
     }
 

@@ -33,6 +33,7 @@ import LinearGradient from "react-native-linear-gradient";
 import ModalDropdownCustom from "../components/ModalDropdownCustom";
 
 let {height, width} = Dimensions.get('window');
+const timer = require('react-native-timer');
 
 let Page = 1
 let SEARCH_STRING = '';
@@ -298,7 +299,9 @@ export default class ListNhanVienScreen extends React.Component {
             var a = text.toLowerCase();
             SEARCH_STRING = a
             console.log(a)
-            this.getDataFromSv()
+            timer.clearTimeout(this)
+            timer.setTimeout(this, "123", () => this.getDataFromSv(), 500);
+
         });
     }
 

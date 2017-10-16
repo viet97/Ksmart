@@ -30,6 +30,8 @@ import ChooseCustomerScreen from "./ChooseCustomerScreen";
 import Utils from '../configs/ultils'
 import LinearGradient from "react-native-linear-gradient";
 
+const timer = require('react-native-timer');
+
 export default class EditTravelScreen extends React.Component {
     static navigationOptions = ({navigation}) => ({
         header: null
@@ -242,7 +244,9 @@ export default class EditTravelScreen extends React.Component {
                                         hideResultsReceiver: false,
                                         receiver: text
                                     }, function () {
-                                        this.requestSearch(text);
+                                        timer.clearTimeout(this)
+                                        timer.setTimeout(this, "123", () => this.requestSearch(text), 500);
+
                                     })
                                 } else {
                                     this.setState({hideResultsReceiver: true})

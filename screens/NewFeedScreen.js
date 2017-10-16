@@ -208,7 +208,8 @@ export default class NewFeedScreen extends React.Component {
             resolve();
             var a = text.toLowerCase();
             SEARCH_STRING = a;
-            this.getDataFromSv()
+            timer.clearTimeout(this)
+            timer.setTimeout(this, "123", () => this.getDataFromSv(), 500);
         });
     }
 

@@ -24,6 +24,8 @@ import CustomerItem from "../components/CustomerItem";
 import PTRView from 'react-native-pull-to-refresh'
 import LinearGradient from "react-native-linear-gradient";
 
+const timer = require('react-native-timer');
+
 var ALL_LOADED = false
 var SEARCH_STRING = '';
 var PAGE = 0;
@@ -166,7 +168,8 @@ export default class ChooseCustomerScreen extends Component {
             console.log("promise")
             var keyword = text.toLowerCase()
             SEARCH_STRING = keyword
-            this.getDataFromSv()
+            timer.clearTimeout(this)
+            timer.setTimeout(this, "123", () => this.getDataFromSv(), 500);
 
         });
     }

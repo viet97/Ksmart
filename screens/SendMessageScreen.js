@@ -29,6 +29,8 @@ import Autocomplete from "react-native-autocomplete-input";
 import Modal from 'react-native-modalbox';
 import LinearGradient from "react-native-linear-gradient";
 
+const timer = require('react-native-timer');
+
 let {height, width} = Dimensions.get('window')
 export default class ModalSendMessage extends Component {
     static navigationOptions = ({navigation}) => ({
@@ -145,7 +147,9 @@ export default class ModalSendMessage extends Component {
                                         receiver: text,
                                         nameInput: text
                                     }, function () {
-                                        this.requestSearch(text)
+                                        timer.clearTimeout(this)
+                                        timer.setTimeout(this, "123", () => this.requestSearch(text), 500);
+
                                     })
                                 } else {
                                     this.setState({hideResults: true, nameInput: ''})

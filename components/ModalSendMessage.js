@@ -23,6 +23,8 @@ import URlConfig from "../configs/url";
 import Search from "react-native-search-box";
 import {Icon} from "react-native-elements";
 
+const timer = require('react-native-timer');
+
 let {height, width} = Dimensions.get('window')
 export default class ModalSendMessage extends Component {
     constructor(props) {

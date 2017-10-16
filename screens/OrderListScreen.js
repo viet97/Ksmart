@@ -27,6 +27,8 @@ import PTRView from 'react-native-pull-to-refresh'
 import {ConfirmDialog} from 'react-native-simple-dialogs';
 import LinearGradient from "react-native-linear-gradient";
 
+const timer = require('react-native-timer');
+
 let {height, width} = Dimensions.get('window');
 let NUMBER_ITEM_PER_PAGE = 10;
 let Page = 1;
@@ -172,7 +174,9 @@ export default class OrderListScreen extends Component {
             var a = text.toLowerCase()
             SEARCH_STRING = a
             console.log(a)
-            this.getOrderListFromServer(this.state.filtDialog.dateFrom, this.state.filtDialog.dateTo)
+            timer.clearTimeout(this)
+            timer.setTimeout(this, "123", () => this.getOrderListFromServer(this.state.filtDialog.dateFrom, this.state.filtDialog.dateTo), 500);
+
         });
     }
 

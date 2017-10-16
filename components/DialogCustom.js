@@ -13,8 +13,8 @@ import {
     Picker, TouchableHighlight, TextInput
 } from 'react-native';
 
-import {ProgressDialog} from 'react-native-simple-dialogs';
-import DialogManager, {ScaleAnimation, DialogContent} from 'react-native-dialog-component';
+const timer = require('react-native-timer');
+
 import ModalDropdown from "react-native-modal-dropdown";
 import URlConfig from "../configs/url";
 import Search from "react-native-search-box";
@@ -175,7 +175,9 @@ export default class DialogCustom extends React.Component {
                             if (this.state.positionGroupChoose === -1 || this.state.positionGroupChoose === '-1') {
                                 Toast.show('Vui lòng chọn phòng ban trước')
                             } else {
-                                this.getListNhanVienFromSv(this.state.idNhom)
+                                timer.clearTimeout(this)
+                                timer.setTimeout(this, "123", () => this.getListNhanVienFromSv(this.state.idNhom), 500);
+
                             }
                             this.setState({textSearch})
                         }}
