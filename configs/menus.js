@@ -95,7 +95,7 @@ const menuSwiper = [
     {
         iconName: 'info-circle',
         screenName: 'AboutUs',
-        title: 'Về chúng tôi'
+        title: 'Liên hệ'
     },
     {
         iconName: 'sign-out',
