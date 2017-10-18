@@ -137,7 +137,18 @@ export default class HomeScreen extends React.Component {
                             flexDirection: 'row', marginLeft: 24, marginTop: 16
                         }}
                         onPress={() => {
-                            item.screenName === 'SignOut' ? this.logout() : navigate(item.screenName)
+                            if (item.screenName === 'SignOut') {
+                                Alert.alert(
+                                    'Đăng xuất',
+                                    'Bạn có chắc chắn muốn đăng xuất ?',
+                                    [
+                                        {text: 'Hủy',},
+                                        {text: 'Xác nhận', onPress: () => this.logout()}
+                                    ],
+                                    {cancelable: false}
+                                )
+
+                            } else navigate(item.screenName)
                         }}>
                         <Icon containerStyle={{width: 24, height: 24}} color={"white"} name={item.iconName}
                               type={"font-awesome"} size={24}/>
@@ -177,7 +188,9 @@ export default class HomeScreen extends React.Component {
                             backgroundColor: 'transparent',
                             margin: width / 40
                         }}
-                        onPress={() => navigate(item.screenName)}>
+                        onPress={() => {
+                            navigate(item.screenName)
+                        }}>
                         <View style={{
                             backgroundColor: '#3cbdef', borderRadius: 10, width: width / 4,
                             height: width / 4, justifyContent: 'center', alignItems: 'center'
