@@ -26,6 +26,7 @@ import OrderListItem from "../components/OrderListItem";
 import PTRView from 'react-native-pull-to-refresh'
 import {ConfirmDialog} from 'react-native-simple-dialogs';
 import LinearGradient from "react-native-linear-gradient";
+import HeaderCustom from "../components/Header";
 
 const timer = require('react-native-timer');
 
@@ -249,17 +250,9 @@ export default class OrderListScreen extends Component {
     render() {
 
         return (
-            <View style={{flex: 1,backgroundColor:'white'}}>
-                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
-                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}
-                                      style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
-                        <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
-                    </TouchableOpacity>
-                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Danh
-                        sách đơn hàng</Text>
-                    <View></View>
-                </LinearGradient>
-                <View style={{width: width,marginTop:16,marginBottom:16}}>
+            <View style={{flex: 1, backgroundColor: 'white'}}>
+                <HeaderCustom title={"Danh sách đơn hàng"} leftClick={() => this.props.navigation.goBack()}/>
+                <View style={{width: width, marginTop: 16, marginBottom: 16}}>
                     <Search
                         ref="search_box"
                         placeholder="Tìm kiếm"

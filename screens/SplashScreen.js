@@ -2,7 +2,7 @@ import React from 'react';
 import {
     AppRegistry,
     Text,
-    View,
+    View, Dimensions,
     Button, ListView, Image, StyleSheet, StatusBar
 } from 'react-native';
 import {NavigationActions} from "react-navigation";
@@ -22,12 +22,24 @@ export default class SplashScreen extends React.Component {
 
     render() {
         return (
-            <View style={styles.container}>
                 <Image source={require('../images/flyhight.png')}
-                       style={{flex: 1, opacity: 0.6}}/>
-                <Image source={require('../images/logoksmart.png') }
-                       style={{alignSelf: 'center', position: 'absolute'}}/>
-            </View>
+                       style={{
+                           flex: 1,
+                           opacity: 0.6,
+                           resizeMode: 'stretch',
+                           width: '100%',
+                           justifyContent: 'center',
+                           alignItems: 'center'
+                       }}>
+                    <Image source={require('../images/logoksmart.png')}
+                           style={{
+                               alignSelf: 'center',
+                               position: 'absolute',
+                               width: Dimensions.get('window').width / 5,
+                               height: Dimensions.get('window').width / 5
+                           }}/>
+                </Image>
+
         );
     }
 
@@ -52,7 +64,7 @@ export default class SplashScreen extends React.Component {
         orderListData.dFrom=today
         const timer = require('react-native-timer');
         timer.setTimeout(
-            this, 'hideMsg', () => this._onDone(), 1000
+            this, 'hideMsg', this._onDone.bind(this), 1000
         )
     }
 

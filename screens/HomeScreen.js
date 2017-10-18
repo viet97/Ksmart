@@ -29,6 +29,8 @@ import menus, {menuSwiper} from "../configs/menus";
 import LinearGradient from 'react-native-linear-gradient';
 import {getPrefData} from "../sharePref/SharePref";
 import {COMPANY_KEY, PASSWORD_KEY, USERNAME_KEY} from "../configs/type";
+import HeaderCustom from "../components/Header";
+import {Header} from 'react-navigation'
 
 var {height} = Dimensions.get('window');
 var func;
@@ -45,32 +47,17 @@ export default class HomeScreen extends React.Component {
         backcount = 0
     };
     openControlPanel = () => {
-        if (this._drawer)
+        if (this._drawer) {
             this._drawer.open();
-        this.setState({
-            width: 0,
-            height: 0
-        })
+            this.setState({
+                width: 0,
+                height: 0
+            })
+        }
+
     };
 
     componentWillMount() {
-        DeviceEventEmitter.addListener('reloadMsg', this.reloadMsg.bind(this))
-    }
-
-    async reloadMsg() {
-        let username = await getPrefData(USERNAME_KEY);
-        let password = await getPrefData(PASSWORD_KEY);
-        let idct = await getPrefData(COMPANY_KEY);
-        if (username && password && idct) {
-            await onChangeMessage(username, password, idct);
-            this.forceUpdate();
-            console.log('update unread', URlConfig.OBJLOGIN.messageUnread)
-        }
-    }
-
-    constructor(props) {
-
-        super(props);
 
         backcount = 0
         isLoginScreen = false
@@ -99,10 +86,26 @@ export default class HomeScreen extends React.Component {
             kinhdo: 0,
             vido: 0,
         })
+        DeviceEventEmitter.addListener('reloadMsg', this.reloadMsg.bind(this))
+    }
+
+    async reloadMsg() {
+        let username = await getPrefData(USERNAME_KEY);
+        let password = await getPrefData(PASSWORD_KEY);
+        let idct = await getPrefData(COMPANY_KEY);
+        if (username && password && idct) {
+            await onChangeMessage(username, password, idct);
+            this.forceUpdate();
+            console.log('update unread', URlConfig.OBJLOGIN.messageUnread)
+        }
+    }
+
+    constructor(props) {
+        super(props);
     }
 
     showToogle() {
-        backcount = 0
+        backcount = 0;
         this.setState({
             width: 35,
             height: 35
@@ -118,7 +121,6 @@ export default class HomeScreen extends React.Component {
 
     renderContentSwiper(navigate) {
         let width = Dimensions.get('window').width;
-        console.log(menuSwiper)
         return (
             <FlatList
                 scrollEnabled={true}
@@ -182,9 +184,7 @@ export default class HomeScreen extends React.Component {
                         }}>
                             <Icon color={"white"} name={item.iconName} type={"font-awesome"} size={24}/>
                         </View>
-
                         <Text numberOfLines={1} style={styles.titleIconsMenu}>{item.title}</Text>
-
                     </TouchableOpacity>
                 }
             />
@@ -204,38 +204,11 @@ export default class HomeScreen extends React.Component {
                         barStyle="light-content"
                     />
                     <View style={{flex: 1}}>
-                        <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
-                            <TouchableOpacity onPress={() => this.openControlPanel()}
-                                              style={{
-                                                  marginLeft: 16,
-                                                  width: 40,
-                                                  height: 40,
-                                                  alignSelf: 'center',
-                                                  backgroundColor: 'transparent',
-                                              }}>
-                                <Icon1
-                                    style={{
-                                        alignSelf: 'center',
-                                        backgroundColor: 'transparent',
-                                        paddingBottom: 16,
-                                        paddingRight: 16
-                                    }}
-                                    size={35}
-                                    color="white" name="ios-menu"
-                                />
-                            </TouchableOpacity>
-
-                            <Animatable.Text animation="fadeInDown"
-                                             style={{
-                                                 backgroundColor: 'transparent',
-                                                 fontSize: 20,
-                                                 alignSelf: 'center',
-                                                 color: 'white'
-                                             }}>Trang chủ</Animatable.Text>
-
-                            <View style={{width: 50, height: 50, backgroundColor: 'transparent'}}/>
-                        </LinearGradient>
-
+                        <HeaderCustom
+                            title={"Trang Chủ"}
+                            leftClick={() => this.openControlPanel()}
+                            iconName={"ios-menu"}
+                        />
                         <View style={{flex: 9}}>
                             {this.renderContentMenu(navigate)}
                         </View>
@@ -246,6 +219,7 @@ export default class HomeScreen extends React.Component {
     }
 
     componentDidMount() {
+
         const {params} = this.props.navigation.state
         if (params !== undefined)
             this.setState({screenName: params.name})
@@ -264,16 +238,8 @@ export default class HomeScreen extends React.Component {
         const {navigate} = this.props.navigation;
         return (
             <View style={{flex: 1, backgroundColor: '#3d94d8', height: height - 56}}>
-                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
-                    <View/>
-                    <Text style={{
-                        alignSelf: 'center',
-                        textAlign: 'center',
-                        backgroundColor: 'transparent',
-                        fontSize: 18
-                    }}>{URlConfig.OBJLOGIN.tendangnhap} </Text>
-                    <View/>
-                </LinearGradient>
+
+                <HeaderCustom title={URlConfig.OBJLOGIN.tendangnhap} iconColor={"transparent"}/>
 
                 <View style={{paddingTop: 8, flexDirection: 'column', flex: 9}}>
                     {this.renderContentSwiper(navigate)}

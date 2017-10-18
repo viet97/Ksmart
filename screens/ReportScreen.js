@@ -36,6 +36,7 @@ import KhongCoDoanhThuItem from "../components/KhongCoDoanhThuItem";
 import ModalDropdownCustom from "../components/ModalDropdownCustom";
 import PTRView from 'react-native-pull-to-refresh'
 import LinearGradient from "react-native-linear-gradient";
+import HeaderCustom from "../components/Header";
 
 const timer = require('react-native-timer');
 
@@ -297,20 +298,10 @@ export default class ReportScreen extends Component {
     render() {
         return (
             <View style={{flex: 1,backgroundColor:'white'}}>
-                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
-                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}
-                                      style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
-                        <Icon1 style={styles.iconStyle} size={24} color="white"
-                               name="ios-arrow-back"/>
-                    </TouchableOpacity>
-                    <Text style={{
-                        fontSize: 20,
-                        color: 'white',
-                        alignSelf: 'center',
-                        backgroundColor: 'transparent'
-                    }}>{this.state.title}</Text>
-                    <View style={{backgroundColor: 'transparent', width: 35, height: 35}}/>
-                </LinearGradient>
+                <HeaderCustom
+                    title={this.state.title}
+                    leftClick={() => this.props.navigation.goBack()}
+                />
                 <View>
                     <View style={{width: width,marginTop:16,marginBottom:16}}>
                         <Search

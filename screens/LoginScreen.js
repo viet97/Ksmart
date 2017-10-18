@@ -82,7 +82,7 @@ export default class LoginScreen extends React.Component {
 
 
     render() {
-        const hotline = '043.565.2626';
+        const hotline = '0243.565.2626';
         let website = 'http://ksmart.vn';
         let windowWidth = Dimensions.get('window').width;
         return (

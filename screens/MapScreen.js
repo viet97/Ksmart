@@ -12,6 +12,7 @@ import Icon1 from 'react-native-vector-icons/Ionicons'
 import Color from '../configs/color'
 import * as Toast from "react-native-simple-toast";
 import LinearGradient from "react-native-linear-gradient";
+import HeaderCustom from "../components/Header";
 
 var {height, width} = Dimensions.get('window');
 var title = '12312321'
@@ -59,19 +60,8 @@ render() {
 
     return (
         <View style={{flex: 1}}>
-            <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
-                <TouchableOpacity onPress={() => this.props.navigation.goBack()}
-                                  style={styles.iconStyle}>
-                    <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
-                </TouchableOpacity>
-                <Text style={{
-                    fontSize: 20,
-                    color: 'white',
-                    alignSelf: 'center',
-                    backgroundColor: 'transparent'
-                }}>{params.title}</Text>
-                <View/>
-            </LinearGradient>
+
+            <HeaderCustom title={params.title} leftClick={() => this.props.navigation.goBack()}/>
             <MapView
                 style={{flex: 9}}
                 initialRegion={this.state.region}>

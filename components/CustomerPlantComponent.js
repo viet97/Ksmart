@@ -15,7 +15,7 @@ import CheckBox from 'react-native-checkbox'
 import Toast from 'react-native-simple-toast';
 
 let {height, width} = Dimensions.get('window');
-
+const moment = require('moment')
 export default class CustomerPlantComponent extends Component {
 
     constructor(props) {
@@ -120,10 +120,11 @@ export default class CustomerPlantComponent extends Component {
                             },
                         }}
                         onDateChange={(time) => {
-                            if (this.checkTime(time))
-                                this.onDateComeChange(time)
+                            console.log(time > moment().format("HH:mm"), time, moment().format("HH:mm"))
+                            if (time > moment().format("HH:mm"))
+                                this.onDateComeChange(time);
                             else
-                                Toast.show('Thời gian nhỏ hơn hiện tại', Toast.LONG)
+                                this.props.showToast('Thời gian nhỏ hơn hiện tại', Toast.LONG)
                         }}
                     />
                 </View>
@@ -153,9 +154,10 @@ export default class CustomerPlantComponent extends Component {
                             },
                         }}
                         onDateChange={(time) => {
-                            if (this.checkTime(time))
+                            if (time > this.state.timeCome)
                                 this.onDateToChange(time)
-                            else Toast.show('Thời gian nhỏ hơn hiện tại', Toast.LONG)
+                            else
+                                this.props.showToast('Thời ra điểm phải sau thời gian vào điểm')
                         }}
                     />
                 </View>
@@ -278,24 +280,16 @@ export default class CustomerPlantComponent extends Component {
 
     onDateComeChange(from) {
         let item = this.props.item;
-        if (this.state.timeOut === '00:00') this.setState({timeCome: from}, function () {
+        this.setState({timeCome: from}, function () {
             this.chooseCustomer(item)
         })
-        else if (this.compareTime(from, this.state.timeOut)) this.setState({timeCome: from}, function () {
-            this.chooseCustomer(item)
-        })
-        else Toast.show('giờ ra điểm nhỏ hơn giờ vào điểm', Toast.LONG)
     }
 
     onDateToChange(to) {
         let item = this.props.item;
-        if (this.state.timeCome === '00:00' && this.state.timeOut === '00:00') this.setState({timeOut: to}, function () {
+        this.setState({timeOut: to}, function () {
             this.chooseCustomer(item)
         })
-        else if (this.compareTime(this.state.timeCome, to)) this.setState({timeOut: to}, function () {
-            this.chooseCustomer(item)
-        })
-        else Toast.show('giờ ra điểm nhỏ hơn giờ vào điểm', Toast.LONG)
     }
 }
 const styles = StyleSheet.create({

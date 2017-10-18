@@ -28,6 +28,7 @@ import DialogCustom from "../components/DialogCustom";
 import Autocomplete from "react-native-autocomplete-input";
 import Modal from 'react-native-modalbox';
 import LinearGradient from "react-native-linear-gradient";
+import HeaderCustom from "../components/Header";
 
 const timer = require('react-native-timer');
 
@@ -52,6 +53,7 @@ export default class ModalSendMessage extends Component {
         this.requestSearch.bind(this);
         this.loadAllSearch.bind(this);
     }
+
     getImage(url) {
         if (url.length === 0) {
             return (
@@ -112,25 +114,21 @@ export default class ModalSendMessage extends Component {
     }
 
     render() {
+        const {navigate} = this.props.navigation;
         const {params} = this.props.navigation.state
         return (
             <View style={{flex: 1}}>
-                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
 
-                    <TouchableOpacity onPress={() => {
-
-                        this.props.navigation.goBack()
-                    }}
-                                      style={styles.iconStyle}>
-                        <Icon2 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
-                    </TouchableOpacity>
-                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Soạn
-                        tin nhắn</Text>
-                    <TouchableOpacity style={{alignSelf: 'center', backgroundColor: 'transparent', marginRight: 16}}
-                                      onPress={() => this.showDialog()}>
-                        <Icon3 style={{alignSelf: 'center'}} size={24} color="white" name="add-user"/>
-                    </TouchableOpacity>
-                </LinearGradient>
+                <HeaderCustom
+                    title={"Soạn tin nhắn"}
+                    leftClick={() => this.props.navigation.goBack()}
+                    rightChildren={
+                        <TouchableOpacity
+                            style={{alignSelf: 'center', backgroundColor: 'transparent', marginRight: 16}}
+                            onPress={() => this.showDialog()}>
+                            <Icon3 style={{alignSelf: 'center'}} size={24} color="white" name="add-user"/>
+                        </TouchableOpacity>
+                    }/>
                 <View style={{flex: 9}}>
                     <View style={styles.autocompleteContainer}>
                         <Autocomplete

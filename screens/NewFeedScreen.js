@@ -20,6 +20,7 @@ import NewFeedItem from "../components/NewFeedItem";
 import {ConfirmDialog} from 'react-native-simple-dialogs';
 import {colors} from "../configs/color";
 import LinearGradient from "react-native-linear-gradient";
+import HeaderCustom from "../components/Header";
 
 let SEARCH_STRING = '';
 let {width, height} = Dimensions.get('window');
@@ -74,7 +75,7 @@ export default class NewFeedScreen extends React.Component {
                     })
                 else {
 
-                    this.setState({dataRender:[],dataFull:[],isEndList:true})
+                    this.setState({dataRender: [], dataFull: [], isEndList: true})
                     ALL_LOADED = true;
                     this.forceUpdate()
                 }
@@ -143,7 +144,7 @@ export default class NewFeedScreen extends React.Component {
     };
 
     flatListorIndicator() {
-        console.log(this.state.dataRender,this.state.dataFull)
+        console.log(this.state.dataRender, this.state.dataFull)
         if (!this.state.dataRender) {
             return (
                 <View style={{flex: 9}}>
@@ -228,27 +229,23 @@ export default class NewFeedScreen extends React.Component {
         const {navigate} = this.props.navigation
         return (
             <View style={{flex: 1, backgroundColor: 'white'}}>
-                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
-                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}
-                                      style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
-                        <Icon1 style={styles.iconStyle} size={24} color="white"
-                               name="ios-arrow-back"/>
-                    </TouchableOpacity>
-                    <Text
-                        style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Hoạt
-                        động</Text>
-                    <TouchableOpacity style={{alignSelf: 'center', padding: 8}}
-                                      onPress={() => navigate('ChooseTypeNewFeed')}
-                    >
-                        <Text style={{
-                            textAlign: 'center',
-                            color: 'white',
-                            alignSelf: 'center',
-                            backgroundColor: 'transparent'
-                        }}>Chi tiết</Text>
-                    </TouchableOpacity>
 
-                </LinearGradient>
+                <HeaderCustom
+                    leftClick={() => this.props.navigation.goBack()}
+                    title={"Hoạt động"}
+                    rightChildren={
+                        <TouchableOpacity style={{alignSelf: 'center', padding: 8}}
+                                          onPress={() => navigate('ChooseTypeNewFeed')}
+                        >
+                            <Text style={{
+                                textAlign: 'center',
+                                color: 'white',
+                                alignSelf: 'center',
+                                backgroundColor: 'transparent'
+                            }}>Chi tiết</Text>
+                        </TouchableOpacity>
+                    }
+                />
                 <View style={{width: width, marginTop: 16, marginBottom: 16}}>
                     <Search
                         ref="search_box"

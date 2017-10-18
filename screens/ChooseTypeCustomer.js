@@ -25,6 +25,7 @@ import URlConfig from "../configs/url";
 import Toast from "react-native-simple-toast";
 import LinearGradient from "react-native-linear-gradient";
 import {setCustomer} from "../configs/customer";
+import HeaderCustom from "../components/Header";
 
 let {width, height} = Dimensions.get('window')
 export default class ChooseTypeCustomer extends Component {
@@ -45,22 +46,7 @@ export default class ChooseTypeCustomer extends Component {
     render() {
         return (
             <View style={{flex: 1}}>
-
-                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
-                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}
-                                      style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
-                        <Icon2 style={styles.iconStyle} size={24} color="white"
-                               name="ios-arrow-back"/>
-                    </TouchableOpacity>
-                    <Text
-                        style={{
-                            fontSize: 20,
-                            color: 'white',
-                            alignSelf: 'center',
-                            backgroundColor: 'transparent'
-                        }}>Khách hàng</Text>
-                    <View style={{backgroundColor: 'transparent', width: 35, height: 35}}/>
-                </LinearGradient>
+                <HeaderCustom title={"Khách hàng"} leftClick={() => this.props.navigation.goBack()}/>
                 {this.flatListorIndicator()}
             </View>
         )

@@ -29,6 +29,7 @@ import ChooseTypeChart from "./ChooseTypeChart";
 import ChooseCustomerScreen from "./ChooseCustomerScreen";
 import Utils from '../configs/ultils'
 import LinearGradient from "react-native-linear-gradient";
+import HeaderCustom from "../components/Header";
 
 const timer = require('react-native-timer');
 
@@ -89,124 +90,114 @@ export default class EditTravelScreen extends React.Component {
 
         if (Platform.OS === 'ios') {
             return (
-                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
-                    <TouchableOpacity
-                        onPress={() => this.props.navigation.goBack()}
-                        style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
-                        <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
-                    </TouchableOpacity>
-                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Chỉnh
-                        sửa kế hoạch</Text>
-                    <TouchableOpacity
-                        onPress={() => {
-                            let moment = require('moment');
-                            let date1 = moment(this.state.dateCome, 'DD-MM-YYYY HH:mm:ss').toDate();
-                            let date2 = moment(this.state.dateOut, 'DD-MM-YYYY HH:mm:ss').toDate();
-                            let now = new Date();
-                            if (this.state.dateComeReal !== '1900-01-01T00:00:00') {
-                                Toast.show('Kế hoạch đã vào điểm, bạn không thể chỉnh sửa')
-                            } else if (date1.getTime() - date2.getTime() >= 0 || date1.getTime() - now.getTime() < 0) {
-                                Toast.show("Thời gian vào điểm phải trước ra điểm và sau thời điểm hiện tại , vui lòng thử lại!")
+
+                <HeaderCustom
+                    title={"Chỉnh sửa kế hoạch"}
+                    leftClick={() => this.props.navigation.goBack()}
+                    rightChildren={
+                        <TouchableOpacity
+                            onPress={() => {
+                                let moment = require('moment');
+                                let date1 = moment(this.state.dateCome, 'DD-MM-YYYY HH:mm:ss').toDate();
+                                let date2 = moment(this.state.dateOut, 'DD-MM-YYYY HH:mm:ss').toDate();
+                                let now = new Date();
+                                if (this.state.dateComeReal !== '1900-01-01T00:00:00') {
+                                    Toast.show('Kế hoạch đã vào điểm, bạn không thể chỉnh sửa')
+                                } else if (date1.getTime() - date2.getTime() >= 0 || date1.getTime() - now.getTime() < 0) {
+                                    Toast.show("Thời gian vào điểm phải trước ra điểm và sau thời điểm hiện tại , vui lòng thử lại!")
+                                }
+                                else {
+                                    let obj = {
+                                        idkehoach: this.state.idkehoach,
+                                        idnhanvien: this.state.idnhanvien,
+                                        idkhachhang: this.state.idkhachhang,
+                                        thoigiandukien: this.state.dateCome,
+                                        thoigiancheckoutdukien: this.state.dateOut
+                                    };
+                                    fetch(URlConfig.getLinkEditTravel(obj))
+                                        .then((response) => (response.json()))
+                                        .then((responseJson) => {
+                                            if (responseJson.status) {
+                                                Toast.show('Sửa thành công!')
+                                                const {params} = this.props.navigation.state
+                                                params.reload()
+                                                this.props.navigation.goBack();
+                                            }
+                                        })
+                                }
                             }
-                            else {
-                                let obj = {
-                                    idkehoach: this.state.idkehoach,
-                                    idnhanvien: this.state.idnhanvien,
-                                    idkhachhang: this.state.idkhachhang,
-                                    thoigiandukien: this.state.dateCome,
-                                    thoigiancheckoutdukien: this.state.dateOut
-                                };
-                                fetch(URlConfig.getLinkEditTravel(obj))
-                                    .then((response) => (response.json()))
-                                    .then((responseJson) => {
-                                        if (responseJson.status) {
-                                            Toast.show('Sửa thành công!')
-                                            const {params} = this.props.navigation.state
-                                            params.reload()
-                                            this.props.navigation.goBack();
-                                        }
-                                    })
                             }
-                        }
-                        }
-                        style={
-                            {
+                            style={
+                                {
+                                    padding: 8,
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    backgroundColor: 'transparent'
+                                }
+                            }>
+                            <Text
+                                style={
+                                    {
+                                        color: 'white',
+                                        paddingRight: 8,
+                                        paddingTop: 8
+                                    }
+                                }>
+                                OK
+                            </Text>
+                        </TouchableOpacity>
+                    }/>
+            )
+        } else if (this.state.showHeader) {
+            console.log('vaooooo')
+            return (
+
+                <HeaderCustom
+                    title={"Chỉnh sửa kế hoạch"}
+                    leftClick={() => this.props.navigation.goBack()}
+                    rightChildren={
+                        <TouchableOpacity
+                            onPress={() => {
+                                let moment = require('moment')
+                                let date1 = moment(this.state.dateCome, 'DD-MM-YYYY HH:mm:ss').toDate();
+                                let date2 = moment(this.state.dateOut, 'DD-MM-YYYY HH:mm:ss').toDate();
+                                let now = new Date();
+                                if (this.state.dateComeReal !== '1900-01-01T00:00:00') {
+                                    Toast.show('Kế hoạch đã vào điểm, bạn không thể chỉnh sửa')
+                                } else if (date1.getTime() - date2.getTime() >= 0 || date1.getTime() - now.getTime() < 0) {
+                                    Toast.show("Thời gian vào điểm phải trước ra điểm và sau thời điểm hiện tại , vui lòng thử lại!")
+                                }
+                                else {
+                                    let obj = {
+                                        idkehoach: this.state.idkehoach,
+                                        idnhanvien: this.state.idnhanvien,
+                                        idkhachhang: this.state.idkhachhang,
+                                        thoigiandukien: this.state.dateCome,
+                                        thoigiancheckoutdukien: this.state.dateOut
+                                    };
+                                    fetch(URlConfig.getLinkEditTravel(obj))
+                                        .then((response) => (response.json()))
+                                        .then((responseJson) => {
+                                                if (responseJson.status) {
+
+                                                    Toast.show('Sửa thành công!')
+                                                    this.props.navigation.goBack();
+                                                } else {
+                                                    Toast.show('Sửa thất bại,vui lòng thử lại!')
+                                                }
+                                            }
+                                        ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+                                }
+                            }}
+                            style={{
                                 padding: 8,
                                 alignItems: 'center',
                                 justifyContent: 'center',
                                 backgroundColor: 'transparent'
-                            }
-                        }>
-                        <Text
-                            style={
-                                {
-                                    color: 'white',
-                                    paddingRight: 8,
-                                    paddingTop: 8
-                                }
-                            }>
-                            OK
-                        </Text>
-                    </TouchableOpacity>
-                </LinearGradient>            )
-        } else if (this.state.showHeader) {
-            console.log('vaooooo')
-            return (
-                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
-                    <TouchableOpacity
-                        onPress={() => this.props.navigation.goBack()}
-                        style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
-                        <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
-                    </TouchableOpacity>
-                    <Text style={{
-                        fontSize: 20,
-                        color: 'white',
-                        alignSelf: 'center',
-                        backgroundColor: 'transparent'
-                    }}>Chỉnh
-                        sửa kế hoạch</Text>
-                    <TouchableOpacity
-                        onPress={() => {
-                            let moment = require('moment')
-                            let date1 = moment(this.state.dateCome, 'DD-MM-YYYY HH:mm:ss').toDate();
-                            let date2 = moment(this.state.dateOut, 'DD-MM-YYYY HH:mm:ss').toDate();
-                            let now = new Date();
-                            if (this.state.dateComeReal !== '1900-01-01T00:00:00') {
-                                Toast.show('Kế hoạch đã vào điểm, bạn không thể chỉnh sửa')
-                            } else if (date1.getTime() - date2.getTime() >= 0 || date1.getTime() - now.getTime() < 0) {
-                                Toast.show("Thời gian vào điểm phải trước ra điểm và sau thời điểm hiện tại , vui lòng thử lại!")
-                            }
-                            else {
-                                let obj = {
-                                    idkehoach: this.state.idkehoach,
-                                    idnhanvien: this.state.idnhanvien,
-                                    idkhachhang: this.state.idkhachhang,
-                                    thoigiandukien: this.state.dateCome,
-                                    thoigiancheckoutdukien: this.state.dateOut
-                                };
-                                fetch(URlConfig.getLinkEditTravel(obj))
-                                    .then((response) => (response.json()))
-                                    .then((responseJson) => {
-                                            if (responseJson.status) {
-
-                                                Toast.show('Sửa thành công!')
-                                                this.props.navigation.goBack();
-                                            } else {
-                                                Toast.show('Sửa thất bại,vui lòng thử lại!')
-                                            }
-                                        }
-                                    ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
-                            }
-                        }}
-                        style={{
-                            padding: 8,
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            backgroundColor: 'transparent'
-                        }}>
-                        <Text style={{color: 'white', paddingRight: 8, paddingTop: 8}}>OK</Text>
-                    </TouchableOpacity>
-                </LinearGradient>
+                            }}>
+                            <Text style={{color: 'white', paddingRight: 8, paddingTop: 8}}>OK</Text>
+                        </TouchableOpacity>
+                    }/>
             )
         }
     }
@@ -314,7 +305,7 @@ export default class EditTravelScreen extends React.Component {
 
                         <Text style={{backgroundColor: 'transparent', alignSelf: 'center'}}>Thời gian: </Text>
                         <DatePicker
-                            style={{width:240}}
+                            style={{width: 240}}
                             customStyles={{
                                 dateTouchBody: {
                                     flexDirection: 'row',
@@ -359,7 +350,7 @@ export default class EditTravelScreen extends React.Component {
                     }}>
                         <Text style={{backgroundColor: 'transparent', alignSelf: 'center'}}>Thời gian: </Text>
                         <DatePicker
-                            style={{width:240}}
+                            style={{width: 240}}
                             customStyles={{
                                 dateTouchBody: {
                                     flexDirection: 'row',

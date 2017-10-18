@@ -1,39 +1,81 @@
-import TabNavigator from 'react-native-tab-navigator';
-import Icon from 'react-native-vector-icons/MaterialIcons'
+
 import React from 'react';
-import Drawer from 'react-native-drawer';
+import {Header} from 'react-navigation'
+import LinearGradient from 'react-native-linear-gradient';
+import * as Animatable from 'react-native-animatable';
 import {
     AppRegistry,
     Text,
     View,
     Button, ListView, Image, StyleSheet, StatusBar,
-    TouchableOpacity
+    TouchableOpacity, Platform
 } from 'react-native';
 import Color from '../configs/color'
-export default class Header extends React.Component {
+import PropTypes from 'prop-types';
+import {Icon} from 'react-native-elements'
+
+export default class HeaderCustom extends React.Component {
     render() {
         return (
-            <View style={styles.titleStyle}>
-                <View >
-                    <Image
-                        source={require('../images/MenuBar.png')}
-                        style={{width: 35, height: 35, alignSelf: 'center', marginLeft: 16}}/>
-                    <Text style={{fontSize: 20, alignSelf: 'center'}}>{this.props.name}</Text>
-                    <View style={{width: 35, height: 35}}></View>
-                </View>
-                <TouchableOpacity onPress={() => this.openControlPanel()}
-                                  style={{marginLeft: 16, width: 35, height: 35, position: 'absolute'}}/>
-            </View>
+            <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
+                {
+                    this.props.leftChildren ? this.props.leftChildren :
+                        <TouchableOpacity onPress={() => {
+                            if (this.props.leftClick) this.props.leftClick()
+                        }}
+                                          style={{
+                                              alignSelf: 'center',
+                                              backgroundColor: 'transparent',
+                                          }}>
+                            <Icon
+                                style={{
+                                    alignSelf: 'center',
+                                    backgroundColor: 'transparent',
+                                    padding: 16
+                                }}
+                                size={35}
+                                color={this.props.iconColor} name={this.props.iconName} type={this.props.iconType}
+                            />
+                        </TouchableOpacity>
+                }
+
+                <Animatable.Text animation="fadeInDown"
+                                 style={{
+                                     backgroundColor: 'transparent',
+                                     fontSize: 20,
+                                     alignSelf: 'center',
+                                     color: 'white'
+                                 }}>{this.props.title}</Animatable.Text>
+
+                {this.props.rightChildren ? this.props.rightChildren : <View/>}
+            </LinearGradient>
         )
     }
 }
+HeaderCustom.propTypes = {
+    rightChildren: PropTypes.element,
+    leftClick: PropTypes.func,
+    title: PropTypes.string.isRequired,
+    leftChildren: PropTypes.element,
+    iconName: PropTypes.string,
+    iconType: PropTypes.string,
+    iconColor: PropTypes.string,
+};
+HeaderCustom.defaultProps = {
+    iconName: "ios-arrow-back",
+    iconType: "ionicon",
+    iconColor: "white"
+};
 const styles = StyleSheet.create({
     titleStyle: {
-        flex: 1,
+        paddingTop: Platform.OS === 'ios' ? 16 : 0,
+        paddingBottom: Platform.OS === 'ios' ? 16 : 0,
+        paddingVertical: 16,
         elevation: 15,
         justifyContent: 'space-between',
         flexDirection: 'row',
-        backgroundColor: Color.backgroundNewFeed,
+        height: Header.height,
+        backgroundColor: 'transparent'
     },
     headerStyle: {
         elevation: 15, height: this.height / 7

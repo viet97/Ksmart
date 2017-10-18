@@ -16,6 +16,7 @@ import MapView from 'react-native-maps';
 import URlConfig from "../configs/url";
 import Color from '../configs/color'
 import LinearGradient from "react-native-linear-gradient";
+import HeaderCustom from "../components/Header";
 const default_location={
     latitude: 20.994953,
     longitude: 105.8307488,
@@ -74,16 +75,8 @@ export default class MapListScreen extends Component {
     render() {
         return (
             <View style={{flex: 1}}>
-                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
-                    <TouchableOpacity onPress={() => this.props.backToHome()}
-                                      style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
-                        <Icon1 style={styles.iconStyle} size={24} color="white"
-                               name="ios-arrow-back"/>
-                    </TouchableOpacity>
-                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Vị
-                        trí nhân viên </Text>
-                    <View/>
-                </LinearGradient>
+                <HeaderCustom title={"Vị trí nhân viên "} leftClick={() => this.props.backToHome()}/>
+
                 <MapView
 
                     style={{flex: 9}}

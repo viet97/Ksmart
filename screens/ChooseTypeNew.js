@@ -17,6 +17,7 @@ import Icon2 from 'react-native-vector-icons/Ionicons'
 import ChooseTypeItem from "../components/ChooseTypeItem";
 import URlConfig from "../configs/url";
 import LinearGradient from "react-native-linear-gradient";
+import HeaderCustom from "../components/Header";
 
 let {width, height} = Dimensions.get('window')
 export default class ChooseTypeNew extends Component {
@@ -67,21 +68,11 @@ export default class ChooseTypeNew extends Component {
     render() {
         return (
             <View style={{flex: 1}}>
-                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
-                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}
-                                      style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
-                        <Icon2 style={styles.iconStyle} size={24} color="white"
-                               name="ios-arrow-back"/>
-                    </TouchableOpacity>
-                    <Text
-                        style={{
-                            fontSize: 20,
-                            color: 'white',
-                            alignSelf: 'center',
-                            backgroundColor: 'transparent'
-                        }}>Hoạt động</Text>
-                    <View style={{backgroundColor: 'transparent', width: 35, height: 35}}/>
-                </LinearGradient>
+
+                <HeaderCustom
+                    title={"Hoạt động"}
+                    leftClick={() => this.props.navigation.goBack()}
+                />
                 {this.flatListorIndicator()}
             </View>
         )

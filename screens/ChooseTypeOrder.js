@@ -21,6 +21,7 @@ import URlConfig from "../configs/url";
 import LinearGradient from "react-native-linear-gradient";
 import Toast from "react-native-simple-toast";
 import ultils from "../configs/ultils";
+import HeaderCustom from "../components/Header";
 
 let {width, height} = Dimensions.get('window')
 export default class ChooseTypeOrder extends Component {
@@ -92,21 +93,10 @@ export default class ChooseTypeOrder extends Component {
     render() {
         return (
             <View style={{flex: 1, backgroundColor: 'white'}}>
-                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
-                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}
-                                      style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
-                        <Icon type={"ionicon"} style={styles.iconStyle} size={24} color="white"
-                              name="ios-arrow-back"/>
-                    </TouchableOpacity>
-                    <Text
-                        style={{
-                            fontSize: 20,
-                            color: 'white',
-                            alignSelf: 'center',
-                            backgroundColor: 'transparent'
-                        }}>Đơn hàng</Text>
-                    <View style={{backgroundColor: 'transparent', width: 35, height: 35}}/>
-                </LinearGradient>
+                <HeaderCustom
+                    title={"Đơn hàng"}
+                    leftClick={() => this.props.navigation.goBack()}
+                />
                 <View style={{width: window.width, height: 80, elevation: 5}}>
                     <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: 80}}>
                         <DatePicker

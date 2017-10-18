@@ -15,6 +15,8 @@ import Toast from 'react-native-simple-toast'
 import DoanhThuTheoNVItem from "../components/DoanhThuTheoNVItem";
 import ModalDropdownCustom from "../components/ModalDropdownCustom";
 import LinearGradient from "react-native-linear-gradient";
+import HeaderCustom from "../components/Header";
+
 export default class RevenuePerPersonnelScreen extends React.Component {
     static navigationOptions = {
         header: null
@@ -113,6 +115,7 @@ export default class RevenuePerPersonnelScreen extends React.Component {
         else title = 'Biểu đồ doanh thu sản lượng \n theo nhân viên'
         return title
     }
+
     renderItem(item) {
         return (
             <DoanhThuTheoNVItem
@@ -214,24 +217,17 @@ export default class RevenuePerPersonnelScreen extends React.Component {
             return <Picker.Item key={i} value={i} label={s + ''}/>
         });
         return (
-            <View style={{flex: 1,backgroundColor:'white'}}>
-                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
-                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}
-                                      style={styles.iconStyle}>
-                        <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
-                    </TouchableOpacity>
-                    <Text style={{
-                        fontSize: 20,
-                        color: 'white',
-                        alignSelf: 'center',
-                        textAlign: 'center',
-                        backgroundColor: 'transparent',
-                    }}>{this.getTitle()}</Text>
-                    <TouchableOpacity style={{alignSelf: 'center'}} onPress={() => {
-                        this.showDialog();
-                    }}>
-                    </TouchableOpacity>
-                </LinearGradient>
+            <View style={{flex: 1, backgroundColor: 'white'}}>
+                <HeaderCustom
+                    title={this.getTitle()}
+                    leftClick={() => this.props.navigation.goBack()}
+                    rightChildren={
+                        <TouchableOpacity style={{alignSelf: 'center'}} onPress={() => {
+                            this.showDialog();
+                        }}>
+                        </TouchableOpacity>
+                    }
+                />
                 <View style={{flexDirection: 'column', flex: 9}}>
                     <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: 60}}>
                         <Text style={{backgroundColor: 'transparent'}}>Từ</Text>

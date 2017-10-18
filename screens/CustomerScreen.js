@@ -28,6 +28,7 @@ import PTRView from 'react-native-pull-to-refresh'
 import LinearGradient from "react-native-linear-gradient";
 import {getListCustomer} from "../configs/customer";
 import {Dialog} from "react-native-simple-dialogs";
+import HeaderCustom from "../components/Header";
 
 let ALL_LOADED = false
 let SEARCH_STRING = '';
@@ -209,21 +210,18 @@ export default class CustomerScreen extends Component {
 
         return (
             <View style={{flex: 1, backgroundColor: 'white'}}>
-                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
-                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}
-                                      style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
-                        <Icon2 style={styles.iconStyle} size={24} color="white"
-                               name="ios-arrow-back"/></TouchableOpacity>
-                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Thông
-                        tin khách hàng</Text>
-                    <TouchableOpacity activeOpacity={0.7} style={{alignSelf: 'center'}}
-                                      onPress={() => {
-                                          this.setState({dialogVisible: true})
-                                      }}>
-                        <Text style={{color: 'white', backgroundColor: 'transparent'}}>Chi tiết</Text>
-                    </TouchableOpacity>
-                </LinearGradient>
-
+                <HeaderCustom
+                    title={"Thông tin khách hàng"}
+                    leftClick={() => this.props.navigation.goBack()}
+                    rightChildren={
+                        <TouchableOpacity activeOpacity={0.7} style={{alignSelf: 'center'}}
+                                          onPress={() => {
+                                              this.setState({dialogVisible: true})
+                                          }}>
+                            <Text style={{color: 'white', backgroundColor: 'transparent'}}>Chi tiết</Text>
+                        </TouchableOpacity>
+                    }
+                />
                 <View style={{
                     marginLeft: 8,
                     marginTop: 8,

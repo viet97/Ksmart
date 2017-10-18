@@ -71,8 +71,15 @@ export default class NewFeedItem extends React.Component {
                         marginBottom: 4,
                         width: Dimensions.get('window').width * 0.6
                     }} numberOfLines={1}>{this.item.tennhanvien}</Text>
-                    <View style={{backgroundColor: colors[this.item.loai], borderRadius: 16, height: 32, padding: 8}}>
-                        <Text style={{fontSize: 16, color: 'white'}}>{this.item.tenloai}</Text>
+                    <View style={{
+                        backgroundColor: colors[this.item.loai],
+                        borderRadius: 16,
+                        height: 32,
+                        padding: 8,
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}>
+                        <Text style={{fontSize: 16, color: 'white', alignSelf: 'center'}}>{this.item.tenloai}</Text>
                     </View>
                 </View>
                 <View style={{

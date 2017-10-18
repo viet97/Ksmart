@@ -16,6 +16,7 @@ import {PagerTabIndicator, IndicatorViewPager, PagerTitleIndicator, PagerDotIndi
 import URlConfig from "../configs/url";
 import Communications from 'react-native-communications';
 import LinearGradient from "react-native-linear-gradient";
+import HeaderCustom from "../components/Header";
 
 let {width, height} = Dimensions.get('window')
 export default class DetailCustomer extends React.Component {
@@ -121,23 +122,8 @@ export default class DetailCustomer extends React.Component {
         const item = params.item;
         return (
             <View style={{flex: 1, backgroundColor: 'white'}}>
-                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
-                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}
-                                      style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
-                        <Icon style={styles.iconStyle}
-                              size={24} color="white"
-                              name="ios-arrow-back"
-                              type="ionicon"
-                        />
-                    </TouchableOpacity>
-                    <Text style={{
-                        fontSize: 20,
-                        color: 'white',
-                        alignSelf: 'center',
-                        backgroundColor: 'transparent'
-                    }}>Chi tiết khách hàng</Text>
-                    <View/>
-                </LinearGradient>
+
+                <HeaderCustom title={"Chi tiết khách hàng"} leftClick={() => this.props.navigation.goBack()}/>
                 <IndicatorViewPager
                     style={{flex: 9, backgroundColor: 'white'}}
                     indicator={this._renderTitleIndicator()}

@@ -12,6 +12,7 @@ import Icon2 from 'react-native-vector-icons/Ionicons'
 
 import ChooseTypeChartItem from "../components/ChooseTypeChartItem";
 import LinearGradient from "react-native-linear-gradient";
+import HeaderCustom from "../components/Header";
 
 const propView = 7 / 8;
 const {width, height} = Dimensions.get('window');
@@ -45,16 +46,11 @@ export default class ChooseTypeChart extends React.Component {
             <View style={{
                 flex: 1,
             }}>
-                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
-                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}
-                                      style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
-                        <Icon2 style={styles.iconStyle} size={24} color="white"
-                               name="ios-arrow-back"/>
-                    </TouchableOpacity>
-                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Chọn
-                        loại biểu đồ</Text>
-                    <View style={{width: 35, height: 35}}/>
-                </LinearGradient>
+                <HeaderCustom
+                    title={"Chọn loại biểu đồ"}
+                    leftClick={() => this.props.navigation.goBack()}
+
+                />
                 <View style={{flex: 9}}>
                     <View style={styles.view1}>
                         <TouchableOpacity

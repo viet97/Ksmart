@@ -18,6 +18,7 @@ import ultils from "../configs/ultils";
 import ModalDropdownCustom from "../components/ModalDropdownCustom";
 import PTRView from 'react-native-pull-to-refresh'
 import LinearGradient from "react-native-linear-gradient";
+import HeaderCustom from "../components/Header";
 
 var {height, width} = Dimensions.get('window');
 export default class TravelChartScreen extends React.Component {
@@ -261,18 +262,19 @@ export default class TravelChartScreen extends React.Component {
         });
         return (
             <View style={{flex: 1,backgroundColor:'white'}}>
-                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
-                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}
-                                      style={styles.iconStyle}>
-                        <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
-                    </TouchableOpacity>
-                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center'}}>{this.getTitle()} </Text>
-                    <TouchableOpacity style={{alignSelf: 'center'}} onPress={() => {
-                        this.showDialog();
-                    }}>
-                        <View></View>
-                    </TouchableOpacity>
-                </LinearGradient>
+
+                <HeaderCustom
+
+                    title={this.getTitle()}
+                    leftClick={() => this.props.navigation.goBack()}
+                    rightChildren={
+                        <TouchableOpacity style={{alignSelf: 'center'}} onPress={() => {
+                            this.showDialog();
+                        }}>
+                            <View/>
+                        </TouchableOpacity>
+                    }
+                />
                 <View style={{flexDirection: 'column', flex: 9}}>
                     <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: 60}}>
                         <Text style={{backgroundColor: 'transparent'}}>Từ</Text>

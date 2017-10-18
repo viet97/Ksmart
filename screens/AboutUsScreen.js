@@ -10,6 +10,7 @@ import React from 'react';
 import Color from '../configs/color'
 import Communications from 'react-native-communications';
 import LinearGradient from "react-native-linear-gradient";
+import HeaderCustom from "../components/Header";
 
 export default class AboutUsScreen extends React.Component {
     static navigationOptions = {
@@ -25,20 +26,8 @@ export default class AboutUsScreen extends React.Component {
         const email = 'phanmem@lachongmedia.vn';
         return (
             <View style={{flexDirection: 'column', flex: 1}}>
-                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
-                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}
-                                      style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
-                        <Icon1 style={styles.iconStyle} size={24} color="white"
-                               name="ios-arrow-back"/></TouchableOpacity>
-                    <Text style={{
-                        fontSize: 20,
-                        color: 'white',
-                        alignSelf: 'center',
-                        textAlign: 'center',
-                        backgroundColor: 'transparent',
-                    }}>Liên hệ</Text>
-                    <View/>
-                </LinearGradient>
+
+                <HeaderCustom title={"Liên hệ"} leftClick={() => this.props.navigation.goBack()}/>
                 <View style={{flex: 9, flexDirection: 'column', backgroundColor: 'transparent', margin: 16}}>
                     <Image source={require('../images/logolh.png')}
                            style={{width: 250, height: 100, alignSelf: 'center'}}

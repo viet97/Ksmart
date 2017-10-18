@@ -11,6 +11,7 @@ import {
     ActivityIndicator, Platform,
     Picker
 } from 'react-native';
+import {ProgressDialog} from 'react-native-simple-dialogs'
 import Modal from 'react-native-modalbox';
 import DialogManager, {ScaleAnimation, DialogContent} from 'react-native-dialog-component';
 import Toast from 'react-native-simple-toast';
@@ -27,6 +28,7 @@ import CustomerPlantComponent from '../components/CustomerPlantComponent'
 import DialogCustom from "../components/DialogCustom";
 import {Icon} from "react-native-elements";
 import LinearGradient from "react-native-linear-gradient";
+import HeaderCustom from "../components/Header";
 
 const timer = require('react-native-timer');
 
@@ -74,8 +76,9 @@ export default class CustomerPlant extends Component {
             numberPickNhanVien: 0,
             NhanVienStatus: [],
             dataNhanVien: [],
-            namePerson: '- Chọn nhân viên -'
+            namePerson: '- Chọn nhân viên -',
 
+            dialogVisible: false
         }
 
     }
@@ -183,6 +186,7 @@ export default class CustomerPlant extends Component {
                     data={this.state.dataRender}
                     renderItem={({item}) =>
                         <CustomerPlantComponent
+                            showToast={(message) => Toast.show(message, Toast.LONG)}
                             date={this.state.datePlant}
                             idcuahang={item.idcuahang}
                             idnhanvien={this.state.idNhanvien}
@@ -214,6 +218,12 @@ export default class CustomerPlant extends Component {
                                 console.log(arr)
                             }}/>
                     }
+                />
+                <ProgressDialog
+                    visible={this.state.progressVisible}
+                    title=""
+                    activityIndicatorStyle={{padding: 24}}
+                    message="Xin chờ"
                 />
             </View>)
 
@@ -260,27 +270,28 @@ export default class CustomerPlant extends Component {
 
         return (
             <View style={{flex: 1, backgroundColor: ''}}>
-                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
-                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}
-                                      style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
-                        <Icon2 style={styles.iconStyle} size={24} color="white"
-                               name="ios-arrow-back"/></TouchableOpacity>
-                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Lập
-                        kế hoạch</Text>
-                    <TouchableOpacity
-                        onPress={() => {
-                            const itemFail = this.checkDuLieuKeHoach();
-                            if (!itemFail) {
-                                this.sendPlantToServer();
-                            } else {
-                                console.log(itemFail, 'vcvws')
-                                Toast.show(itemFail.msg)
-                            }
-                        }}
-                        style={styles.iconStyle}>
-                        <Text style={{color: 'white', paddingRight: 8, paddingTop: 4}}>OK</Text>
-                    </TouchableOpacity>
-                </LinearGradient>
+
+                <HeaderCustom
+                    title={"Lập kế hoạch"}
+                    leftClick={() => this.props.navigation.goBack()}
+                    rightChildren={
+                        <TouchableOpacity
+                            onPress={() => {
+                                const itemFail = this.checkDuLieuKeHoach();
+                                if (!itemFail) {
+                                    this.setState({dialogVisible: true})
+                                    this.sendPlantToServer();
+                                } else {
+                                    console.log(itemFail, 'vcvws')
+                                    Toast.show(itemFail.msg)
+                                }
+                            }}
+                            style={styles.iconStyle}>
+                            <Text style={{color: 'white', paddingRight: 8, paddingTop: 4}}>OK</Text>
+                        </TouchableOpacity>
+                    }
+
+                />
                 <View style={{
                     marginLeft: 8,
                     marginTop: 8,
@@ -425,15 +436,19 @@ export default class CustomerPlant extends Component {
             fetch(URlConfig.getLinkLapKeHoach(obj))
                 .then((response) => (response.json()))
                 .then((responseJson) => {
+                    this.setState({dialogVisible: false});
                     console.log(responseJson)
                     if (responseJson.status) {
                         if (responseJson.listkehoachmoi.length !== 0)
                             Toast.show('Lập kế hoạch thành công')
                         else
                             Toast.show('Kế hoạch đã bị trùng , vui lòng thử lại')
-                        this.props.navigation.goBack()
+                        this.props.navigation.goBack();
                     }
-                }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+                }).catch((e) => {
+                this.setState({dialogVisible: false});
+                Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại')
+            })
     }
 
 

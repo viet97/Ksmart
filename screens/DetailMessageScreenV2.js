@@ -21,6 +21,7 @@ import LinearGradient from "react-native-linear-gradient";
 import {Header} from 'react-navigation'
 import {nhanVienToQuanLy, quanLyToNhanVien} from "../configs/type";
 import Toast from "react-native-simple-toast";
+import HeaderCustom from "../components/Header";
 
 const failed = 'ios-warning';
 const ok = 'ios-checkmark-outline';
@@ -193,21 +194,7 @@ export default class DetailMessageScreenV2 extends React.Component {
         const {params} = this.props.navigation.state;
         return (
             <View style={{flex: 1}}>
-                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
-                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}
-                                      style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
-                        <Icon type={'ionicon'} style={styles.iconStyle} size={24} color="white"
-                              name="ios-arrow-back"/>
-                    </TouchableOpacity>
-                    <Text
-                        style={{
-                            fontSize: 20,
-                            color: 'white',
-                            alignSelf: 'center',
-                            backgroundColor: 'transparent'
-                        }}>{params.title}</Text>
-                    <View/>
-                </LinearGradient>
+                <HeaderCustom title={params.title} leftClick={() => this.props.navigation.goBack()}/>
                 {this.chatListOrIndicator()}
             </View>
         )

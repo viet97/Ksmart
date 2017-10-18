@@ -31,6 +31,7 @@ import PTRView from 'react-native-pull-to-refresh'
 import ListNhanVienItem from "../components/ListNhanVienItem";
 import LinearGradient from "react-native-linear-gradient";
 import ModalDropdownCustom from "../components/ModalDropdownCustom";
+import HeaderCustom from "../components/Header";
 
 let {height, width} = Dimensions.get('window');
 const timer = require('react-native-timer');
@@ -363,31 +364,24 @@ export default class ListNhanVienScreen extends React.Component {
 
         return (
 
-            <View style={{flex: 1,backgroundColor:'white'}}>
-                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
-                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}
-                                      style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
-                        <Icon1 style={styles.iconStyle} size={24} color="white"
-                               name="ios-arrow-back"/></TouchableOpacity>
-                    <Text style={{
-                        fontSize: 20,
-                        color: 'white',
-                        alignSelf: 'center',
-                        backgroundColor: 'transparent'
-                    }}>Danh sách nhân viên</Text>
-                    <TouchableOpacity style={{alignSelf: 'center'}}
-                                      onPress={() => this.showDialog()}
-                    >
-                        <Text style={{
-                            textAlign: 'center',
-                            color: 'white',
-                            alignSelf: 'center',
-                            backgroundColor: 'transparent'
-                        }}>Bộ lọc</Text>
-                    </TouchableOpacity>
-                </LinearGradient>
+            <View style={{flex: 1, backgroundColor: 'white'}}>
+                <HeaderCustom
+                    title={"Danh sách nhân viên"}
+                    leftClick={() => this.props.navigation.goBack()}
+                    rightChildren={
+                        <TouchableOpacity
+                            style={{alignSelf: 'center'}}
+                            onPress={() => this.showDialog()}>
+                            <Text style={{
+                                textAlign: 'center',
+                                color: 'white',
+                                alignSelf: 'center',
+                                backgroundColor: 'transparent'
+                            }}>Bộ lọc</Text>
+                        </TouchableOpacity>
+                    }/>
 
-                <View style={{width: width,marginTop:16,marginBottom:16}}>
+                <View style={{width: width, marginTop: 16, marginBottom: 16}}>
                     <Search
                         placeholder="Tìm kiếm"
                         cancelTitle="Huỷ bỏ"
@@ -414,7 +408,7 @@ export default class ListNhanVienScreen extends React.Component {
                             data={this.state.partyNhanVienStatus}
                             defaultValue={this.state.partyNhanVienStatus[pickParty]}
                             onSelect={(idx, value) => this._onSelectParty(idx, value)}
-                           />
+                        />
                     </View>
                     <View style={{
                         flexDirection: 'row',

@@ -23,6 +23,7 @@ import DatePicker from 'react-native-datepicker'
 import ChooseTypeItem from "../components/ChooseTypeItem";
 import URlConfig from "../configs/url";
 import LinearGradient from "react-native-linear-gradient";
+import HeaderCustom from "../components/Header";
 
 let {width, height} = Dimensions.get('window')
 export default class ChooseTypeTravel extends Component {
@@ -99,19 +100,10 @@ export default class ChooseTypeTravel extends Component {
         const {navigate} = this.props.navigation
         return (
             <View style={{flex: 1, backgroundColor: 'white'}}>
-                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
-                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}
-                                      style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
-                        <Icon2 style={styles.iconStyle} size={24} color="white"
-                               name="ios-arrow-back"/>
-                    </TouchableOpacity>
-                    <Text
-                        style={{
-                            fontSize: 20,
-                            color: 'white',
-                            alignSelf: 'center',
-                            backgroundColor: 'transparent'
-                        }}>Kế hoạch viếng thăm</Text>
+                <HeaderCustom
+                    title={"Kế hoạch viếng thăm"}
+                    leftClick={() => this.props.navigation.goBack()}
+                    rightChildren={
                     <TouchableOpacity
                         onPress={() => navigate('CustomerPlant')}
                         style={{
@@ -133,7 +125,7 @@ export default class ChooseTypeTravel extends Component {
                             }}>Thêm</Text>
                         </View>
                     </TouchableOpacity>
-                </LinearGradient>
+                    }/>
                 <View style={{width: window.width, height: 80, elevation: 5}}>
                     <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: 80}}>
                         <DatePicker

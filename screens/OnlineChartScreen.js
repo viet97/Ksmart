@@ -18,6 +18,7 @@ import ultils from "../configs/ultils";
 import ModalDropdownCustom from "../components/ModalDropdownCustom";
 import PTRView from 'react-native-pull-to-refresh'
 import LinearGradient from "react-native-linear-gradient";
+import HeaderCustom from "../components/Header";
 let {height, width} = Dimensions.get('window');
 export default class OnlineChartScreen extends React.Component {
     static navigationOptions = {
@@ -274,22 +275,16 @@ export default class OnlineChartScreen extends React.Component {
         }
         return (
             <View style={{flex: 1,backgroundColor:'white'}}>
-                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
-                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}
-                                      style={styles.iconStyle}>
-                        <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
-                    </TouchableOpacity>
-                    <Text style={{
-                        fontSize: 20,
-                        color: 'white',
-                        alignSelf: 'center',
-                        backgroundColor: 'transparent'
-                    }}>{this.getTitle()} </Text>
-                    <TouchableOpacity style={{alignSelf: 'center'}} onPress={() => {
-                        this.showDialog();
-                    }}>
-                    </TouchableOpacity>
-                </LinearGradient>
+                <HeaderCustom
+                    leftClick={() => this.props.navigation.goBack()}
+                    title={this.getTitle()}
+                    rightChildren={
+                        <TouchableOpacity style={{alignSelf: 'center'}} onPress={() => {
+                            this.showDialog();
+                        }}>
+                        </TouchableOpacity>
+                    }
+                />
                 <View style={{flexDirection: 'column', flex: 9}}>
                     <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: 60}}>
                         <Text style={{backgroundColor: 'transparent'}}>Chọn ngày </Text>

@@ -24,6 +24,7 @@ import TravelItem from "../components/TravelItem";
 import ModalDropdownCustom from "../components/ModalDropdownCustom";
 import {shadowProps} from "../configs/shadow";
 import LinearGradient from "react-native-linear-gradient";
+import HeaderCustom from "../components/Header";
 
 const timer = require('react-native-timer');
 
@@ -243,26 +244,22 @@ export default class TravelScreen extends React.Component {
 
         return (
             <View style={{flex: 1,backgroundColor:'white'}}>
-                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
-                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}
-                                      style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
-                        <Icon1 style={styles.iconStyle} size={24} color="white"
-                               name="ios-arrow-back"/>
-                    </TouchableOpacity>
-                    <Text
-                        style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Kế
-                        hoạch viếng thăm</Text>
-                    <TouchableOpacity
-                        onPress={() => this.props.goToCustomerPlant()}
-                        style={{
-                            alignSelf: 'center',
-                            width: 35,
-                            height: 35
-                        }}>
-                        <View style={{width: 50, height: 50, justifyContent: 'center', alignSelf: 'center'}}>
-                        </View>
-                    </TouchableOpacity>
-                </LinearGradient>
+                <HeaderCustom
+                    title={"Kế hoạch viếng thăm"}
+                    leftClick={() => this.props.navigation.goBack()}
+                    rightChildren={
+                        <TouchableOpacity
+                            onPress={() => this.props.goToCustomerPlant()}
+                            style={{
+                                alignSelf: 'center',
+                                width: 35,
+                                height: 35
+                            }}>
+                            <View style={{width: 50, height: 50, justifyContent: 'center', alignSelf: 'center'}}>
+                            </View>
+                        </TouchableOpacity>
+                    }
+                />
                 <View style={{width: width,marginTop:16,marginBottom:16}}>
                     <Search
                         placeholder="Tìm kiếm"

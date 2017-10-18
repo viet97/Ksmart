@@ -22,6 +22,7 @@ import Image from 'react-native-image-progress';
 import Toast from 'react-native-simple-toast';
 import LinearGradient from "react-native-linear-gradient";
 import Utils from "../configs/ultils";
+import HeaderCustom from "../components/Header";
 
 var {height, width} = Dimensions.get('window');
 const timer = require('react-native-timer');
@@ -83,21 +84,10 @@ export default class ReportScreen extends Component {
         });
         return (
             <View style={{flex: 1}}>
-                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
-                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}
-                                      style={styles.iconStyle}>
-                        <Icon1 style={styles.iconStyle} size={24} color="white" name="ios-arrow-back"/>
-                    </TouchableOpacity>
-                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Báo
-                        cáo online</Text>
-                    <TouchableOpacity
-                        onPress={() => this.refresh()}
-                        style={{backgroundColor: 'transparent', width: 35, height: 35, alignSelf: 'center'}}>
-                        <Icon3 style={{alignSelf: 'center'}} size={24} color="white"
-                               name="reload"/>
-                    </TouchableOpacity>
-
-                </LinearGradient>
+                <HeaderCustom
+                    title={"Báo cáo online"}
+                    leftClick={() => this.props.navigation.goBack()}
+                />
                 <View style={{flex: 9}}>
                     <View style={styles.view1}>
                         <View

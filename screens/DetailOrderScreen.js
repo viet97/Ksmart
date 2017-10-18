@@ -15,6 +15,7 @@ import URlConfig from "../configs/url";
 import ultil from "../configs/ultils";
 import ListDetailOrderItem from "../components/ListDetailOrderItem";
 import LinearGradient from "react-native-linear-gradient";
+import HeaderCustom from "../components/Header";
 
 let {width, height} = Dimensions.get('window')
 export default class DetailOrderScreen extends React.Component {
@@ -68,23 +69,8 @@ export default class DetailOrderScreen extends React.Component {
         const {params} = this.props.navigation.state;
         return (
             <View style={{flex: 1,backgroundColor:'white'}}>
-                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
-                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}
-                                      style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
-                        <Icon style={styles.iconStyle}
-                              size={24} color="white"
-                              name="ios-arrow-back"
-                              type="ionicon"
-                        />
-                    </TouchableOpacity>
-                    <Text style={{
-                        fontSize: 20,
-                        color: 'white',
-                        alignSelf: 'center',
-                        backgroundColor: 'transparent'
-                    }}>Chi tiết đơn hàng</Text>
-                    <View/>
-                </LinearGradient>
+
+                <HeaderCustom title={"Chi tiết đơn hàng"} leftClick={() => this.props.navigation.goBack()}/>
                 <View style={{flex: 9,backgroundColor:'transparent'}}>
                     <ScrollView style={{flex: 1, marginBottom: 4}}>
                         {this.getElement('Mã đơn hàng', this.state.data.mathamchieu)}

@@ -9,12 +9,14 @@ import {Icon} from 'react-native-elements'
 import React from 'react';
 import {GiftedAvatar} from 'react-native-gifted-chat'
 import Toast from 'react-native-simple-toast'
+
 const moment = require('moment');
 import {dateOfWeek} from "../configs/data";
 import URlConfig from "../configs/url";
 import LinearGradient from "react-native-linear-gradient";
 import {Header} from 'react-navigation'
 import {quanLyToNhanVien} from "../configs/type";
+import HeaderCustom from "../components/Header";
 
 let LAST_ID
 let ALL_LOADED = false
@@ -308,28 +310,23 @@ export default class ConversationScreen extends React.Component {
 
         return (
             <View style={{flex: 1, backgroundColor: 'white'}}>
-                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
-                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}
-                                      style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
-                        <Icon type={'ionicon'} style={styles.iconStyle} size={24} color="white"
-                              name="ios-arrow-back"/>
-                    </TouchableOpacity>
-                    <Text style={{
-                        fontSize: 20,
-                        color: 'white',
-                        alignSelf: 'center',
-                        backgroundColor: 'transparent'
-                    }}>Danh sách tin nhắn</Text>
-                    <TouchableOpacity style={{padding: 16,}}
-                                      onPress={() => {
-                                          navigate('SendMessage', {reload: () => this.refechScreen()})
-                                      }}>
-                        <Icon type="entypo"
-                              size={24}
-                              color="white" name="new-message"/>
-                    </TouchableOpacity>
-
-                </LinearGradient>
+                <HeaderCustom
+                    title={"Danh sách tin nhắn"}
+                    leftClick={
+                        () => this.props.navigation.goBack()
+                    }
+                    rightChildren={
+                        <TouchableOpacity style={{padding: 16,}}
+                                          onPress={() => {
+                                              navigate('SendMessage', {reload: () => this.refechScreen()})
+                                          }
+                                          }>
+                            <Icon type="entypo"
+                                  size={24}
+                                  color="white" name="new-message"/>
+                        </TouchableOpacity>
+                    }
+                />
                 {this.flatListOrIndicator()}
             </View>
         )

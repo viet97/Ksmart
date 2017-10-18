@@ -23,6 +23,7 @@ import {StackNavigator} from 'react-navigation';
 import CustomerItem from "../components/CustomerItem";
 import PTRView from 'react-native-pull-to-refresh'
 import LinearGradient from "react-native-linear-gradient";
+import HeaderCustom from "../components/Header";
 
 const timer = require('react-native-timer');
 
@@ -178,16 +179,8 @@ export default class ChooseCustomerScreen extends Component {
 
         return (
             <View style={{flex: 1,backgroundColor:'white'}}>
-                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
-                    <TouchableOpacity onPress={() => this.props.backClick()}
-                                      style={{alignItems: 'center', justifyContent: 'center'}}>
-                        <Icon2 style={styles.iconStyle} size={24} color="white"
-                               name="ios-arrow-back"/>
-                    </TouchableOpacity>
-                    <Text style={{fontSize: 20, color: 'white', alignSelf: 'center', backgroundColor: 'transparent'}}>Chọn
-                        khách hàng</Text>
-                    <View style={{width: 35, height: 35}}/>
-                </LinearGradient>
+
+                <HeaderCustom title={"Chọn khách hàng"} leftClick={() => this.props.navigation.goBack()}/>
 
                 <View style={{
                     marginLeft: 8,

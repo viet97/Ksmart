@@ -15,6 +15,7 @@ import Toast from "react-native-simple-toast";
 import {PagerTabIndicator, IndicatorViewPager, PagerTitleIndicator, PagerDotIndicator} from 'rn-viewpager';
 import URlConfig from "../configs/url";
 import LinearGradient from "react-native-linear-gradient";
+import HeaderCustom from "../components/Header";
 
 let {width, height} = Dimensions.get('window')
 export default class DetailBaoCaoDoanhThuSanLuong extends React.Component {
@@ -52,23 +53,8 @@ export default class DetailBaoCaoDoanhThuSanLuong extends React.Component {
     render() {
         return (
             <View style={{flex: 1,backgroundColor:'white'}}>
-                <LinearGradient colors={['#1b60ad', '#3dc4ea']} style={styles.titleStyle}>
-                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}
-                                      style={{padding: 8, alignItems: 'center', justifyContent: 'center'}}>
-                        <Icon style={styles.iconStyle}
-                              size={24} color="white"
-                              name="ios-arrow-back"
-                              type="ionicon"
-                        />
-                    </TouchableOpacity>
-                    <Text style={{
-                        fontSize: 20,
-                        color: 'white',
-                        alignSelf: 'center',
-                        backgroundColor: 'transparent'
-                    }}>Chi tiết báo cáo</Text>
-                    <View/>
-                </LinearGradient>
+
+                <HeaderCustom title={"Chi tiết báo cáo"} leftClick={() => this.props.navigation.goBack()}/>
                 <View style={{flex: 9}}>
 
                     <ScrollView style={{flex: 1, marginBottom: 4}}>
