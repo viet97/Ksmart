@@ -12,38 +12,38 @@ import {
     Picker, TouchableHighlight,
     Image
 } from 'react-native';
-import ModalDropdown from "react-native-modal-dropdown";
 import Toast from 'react-native-simple-toast';
 import Search from 'react-native-search-box';
-import ProgressBar from 'react-native-progress/Bar';
-import Icon from 'react-native-vector-icons/MaterialIcons'
-import Icon1 from 'react-native-vector-icons/Ionicons'
-import URlConfig from "../configs/url";
+
 import Icon2 from 'react-native-vector-icons/Entypo'
 import React from 'react';
-import Color from '../configs/color'
-import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
-import TabNavigator from 'react-native-tab-navigator';
-import {Dialog} from 'react-native-simple-dialogs';
 import {shadowProps} from "../configs/shadow";
+
+import {GiftedAvatar} from 'react-native-gifted-chat'
+import Utils from "../configs/ultils";
 
 let {height, width} = Dimensions.get('window');
 export default class ListNhanVienItem extends React.Component {
 
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
             height: 0
         }
     }
 
     getImage(url) {
-        console.log(url)
-        if (url.length === 0) {
+        if (!url || !Utils.checkURL(url)) {
             return (
-                <Image
-                    source={require('../images/bglogin.jpg')}
-                    style={{margin: 8, width: 60, height: 60, borderRadius: 30}}/>
+
+                <GiftedAvatar
+                    user={
+                        {
+                            _id: 1,
+                            name: this.props.data.tennhanvien
+                        }
+                    }
+                    avatarStyle={{margin: 8, width: 60, height: 60, borderRadius: 30}}/>
             );
         } else {
             return (

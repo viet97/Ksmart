@@ -117,8 +117,7 @@ export default class ChooseTypeTravel extends Component {
                                 color: 'white',
                                 textAlign: 'center',
                                 alignSelf: 'center',
-                                paddingBottom: 8,
-                                paddingRight: 8,
+
                                 fontSize: 16,
                                 backgroundColor: 'transparent',
 

@@ -25,6 +25,7 @@ import {Header} from 'react-navigation'
 import MapView from 'react-native-maps';
 import Communications from "react-native-communications";
 
+import {GiftedAvatar} from 'react-native-gifted-chat'
 const MIN_HEIGHT = Header.HEIGHT;
 const MAX_HEIGHT = 250;
 let {width, height} = Dimensions.get('window');
@@ -44,28 +45,30 @@ export default class DetailNhanVien extends React.Component {
                 longitudeDelta: 0.0421,
             }
         }
+        this.getImage.bind(this);
     }
 
     getImage(url) {
-        console.log(url);
-        if (url === undefined) {
-            console.log('1');
-            return;
-        } else {
-            if (url.length === 0)
-                return (
-                    <Image
-                        source={require('../images/bglogin.jpg')}
-                        indicator={ProgressBar.Pie}
-                        style={{alignSelf: 'center', width: 120, height: 120, borderRadius: 60}}/>)
-            else
-                return (
-                    <Image
-                        source={{uri: url}}
-                        indicator={ProgressBar.Pie}
-                        style={{alignSelf: 'center', width: 120, height: 120, borderRadius: 60}}/>
-                );
-        }
+        console.log(this.state.data);
+        if (!url || !ultils.checkURL(url))
+            return (
+
+                <GiftedAvatar
+                    user={
+                        {
+                            _id: 1,
+                            name: this.state.data.tennhanvien
+                        }
+                    }
+                    avatarStyle={{alignSelf: 'center', width: 100, height: 100, borderRadius: 50}}/>
+            )
+        else
+            return (
+                <Image
+                    source={{uri: url}}
+                    indicator={ProgressBar.Pie}
+                    style={{alignSelf: 'center', width: 100, height: 100, borderRadius: 50}}/>
+            );
     }
 
     isOnline(dangtructuyen) {
@@ -145,8 +148,7 @@ export default class DetailNhanVien extends React.Component {
                                       size={24}
                                       color="white" name="new-message"/>
                             </TouchableOpacity>
-                            <Image source={{uri: this.state.data.AnhDaiDien}}
-                                   style={{width: 60, height: 60, borderRadius: 30}}/>
+                            {this.getImage(this.state.data.AnhDaiDien)}
                             <Text style={styles.imageTitle}>
                                 {this.state.data.tennhanvien}
                             </Text>
@@ -259,6 +261,7 @@ export default class DetailNhanVien extends React.Component {
         fetch(URlConfig.getLinkDetailNhanVien(params.idNhanVien))
             .then((response) => (response.json()))
             .then((responseJson) => {
+                console.log(responseJson)
                 if (responseJson.status) {
                     this.setState(
                         {

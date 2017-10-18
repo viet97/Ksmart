@@ -44,4 +44,8 @@ export default class Utils {
         return moment(d).format(format);
     }
 
+    static checkURL(url) {
+        return (url.match(/\.(jpeg|jpg|gif|png)$/) != null);
+    }
+
 }
