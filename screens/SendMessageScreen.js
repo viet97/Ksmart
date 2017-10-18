@@ -30,6 +30,8 @@ import Modal from 'react-native-modalbox';
 import LinearGradient from "react-native-linear-gradient";
 import HeaderCustom from "../components/Header";
 
+import {ProgressDialog} from 'react-native-simple-dialogs';
+
 const timer = require('react-native-timer');
 
 let {height, width} = Dimensions.get('window')
@@ -48,7 +50,8 @@ export default class ModalSendMessage extends Component {
             title: '',
             IDNhanVien: '',
             receiver: '',
-            nameInput: ''
+            nameInput: '',
+            progressVisible: false
         }
         this.requestSearch.bind(this);
         this.loadAllSearch.bind(this);
@@ -241,15 +244,19 @@ export default class ModalSendMessage extends Component {
                         }}
                     />
                 </Modal>
-
+                <ProgressDialog
+                    visible={this.state.progressVisible}
+                    title=""
+                    message="Đang gửi"
+                />
             </View>
         )
     }
 
     sendMessage() {
-        if (this.state.IDNhanVien.length == 0) Toast.show('Vui lòng nhập người gửi')
+        if (this.state.IDNhanVien.length === 0) Toast.show('Vui lòng nhập người gửi')
         else {
-            if (this.state.text.length == 0) {
+            if (this.state.text.length === 0) {
                 Alert.alert(
                     'Nội dung tin nhắn không có gì',
                     'Bạn có chắc chắn muốn gửi ?',
@@ -265,17 +272,23 @@ export default class ModalSendMessage extends Component {
     }
 
     startSendMessage() {
+        this.setState({dialogVisible: true})
         const {params} = this.props.navigation.state
         fetch(URlConfig.getLinkSendMessage(this.state.IDNhanVien, this.state.title, this.state.text))
             .then((response) => (response.json()))
             .then((responseJson) => {
+
+                this.setState({dialogVisible: false})
                 if (responseJson.status) {
                     Toast.show('Gửi tin nhắn thành công');
                     if (params.data === undefined)
                         params.reload();
                     this.props.navigation.goBack()
                 }
-            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+            }).catch((e) => {
+            this.setState({dialogVisible: false});
+            Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại')
+        })
     }
 
     showDialog() {

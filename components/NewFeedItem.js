@@ -16,6 +16,7 @@ import React from 'react';
 import {shadowProps} from "../configs/shadow";
 import 'moment/locale/vi';
 import {colors} from "../configs/color";
+import Utils from "../configs/ultils";
 
 const timer = require('react-native-timer')
 let {width, height} = Dimensions.get('window');
@@ -29,25 +30,28 @@ export default class NewFeedItem extends React.Component {
         }
         this.item = this.props.data;
         console.log(this.item);
+        this.getImage.bind(this);
     }
 
 
     getImage(urlImage) {
 
-        if (urlImage === undefined || urlImage.length === 0) {
+        if (!urlImage || !Utils.checkURL(urlImage)) {
             return (
-
-                <Image
-                    source={require('../images/bglogin.jpg')}
-                    // indicator={ProgressBar.Pie}
-                    style={{margin: 8, width: 60, height: 60, borderRadius: 30}}/>
+                <GiftedAvatar
+                    user={
+                        {
+                            _id: 1,
+                            name: this.item.tennhanvien
+                        }
+                    }
+                    avatarStyle={{margin: 8, width: 60, height: 60, borderRadius: 30}}/>
             );
         } else {
             return (
                 <Image
                     style={{margin: 8, width: 60, height: 60, borderRadius: 30}}
                     source={{uri: urlImage}}
-                    // indicator={ProgressBar.Pie}
                 />
             );
         }
@@ -91,7 +95,7 @@ export default class NewFeedItem extends React.Component {
                 }}>
                     <Text style={{
                         textAlign: 'center',
-                        fontSize: 12
+                        fontSize: 12, backgroundColor: 'transparent'
                     }}>{this.getTime(this.item.thoigian_hienthi)}</Text>
                 </View>
             </View>
@@ -101,7 +105,7 @@ export default class NewFeedItem extends React.Component {
     getTime(string) {
         let arr = string.split("(");
         return `${arr[0]}
-        (${arr[1]}`;
+(${arr[1]}`;
     }
 }
 
