@@ -31,23 +31,23 @@ export default class HeaderCustom extends React.Component {
                                 style={{
                                     alignSelf: 'center',
                                     backgroundColor: 'transparent',
-                                    padding: 16
+                                    paddingTop: 4,
+                                    paddingHorizontal: 8,
                                 }}
                                 size={35}
                                 color={this.props.iconColor} name={this.props.iconName} type={this.props.iconType}
                             />
                         </TouchableOpacity>
                 }
-
                 <Animatable.Text animation="fadeInDown"
                                  style={{
                                      backgroundColor: 'transparent',
-                                     fontSize: 20,
+                                     fontSize: 18,
                                      alignSelf: 'center',
                                      color: 'white'
                                  }}>{this.props.title}</Animatable.Text>
 
-                {this.props.rightChildren ? this.props.rightChildren : <View/>}
+                {this.props.rightChildren ? this.props.rightChildren : <View style={{marginRight: 16}}/>}
             </LinearGradient>
         )
     }
@@ -69,7 +69,6 @@ HeaderCustom.defaultProps = {
 const styles = StyleSheet.create({
     titleStyle: {
         paddingTop: Platform.OS === 'ios' ? 16 : 0,
-        paddingBottom: Platform.OS === 'ios' ? 8 : 0,
         paddingVertical: 16,
         elevation: 15,
         justifyContent: 'space-between',

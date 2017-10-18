@@ -6,7 +6,7 @@ import React from 'react';
 import {
     Text,
     View, Platform, Image, StyleSheet,
-    TouchableOpacity, TextInput, Dimensions
+    TouchableOpacity, TextInput, Dimensions, ScrollView
 } from 'react-native';
 import Toast from 'react-native-root-toast';
 import URlConfig from "../configs/url";
@@ -357,7 +357,7 @@ const styles = StyleSheet.create({
     textInput: {
         color: '#2c3e50',
         fontSize: 16,
-        height: 48,
+        height: 38,
         marginLeft: 8,
         paddingHorizontal: 8,
         width: width - width * 0.1 - 80,
