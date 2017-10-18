@@ -66,6 +66,8 @@ export default class ConversationScreen extends React.Component {
         fetch(url)
             .then((response) => (response.json()))
             .then((responseJson) => {
+                console.log(responseJson);
+                console.log(url);
                 if (responseJson.status) {
                     if (responseJson.endlist) {
                         ALL_LOADED = true
@@ -101,10 +103,11 @@ export default class ConversationScreen extends React.Component {
                     this.setState({convestationList: convestationList});
 
                 } else {
-                    Toast.show('Có lỗi xảy ra, vui lòng liên hệ quản trị viên!')
+                    Toast.show('Có lỗi xảy ra, vui lòng liên hệ quản trị viên!');
+
                 }
             }).catch((e) => {
-            Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại')
+            Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại');
         })
 
     }

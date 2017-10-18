@@ -104,14 +104,14 @@ export default class DetailMessageScreenV2 extends React.Component {
         this.setState((previousState) => ({
             messages: GiftedChat.append(previousState.messages, messages),
         }));
-        console.log('truoc gui', this.state.id_nv);
         fetch(URlConfig.getLinkSendMessage(this.state.id_nv, '', messages[0].text))
             .then((response) => (response.json()))
             .then((responseJson) => {
                 if (responseJson.status) {
-                    console.log(URlConfig.getLinkSendMessage(this.state.id_nv, '', messages[0].text));
+                    console.log(responseJson);
+
                     this.setState({
-                        bottomMessage: "Đã gửi lúc " + Utils.getDate(params.data[0].NgayGui),
+                        bottomMessage: "Đã gửi lúc " + Utils.getDate(responseJson.tinnhan.NgayGui),
                         iconName: ok
                     });
                     console.log('cc11', responseJson);

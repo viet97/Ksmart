@@ -79,7 +79,7 @@ export default class DetailCustomer extends React.Component {
                     backgroundColor: '#ECF0F1',
                     width: width * 2 / 3 - 4,
                     marginRight: 4,
-                    height: 30,
+                    height: 40,
                     padding: 4,
                     flexDirection: 'row'
                 }}>

@@ -246,7 +246,7 @@ export default class ChartScreen extends React.Component {
                 )
             else
                 return (
-                    <View>
+                    <View style={{padding: 16}}>
                         <Bar data={this.state.data} options={options} accessorKey={this.state.keyChart}/>
                         {this.getTitleChart()}
                     </View>

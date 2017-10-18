@@ -29,6 +29,7 @@ export default class DetailBaoCaoDoanhThuSanLuong extends React.Component {
         this.state = {
             data: params.data,
         }
+        console.log(params.data)
     }
 
     getElement(title, content) {
@@ -40,10 +41,10 @@ export default class DetailBaoCaoDoanhThuSanLuong extends React.Component {
                     width: width * 2 / 3 - 4,
                     marginRight: 4,
                     padding: 4,
-                    height: 40,
+                    height: 48,
                     flexDirection: 'row'
                 }}>
-                    <Text style={{alignSelf: 'center'}}>{content} </Text>
+                    <Text style={{alignSelf: 'center'}}>{content}</Text>
                 </View>
             </View>
         )
@@ -63,7 +64,7 @@ export default class DetailBaoCaoDoanhThuSanLuong extends React.Component {
                         {this.getElement('Số đơn hàng', this.state.data.sodonhang)}
                         {this.getElement('Tổng', this.state.data.tongtienchuachietkhau)}
                         {this.getElement('Chiếu khấu', this.state.data.tongtienchietkhau)}
-                        {this.getElement('Thành tiền', this.state.data.tongtienchietkhau)}
+                        {this.getElement('Thành tiền', this.state.data.tongtien)}
                         {this.getElement('Đã thanh toán', this.state.data.tongtiendathanhtoan)}
                     </ScrollView>
                 </View>
