@@ -69,7 +69,7 @@ HeaderCustom.defaultProps = {
 const styles = StyleSheet.create({
     titleStyle: {
         paddingTop: Platform.OS === 'ios' ? 16 : 0,
-        paddingBottom: Platform.OS === 'ios' ? 16 : 0,
+        paddingBottom: Platform.OS === 'ios' ? 8 : 0,
         paddingVertical: 16,
         elevation: 15,
         justifyContent: 'space-between',
