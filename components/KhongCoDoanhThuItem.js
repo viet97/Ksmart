@@ -16,18 +16,7 @@ import {
 import URlConfig from "../configs/url";
 import Color from '../configs/color'
 import Icon3 from 'react-native-vector-icons/FontAwesome'
-import Icon1 from 'react-native-vector-icons/Ionicons'
-import Icon from 'react-native-vector-icons/MaterialIcons'
-import Icon2 from 'react-native-vector-icons/Entypo'
-import Image from 'react-native-image-progress';
-import ProgressBar from 'react-native-progress/Bar';
-import DialogManager, {ScaleAnimation, DialogContent} from 'react-native-dialog-component';
-import {DialogComponent, SlideAnimation} from 'react-native-dialog-component';
-import Dialog from './DialogOrder'
-import orderListData from '../dbcontext/orderListData'
-import AtoZListView from 'react-native-atoz-listview';
-import Search from 'react-native-search-box';
-import Toast from 'react-native-simple-toast';
+
 import ultils from "../configs/ultils";
 import Communications from 'react-native-communications';
 import {shadowProps} from "../configs/shadow";
@@ -42,6 +31,16 @@ export default class KhongCoDoanhThuItem extends React.Component {
         }
     }
 
+    getLastOrderTime(date) {
+        if (date !== "1900-01-01T00:00:00")
+            return (
+                <Text style={{
+                    marginLeft: 8,
+                    backgroundColor: 'transparent'
+                }}>{ultils.getDate(date)}</Text>
+            )
+        return null
+    }
     render() {
         let item = this.props.data
         return (
@@ -100,10 +99,7 @@ export default class KhongCoDoanhThuItem extends React.Component {
                     marginBottom: 4
                 }}>
                     <Text style={{backgroundColor: 'transparent'}}>Đơn hàng cuối lúc:</Text>
-                    <Text style={{
-                        marginLeft: 8,
-                        backgroundColor: 'transparent'
-                    }}>{ultils.getDate(item.donhangcuoi_thoigian)}</Text>
+                    {this.getLastOrderTime(item.donhangcuoi_thoigian)}
                 </View>
                 <View style={{
 

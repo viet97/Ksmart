@@ -35,8 +35,8 @@ export default class SplashScreen extends React.Component {
                            style={{
                                alignSelf: 'center',
                                position: 'absolute',
-                               width: Dimensions.get('window').width / 5,
-                               height: Dimensions.get('window').width / 5
+                               width: Dimensions.get('window').width / 3,
+                               height: Dimensions.get('window').width / 3
                            }}/>
                 </Image>
 

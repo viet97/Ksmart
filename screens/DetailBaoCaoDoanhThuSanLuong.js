@@ -16,6 +16,7 @@ import {PagerTabIndicator, IndicatorViewPager, PagerTitleIndicator, PagerDotIndi
 import URlConfig from "../configs/url";
 import LinearGradient from "react-native-linear-gradient";
 import HeaderCustom from "../components/Header";
+import ultils from "../configs/ultils";
 
 let {width, height} = Dimensions.get('window')
 export default class DetailBaoCaoDoanhThuSanLuong extends React.Component {
@@ -62,10 +63,10 @@ export default class DetailBaoCaoDoanhThuSanLuong extends React.Component {
                         {this.getElement('Tên khách hàng', this.state.data.tenkhachhang)}
                         {this.getElement('Địa chỉ', this.state.data.diachikhachhang)}
                         {this.getElement('Số đơn hàng', this.state.data.sodonhang)}
-                        {this.getElement('Tổng', this.state.data.tongtienchuachietkhau)}
-                        {this.getElement('Chiếu khấu', this.state.data.tongtienchietkhau)}
-                        {this.getElement('Thành tiền', this.state.data.tongtien)}
-                        {this.getElement('Đã thanh toán', this.state.data.tongtiendathanhtoan)}
+                        {this.getElement('Tổng giá trị đơn hàng', ultils.getMoney(this.state.data.tongtienchuachietkhau))}
+                        {this.getElement('Tổng tiền chiếu khấu', ultils.getMoney(this.state.data.tongtienchietkhau))}
+                        {this.getElement('Thành tiền', ultils.getMoney(this.state.data.tongtien))}
+                        {this.getElement('Đã thanh toán', ultils.getMoney(this.state.data.tongtiendathanhtoan))}
                     </ScrollView>
                 </View>
 
