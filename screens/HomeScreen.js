@@ -9,6 +9,7 @@ import Drawer from 'react-native-drawer';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import * as Animatable from 'react-native-animatable';
 import {
+    BackAndroid,
     AppRegistry,
     Text,
     View, BackHandler,
@@ -376,7 +377,6 @@ const styles = StyleSheet.create({
 BackHandler.addEventListener('hardwareBackPress', function () {
     backcount++
     console.log(isLoginScreen)
-
     if (backcount < 2) {
         if (!isLoginScreen)
             func()
@@ -384,9 +384,27 @@ BackHandler.addEventListener('hardwareBackPress', function () {
         return true
     }
     else {
-        isLoginScreen = true
-        backcount = 0
-        return false
+        return new Promise((resolve, reject) => {
+            resolve();
+            Alert.alert(
+                'Thoát ứng dụng',
+                'Bạn có chắc chắn Thoát ứng dụng ?',
+                [
+                    {text: 'Hủy'},
+                    {
+                        text: 'Xác nhận', onPress: () => {
+
+                        isLoginScreen = true
+                        backcount = 0
+                        BackAndroid.exitApp()
+                    }
+                    }
+                ],
+                {cancelable: false}
+            )
+
+        });
+
     }
 
 
