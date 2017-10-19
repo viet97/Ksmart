@@ -40,7 +40,7 @@ export default class DetailOrderScreen extends React.Component {
                 if (responseJson.status) {
                     this.setState({data: responseJson.data})
                 }
-            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e))
+            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
 
     }
 

@@ -180,7 +180,7 @@ export default class ChooseTypeTravel extends Component {
                     this.setState({data: responseJson.danhsach})
                     console.log(responseJson.danhsach)
                 }
-            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e))
+            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
 
     }
 

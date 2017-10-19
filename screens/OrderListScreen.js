@@ -85,6 +85,7 @@ export default class OrderListScreen extends Component {
         Page = 1
         ALL_LOADED = false
         this.setState({isEndList: false, dataRender: null})
+        console.log(URlConfig.getLinkOrderList(params.dateFrom, params.dateTo, Page, SEARCH_STRING, params.tentrangthai, params.status))
         fetch(URlConfig.getLinkOrderList(params.dateFrom, params.dateTo, Page, SEARCH_STRING, params.tentrangthai, params.status))
             .then((response) => response.json())
             .then((responseJson) => {
@@ -138,7 +139,7 @@ export default class OrderListScreen extends Component {
                             this.forceUpdate()
                         }
                     })
-                    .catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e));
+                    .catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'));
             }
         }
     }

@@ -86,7 +86,7 @@ export default class DetailNhanVien extends React.Component {
         let data = this.state.data;
         let lastTime = ultils.getDate(data.thoigiandangnhapcuoicung);
         let sdt = '';
-        if (data.DienThoai !== null) sdt = data.dienthoai;
+        if (data.DienThoai !== null) sdt = data.DienThoai;
         console.log('tao do', this.state.region);
         return (
             <View style={{flex: 1}}>
@@ -263,6 +263,7 @@ export default class DetailNhanVien extends React.Component {
             .then((responseJson) => {
                 console.log(responseJson)
                 if (responseJson.status) {
+                    console.log(responseJson.data)
                     this.setState(
                         {
                             data: responseJson.data,

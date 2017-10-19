@@ -79,7 +79,7 @@ export default class NewFeedScreen extends React.Component {
                     ALL_LOADED = true;
                     this.forceUpdate()
                 }
-            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e))
+            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
     }
 
     loadMoreDataFromSv() {
@@ -114,7 +114,7 @@ export default class NewFeedScreen extends React.Component {
                             }
                         }
                     )
-                    .catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e))
+                    .catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
             }
         }
     }

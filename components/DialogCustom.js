@@ -107,7 +107,7 @@ export default class DialogCustom extends React.Component {
                 }
 
             })
-            .catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e))
+            .catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
 
     }
 

@@ -160,6 +160,7 @@ export default class ChooseTypeOrder extends Component {
     }
     getDataFromSv() {
         this.setState({data: null})
+        console.log(URlConfig.getLinkSoDonHang(this.state.dateFrom, this.state.dateTo))
         fetch(URlConfig.getLinkSoDonHang(this.state.dateFrom, this.state.dateTo))
             .then((response) => (response.json()))
             .then((responseJson) => {
@@ -172,7 +173,7 @@ export default class ChooseTypeOrder extends Component {
                     arr[3].tongso = ultils.getMoney(arr[3].tongso)
                     this.setState({data: arr})
                 }
-            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e))
 
     }
 

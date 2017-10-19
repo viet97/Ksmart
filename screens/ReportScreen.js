@@ -61,6 +61,7 @@ export default class ReportScreen extends Component {
             waiting: false,
             dataRender: null,
             dataFull: [],
+            isSearchExist: false
         }
     }
 
@@ -69,7 +70,22 @@ export default class ReportScreen extends Component {
     }
 
     componentDidMount() {
+        const {params} = this.props.navigation.state
         SEARCH_STRING = ''
+        switch (params.status) {
+            case 0:
+                this.setState({isSearchExist: true})
+                break;
+            case 1:
+                this.setState({isSearchExist: false})
+                break;
+            case 2:
+                this.setState({isSearchExist: false})
+                break;
+            case 3:
+                this.setState({isSearchExist: true})
+                break;
+        }
         this.getReportListFromServer()
     }
 
@@ -303,15 +319,7 @@ export default class ReportScreen extends Component {
                     leftClick={() => this.props.navigation.goBack()}
                 />
                 <View>
-                    <View style={{width: width,marginTop:16,marginBottom:16}}>
-                        <Search
-                            ref="search_box"
-                            placeholder="Tìm kiếm"
-                            cancelTitle="Huỷ bỏ"
-                            onChangeText={(text) => this.onChangeText(text)}
-                            onCancel={() => this.onCancel()}
-                        />
-                    </View>
+                    {this.renderSearch()}
 
                 </View>
                 {this.flatListorIndicator()}
@@ -320,6 +328,23 @@ export default class ReportScreen extends Component {
         )
     }
 
+    renderSearch() {
+        if (this.state.isSearchExist)
+            return (
+                <View style={{width: width, marginTop: 16, marginBottom: 16}}>
+                    <Search
+                        visible={true}
+                        ref="search_box"
+                        placeholder="Tìm kiếm"
+                        cancelTitle="Huỷ bỏ"
+                        onChangeText={(text) => this.onChangeText(text)}
+                        onCancel={() => this.onCancel()}
+                    />
+                </View>
+
+            );
+        else return null
+    }
     ondateChange(from, to) {
         this.setState({dataRender: null})
         var dFrom = String(from);
