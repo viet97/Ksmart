@@ -24,6 +24,7 @@ import CustomerItem from "../components/CustomerItem";
 import PTRView from 'react-native-pull-to-refresh'
 import LinearGradient from "react-native-linear-gradient";
 import HeaderCustom from "../components/Header";
+import {setCustomer} from "../configs/customer";
 
 const timer = require('react-native-timer');
 
@@ -161,6 +162,23 @@ export default class ChooseCustomerScreen extends Component {
 
     }
 
+    componentWillMount() {
+        //lay mau cua khach hang
+        let arrMaMau = []
+        fetch(URlConfig.getLinkSoKhachHang())
+            .then((response) => (response.json()))
+            .then((responseJson) => {
+                if (responseJson.status) {
+                    for (let i in responseJson.danhsach) {
+                        if (responseJson.danhsach[i].MaMau !== null) {
+                            arrMaMau[responseJson.danhsach[i].ID_LoaiKhachHang] = '#' + responseJson.danhsach[i].MaMau
+                        }
+                        setCustomer(responseJson.danhsach[i].ID_LoaiKhachHang, responseJson.danhsach[i].TenLoaiKhachHang, responseJson.danhsach[i].MaMau);
+                    }
+                }
+            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+
+    }
     onChangeText(text) {
         this.setState({isSearching: true})
         console.log("onChangeText")
@@ -180,7 +198,7 @@ export default class ChooseCustomerScreen extends Component {
         return (
             <View style={{flex: 1,backgroundColor:'white'}}>
 
-                <HeaderCustom title={"Chọn khách hàng"} leftClick={() => this.props.navigation.goBack()}/>
+                <HeaderCustom title={"Chọn khách hàng"} leftClick={() => this.props.backClick()}/>
 
                 <View style={{
                     marginLeft: 8,

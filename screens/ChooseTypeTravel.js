@@ -85,8 +85,20 @@ export default class ChooseTypeTravel extends Component {
                                 goToDetail={() => navigate('Travel', {
                                     status: item.trangthai,
                                     dateFrom: this.state.dateFrom,
-                                    dateTo: this.state.dateTo
-                                })}
+                                        dateTo: this.state.dateTo,
+                                        reload: () => {
+                                            fetch(URlConfig.getLinkSoKeHoach(this.state.dateFrom, this.state.dateTo))
+                                                .then((response) => (response.json()))
+                                                .then((responseJson) => {
+                                                    if (responseJson.status) {
+                                                        responseJson.danhsach[3].tenloai = 'Kế hoạch sắp tới (5 phút)'
+                                                        this.setState({data: responseJson.danhsach})
+
+                                                    }
+                                                }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+                                        }
+                                    }
+                                )}
                             />
                         }
                     />
@@ -105,7 +117,31 @@ export default class ChooseTypeTravel extends Component {
                     leftClick={() => this.props.navigation.goBack()}
                     rightChildren={
                     <TouchableOpacity
-                        onPress={() => navigate('CustomerPlant')}
+                        onPress={() => navigate('CustomerPlant',
+                            {
+                                setTravelNumber: (date, data) => {
+                                    console.log(data)
+                                    let currentDate = new Date();
+                                    let currentDay;
+                                    let moment = require('moment');
+                                    currentDate = moment(currentDate, 'DD-MM-YYYY HH:mm:ss').toDate()
+                                    console.log(currentDay, date, '12313123123')
+
+
+                                    for (let item of data) {
+                                        let dateInput = moment(date + ' ' + item.giovaodukien, 'DD-MM-YYYY HH:mm:ss').toDate();
+                                        if ((dateInput.getTime() - currentDate.getTime()) / 1000 < 86400) {
+                                            this.state.data[0].tongso += 1;
+                                            this.state.data[1].tongso += 1;
+                                        }
+                                        if ((dateInput.getTime() - currentDate.getTime()) / 1000 < 300) {
+                                            this.state.data[3].tongso += 1
+                                        }
+                                    }
+                                    this.forceUpdate();
+                                }
+                            }
+                        )}
                         style={{
                             justifyContent: 'center',
                             alignSelf: 'center',
@@ -177,8 +213,9 @@ export default class ChooseTypeTravel extends Component {
             .then((response) => (response.json()))
             .then((responseJson) => {
                 if (responseJson.status) {
+                    responseJson.danhsach[3].tenloai = 'Kế hoạch sắp tới (5 phút)'
                     this.setState({data: responseJson.danhsach})
-                    console.log(responseJson.danhsach)
+
                 }
             }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
 

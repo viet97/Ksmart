@@ -97,13 +97,10 @@ export default class ConversationScreen extends React.Component {
                             item['lastUser'] = lastUser;
 
                         }
-                        LAST_ID = LAST_ID + 3
+                        LAST_ID = responseJson.lastid
                         convestationList.push(item);
                     }
                     this.setState({convestationList: convestationList});
-
-                } else {
-                    Toast.show('Có lỗi xảy ra, vui lòng liên hệ quản trị viên!');
 
                 }
             }).catch((e) => {
@@ -146,7 +143,7 @@ export default class ConversationScreen extends React.Component {
                             item['lastUser'] = lastUser;
 
                         }
-                        LAST_ID = LAST_ID + 3
+                        LAST_ID = responseJson.lastid
                         convestationList.push(item);
                     }
                     this.setState({convestationList: convestationList});

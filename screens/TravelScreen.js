@@ -241,12 +241,15 @@ export default class TravelScreen extends React.Component {
     }
 
     render() {
-
+        const {params} = this.props.navigation.state;
         return (
             <View style={{flex: 1,backgroundColor:'white'}}>
                 <HeaderCustom
                     title={"Kế hoạch viếng thăm"}
-                    leftClick={() => this.props.navigation.goBack()}
+                    leftClick={() => {
+                        params.reload()
+                        this.props.navigation.goBack()
+                    }}
                     rightChildren={
                         <TouchableOpacity
                             onPress={() => this.props.goToCustomerPlant()}

@@ -182,7 +182,7 @@ export default class DialogCustom extends React.Component {
                             this.setState({textSearch})
                         }}
                         value={this.state.textSearch}
-                        placeholder={'Nhap ten nhan vien'}
+                        placeholder={'Nhập tên nhân viên'}
                     />
                     <ModalDropdown
                         ref="nhanvien"

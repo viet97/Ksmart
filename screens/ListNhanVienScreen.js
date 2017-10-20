@@ -162,6 +162,7 @@ export default class ListNhanVienScreen extends React.Component {
     }
 
     loadMoreDataFromSv() {
+        console.log('LOAD MORE!!!!!!!!')
         const {params} = this.props.navigation.state
         if (!this.state.onEndReach) {
             this.setState({onEndReach: true})

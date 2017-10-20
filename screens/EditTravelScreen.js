@@ -175,6 +175,7 @@ export default class EditTravelScreen extends React.Component {
                                         thoigiandukien: this.state.dateCome,
                                         thoigiancheckoutdukien: this.state.dateOut
                                     };
+                                    console.log(URlConfig.getLinkEditTravel(obj))
                                     fetch(URlConfig.getLinkEditTravel(obj))
                                         .then((response) => (response.json()))
                                         .then((responseJson) => {
@@ -267,7 +268,7 @@ export default class EditTravelScreen extends React.Component {
                             )}
                         />
                     </View>
-                    <Text style={{marginTop: 60}}>Tên cửa hàng</Text>
+                    <Text style={{marginTop: 60}}>Tên khách hàng</Text>
                     <TouchableOpacity style={{
                         width: Platform.OS === 'ios' ? Dimensions.get('window').width : Dimensions.get('window').width - 16,
                         height: 40,

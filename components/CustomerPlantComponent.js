@@ -56,7 +56,7 @@ export default class CustomerPlantComponent extends Component {
                     flexDirection: 'row',
                     marginLeft: 8,
                     marginTop: 8,
-                    marginRight: 8,
+                    marginRight: 12,
                     marginBottom: 4,
 
                 }}>
@@ -102,7 +102,9 @@ export default class CustomerPlantComponent extends Component {
                     marginRight: 8,
                     marginBottom: 4
                 }}>
-                    <Text style={{alignSelf: 'center'}}>Thời gian vào điểm dự kiến: </Text>
+                    <View style={{width: width / 2 - 12, justifyContent: 'center'}}>
+                        <Text style={{width: width / 2 - 12}}>Thời gian vào điểm dự kiến: </Text>
+                    </View>
                     <DatePicker
                         date={this.state.timeCome}
                         mode="time"
@@ -120,11 +122,18 @@ export default class CustomerPlantComponent extends Component {
                             },
                         }}
                         onDateChange={(time) => {
-                            console.log(time > moment().format("HH:mm"), time, moment().format("HH:mm"))
-                            if (time > moment().format("HH:mm"))
+                            let currentDate = new Date();
+                            let moment = require('moment');
+                            currentDate = moment(currentDate, 'DD-MM-YYYY HH:mm:ss').toDate()
+                            let currentDay = currentDate.getDate() + '-' + (currentDate.getMonth() + 1) + '-' + currentDate.getFullYear()
+                            if (this.props.date === currentDay) {
+                                if (time > moment().format("HH:mm"))
+                                    this.onDateComeChange(time);
+                                else
+                                    this.props.showToast('Thời gian nhỏ hơn hiện tại', Toast.LONG)
+                            } else {
                                 this.onDateComeChange(time);
-                            else
-                                this.props.showToast('Thời gian nhỏ hơn hiện tại', Toast.LONG)
+                            }
                         }}
                     />
                 </View>
@@ -136,7 +145,9 @@ export default class CustomerPlantComponent extends Component {
                     marginRight: 8,
                     marginBottom: 4
                 }}>
-                    <Text style={{alignSelf: 'center'}}>Thời gian ra điểm dự kiến: </Text>
+                    <View style={{width: width / 2 - 12, justifyContent: 'center'}}>
+                        <Text style={{width: width / 2 - 12}}>Thời gian ra điểm dự kiến: </Text>
+                    </View>
                     <DatePicker
                         date={this.state.timeOut}
                         mode="time"
@@ -170,7 +181,7 @@ export default class CustomerPlantComponent extends Component {
                     marginBottom: 4
                 }}>
                     <Icon size={24} color="white" name="location-pin"/>
-                    <Text style={{marginLeft: 8}}>{item.DiaChi}</Text>
+                    <Text style={{marginLeft: 8, width: width - 50}}>{item.DiaChi}</Text>
                 </View>
                 <View style={{
                     flexDirection: 'row',

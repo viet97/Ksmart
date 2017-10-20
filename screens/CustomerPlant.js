@@ -424,6 +424,7 @@ export default class CustomerPlant extends Component {
     }
 
     sendPlantToServer() {
+        const {params} = this.props.navigation.state
         let obj = {
             ngaylapkehoach: this.state.datePlant,
             dulieulapkehoach: this.state.dataChoose,
@@ -439,15 +440,17 @@ export default class CustomerPlant extends Component {
                     this.setState({dialogVisible: false});
                     console.log(responseJson)
                     if (responseJson.status) {
-                        if (responseJson.listkehoachmoi.length !== 0)
+                        if (responseJson.listkehoachmoi.length !== 0) {
                             Toast.show('Lập kế hoạch thành công')
+                            params.setTravelNumber(this.state.datePlant, this.state.dataChoose);
+                        }
                         else
                             Toast.show('Kế hoạch đã bị trùng , vui lòng thử lại')
                         this.props.navigation.goBack();
                     }
                 }).catch((e) => {
                 this.setState({dialogVisible: false});
-                Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại')
+                Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e)
             })
     }
 
