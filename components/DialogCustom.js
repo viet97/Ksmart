@@ -46,6 +46,7 @@ export default class DialogCustom extends React.Component {
 
 
     componentWillMount() {
+        SEARCH_STRING = ''
         fetch(URlConfig.getLinkNhomNhanVien())
             .then((response) => (response.json()))
             .then((responseJson) => {
