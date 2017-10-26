@@ -281,7 +281,7 @@ export default class ModalSendMessage extends Component {
                 this.setState({dialogVisible: false})
                 if (responseJson.status) {
                     Toast.show('Gửi tin nhắn thành công');
-                    if (params.data === undefined)
+                    if (!params.data)
                         params.reload();
                     this.props.navigation.goBack()
                 }

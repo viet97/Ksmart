@@ -68,6 +68,9 @@ export default class DetailMessageScreenV2 extends React.Component {
         }
         if (listMsg[0].Loai === quanLyToNhanVien) {
             bottomMessage = "Đã gửi lúc " + Utils.getDate(listMsg[0].NgayGui)
+            if (listMsg[0].NgayXem !== '1900-01-01T00:00:00') {
+                bottomMessage = "Đã xem lúc " + Utils.getDate(listMsg[0].NgayXem);
+            }
         } else {
             bottomMessage = "Đã nhận lúc " + Utils.getDate(listMsg[0].NgayGui)
         }

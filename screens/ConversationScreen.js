@@ -160,9 +160,9 @@ export default class ConversationScreen extends React.Component {
     }
 
     refechScreen() {
-        LAST_ID = 0
+        LAST_ID = 0;
         ALL_LOADED = false;
-        const {navigate} = this.props.navigation
+        const {navigate} = this.props.navigation;
         let url = URlConfig.getLinkConvestation(LAST_ID);
         console.log('url', url);
         fetch(url)

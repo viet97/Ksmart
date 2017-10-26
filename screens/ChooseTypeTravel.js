@@ -102,9 +102,7 @@ export default class ChooseTypeTravel extends Component {
                             />
                         }
                     />
-
                 </View>
-
             </View>)
     }
 
