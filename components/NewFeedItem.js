@@ -35,25 +35,26 @@ export default class NewFeedItem extends React.Component {
 
 
     getImage(urlImage) {
-
-        if (!urlImage || !Utils.checkURL(urlImage)) {
-            return (
-                <GiftedAvatar
-                    user={
-                        {
-                            _id: 1,
-                            name: this.item.tennhanvien
+        if (urlImage.length !== 0) {
+            if (!urlImage || !Utils.checkURL(urlImage)) {
+                return (
+                    <GiftedAvatar
+                        user={
+                            {
+                                _id: 1,
+                                name: this.item.tennhanvien
+                            }
                         }
-                    }
-                    avatarStyle={{margin: 8, width: 60, height: 60, borderRadius: 30}}/>
-            );
-        } else {
-            return (
-                <Image
-                    style={{margin: 8, width: 60, height: 60, borderRadius: 30}}
-                    source={{uri: urlImage}}
-                />
-            );
+                        avatarStyle={{margin: 8, width: 60, height: 60, borderRadius: 30}}/>
+                );
+            } else {
+                return (
+                    <Image
+                        style={{margin: 8, width: 60, height: 60, borderRadius: 30}}
+                        source={{uri: urlImage}}
+                    />
+                );
+            }
         }
     }
 

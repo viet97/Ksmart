@@ -51,24 +51,25 @@ export default class DetailNhanVien extends React.Component {
     getImage(url) {
         console.log(this.state.data);
         if (!url || !ultils.checkURL(url))
-            return (
+            if (url.length !== 0)
+                return (
 
-                <GiftedAvatar
-                    user={
-                        {
-                            _id: 1,
-                            name: this.state.data.tennhanvien
+                    <GiftedAvatar
+                        user={
+                            {
+                                _id: 1,
+                                name: this.state.data.tennhanvien
+                            }
                         }
-                    }
-                    avatarStyle={{alignSelf: 'center', width: 100, height: 100, borderRadius: 50}}/>
-            )
-        else
-            return (
-                <Image
-                    source={{uri: url}}
-                    indicator={ProgressBar.Pie}
-                    style={{alignSelf: 'center', width: 100, height: 100, borderRadius: 50}}/>
-            );
+                        avatarStyle={{alignSelf: 'center', width: 100, height: 100, borderRadius: 50}}/>
+                )
+            else
+                return (
+                    <Image
+                        source={{uri: url}}
+                        indicator={ProgressBar.Pie}
+                        style={{alignSelf: 'center', width: 100, height: 100, borderRadius: 50}}/>
+                );
     }
 
     isOnline(dangtructuyen) {

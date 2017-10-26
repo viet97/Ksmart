@@ -16,6 +16,7 @@ export default class AboutUsScreen extends React.Component {
     static navigationOptions = {
         header: null
     }
+
     constructor(props) {
         super(props);
     }
@@ -24,6 +25,7 @@ export default class AboutUsScreen extends React.Component {
         const phonenumber = '0243.565.2626';
         const hotline = '0902.295.486';
         const email = 'phanmem@lachongmedia.vn';
+
         return (
             <View style={{flexDirection: 'column', flex: 1}}>
 
@@ -33,7 +35,7 @@ export default class AboutUsScreen extends React.Component {
                            style={{width: 250, height: 100, alignSelf: 'center'}}
                            resizeMode='contain'/>
                     <Text>
-                        {'Công ty cổ phần giải pháp công nghệ Lạc Hồng \nVPGD: Tầng 2,Toà nhà Ngôi Sao, B15 Khu ĐTM Đại Kim, đường Nguyễn Cảnh Dị, phường Đại Kim, quận Hoàng Mai, Hà Nội.'}
+                        {'Công ty cổ phần giải pháp công nghệ Lạc Hồng \nĐịa chỉ: Tầng 2,Toà nhà Ngôi Sao, B15 Khu ĐTM Đại Kim, đường Nguyễn Cảnh Dị, phường Đại Kim, quận Hoàng Mai, Hà Nội.'}
                     </Text>
                     <View style={{flexDirection: 'row', backgroundColor: 'transparent'}}>
                         <Text>Điện thoại: </Text>
@@ -64,8 +66,13 @@ export default class AboutUsScreen extends React.Component {
                             <Text style={{color: 'blue'}}>{email}</Text>
                         </TouchableOpacity>
                     </View>
-
+                    <View style={{position: 'absolute', bottom: 0, left: 0, right: 0}}>
+                        <Text style={{alignSelf: 'center', color: 'blue'}}>
+                            Phiên bản 1.0.5
+                        </Text>
+                    </View>
                 </View>
+
             </View>
         );
     }

@@ -190,19 +190,26 @@ export default class LoginScreen extends React.Component {
                         bottom: 8,
                         left: 0,
                         right: 0,
-                        flexDirection: 'row',
+                        flexDirection: 'column',
                         justifyContent: 'center'
                     }}>
-                        <Text style={{
-                            color: 'gray', fontFamily: 'Roboto-Thin'
-                        }}>Copyright © <Text style={{}} onPress={() => {
-                            Communications.web(website)
-                        }}>Ksmart.vn</Text>. Hotline: </Text>
-                        <Text style={{
-                            color: 'gray', fontFamily: 'Roboto-Thin'
-                        }} onPress={() => {
-                            Communications.phonecall(hotline, true)
-                        }}>{hotline}</Text></View>
+                        <Text style={{alignSelf: 'center'}}>
+                            Phiên bản 1.0.5
+                        </Text>
+
+                        <View style={{justifyContent: 'center', flexDirection: 'row',}}>
+                            <Text style={{
+                                color: 'gray', fontFamily: 'Roboto-Thin'
+                            }}>Copyright © <Text style={{}} onPress={() => {
+                                Communications.web(website)
+                            }}>Ksmart.vn</Text>. Hotline: </Text>
+                            <Text style={{
+                                color: 'gray', fontFamily: 'Roboto-Thin'
+                            }} onPress={() => {
+                                Communications.phonecall(hotline, true)
+                            }}>{hotline}</Text>
+                        </View>
+                    </View>
                     <ProgressDialog
                         visible={this.state.progressVisible}
                         title=""

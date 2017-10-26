@@ -8,6 +8,7 @@ import {
     Text, Image,
     View, TabBarIOS, TouchableHighlight, Platform,TouchableOpacity
 } from 'react-native';
+
 import Toast from 'react-native-simple-toast'
 import Icon from 'react-native-vector-icons/Entypo';
 import Icon1 from 'react-native-vector-icons/Ionicons'
@@ -27,6 +28,7 @@ export default class MapListScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            address: '',
             region: default_location,
             markers: [],
             myRegion:default_location

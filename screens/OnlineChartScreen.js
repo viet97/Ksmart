@@ -150,7 +150,7 @@ export default class OnlineChartScreen extends React.Component {
                     marginBottom: 4
                 }}>
                     <View style={{flexDirection: 'row'}}>
-                        <Text style={{alignSelf: 'center', backgroundColor: 'transparent'}}>giờ: </Text>
+                        <Text style={{alignSelf: 'center', backgroundColor: 'transparent'}}>Thời gian: </Text>
                         <Text style={{
                             marginLeft: 8,
                             backgroundColor: 'transparent'

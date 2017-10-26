@@ -57,7 +57,9 @@ export default class NewFeedScreen extends React.Component {
         ALL_LOADED = false;
         this.setState({isEndList: false, dataRender: null})
         PAGE = 1;
+
         let url = URlConfig.getNewFeedLink(PAGE, SEARCH_STRING, status)
+
         console.log(url)
         fetch(url)
             .then((response) => (response.json()))
@@ -79,7 +81,7 @@ export default class NewFeedScreen extends React.Component {
                     ALL_LOADED = true;
                     this.forceUpdate()
                 }
-            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e))
     }
 
     loadMoreDataFromSv() {
