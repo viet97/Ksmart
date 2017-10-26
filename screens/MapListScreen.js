@@ -89,14 +89,27 @@ export default class MapListScreen extends Component {
 
                     {this.state.markers.map((marker, i) => (
                         <MapView.Marker
-                            key={i}
+                            onPress={() => {
+                                console.log(URlConfig.getLocation(marker.KinhDo, marker.ViDo, marker.idnhanvien))
+                                fetch(URlConfig.getLocation(marker.KinhDo, marker.ViDo, marker.idnhanvien))
+                                    .then((response) => (response.json()))
+                                    .then((responseJson) => {
+                                        if (responseJson.status) {
+                                            this.setState({address: responseJson.data}, function () {
+
+                                            });
+                                        } else {
+                                            Toast.show(responseJson.msg)
+                                        }
+                                    }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e));
+                            }}
                             coordinate={{
                                 latitude: marker.ViDo,
                                 longitude: marker.KinhDo
                             }
                             }
                             title={marker.tennhanvien}
-                            description={this.getTimeUpdate(marker.thoigiancapnhat)}>
+                            description={this.getTimeUpdate(marker)}>
                             {this.getIconUser(marker.dangtructuyen)}
                             <MapView.Callout style={{width: 180}}>
                                 {this.getImageNV(marker)}
@@ -118,8 +131,11 @@ export default class MapListScreen extends Component {
 
 
     getTimeUpdate(time) {
-        return 'Thời gian cập nhật: ' + time;
+        console.log(this.state.address)
+        let diachi = this.state.address
+        return 'Thời gian cập nhật: ' + time + '\nVị trí: ' + diachi;
     }
+
 
     getImageNV(v) {
         var value = v.AnhDaiDien;
@@ -147,15 +163,43 @@ export default class MapListScreen extends Component {
     getIconUser(state) {
         if (state === 1) {
             return (
-                <Icon size={16} style={styles.iconStyle} color="#00FF47" name="controller-record"/>
+                <View style={{
+                    width: 20,
+                    height: 20,
+                    borderColor: '#00FF47',
+                    borderWidth: 1,
+                    borderRadius: 10,
+                    justifyContent: 'center'
+                }}>
+                    <Icon size={16} style={styles.iconStyle} color="#00FF47" name="controller-record"/>
+                </View>
             );
         } else if (state === 2) {
             return (
-                <Icon size={16} style={styles.iconStyle} color="red" name="controller-record"/>
+                <View style={{
+                    width: 20,
+                    height: 20,
+                    borderColor: 'red',
+                    borderWidth: 1,
+                    borderRadius: 10,
+                    justifyContent: 'center'
+                }}>
+                    <Icon size={16} style={styles.iconStyle} color="red" name="controller-record"/>
+                </View>
             );
         } else {
             return (
-                <Icon size={16} style={styles.iconStyle} color="gray" name="controller-record"/>
+                <View style={{
+                    width: 20,
+                    height: 20,
+                    borderColor: 'gray',
+                    borderWidth: 1,
+                    borderRadius: 10,
+                    justifyContent: 'center'
+                }}>
+                    <Icon size={16} style={styles.iconStyle} color="gray" name="controller-record"/>
+
+                </View>
             );
         }
     }
@@ -181,10 +225,7 @@ const styles = StyleSheet.create({
         paddingBottom: 8
     }, iconStyle: {
         alignSelf: 'center',
-        width: 24,
-        height: 24,
         backgroundColor: "transparent",
-        marginLeft: 8
     },
     textStyle: {
         fontSize: 18,

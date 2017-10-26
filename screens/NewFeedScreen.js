@@ -39,7 +39,7 @@ export default class NewFeedScreen extends React.Component {
                 refreshing: false,
                 dataFull: [],
                 dataRender: null,
-                onEndReach: true,
+                onEndReach: false,
                 isEndList: false,
                 dialogVisible: false,
                 itemSelect: undefined,
@@ -90,9 +90,10 @@ export default class NewFeedScreen extends React.Component {
         let status = 0
         if (params !== undefined)
             status = params.status
+        console.log(this.state.onEndReach)
         if (!this.state.onEndReach) {
             this.setState({onEndReach: true})
-
+            console.log(this.state.isEndList)
             if (!this.state.isEndList) {
                 PAGE = PAGE + 1
                 let url = URlConfig.getNewFeedLink(PAGE, SEARCH_STRING, status)
@@ -101,6 +102,7 @@ export default class NewFeedScreen extends React.Component {
                     .then((response) => (response.json()))
                     .then((responseJson) => {
                             if (responseJson.status) {
+                                console.log(responseJson.data)
                                 let arr = this.state.dataFull
                                 arr = arr.concat(responseJson.data)
                                 this.setState({
