@@ -3,81 +3,243 @@
  */
 import React, {Component} from 'react';
 import {
-    AppRegistry, Button,
     StyleSheet,
     Text, Image,
-    View, TabBarIOS, TouchableHighlight, Platform,TouchableOpacity
+    View, Platform, TouchableOpacity, BackHandler
 } from 'react-native';
-
+import {Dialog} from 'react-native-simple-dialogs';
 import Toast from 'react-native-simple-toast'
 import Icon from 'react-native-vector-icons/Entypo';
-import Icon1 from 'react-native-vector-icons/Ionicons'
 import Icon2 from 'react-native-vector-icons/MaterialIcons';
 import MapView from 'react-native-maps';
 import URlConfig from "../configs/url";
 import Color from '../configs/color'
-import LinearGradient from "react-native-linear-gradient";
 import HeaderCustom from "../components/Header";
+import ModalDropdownCustom from "../components/ModalDropdownCustom";
 const default_location={
     latitude: 20.994953,
     longitude: 105.8307488,
-    latitudeDelta: 0.0922,
-    longitudeDelta: 0.0421,
+    latitudeDelta: 0.0922 * 100,
+    longitudeDelta: 0.0421 * 100,
 }
+let INDEX
+let func
 export default class MapListScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            statusPiker: ['Tất cả', 'Đang trực tuyến', 'Đang ngoại tuyến', 'Mất tín hiệu'],
             address: '',
             region: default_location,
             markers: [],
-            myRegion:default_location
+            myRegion: default_location,
+            dialogVisible: false,
+            index: 0,
         }
+    }
+
+    showDialog() {
+        this.setState({dialogVisible: true})
     }
 
     onRegionChange(region) {
         this.setState({region});
+        console.log(region)
     }
 
     componentDidMount() {
-
+        func = this.props.backToHome()
         fetch(URlConfig.getAllNhanVien())
             .then((response) => (response.json()))
             .then((responseJson) => {
                 if (responseJson.status) {
-                    this.setState({markers: responseJson.dsNhanVien});
+                    this.setState({markers: responseJson.dsNhanVien}, function () {
+                        console.log(this.state.markers[0])
+                        this.setState({
+                            myRegion: {
+                                latitude: this.state.markers[0].ViDo,
+                                longitude: this.state.markers[0].KinhDo,
+                                latitudeDelta: 0.0922,
+                                longitudeDelta: 0.0421,
+                            },
+                            region: {
+                                latitude: this.state.markers[0].ViDo,
+                                longitude: this.state.markers[0].KinhDo,
+                                latitudeDelta: this.state.region.latitudeDelta,
+                                longitudeDelta: this.state.region.longitudeDelta,
+                            }
+                        });
+                    });
                 } else {
                     Toast.show(responseJson.msg)
                 }
             }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'));
 
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                this.setState({
-                    myRegion:{
-                        latitude: position.coords.latitude,
-                        longitude: position.coords.longitude,
-                        latitudeDelta: 0.0922,
-                        longitudeDelta: 0.0421,
-                    },
-                    region:{
-                        latitude: position.coords.latitude,
-                        longitude: position.coords.longitude,
-                        latitudeDelta: 0.0922,
-                        longitudeDelta: 0.0421,
-                    }
-                });
-            },
-            (error) => this.setState({ myRegion: default_location }),
-            { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
-        );
+        // navigator.geolocation.getCurrentPosition(
+        //     (position) => {
+        //         this.setState({
+        //             myRegion:{
+        //                 latitude: position.coords.latitude,
+        //                 longitude: position.coords.longitude,
+        //                 latitudeDelta: 0.0922,
+        //                 longitudeDelta: 0.0421,
+        //             },
+        //             region:{
+        //                 latitude: position.coords.latitude,
+        //                 longitude: position.coords.longitude,
+        //                 latitudeDelta: 0.0922,
+        //                 longitudeDelta: 0.0421,
+        //             }
+        //         });
+        //     },
+        //     (error) => this.setState({ myRegion: default_location }),
+        //     { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+        // );
 
     }
 
     render() {
+        console.log(this.state.region, 'region')
         return (
             <View style={{flex: 1}}>
-                <HeaderCustom title={"Vị trí nhân viên "} leftClick={() => this.props.backToHome()}/>
+                <HeaderCustom title={"Vị trí nhân viên "}
+                              leftClick={() => this.props.backToHome()}
+                              rightChildren={
+                                  <TouchableOpacity
+                                      style={{alignSelf: 'center', padding: 8}}
+                                      onPress={() => {
+                                          this.showDialog()
+                                      }}
+                                  >
+                                      <Text style={{
+                                          textAlign: 'center',
+                                          color: 'white',
+                                          alignSelf: 'center',
+                                          backgroundColor: 'transparent'
+                                      }}>Bộ lọc</Text>
+                                  </TouchableOpacity>
+                              }
+                />
+                <Dialog
+                    visible={this.state.dialogVisible}
+                    dialogStyle={{borderBottomLeftRadius: 10, borderBottomRightRadius: 10}}
+                >
+
+                    <View style={{
+                        flexDirection: 'column',
+                        paddingBottom: 40,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        backgroundColor: 'transparent',
+                    }}>
+                        <Text style={{color: 'black'}}>Chọn trạng thái</Text>
+                        <ModalDropdownCustom
+                            data={this.state.statusPiker}
+                            defaultValue={this.state.statusPiker[this.state.index]}
+                            onSelect={(idx, value) => {
+                                let status;
+                                switch (idx) {
+                                    case 0:
+                                        INDEX = idx
+                                        status = -1
+                                        break;
+                                    case 1:
+                                        INDEX = idx
+                                        status = 1
+                                        break;
+                                    case 2:
+                                        INDEX = idx
+                                        status = 0
+                                        break;
+                                    case 3:
+                                        INDEX = idx
+                                        status = 2
+                                        break;
+                                }
+                                this.setState({status})
+                            }}
+                        />
+                    </View>
+                    <View style={{
+                        flexDirection: 'row',
+                        flex: 1,
+                        position: 'absolute',
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        backgroundColor: '#123'
+                    }}>
+                        <TouchableOpacity
+                            style={{
+                                flex: 1,
+                                alignSelf: 'center',
+                                justifyContent: 'center',
+                                backgroundColor: '#e8e8e8',
+                                borderRightWidth: 0.5,
+                                borderColor: 'white',
+                                height: 46,
+                            }}
+                            onPress={() => {
+                                this.setState({dialogVisible: false});
+                            }}>
+                            <Text style={{color: '#6a5aff', alignSelf: 'center'}}>Cancel</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={{
+                                alignSelf: 'center',
+                                justifyContent: 'center',
+                                flex: 1,
+                                backgroundColor: '#e8e8e8',
+                                borderColor: 'white',
+                                height: 46
+                            }}
+                            onPress={() => {
+                                this.setState({
+                                    dialogVisible: false, index: INDEX
+                                }, function () {
+                                    fetch(URlConfig.getAllNhanVien())
+                                        .then((response) => (response.json()))
+                                        .then((responseJson) => {
+                                            if (responseJson.status) {
+                                                if (this.state.status === -1) {
+                                                    this.setState({markers: responseJson.dsNhanVien});
+                                                } else {
+                                                    let markers = []
+                                                    for (let item of responseJson.dsNhanVien) {
+                                                        if (item.dangtructuyen === this.state.status) {
+                                                            markers.push(item)
+                                                        }
+                                                    }
+                                                    this.setState({markers}, function () {
+                                                        this.setState({
+                                                            region: {
+                                                                latitude: this.state.markers[0].ViDo,
+                                                                longitude: this.state.markers[0].KinhDo,
+                                                                latitudeDelta: this.state.region.latitudeDelta,
+                                                                longitudeDelta: this.state.region.longitudeDelta,
+                                                            }
+                                                        });
+
+                                                    })
+                                                }
+
+                                            } else {
+                                                Toast.show(responseJson.msg)
+                                            }
+                                        }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'));
+
+
+                                })
+                            }}>
+                            <Text style={{
+                                color: '#6a5aff',
+                                alignSelf: 'center',
+                                fontWeight: 'bold'
+                            }}>Ok</Text>
+                        </TouchableOpacity>
+
+                    </View>
+                </Dialog>
 
                 <MapView
 
@@ -90,7 +252,6 @@ export default class MapListScreen extends Component {
                     {this.state.markers.map((marker, i) => (
                         <MapView.Marker
                             onPress={() => {
-                                console.log(URlConfig.getLocation(marker.KinhDo, marker.ViDo, marker.idnhanvien))
                                 fetch(URlConfig.getLocation(marker.KinhDo, marker.ViDo, marker.idnhanvien))
                                     .then((response) => (response.json()))
                                     .then((responseJson) => {
@@ -101,13 +262,12 @@ export default class MapListScreen extends Component {
                                         } else {
                                             Toast.show(responseJson.msg)
                                         }
-                                    }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e));
+                                    }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'));
                             }}
                             coordinate={{
                                 latitude: marker.ViDo,
                                 longitude: marker.KinhDo
-                            }
-                            }
+                            }}
                             title={marker.tennhanvien}
                             description={this.getTimeUpdate(marker)}>
                             {this.getIconUser(marker.dangtructuyen)}
@@ -131,7 +291,6 @@ export default class MapListScreen extends Component {
 
 
     getTimeUpdate(time) {
-        console.log(this.state.address)
         let diachi = this.state.address
         return 'Thời gian cập nhật: ' + time + '\nVị trí: ' + diachi;
     }

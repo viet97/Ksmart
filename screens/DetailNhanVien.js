@@ -50,8 +50,7 @@ export default class DetailNhanVien extends React.Component {
 
     getImage(url) {
         console.log(this.state.data);
-        if (!url || !ultils.checkURL(url))
-            if (url.length !== 0)
+        if (!url || !ultils.checkURL(url))  
                 return (
 
                     <GiftedAvatar

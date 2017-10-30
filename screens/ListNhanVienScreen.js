@@ -12,7 +12,6 @@ import {
     Picker, TouchableHighlight, ScrollView, RefreshControl,
     Alert
 } from 'react-native';
-import ModalDropdown from "react-native-modal-dropdown";
 import Toast from 'react-native-simple-toast';
 import Search from 'react-native-search-box';
 import Image from 'react-native-image-progress';
@@ -22,10 +21,7 @@ import Icon1 from 'react-native-vector-icons/Ionicons'
 import URlConfig from "../configs/url";
 import Icon2 from 'react-native-vector-icons/Entypo'
 import React from 'react';
-import Color from '../configs/color'
-import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
-import TabNavigator from 'react-native-tab-navigator';
-import MapListScreen from "./MapListScreen";
+
 import {Dialog} from 'react-native-simple-dialogs';
 import PTRView from 'react-native-pull-to-refresh'
 import ListNhanVienItem from "../components/ListNhanVienItem";
@@ -371,7 +367,7 @@ export default class ListNhanVienScreen extends React.Component {
                     leftClick={() => this.props.navigation.goBack()}
                     rightChildren={
                         <TouchableOpacity
-                            style={{alignSelf: 'center'}}
+                            style={{alignSelf: 'center', padding: 8}}
                             onPress={() => this.showDialog()}>
                             <Text style={{
                                 textAlign: 'center',

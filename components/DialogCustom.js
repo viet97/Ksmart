@@ -19,6 +19,8 @@ import ModalDropdown from "react-native-modal-dropdown";
 import URlConfig from "../configs/url";
 import Search from "react-native-search-box";
 import Toast from "react-native-simple-toast";
+import GiftedAvatar from "react-native-gifted-chat/src/GiftedAvatar";
+import Utils from "../configs/ultils";
 let Page = 1;
 let ALL_LOADED = false;
 let SEARCH_STRING = '';
@@ -113,11 +115,14 @@ export default class DialogCustom extends React.Component {
     }
 
     loadMoreDataFromSv() {
-
+        console.log('loadMore')
+        console.log(this.state.onEndReach, this.state.isEndList)
         if (!this.state.onEndReach) {
             this.setState({onEndReach: true})
 
             if (!this.state.isEndList) {
+                console.log('loadMore')
+
                 Page = Page + 1
                 fetch(URlConfig.getListNhanVienLink(Page, this.state.idNhom, SEARCH_STRING))
                     .then((response) => response.json())
@@ -147,6 +152,28 @@ export default class DialogCustom extends React.Component {
                     })
                     .catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'));
             }
+        }
+    }
+
+    getImage(item) {
+        if (!item.AnhDaiDien || !Utils.checkURL(item.AnhDaiDien)) {
+            return (
+
+                <GiftedAvatar
+                    user={
+                        {
+                            _id: 1,
+                            name: item.tennhanvien
+                        }
+                    }
+                    avatarStyle={{margin: 8, width: 60, height: 60, borderRadius: 30}}/>
+            );
+        } else {
+            return (
+                <Image
+                    source={{uri: item.AnhDaiDien}}
+                    style={{margin: 8, width: 60, height: 60, borderRadius: 30}}/>
+            );
         }
     }
 
@@ -212,7 +239,9 @@ export default class DialogCustom extends React.Component {
                         this.loadMoreDataFromSv()
                     }}
                     onMomentumScrollBegin={() => {
-                        this.setState({onEndReach: false})
+                        this.setState({onEndReach: false}, function () {
+                            console.log(this.state.onEnd)
+                        })
                     }}
                     extraData={this.state.dataRender}
                     data={this.state.dataRender}
@@ -231,9 +260,7 @@ export default class DialogCustom extends React.Component {
                             }>
                             <View style={{flexDirection: 'row'}}>
                                 <View style={{justifyContent: 'center'}}>
-                                    <Image
-                                        style={{margin: 8, width: 60, height: 60, borderRadius: 30}}
-                                        source={require('../images/bglogin.jpg')}/>
+                                    {this.getImage(item)}
                                 </View>
                                 <View style={{flex: 4, margin: 8, justifyContent: 'center'}}>
                                     <Text

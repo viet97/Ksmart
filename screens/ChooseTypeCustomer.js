@@ -24,7 +24,7 @@ import ChooseTypeItem from "../components/ChooseTypeItem";
 import URlConfig from "../configs/url";
 import Toast from "react-native-simple-toast";
 import LinearGradient from "react-native-linear-gradient";
-import {setCustomer} from "../configs/customer";
+import {setCustomer, setTypeCustomer} from "../configs/customer";
 import HeaderCustom from "../components/Header";
 
 let {width, height} = Dimensions.get('window')
@@ -94,6 +94,7 @@ export default class ChooseTypeCustomer extends Component {
             .then((response) => (response.json()))
             .then((responseJson) => {
                 if (responseJson.status) {
+                    setTypeCustomer(responseJson.danhsach)
                     var arr = []
                     for (let i in responseJson.danhsach) {
                         if (responseJson.danhsach[i].MaMau !== null) {

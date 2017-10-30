@@ -26,6 +26,7 @@ import Toast from "react-native-simple-toast";
 import LinearGradient from "react-native-linear-gradient";
 import HeaderCustom from "../components/Header";
 
+let goBack;
 let {width, height} = Dimensions.get('window')
 export default class ChooseTypeListNV extends Component {
     static navigationOptions = {
@@ -68,7 +69,7 @@ export default class ChooseTypeListNV extends Component {
                     renderIcon={() => <Icon size={24} color="black" name="location"/>}
                     renderSelectedIcon={() => <Icon size={24} color="white" name="location"/>}
                     onPress={() => this.setState({selectedTab: 'MapForAllLocation'})}>
-                    <MapListScreen backToHome={() => this.props.navigation.goBack()}/>
+                    <MapListScreen backToHome={() => this.setState({selectedTab: 'ListNhanVien'})}/>
                 </TabNavigator.Item>
             </TabNavigator>
         )
@@ -119,7 +120,31 @@ export default class ChooseTypeListNV extends Component {
             }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
     }
 
+    goback = () => {
+
+    }
+
+    componentWillUnMount() {
+        BackHandler.removeEventListener('hardwareBackPress', () => {
+            if (this.state.selectedTab === 'ListNhanVien') {
+                console.log(this.state.selectedTab)
+                return false
+            } else {
+                this.setState({selectedTab: 'ListNhanVien'})
+                return true
+            }
+        })
+    }
     componentDidMount() {
+        BackHandler.addEventListener('hardwareBackPress', () => {
+            if (this.state.selectedTab === 'ListNhanVien') {
+                console.log(this.state.selectedTab)
+                return false
+            } else {
+                this.setState({selectedTab: 'ListNhanVien'})
+                return true
+            }
+        })
         this.getDataFromSv()
     }
 }

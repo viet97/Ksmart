@@ -113,6 +113,7 @@ export default class LoginScreen extends React.Component {
                     <View style={styles.viewborder}>
                         <Icon name="account-balance" size={24} color="#2F3A51"/>
                         <TextInput
+                            autoCapitalize={'characters'}
                             underlineColorAndroid="transparent"
                             hintColor='gray' focusColor='black'
                             returnKeyType={"next"}

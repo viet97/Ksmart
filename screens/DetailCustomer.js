@@ -17,6 +17,7 @@ import URlConfig from "../configs/url";
 import Communications from 'react-native-communications';
 import LinearGradient from "react-native-linear-gradient";
 import HeaderCustom from "../components/Header";
+import {getTypeCustomer} from "../configs/customer";
 
 let {width, height} = Dimensions.get('window')
 export default class DetailCustomer extends React.Component {
@@ -29,6 +30,7 @@ export default class DetailCustomer extends React.Component {
         const {params} = this.props.navigation.state;
         const item = params.item;
         this.state = {
+            loaikhachhang: '',
             data: [],
             region: {
                 latitude: item.ViDo,
@@ -44,32 +46,21 @@ export default class DetailCustomer extends React.Component {
     }
 
     componentDidMount() {
+
         const {params} = this.props.navigation.state
         fetch(URlConfig.getLinkDetailCustomer(params.id))
             .then((response) => (response.json()))
             .then((responseJson) => {
                 if (responseJson.status) {
                     console.log(responseJson.data)
-                    this.setState({data: responseJson.data})
+                    this.setState({data: responseJson.data}, function () {
+
+                    })
                 }
             }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
 
     }
 
-    getLoaiKhachHang(loai) {
-        let str = ''
-        fetch(URlConfig.getLinkSoKhachHang())
-            .then((response) => (response.json()))
-            .then((responseJson) => {
-                if (responseJson.status) {
-                    for (let item in responseJson.danhsach) {
-                        if (responseJson.danhsach.ID_LoaiKhachHang === loai)
-                            str = str + responseJson.danhsach.TenLoaiKhachHang
-                        break
-                    }
-                }
-            })
-    }
 
     getElement(title, content) {
         return (
@@ -133,7 +124,7 @@ export default class DetailCustomer extends React.Component {
                         <ScrollView style={{flex: 1, marginBottom: 4}}>
                             {this.getElement('Tên cửa hàng', this.state.data.TenCuaHang)}
                             {this.getElement('Tên nhóm khách hàng', this.state.data.tennhomkhachhang)}
-                            {this.getElement('Loại khách hàng', this.getLoaiKhachHang(this.state.data.idloaikhachhang))}
+                            {this.getElement('Loại khách hàng', getTypeCustomer(this.state.data.idloaikhachhang))}
                             {this.getElement('Địa chỉ', this.state.data.DiaChi)}
                             {this.getElementPhoneNumber('Số điện thoại 1', this.state.data.SoDienThoai)}
                             {this.getElementPhoneNumber('Số điện thoại 2', this.state.data.SoDienThoai2)}
