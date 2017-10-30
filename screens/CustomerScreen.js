@@ -10,7 +10,7 @@ import {
     FlatList,
     ActivityIndicator,
     Platform,
-    TextInput
+    TextInput, RefreshControl
 } from 'react-native';
 
 const timer = require('react-native-timer');
@@ -30,6 +30,7 @@ import {getListCustomer} from "../configs/customer";
 import {Dialog} from "react-native-simple-dialogs";
 import HeaderCustom from "../components/Header";
 
+let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 let ALL_LOADED = false
 let SEARCH_STRING = '';
 let PAGE = 0;
@@ -47,7 +48,7 @@ export default class CustomerScreen extends Component {
             refreshing: false,
             dataSearch: [],
             dataFull: [],
-            dataRender: null,
+            dataRender: ds,
             onEndReach: true,
             dialogVisible: false
         }
@@ -88,7 +89,7 @@ export default class CustomerScreen extends Component {
                     }
                     this.setState({
                         dataFull: responseJson.data,
-                        dataRender: responseJson.data
+                        dataRender: ds.cloneWithRows(responseJson.data)
                     })
 
                 } else {
@@ -96,7 +97,7 @@ export default class CustomerScreen extends Component {
                     ALL_LOADED = true
                     this.forceUpdate()
                 }
-            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại '))
+            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại ' + e))
     }
 
     refreshData() {
@@ -106,9 +107,7 @@ export default class CustomerScreen extends Component {
 
     loadMoreData() {
         const {params} = this.props.navigation.state
-        if (!this.state.onEndReach) {
             console.log("LOADMORE")
-            this.setState({onEndReach: true})
             fetch(URlConfig.getCustomerLink(PAGE, SEARCH_STRING, params.id))
                 .then((response) => (response.json()))
                 .then((responseJson) => {
@@ -119,16 +118,15 @@ export default class CustomerScreen extends Component {
                             this.forceUpdate()
                         }
                         PAGE = responseJson.lastid
-                        var arr = this.state.dataRender.concat(responseJson.data)
+                        var arr = this.state.dataFull.concat(responseJson.data)
                         this.setState({
-                            dataRender: arr,
+                            dataRender: ds.cloneWithRows(arr),
                             dataFull: arr
                         })
 
                     }
                 }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
 
-        }
     }
 
     flatListorIndicator() {
@@ -158,22 +156,21 @@ export default class CustomerScreen extends Component {
         return (
             <View style={{flex: 9}}>
 
-                <FlatList
-                    keyboardDismissMode="on-drag"
-                    ListFooterComponent={this.renderFooter}
+                <ListView
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={() => this.refreshData()}
+                        />
+                    }
+                    renderFooter={this.renderFooter}
                     ref="listview"
                     onEndReachedThreshold={0.2}
                     onEndReached={() => {
                         this.loadMoreData()
                     }}
-                    onMomentumScrollBegin={() => {
-                        this.setState({onEndReach: false})
-                    }}
-                    refreshing={this.state.refreshing}
-                    onRefresh={() => this.refreshData()}
-                    extraData={this.state.dataRender}
-                    data={this.state.dataRender}
-                    renderItem={({item}) =>
+                    dataSource={this.state.dataRender}
+                    renderRow={(item) =>
 
                         <CustomerItem
                             mamau={params.mamau[item.idloaikhachhang]}

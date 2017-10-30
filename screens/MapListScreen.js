@@ -48,6 +48,8 @@ export default class MapListScreen extends Component {
     }
 
     componentDidMount() {
+        console.log(URlConfig.getAllNhanVien(), '33333333')
+
         func = this.props.backToHome()
         fetch(URlConfig.getAllNhanVien())
             .then((response) => (response.json()))
@@ -252,6 +254,7 @@ export default class MapListScreen extends Component {
                     {this.state.markers.map((marker, i) => (
                         <MapView.Marker
                             onPress={() => {
+                                console.log(URlConfig.getLocation(marker.KinhDo, marker.ViDo, marker.idnhanvien), '123123123321231')
                                 fetch(URlConfig.getLocation(marker.KinhDo, marker.ViDo, marker.idnhanvien))
                                     .then((response) => (response.json()))
                                     .then((responseJson) => {

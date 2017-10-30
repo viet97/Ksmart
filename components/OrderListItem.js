@@ -111,37 +111,8 @@ export default class OrderListItem extends Component {
     }
 
     getInfoKhachHang(rowData) {
-        var color;
-        switch (rowData.trangthaidonhang) {
-            case 1:
-                color = URlConfig.OBJLOGIN.color[1]
-                break;
-            case 2:
-                color = URlConfig.OBJLOGIN.color[2]
-                break;
-            case 3:
-                color = URlConfig.OBJLOGIN.color[3]
-                break;
-            case 4:
-                color = URlConfig.OBJLOGIN.color[4]
-                break;
-            case 5:
-                color = URlConfig.OBJLOGIN.color[5]
-                break;
-            case 9:
-                color = URlConfig.OBJLOGIN.color[9]
-                break;
-            case 12:
-                color = URlConfig.OBJLOGIN.color[12]
-                break;
-            case 13:
-                color = URlConfig.OBJLOGIN.color[13]
-                break;
-            case 24:
-                color = URlConfig.OBJLOGIN.color[24]
-                break;
-        }
         let info = URlConfig.OBJLOGIN.ttdh[rowData.trangthaidonhang]
+        let color = URlConfig.OBJLOGIN.color[rowData.trangthaidonhang]
         return (
             <View style={{
                 borderRadius: 16,

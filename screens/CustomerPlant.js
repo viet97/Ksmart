@@ -9,7 +9,7 @@ import {
     BackHandler,
     FlatList,
     ActivityIndicator, Platform,
-    Picker
+    Picker, RefreshControl
 } from 'react-native';
 import {ProgressDialog} from 'react-native-simple-dialogs'
 import Modal from 'react-native-modalbox';
@@ -29,6 +29,8 @@ import DialogCustom from "../components/DialogCustom";
 import {Icon} from "react-native-elements";
 import LinearGradient from "react-native-linear-gradient";
 import HeaderCustom from "../components/Header";
+
+let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
 const timer = require('react-native-timer');
 
@@ -71,7 +73,7 @@ export default class CustomerPlant extends Component {
             refreshing: false,
             dataSearch: [],
             dataFull: [],
-            dataRender: null,
+            dataRender: ds,
             onEndReach: true,
             numberPickNhanVien: 0,
             NhanVienStatus: [],
@@ -99,29 +101,12 @@ export default class CustomerPlant extends Component {
     };
 
     refreshData() {
-        PAGE = 0;
-        this.setState({dataRender: null})
-        ALL_LOADED = false
-        fetch(URlConfig.getCustomerLink(PAGE, SEARCH_STRING))
-            .then((response) => (response.json()))
-            .then((responseJson) => {
-                if (responseJson.status) {
-                    if (responseJson.endlist) ALL_LOADED = true
-                    this.setState({
-                        dataRender: responseJson.data,
-                        dataSearch: responseJson.data
-                    }, function () {
-
-                    })
-
-                } else ALL_LOADED = true
-            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+        this.getDataFromSv()
     }
 
 
     loadMoreData() {
         PAGE = PAGE + NUMBER_ROW_RENDER_PER_PAGE
-        if (!this.state.onEndReach) {
 
             this.setState({onEndReach: true})
             fetch(URlConfig.getCustomerLink(PAGE, SEARCH_STRING))
@@ -130,16 +115,15 @@ export default class CustomerPlant extends Component {
 
                     if (responseJson.status) {
                         if (responseJson.endlist) ALL_LOADED = true
-                        var arr = this.state.dataRender.concat(responseJson.data)
+                        var arr = this.state.dataFull.concat(responseJson.data)
                         this.setState({
-                            dataRender: arr,
-                            dataSearch: arr
+                            dataRender: ds.cloneWithRows(arr),
+                            dataFull: arr
                         })
 
                     }
                 }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
 
-        }
     }
 
     flatListorIndicator() {
@@ -167,24 +151,24 @@ export default class CustomerPlant extends Component {
 
         return (
             <View style={{flex: 9}}>
-                <FlatList
-                    keyboardDismissMode="on-drag"
-                    keyExtractor={(item, index) => {
-                        item.key = index
-                    }}
-                    refreshing={this.state.refreshing}
-                    onRefresh={() => this.refreshData()}
-                    ListFooterComponent={this.renderFooter}
+                <ListView
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={() => this.refreshData()}
+                        />
+                    }
+
+                    renderFooter={this.renderFooter}
+                    ref="listview"
                     onEndReachedThreshold={0.2}
                     onEndReached={() => {
                         this.loadMoreData()
                     }}
-                    onMomentumScrollBegin={() => {
-                        this.setState({onEndReach: false})
-                    }}
-                    extraData={this.state.dataRender}
-                    data={this.state.dataRender}
-                    renderItem={({item}) =>
+
+                    dataSource={this.state.dataRender}
+                    renderRow={(item) =>
+
                         <CustomerPlantComponent
                             showToast={(message) => Toast.show(message, Toast.LONG)}
                             date={this.state.datePlant}
@@ -243,7 +227,7 @@ export default class CustomerPlant extends Component {
                 }
                 if (responseJson.status) {
                     this.setState({
-                        dataRender: responseJson.data,
+                        dataRender: ds.cloneWithRows(responseJson.data),
                         dataFull: responseJson.data
                     })
                 } else {

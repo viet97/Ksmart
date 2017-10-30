@@ -6,7 +6,7 @@ import {
     TouchableOpacity, ActivityIndicator, ScrollView,
     Dimensions,
     FlatList,
-    Platform, Image
+    Platform, Image, RefreshControl
 } from 'react-native';
 import Search from 'react-native-search-box';
 import ProgressBar from 'react-native-progress/Bar';
@@ -22,6 +22,7 @@ import {colors} from "../configs/color";
 import LinearGradient from "react-native-linear-gradient";
 import HeaderCustom from "../components/Header";
 
+let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 let SEARCH_STRING = '';
 let {width, height} = Dimensions.get('window');
 let ALL_LOADED = false
@@ -38,7 +39,7 @@ export default class NewFeedScreen extends React.Component {
                 isSearching: false,
                 refreshing: false,
                 dataFull: [],
-                dataRender: null,
+                dataRender: ds,
                 onEndReach: false,
                 isEndList: false,
                 dialogVisible: false,
@@ -68,7 +69,7 @@ export default class NewFeedScreen extends React.Component {
                     this.setState({
                         dataFull: responseJson.data,
                         isEndList: responseJson.endlist,
-                        dataRender: responseJson.data
+                        dataRender: ds.cloneWithRows(responseJson.data)
                     }, function () {
                         if (this.state.isEndList) {
                             ALL_LOADED = true
@@ -91,10 +92,6 @@ export default class NewFeedScreen extends React.Component {
         if (params !== undefined)
             status = params.status
         console.log(this.state.onEndReach)
-        if (!this.state.onEndReach) {
-            this.setState({onEndReach: true})
-            console.log(this.state.isEndList)
-            if (!this.state.isEndList) {
                 PAGE = PAGE + 1
                 let url = URlConfig.getNewFeedLink(PAGE, SEARCH_STRING, status)
                 console.log(url)
@@ -108,7 +105,7 @@ export default class NewFeedScreen extends React.Component {
                                 this.setState({
                                     dataFull: arr,
                                     isEndList: responseJson.endlist,
-                                    dataRender: arr
+                                    dataRender: ds.cloneWithRows(arr)
                                 }, function () {
                                     if (this.state.isEndList) {
                                         ALL_LOADED = true;
@@ -119,8 +116,7 @@ export default class NewFeedScreen extends React.Component {
                         }
                     )
                     .catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
-            }
-        }
+
     }
 
 
@@ -172,24 +168,22 @@ export default class NewFeedScreen extends React.Component {
 
         return (
             <View style={{flex: 9}}>
-
-                <FlatList
-                    keyboardDismissMode="on-drag"
-                    style={{flex: 1}}
-                    ListFooterComponent={this.renderFooter}
+                <ListView
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={() => this.refreshData()}
+                        />
+                    }
+                    renderFooter={this.renderFooter}
                     ref="listview"
                     onEndReachedThreshold={0.2}
                     onEndReached={() => {
                         this.loadMoreData()
                     }}
-                    onMomentumScrollBegin={() => {
-                        this.setState({onEndReach: false})
-                    }}
-                    refreshing={this.state.refreshing}
-                    onRefresh={() => this.refreshData()}
-                    extraData={this.state.dataRender}
-                    data={this.state.dataRender}
-                    renderItem={({item}) =>
+                    dataSource={this.state.dataRender}
+                    renderRow={(item) =>
+
                         <TouchableOpacity activeOpacity={0.8}
                                           onPress={() => {
                                               this.setState({

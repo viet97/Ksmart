@@ -110,6 +110,7 @@ export default class ChooseTypeListNV extends Component {
 
     getDataFromSv() {
         this.setState({data: null})
+        console.log(URlConfig.getLinkSoNhanVien(), '3333')
         fetch(URlConfig.getLinkSoNhanVien())
             .then((response) => (response.json()))
             .then((responseJson) => {
