@@ -29,18 +29,18 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSAllowsArbitraryLoads</key>
-		<true/>
-		<key>NSExceptionDomains</key>
-		<dict>
-			<key>localhost</key>
-			<dict>
-				<key>NSExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
-			</dict>
-		</dict>
-	</dict>
+        	<dict>
+        		<key>NSAllowsArbitraryLoads</key>
+        		<true/>
+        		<key>NSExceptionDomains</key>
+        		<dict>
+        			<key>localhost</key>
+        			<dict>
+        				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+        				<true/>
+        			</dict>
+        		</dict>
+        	</dict>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Cấp quyền truy cập vị trí của bạn</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
