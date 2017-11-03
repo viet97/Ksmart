@@ -16,7 +16,6 @@ import React from 'react';
 import URlConfig from "../configs/url";
 import Toast from 'react-native-simple-toast'
 import NewFeedItem from "../components/NewFeedItem";
-
 import {ConfirmDialog} from 'react-native-simple-dialogs';
 import {colors} from "../configs/color";
 import LinearGradient from "react-native-linear-gradient";

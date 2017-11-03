@@ -33,7 +33,7 @@ export default class ListNhanVienItem extends React.Component {
     }
 
     getImage(url) {
-        if (!url || !Utils.checkURL(url)) {
+        if (!url || !Utils.isImageUrl(url)) {
             return (
 
                 <GiftedAvatar

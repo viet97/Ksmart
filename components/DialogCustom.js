@@ -156,7 +156,7 @@ export default class DialogCustom extends React.Component {
     }
 
     getImage(item) {
-        if (!item.AnhDaiDien || !Utils.checkURL(item.AnhDaiDien)) {
+        if (!item.AnhDaiDien || !Utils.isImageUrl(item.AnhDaiDien)) {
             return (
 
                 <GiftedAvatar

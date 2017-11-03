@@ -7,7 +7,7 @@ import {
     Text, Image,
     View, Platform, TouchableOpacity, BackHandler
 } from 'react-native';
-import {Dialog} from 'react-native-simple-dialogs';
+import {Dialog, ConfirmDialog} from 'react-native-simple-dialogs';
 import Toast from 'react-native-simple-toast'
 import Icon from 'react-native-vector-icons/Entypo';
 import Icon2 from 'react-native-vector-icons/MaterialIcons';
@@ -16,14 +16,16 @@ import URlConfig from "../configs/url";
 import Color from '../configs/color'
 import HeaderCustom from "../components/Header";
 import ModalDropdownCustom from "../components/ModalDropdownCustom";
+import Utils from "../configs/ultils";
+import {GiftedAvatar} from "react-native-gifted-chat"
 const default_location={
     latitude: 20.994953,
     longitude: 105.8307488,
     latitudeDelta: 0.0922 * 100,
     longitudeDelta: 0.0421 * 100,
 }
-let INDEX
-let func
+let INDEX;
+let func;
 export default class MapListScreen extends Component {
     constructor(props) {
         super(props);
@@ -34,7 +36,9 @@ export default class MapListScreen extends Component {
             markers: [],
             myRegion: default_location,
             dialogVisible: false,
+            dialogStaffVisible: false,
             index: 0,
+            markerSelect: {}
         }
     }
 
@@ -44,11 +48,9 @@ export default class MapListScreen extends Component {
 
     onRegionChange(region) {
         this.setState({region});
-        console.log(region)
     }
 
     componentDidMount() {
-        console.log(URlConfig.getAllNhanVien(), '33333333')
 
         func = this.props.backToHome()
         fetch(URlConfig.getAllNhanVien())
@@ -77,31 +79,24 @@ export default class MapListScreen extends Component {
                 }
             }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'));
 
-        // navigator.geolocation.getCurrentPosition(
-        //     (position) => {
-        //         this.setState({
-        //             myRegion:{
-        //                 latitude: position.coords.latitude,
-        //                 longitude: position.coords.longitude,
-        //                 latitudeDelta: 0.0922,
-        //                 longitudeDelta: 0.0421,
-        //             },
-        //             region:{
-        //                 latitude: position.coords.latitude,
-        //                 longitude: position.coords.longitude,
-        //                 latitudeDelta: 0.0922,
-        //                 longitudeDelta: 0.0421,
-        //             }
-        //         });
-        //     },
-        //     (error) => this.setState({ myRegion: default_location }),
-        //     { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
-        // );
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                this.setState({
+                    myRegion: {
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude,
+                        latitudeDelta: 0.0922,
+                        longitudeDelta: 0.0421,
+                    }
+                });
+            },
+            (error) => this.setState({myRegion: default_location}),
+            {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
+        );
 
     }
 
     render() {
-        console.log(this.state.region, 'region')
         return (
             <View style={{flex: 1}}>
                 <HeaderCustom title={"Vị trí nhân viên "}
@@ -202,11 +197,12 @@ export default class MapListScreen extends Component {
                                     fetch(URlConfig.getAllNhanVien())
                                         .then((response) => (response.json()))
                                         .then((responseJson) => {
+                                            console.log(responseJson)
                                             if (responseJson.status) {
                                                 if (this.state.status === -1) {
                                                     this.setState({markers: responseJson.dsNhanVien});
                                                 } else {
-                                                    let markers = []
+                                                    let markers = [];
                                                     for (let item of responseJson.dsNhanVien) {
                                                         if (item.dangtructuyen === this.state.status) {
                                                             markers.push(item)
@@ -228,7 +224,7 @@ export default class MapListScreen extends Component {
                                             } else {
                                                 Toast.show(responseJson.msg)
                                             }
-                                        }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'));
+                                        }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e));
 
 
                                 })
@@ -254,14 +250,12 @@ export default class MapListScreen extends Component {
                     {this.state.markers.map((marker, i) => (
                         <MapView.Marker
                             onPress={() => {
-                                console.log(URlConfig.getLocation(marker.KinhDo, marker.ViDo, marker.idnhanvien), '123123123321231')
+                                this.setState({markerSelect: marker, address: '', dialogStaffVisible: true});
                                 fetch(URlConfig.getLocation(marker.KinhDo, marker.ViDo, marker.idnhanvien))
                                     .then((response) => (response.json()))
                                     .then((responseJson) => {
                                         if (responseJson.status) {
-                                            this.setState({address: responseJson.data}, function () {
-
-                                            });
+                                            this.setState({address: responseJson.data});
                                         } else {
                                             Toast.show(responseJson.msg)
                                         }
@@ -271,12 +265,8 @@ export default class MapListScreen extends Component {
                                 latitude: marker.ViDo,
                                 longitude: marker.KinhDo
                             }}
-                            title={marker.tennhanvien}
-                            description={this.getTimeUpdate(marker)}>
+                            title={marker.tennhanvien}>
                             {this.getIconUser(marker.dangtructuyen)}
-                            <MapView.Callout style={{width: 180}}>
-                                {this.getImageNV(marker)}
-                            </MapView.Callout>
                         </MapView.Marker>
                     ))}
                 </MapView>
@@ -288,25 +278,49 @@ export default class MapListScreen extends Component {
                     <Icon2 size={24} style={{position: 'absolute', right: 10, bottom: 10}} color="gray"
                            name="my-location"/>
                 </TouchableOpacity>
+                <ConfirmDialog
+                    visible={this.state.dialogStaffVisible}
+                    onTouchOutside={() => this.setState({dialogStaffVisible: false})}
+                    positiveButton={{
+                        title: "OK",
+                        onPress: () => {
+                            this.setState({dialogStaffVisible: false})
+                        }
+                    }}>
+                    {this.getImageNV(this.state.markerSelect)}
+                </ConfirmDialog>
             </View>
         );
     }
 
 
     getTimeUpdate(time) {
-        let diachi = this.state.address
+        let diachi = this.state.address;
         return 'Thời gian cập nhật: ' + time + '\nVị trí: ' + diachi;
     }
 
 
     getImageNV(v) {
         var value = v.AnhDaiDien;
-        if (value === undefined || value === null || value.length === 0) {
+        console.log(URlConfig.BASE_URL_APP + value);//
+        if (!value || !Utils.isImageUrl(value)) {
             return (
                 <View style={{flexDirection: 'column'}}>
-                    <Image source={require('../images/bglogin.jpg')}
-                           style={{width: 50, height: 50, borderRadius: 25, alignSelf: 'center'}}/>
-                    <Text style={{fontSize: 18}}>{v.tennhanvien}</Text>
+                    <GiftedAvatar
+                        user={
+                            {
+                                _id: 1,
+                                name: v.tennhanvien
+                            }
+                        }
+                        avatarStyle={{
+                            width: 60,
+                            height: 60,
+                            borderRadius: 30,
+                            alignSelf: 'center',
+                            marginVertical: 8
+                        }}/>
+                    <Text style={{fontSize: 18}}>Tên: {v.tennhanvien}</Text>
                     <Text style={{fontSize: 15}}>{this.getTimeUpdate(v.thoigiancapnhat)}</Text>
                 </View>
             );
@@ -314,7 +328,7 @@ export default class MapListScreen extends Component {
             return (
                 <View style={{flexDirection: 'column', width: 120}}>
                     <Image source={{uri: URlConfig.BASE_URL_APP + value}}
-                           style={{width: 50, height: 50, borderRadius: 25}}/>
+                           style={{width: 60, height: 60, borderRadius: 30, alignSelf: 'center', marginVertical: 8}}/>
                     <Text style={{fontSize: 18}}>{v.tennhanvien}</Text>
                     <Text style={{fontSize: 15}}>{this.getTimeUpdate(v.thoigiancapnhat)}</Text>
                 </View>
