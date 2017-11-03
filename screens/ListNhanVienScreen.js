@@ -131,10 +131,11 @@ export default class ListNhanVienScreen extends React.Component {
     };
 
     getDataFromSv() {
-        const {params} = this.props.navigation.state
+        const {params} = this.props.navigation.state;
         Page = 1;
         ALL_LOADED = false;
-        this.setState({isEndList: false, dataRender: null})
+        this.setState({isEndList: false, dataRender: null});
+        console.log(URlConfig.getListNhanVienLink(Page, id_nhom, SEARCH_STRING, params.status));
         fetch(URlConfig.getListNhanVienLink(Page, id_nhom, SEARCH_STRING, params.status))
             .then((response) => response.json())
             .then((responseJson) => {

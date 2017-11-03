@@ -18,7 +18,6 @@ import 'moment/locale/vi';
 import {colors} from "../configs/color";
 import Utils from "../configs/ultils";
 import {GiftedAvatar} from 'react-native-gifted-chat'
-
 const timer = require('react-native-timer')
 let {width, height} = Dimensions.get('window');
 export default class NewFeedItem extends React.Component {
@@ -36,25 +35,25 @@ export default class NewFeedItem extends React.Component {
 
 
     getImage(urlImage) {
-            if (!urlImage || !Utils.checkURL(urlImage)) {
-                return (
-                    <GiftedAvatar
-                        user={
-                            {
-                                _id: 1,
-                                name: this.item.tennhanvien
-                            }
+        if (!urlImage || !Utils.isImageUrl(urlImage)) {
+            return (
+                <GiftedAvatar
+                    user={
+                        {
+                            _id: 1,
+                            name: this.item.tennhanvien
                         }
-                        avatarStyle={{margin: 8, width: 60, height: 60, borderRadius: 30}}/>
-                );
-            } else {
-                return (
-                    <Image
-                        style={{margin: 8, width: 60, height: 60, borderRadius: 30}}
-                        source={{uri: urlImage}}
-                    />
-                );
-            }
+                    }
+                    avatarStyle={{margin: 8, width: 60, height: 60, borderRadius: 30}}/>
+            );
+        } else {
+            return (
+                <Image
+                    style={{margin: 8, width: 60, height: 60, borderRadius: 30}}
+                    source={{uri: urlImage}}
+                />
+            );
+        }
     }
 
     render() {
