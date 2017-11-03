@@ -78,7 +78,7 @@ export default class ChartScreen extends React.Component {
                         dataRender: responseJson.data,
                         progressVisible: false
                     })
-                else this.setState({tongdoanhthu: '0.00'})
+                else this.setState({tongdoanhthu: '0.00', dataRender: null, isEmpty: true})
             }).catch((e) => {
             this.setState({progressVisible: false});
             Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại')
@@ -153,7 +153,7 @@ export default class ChartScreen extends React.Component {
                         })
                     }
                     else this.setState({isEmpty: true, progressVisible: false})
-                } else this.setState({tongdoanhthu: '0.00'})
+                } else this.setState({tongdoanhthu: '0.00', dataRender: null, isEmpty: true})
                 }
             ).catch((e) => {
             this.setState({progressVisible: false});
@@ -414,9 +414,8 @@ export default class ChartScreen extends React.Component {
                                 }}> {ultils.getMoney(this.state.tongdoanhthu)}</Text>
                             </View>
                         </View>
+                        {this.getChartorFlatListorNull(options)}
                     </View>
-
-                    {this.getChartorFlatListorNull(options)}
                 </View>
             </View>
         )

@@ -71,7 +71,7 @@ export default class RevenuePerPersonnelScreen extends React.Component {
                     }, function () {
                         console.log(this.state.tongdoanhthu, 'tong doanh thuuuuuuuu')
                     })
-                }
+                } else this.setState({tongdoanhthu: '0.00', dataRender: null, isEmpty: true})
             }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
     }
 
@@ -116,7 +116,7 @@ export default class RevenuePerPersonnelScreen extends React.Component {
                         })
                     }
                     else this.setState({isEmpty: true})
-                } else this.setState({tongdoanhthu: '0.00'})
+                } else this.setState({tongdoanhthu: '0.00', dataRender: null, isEmpty: true})
                 }
             )
     }
