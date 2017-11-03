@@ -39,6 +39,7 @@ export default class RevenuePerPersonnelScreen extends React.Component {
         today = dd + '-' + mm + '-' + yyyy;
         var now = new Date();
         this.state = {
+            tongdonhang: '0',
             tongdoanhthu: '0.00',
             date: today,
             dateto: today,
@@ -67,11 +68,12 @@ export default class RevenuePerPersonnelScreen extends React.Component {
                 if (responseJson.data !== null) {
                     this.setState({
                         dataRender: responseJson.data,
-                        tongdoanhthu: responseJson.tongdoanhthu
+                        tongdoanhthu: responseJson.tongdoanhthu,
+                        tongdonhang: responseJson.tongdonhang
                     }, function () {
                         console.log(this.state.tongdoanhthu, 'tong doanh thuuuuuuuu')
                     })
-                } else this.setState({tongdoanhthu: '0.00', dataRender: null, isEmpty: true})
+                } else this.setState({tongdonhang: '0', tongdoanhthu: '0.00', dataRender: null, isEmpty: true})
             }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
     }
 
@@ -83,6 +85,7 @@ export default class RevenuePerPersonnelScreen extends React.Component {
                 if (responseJson.data !== null) {
                     console.log(responseJson, 'tong doanh thuuuuuuuu')
                     this.setState({
+                        tongdonhang: responseJson.tongdonhang,
                         dataRender: responseJson.data,
                         tongdoanhthu: responseJson.tongdoanhthu
                     }, function () {
@@ -116,7 +119,7 @@ export default class RevenuePerPersonnelScreen extends React.Component {
                         })
                     }
                     else this.setState({isEmpty: true})
-                } else this.setState({tongdoanhthu: '0.00', dataRender: null, isEmpty: true})
+                } else this.setState({tongdonhang: '0', tongdoanhthu: '0.00', dataRender: null, isEmpty: true})
                 }
             )
     }
@@ -142,7 +145,6 @@ export default class RevenuePerPersonnelScreen extends React.Component {
         if (!this.state.isEmpty) {
             if (this.state.numberTypePick === 0)
                 return (
-                    <View style={{flex: 9}}>
                         <FlatList
                             keyboardDismissMode="on-drag"
                             ref="listview"
@@ -154,7 +156,6 @@ export default class RevenuePerPersonnelScreen extends React.Component {
                                 return this.renderItem(item)
                             }}
                         />
-                    </View>
                 )
             else
                 return (
@@ -242,7 +243,7 @@ export default class RevenuePerPersonnelScreen extends React.Component {
                     }
                 />
                 <View style={{flexDirection: 'column', flex: 9}}>
-                    <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: 60}}>
+                    <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
                         <Text style={{backgroundColor: 'transparent'}}>Từ</Text>
                         <DatePicker
                             style={{marginLeft: 8}}
@@ -283,6 +284,8 @@ export default class RevenuePerPersonnelScreen extends React.Component {
                         justifyContent: 'center'
                     }}>
                         <View style={{
+                            paddingBottom: 10,
+                            paddingTop: 10,
                             backgroundColor: 'transparent',
                             flexDirection: 'row',
                             justifyContent: 'center',
@@ -300,19 +303,42 @@ export default class RevenuePerPersonnelScreen extends React.Component {
                         </View>
                         <View style={{
                             backgroundColor: 'transparent',
-                            flexDirection: 'row',
                             justifyContent: 'center',
                             flex: 1
                         }}>
-                            <Text
-                                style={{color: 'black', alignSelf: 'center', marginLeft: 8, flex: 1}}>
-                                Tổng: </Text>
-                            <Text style={{
-                                color: 'black',
-                                alignSelf: 'center',
-                                marginRight: 8,
-                                flex: 2
-                            }}> {ultils.getMoney(this.state.tongdoanhthu)}</Text>
+                            <View style={{
+                                backgroundColor: 'transparent',
+                                flexDirection: 'row',
+                                justifyContent: 'center',
+                                flex: 1
+                            }}>
+                                <Text
+                                    style={{color: 'black', alignSelf: 'center', marginLeft: 8, flex: 2}}>
+                                    Đơn hàng: </Text>
+                                <Text style={{
+                                    color: 'black',
+                                    alignSelf: 'center',
+                                    marginRight: 8,
+                                    flex: 3
+                                }}> {ultils.getMoney(this.state.tongdonhang)}</Text>
+                            </View>
+                            <View style={{
+                                backgroundColor: 'transparent',
+                                flexDirection: 'row',
+                                justifyContent: 'center',
+                                flex: 1
+                            }}>
+                                <Text
+                                    style={{color: 'black', alignSelf: 'center', marginLeft: 8, flex: 2}}>
+                                    Doanh thu: </Text>
+                                <Text style={{
+                                    color: 'black',
+                                    alignSelf: 'center',
+                                    marginRight: 8,
+                                    flex: 3
+                                }}> {ultils.getMoney(this.state.tongdoanhthu)}</Text>
+                            </View>
+
                         </View>
                     </View>
                     {this.getChartorFlatListorNull(options)}

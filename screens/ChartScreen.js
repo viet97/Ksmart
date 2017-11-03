@@ -157,7 +157,7 @@ export default class ChartScreen extends React.Component {
                 }
             ).catch((e) => {
             this.setState({progressVisible: false});
-            Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại')
+            Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e)
         })
     }
 
@@ -399,19 +399,25 @@ export default class ChartScreen extends React.Component {
                             </View>
                             <View style={{
                                 backgroundColor: 'transparent',
-                                flexDirection: 'row',
                                 justifyContent: 'center',
                                 flex: 1
                             }}>
-                                <Text
-                                    style={{color: 'black', alignSelf: 'center', marginLeft: 8, flex: 1}}>
-                                    Tổng: </Text>
-                                <Text style={{
-                                    color: 'black',
-                                    alignSelf: 'center',
-                                    marginRight: 8,
-                                    flex: 2
-                                }}> {ultils.getMoney(this.state.tongdoanhthu)}</Text>
+                                <View style={{
+                                    backgroundColor: 'transparent',
+                                    flexDirection: 'row',
+                                    justifyContent: 'center',
+                                    flex: 1
+                                }}>
+                                    <Text
+                                        style={{color: 'black', alignSelf: 'center', marginLeft: 8, flex: 1}}>
+                                        Tổng: </Text>
+                                    <Text style={{
+                                        color: 'black',
+                                        alignSelf: 'center',
+                                        marginRight: 8,
+                                        flex: 3
+                                    }}> {ultils.getMoney(this.state.tongdoanhthu)}</Text>
+                                </View>
                             </View>
                         </View>
                         {this.getChartorFlatListorNull(options)}

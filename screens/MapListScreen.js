@@ -25,7 +25,6 @@ const default_location={
     longitudeDelta: 0.0421 * 100,
 }
 let INDEX;
-let func;
 export default class MapListScreen extends Component {
     constructor(props) {
         super(props);
@@ -51,8 +50,6 @@ export default class MapListScreen extends Component {
     }
 
     componentDidMount() {
-
-        func = this.props.backToHome()
         fetch(URlConfig.getAllNhanVien())
             .then((response) => (response.json()))
             .then((responseJson) => {
@@ -209,14 +206,15 @@ export default class MapListScreen extends Component {
                                                         }
                                                     }
                                                     this.setState({markers}, function () {
-                                                        this.setState({
-                                                            region: {
-                                                                latitude: this.state.markers[0].ViDo,
-                                                                longitude: this.state.markers[0].KinhDo,
-                                                                latitudeDelta: this.state.region.latitudeDelta,
-                                                                longitudeDelta: this.state.region.longitudeDelta,
-                                                            }
-                                                        });
+                                                        if (markers.length !== 0)
+                                                            this.setState({
+                                                                region: {
+                                                                    latitude: this.state.markers[0].ViDo,
+                                                                    longitude: this.state.markers[0].KinhDo,
+                                                                    latitudeDelta: this.state.region.latitudeDelta,
+                                                                    longitudeDelta: this.state.region.longitudeDelta,
+                                                                }
+                                                            });
 
                                                     })
                                                 }
