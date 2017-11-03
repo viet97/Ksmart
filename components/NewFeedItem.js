@@ -17,6 +17,7 @@ import {shadowProps} from "../configs/shadow";
 import 'moment/locale/vi';
 import {colors} from "../configs/color";
 import Utils from "../configs/ultils";
+import {GiftedAvatar} from 'react-native-gifted-chat'
 
 const timer = require('react-native-timer')
 let {width, height} = Dimensions.get('window');
@@ -35,7 +36,6 @@ export default class NewFeedItem extends React.Component {
 
 
     getImage(urlImage) {
-        if (urlImage.length !== 0) {
             if (!urlImage || !Utils.checkURL(urlImage)) {
                 return (
                     <GiftedAvatar
@@ -55,7 +55,6 @@ export default class NewFeedItem extends React.Component {
                     />
                 );
             }
-        }
     }
 
     render() {

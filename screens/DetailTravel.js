@@ -221,8 +221,9 @@ export default class DetailTravel extends React.Component {
                         marginRight: 8,
                         marginBottom: 4
                     }}>
-                        <Text style={{backgroundColor: 'transparent'}}>Trạng thái: </Text>
+                        <Text style={{backgroundColor: 'transparent', flex: 1}}>Trạng thái: </Text>
                         <Text style={{
+                            flex: 4,
                             marginLeft: 8,
                             backgroundColor: 'transparent'
                         }}>{this._handleString()}</Text>

@@ -18,11 +18,13 @@ function setCustomer(id, name, color) {
 
     if (color) {
         customers[id] = {
+            id: id,
             name: name,
             color: `#${color}`
         };
     } else {
         customers[id] = {
+            id: id,
             name: name,
             color: randomColor()
         };

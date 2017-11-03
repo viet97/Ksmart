@@ -121,14 +121,11 @@ export default class ChooseTypeListNV extends Component {
             }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
     }
 
-    goback = () => {
-
-    }
-
-    componentWillUnMount() {
+    componentWillUnmount() {
+        console.log(this.state.selectedTab)
         BackHandler.removeEventListener('hardwareBackPress', () => {
             if (this.state.selectedTab === 'ListNhanVien') {
-                console.log(this.state.selectedTab)
+
                 return false
             } else {
                 this.setState({selectedTab: 'ListNhanVien'})

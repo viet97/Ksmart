@@ -394,8 +394,9 @@ export default class ListNhanVienScreen extends React.Component {
                 >
 
                     <View style={{
+                        paddingTop: 40,
                         flexDirection: 'column',
-                        paddingBottom: 40,
+                        paddingBottom: 80,
                         justifyContent: 'center',
                         alignItems: 'center',
                         backgroundColor: 'transparent',
@@ -430,7 +431,7 @@ export default class ListNhanVienScreen extends React.Component {
                                 this.setState({dialogVisible: false});
                                 console.log('Huỷ bỏ ', this.state.numberPickStatus, this.state.numberPickParty);
                             }}>
-                            <Text style={{color: '#6a5aff', alignSelf: 'center'}}>Cancel</Text>
+                            <Text style={{color: '#6a5aff', alignSelf: 'center'}}>Hủy bỏ</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={{
@@ -456,7 +457,7 @@ export default class ListNhanVienScreen extends React.Component {
                                 color: '#6a5aff',
                                 alignSelf: 'center',
                                 fontWeight: 'bold'
-                            }}>Ok</Text>
+                            }}>Xác nhận</Text>
                         </TouchableOpacity>
 
                     </View>

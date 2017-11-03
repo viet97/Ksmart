@@ -68,7 +68,7 @@ export default class AboutUsScreen extends React.Component {
                     </View>
                     <View style={{position: 'absolute', bottom: 0, left: 0, right: 0}}>
                         <Text style={{alignSelf: 'center', color: 'blue'}}>
-                            Phiên bản 1.0.5
+                            Phiên bản 1.0.8
                         </Text>
                     </View>
                 </View>

@@ -23,7 +23,6 @@ const default_location={
     longitudeDelta: 0.0421 * 100,
 }
 let INDEX
-let func
 export default class MapListScreen extends Component {
     constructor(props) {
         super(props);
@@ -49,14 +48,11 @@ export default class MapListScreen extends Component {
 
     componentDidMount() {
         console.log(URlConfig.getAllNhanVien(), '33333333')
-
-        func = this.props.backToHome()
         fetch(URlConfig.getAllNhanVien())
             .then((response) => (response.json()))
             .then((responseJson) => {
                 if (responseJson.status) {
                     this.setState({markers: responseJson.dsNhanVien}, function () {
-                        console.log(this.state.markers[0])
                         this.setState({
                             myRegion: {
                                 latitude: this.state.markers[0].ViDo,
@@ -202,6 +198,7 @@ export default class MapListScreen extends Component {
                                     fetch(URlConfig.getAllNhanVien())
                                         .then((response) => (response.json()))
                                         .then((responseJson) => {
+                                            console.log(responseJson.dsNhanVien)
                                             if (responseJson.status) {
                                                 if (this.state.status === -1) {
                                                     this.setState({markers: responseJson.dsNhanVien});
@@ -212,23 +209,24 @@ export default class MapListScreen extends Component {
                                                             markers.push(item)
                                                         }
                                                     }
-                                                    this.setState({markers}, function () {
-                                                        this.setState({
-                                                            region: {
-                                                                latitude: this.state.markers[0].ViDo,
-                                                                longitude: this.state.markers[0].KinhDo,
-                                                                latitudeDelta: this.state.region.latitudeDelta,
-                                                                longitudeDelta: this.state.region.longitudeDelta,
-                                                            }
-                                                        });
 
+                                                    this.setState({markers}, function () {
+                                                        if (markers.length !== 0)
+                                                            this.setState({
+                                                                region: {
+                                                                    latitude: this.state.markers[0].ViDo,
+                                                                    longitude: this.state.markers[0].KinhDo,
+                                                                    latitudeDelta: this.state.region.latitudeDelta,
+                                                                    longitudeDelta: this.state.region.longitudeDelta,
+                                                                }
+                                                            });
                                                     })
                                                 }
 
                                             } else {
                                                 Toast.show(responseJson.msg)
                                             }
-                                        }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'));
+                                        }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e));
 
 
                                 })
@@ -259,13 +257,11 @@ export default class MapListScreen extends Component {
                                     .then((response) => (response.json()))
                                     .then((responseJson) => {
                                         if (responseJson.status) {
-                                            this.setState({address: responseJson.data}, function () {
-
-                                            });
+                                            this.setState({address: responseJson.data});
                                         } else {
                                             Toast.show(responseJson.msg)
                                         }
-                                    }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'));
+                                    }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e));
                             }}
                             coordinate={{
                                 latitude: marker.ViDo,
@@ -280,11 +276,13 @@ export default class MapListScreen extends Component {
                         </MapView.Marker>
                     ))}
                 </MapView>
-                <TouchableOpacity style={{backgroundColor: 'transparent'}} onPress={() => {
+                <TouchableOpacity
+                    style={{backgroundColor: 'transparent'}}
+                    onPress={() => {
                     this.setState({
                         region: this.state.myRegion,
                     })
-                }}>
+                    }}>
                     <Icon2 size={24} style={{position: 'absolute', right: 10, bottom: 10}} color="gray"
                            name="my-location"/>
                 </TouchableOpacity>
@@ -300,7 +298,7 @@ export default class MapListScreen extends Component {
 
 
     getImageNV(v) {
-        var value = v.AnhDaiDien;
+        let value = v.AnhDaiDien;
         if (value === undefined || value === null || value.length === 0) {
             return (
                 <View style={{flexDirection: 'column'}}>
@@ -323,6 +321,7 @@ export default class MapListScreen extends Component {
     }
 
     getIconUser(state) {
+        console.log(state)
         if (state === 1) {
             return (
                 <View style={{
@@ -385,7 +384,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         margin: 8,
         paddingBottom: 8
-    }, iconStyle: {
+    },
+    iconStyle: {
         alignSelf: 'center',
         backgroundColor: "transparent",
     },

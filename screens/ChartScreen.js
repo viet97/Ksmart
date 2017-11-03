@@ -28,16 +28,29 @@ export default class ChartScreen extends React.Component {
 
     constructor(props) {
         super(props);
+        let today = new Date();
+        let dd = today.getDate();
+        let mm = today.getMonth() + 1; //January is 0!
+        let yyyy = today.getFullYear();
+        if (dd < 10) {
+            dd = '0' + dd
+        }
+
+        if (mm < 10) {
+            mm = '0' + mm
+        }
+        today = dd + '-' + mm + '-' + yyyy;
         var now = new Date();
         this.state = {
+            tongdoanhthu: '0.00',
             refreshing: false,
             isEmpty: true,
             data: [],
+            date: today,
+            dateto: today,
             arr: [],
             month: now.getMonth() + 1,
             year: now.getFullYear(),
-            montArr: [],
-            yearArr: [],
             keyChart: 'TongTien',
             type: [],
             keyChartArr: [],
@@ -54,40 +67,24 @@ export default class ChartScreen extends React.Component {
 
     refreshData() {
         this.setState({dataRender: null})
-        let month = this.state.month;
-        if (this.state.month < 10) {
-            month = '0' + month;
-        }
-        let url = URlConfig.getChartLink(month + '-' + this.state.year);
+        let url = URlConfig.getChartLink(this.state.date, this.state.dateto);
         this.setState({progressVisible: true})
         fetch(url)
             .then((response) => (response.json()))
             .then((responseJson) => {
                 if (responseJson.data !== null)
                     this.setState({
+                        tongdoanhthu: responseJson.tongdoanhthu,
                         dataRender: responseJson.data,
                         progressVisible: false
-
                     })
+                else this.setState({tongdoanhthu: '0.00'})
             }).catch((e) => {
             this.setState({progressVisible: false});
             Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại')
         })
     }
 
-    setMonthAndYear() {
-        let YEART_START = 2000;
-        let YEAR_END = 2100;
-        var monthList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-        var yearList = [];
-        for (var i = YEART_START; i < YEAR_END; i++) {
-            yearList.push(i)
-        }
-        this.setState({
-            montArr: monthList,
-            yearArr: yearList,
-        });
-    }
 
     sortData(arr) {
         let data = arr
@@ -107,24 +104,23 @@ export default class ChartScreen extends React.Component {
     }
 
     componentWillMount() {
-        this.setMonthAndYear();
         this.getDataChart();
     }
 
     getDataChart() {
-        var month = this.state.month;
-        if (this.state.month < 10) {
-            month = '0' + month;
-        }
-        var url = URlConfig.getChartLink(month + '-' + this.state.year);
+
+        var url = URlConfig.getChartLink(this.state.date, this.state.dateto);
+        console.log(url)
         this.setState({progressVisible: true})
         fetch(url)
             .then((response) => (response.json()))
             .then((responseJson) => {
                 if (responseJson.data !== null) {
                     this.setState({
+                        tongdoanhthu: responseJson.tongdoanhthu,
                         dataRender: this.sortData(responseJson.data)
                     })
+
                     var res = responseJson.data;
                     var dt = []
 
@@ -157,7 +153,7 @@ export default class ChartScreen extends React.Component {
                         })
                     }
                     else this.setState({isEmpty: true, progressVisible: false})
-                }
+                } else this.setState({tongdoanhthu: '0.00'})
                 }
             ).catch((e) => {
             this.setState({progressVisible: false});
@@ -239,13 +235,11 @@ export default class ChartScreen extends React.Component {
                             data={this.state.dataRender}
                             renderItem={({item}) => {
                                 return this.renderItem(item)
-                            }
-                            }
+                            }}
                         />
                     </View>
                 )
-            else
-                return (
+            else return (
                     <View style={{padding: 16}}>
                         <Bar data={this.state.data} options={options} accessorKey={this.state.keyChart}/>
                         {this.getTitleChart()}
@@ -332,13 +326,6 @@ export default class ChartScreen extends React.Component {
                 }
             }
         }
-        let yearItems = this.state.yearArr.map((s, i) => {
-            return <Picker.Item key={s} value={s} label={s + ''}/>
-        });
-
-        let type = this.state.type.map((s, i) => {
-            return <Picker.Item key={i} value={i} label={s + ''}/>
-        });
         return (
             <View style={{flex: 1, backgroundColor: 'white'}}>
 
@@ -352,61 +339,83 @@ export default class ChartScreen extends React.Component {
                     }/>
 
                 <View style={{flexDirection: 'column', flex: 9}}>
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between', height: 44}}>
-                        <Text style={{
-                            alignSelf: 'center',
-                            backgroundColor: 'transparent',
-                            color: 'black'
-                        }}>Tháng</Text>
-                        <ModalDropdownCustom
-                            width={40}
-                            data={this.state.montArr}
-                            defaultValue={this.state.month}
-                            onSelect={(idx, value) => this.setState({month: value}, function () {
-                                this.getDataChart();
-                            })}>
+                    <View style={{flexDirection: 'column', flex: 9}}>
+                        <View
+                            style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: 60}}>
+                            <Text style={{backgroundColor: 'transparent'}}>Từ</Text>
+                            <DatePicker
+                                style={{marginLeft: 8}}
+                                date={this.state.date}
+                                mode="date"
+                                placeholder="select date"
+                                format="DD-MM-YYYY"
 
-                        </ModalDropdownCustom>
-                        <Text
-                            style={{alignSelf: 'center', backgroundColor: 'transparent', color: 'black'}}>Năm</Text>
-                        <ModalDropdownCustom
-                            width={60}
-                            data={this.state.yearArr}
-                            defaultValue={this.state.year}
-                            onSelect={(idx, value) => this.setState({year: value}, function () {
-                                this.getDataChart();
-                            })}>
-                        </ModalDropdownCustom>
-                        <Text style={{
-                            alignSelf: 'center',
+                                confirmBtnText="Xác nhận"
+                                cancelBtnText="Huỷ bỏ"
+                                onDateChange={(date) => {
+                                    this.setState({date: date}, function () {
+                                        this.getDataChart()
+                                    })
+                                }}
+                            />
+                            <Text style={{backgroundColor: 'transparent'}}>đến</Text>
+                            <DatePicker
+                                style={{marginLeft: 8}}
+                                date={this.state.dateto}
+                                mode="date"
+                                placeholder="select date"
+                                format="DD-MM-YYYY"
+
+                                confirmBtnText="Xác nhận"
+                                cancelBtnText="Huỷ bỏ"
+                                onDateChange={(date) => {
+                                    this.setState({dateto: date}, function () {
+                                        this.getDataChart()
+                                    })
+                                }}
+                            />
+                        </View>
+                        <View style={{
                             backgroundColor: 'transparent',
-                            color: 'black'
-                        }}>Theo</Text>
-                        <ModalDropdownCustom
-                            width={100}
-                            data={this.state.keyChartArr}
-                            defaultValue={this.state.keyChartArr[0]}
-                            onSelect={(idx, value) => {
-                                let key = ''
-                                if (idx === 0) {
-                                    key = 'TongTien'
-                                }
-                                else key = 'DonHang'
-                                this.setState({keyChart: key})
+                            flexDirection: 'row',
+                            marginLeft: 8,
+                            justifyContent: 'center'
+                        }}>
+                            <View style={{
+                                backgroundColor: 'transparent',
+                                flexDirection: 'row',
+                                justifyContent: 'center',
+                                flex: 1
                             }}>
+                                <Text style={{color: 'black', alignSelf: 'center', marginRight: 4}}>Dạng hiển thị</Text>
+                                <ModalDropdownCustom
+                                    width={width / 4}
+                                    data={this.state.type}
+                                    defaultValue={this.state.type[0]}
+                                    onSelect={(idx, value) => {
+                                        this.setState({numberTypePick: idx})
+                                    }}
+                                />
+                            </View>
+                            <View style={{
+                                backgroundColor: 'transparent',
+                                flexDirection: 'row',
+                                justifyContent: 'center',
+                                flex: 1
+                            }}>
+                                <Text
+                                    style={{color: 'black', alignSelf: 'center', marginLeft: 8, flex: 1}}>
+                                    Tổng: </Text>
+                                <Text style={{
+                                    color: 'black',
+                                    alignSelf: 'center',
+                                    marginRight: 8,
+                                    flex: 2
+                                }}> {ultils.getMoney(this.state.tongdoanhthu)}</Text>
+                            </View>
+                        </View>
+                    </View>
 
-                        </ModalDropdownCustom>
-                    </View>
-                    <View style={{alignSelf: 'center', flexDirection: 'row', backgroundColor: 'transparent'}}>
-                        <Text style={{color: 'black', alignSelf: 'center', marginRight: 4}}>Dạng hiển thị</Text>
-                        <ModalDropdownCustom
-                            data={this.state.type}
-                            defaultValue={this.state.type[0]}
-                            onSelect={(idx, value) => {
-                                this.setState({numberTypePick: idx})
-                            }}
-                        />
-                    </View>
                     {this.getChartorFlatListorNull(options)}
                 </View>
             </View>

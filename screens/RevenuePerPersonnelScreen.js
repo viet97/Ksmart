@@ -16,6 +16,7 @@ import DoanhThuTheoNVItem from "../components/DoanhThuTheoNVItem";
 import ModalDropdownCustom from "../components/ModalDropdownCustom";
 import LinearGradient from "react-native-linear-gradient";
 import HeaderCustom from "../components/Header";
+import ultils from "../configs/ultils";
 
 export default class RevenuePerPersonnelScreen extends React.Component {
     static navigationOptions = {
@@ -38,6 +39,7 @@ export default class RevenuePerPersonnelScreen extends React.Component {
         today = dd + '-' + mm + '-' + yyyy;
         var now = new Date();
         this.state = {
+            tongdoanhthu: '0.00',
             date: today,
             dateto: today,
             isEmpty: true,
@@ -63,17 +65,29 @@ export default class RevenuePerPersonnelScreen extends React.Component {
             .then((response) => (response.json()))
             .then((responseJson) => {
                 if (responseJson.data !== null) {
-                    this.setState({dataRender: responseJson.data})
+                    this.setState({
+                        dataRender: responseJson.data,
+                        tongdoanhthu: responseJson.tongdoanhthu
+                    }, function () {
+                        console.log(this.state.tongdoanhthu, 'tong doanh thuuuuuuuu')
+                    })
                 }
             }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
     }
 
     getDataChart() {
+        console.log(URlConfig.getRevenuePerson(this.state.date, this.state.dateto))
         fetch(URlConfig.getRevenuePerson(this.state.date, this.state.dateto))
             .then((response) => (response.json()))
             .then((responseJson) => {
                 if (responseJson.data !== null) {
-                    this.setState({dataRender: responseJson.data})
+                    console.log(responseJson, 'tong doanh thuuuuuuuu')
+                    this.setState({
+                        dataRender: responseJson.data,
+                        tongdoanhthu: responseJson.tongdoanhthu
+                    }, function () {
+
+                    })
                     console.log(responseJson.data)
                     let res = responseJson.data;
                     let dt = []
@@ -102,8 +116,7 @@ export default class RevenuePerPersonnelScreen extends React.Component {
                         })
                     }
                     else this.setState({isEmpty: true})
-                }
-
+                } else this.setState({tongdoanhthu: '0.00'})
                 }
             )
     }
@@ -263,15 +276,44 @@ export default class RevenuePerPersonnelScreen extends React.Component {
                             }}
                         />
                     </View>
-                    <View style={{backgroundColor: 'transparent', flexDirection: 'row', justifyContent: 'center'}}>
-                        <Text style={{color: 'black', alignSelf: 'center', marginRight: 4}}>Dạng hiển thị</Text>
-                        <ModalDropdownCustom
-                            data={this.state.type}
-                            defaultValue={this.state.type[0]}
-                            onSelect={(idx, value) => {
-                                this.setState({numberTypePick: idx})
-                            }}
-                        />
+                    <View style={{
+                        backgroundColor: 'transparent',
+                        flexDirection: 'row',
+                        marginLeft: 8,
+                        justifyContent: 'center'
+                    }}>
+                        <View style={{
+                            backgroundColor: 'transparent',
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            flex: 1
+                        }}>
+                            <Text style={{color: 'black', alignSelf: 'center', marginRight: 4}}>Dạng hiển thị</Text>
+                            <ModalDropdownCustom
+                                width={width / 4}
+                                data={this.state.type}
+                                defaultValue={this.state.type[0]}
+                                onSelect={(idx, value) => {
+                                    this.setState({numberTypePick: idx})
+                                }}
+                            />
+                        </View>
+                        <View style={{
+                            backgroundColor: 'transparent',
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            flex: 1
+                        }}>
+                            <Text
+                                style={{color: 'black', alignSelf: 'center', marginLeft: 8, flex: 1}}>
+                                Tổng: </Text>
+                            <Text style={{
+                                color: 'black',
+                                alignSelf: 'center',
+                                marginRight: 8,
+                                flex: 2
+                            }}> {ultils.getMoney(this.state.tongdoanhthu)}</Text>
+                        </View>
                     </View>
                     {this.getChartorFlatListorNull(options)}
                 </View>

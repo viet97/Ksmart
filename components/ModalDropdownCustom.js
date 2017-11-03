@@ -59,10 +59,6 @@ export default class ModalDropdownCustom extends Component {
         )
     }
 
-    setHeight() {
-        this.setState({height: 160})
-    }
-
     componentDidUpdate(data) {
         if (this.state.height === 0) {
             if (this.props.data.length < 4)
@@ -122,11 +118,13 @@ const styles = StyleSheet.create({
         borderRadius: 3,
     },
     dropdown_2_row: {
+        paddingBottom: 10,
+        paddingTop: 10,
         flexDirection: 'row',
-        height: 40,
         alignItems: 'center',
     },
     dropdown_2_image: {
+
         marginLeft: 4,
         width: 30,
         height: 30,

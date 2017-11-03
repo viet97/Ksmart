@@ -33,7 +33,7 @@ export default class NewFeedItem extends React.Component {
 
     render() {
         let item = this.props.data;
-
+        console.log(item.DienThoai)
         return (
 
             <TouchableOpacity

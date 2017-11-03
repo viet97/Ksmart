@@ -17,7 +17,7 @@ import URlConfig from "../configs/url";
 import Communications from 'react-native-communications';
 import LinearGradient from "react-native-linear-gradient";
 import HeaderCustom from "../components/Header";
-import {getTypeCustomer} from "../configs/customer";
+import {getCustomer, getTypeCustomer} from "../configs/customer";
 
 let {width, height} = Dimensions.get('window')
 export default class DetailCustomer extends React.Component {
@@ -109,8 +109,9 @@ export default class DetailCustomer extends React.Component {
 
     render() {
         const {params} = this.props.navigation.state;
-
         const item = params.item;
+        let color = getCustomer(item.idloaikhachhang).color
+        console.log(color, 'mauuuuuuuuuuuuuuuuuu')
         return (
             <View style={{flex: 1, backgroundColor: 'white'}}>
 
@@ -122,8 +123,8 @@ export default class DetailCustomer extends React.Component {
 
                     <View style={{flex: 1, backgroundColor: 'white'}}>
                         <ScrollView style={{flex: 1, marginBottom: 4}}>
-                            {this.getElement('Tên cửa hàng', this.state.data.TenCuaHang)}
-                            {this.getElement('Tên nhóm khách hàng', this.state.data.tennhomkhachhang)}
+                            {this.getElement('Tên khách hàng', this.state.data.TenCuaHang)}
+                            {this.getElement('Kênh bán hàng', this.state.data.tennhomkhachhang)}
                             {this.getElement('Loại khách hàng', getTypeCustomer(this.state.data.idloaikhachhang))}
                             {this.getElement('Địa chỉ', this.state.data.DiaChi)}
                             {this.getElementPhoneNumber('Số điện thoại 1', this.state.data.SoDienThoai)}
@@ -151,7 +152,7 @@ export default class DetailCustomer extends React.Component {
                                 longitude: item.KinhDo
                             }
                             }>
-                            <Icon style={styles.iconStyle} size={24} color="green" name="home" type="font-awesome"/>
+                            <Icon style={styles.iconStyle} size={24} color={color} name="home" type="font-awesome"/>
                             <MapView.Callout>
                                 <View
                                     style={{
@@ -160,9 +161,10 @@ export default class DetailCustomer extends React.Component {
                                     <View style={{
                                         flexDirection: 'row',
                                     }}>
-                                        <Icon style={{backgroundColor: 'transparent',}} size={24} color="red"
+                                        <Icon style={{backgroundColor: 'transparent',}} size={24} color={color}
                                               name="home" type="font-awesome"/>
                                         <Text style={{
+                                            width: 265,
                                             backgroundColor: 'transparent',
                                             marginLeft: 8,
                                             fontSize: 18,
@@ -172,9 +174,10 @@ export default class DetailCustomer extends React.Component {
                                     <View style={{
                                         flexDirection: 'row',
                                     }}>
-                                        <Icon style={{backgroundColor: 'transparent',}} size={24} color="black"
+                                        <Icon style={{backgroundColor: 'transparent',}} size={24} color={color}
                                               name="people-outline" type="ionicons"/>
                                         <Text style={{
+                                            width: 265,
                                             backgroundColor: 'transparent',
                                             marginLeft: 8
                                         }}>{item.tennhomkhachhang}</Text>
@@ -187,10 +190,14 @@ export default class DetailCustomer extends React.Component {
                                         <Icon
                                             name='location-pin'
                                             type='entypo'
-                                            color='green'
+                                            color={color}
                                         />
                                         <Text
-                                            style={{backgroundColor: 'transparent', marginLeft: 8}}>{item.DiaChi}</Text>
+                                            style={{
+                                                backgroundColor: 'transparent',
+                                                marginLeft: 8,
+                                                width: 265
+                                            }}>{item.DiaChi}</Text>
                                     </View>
                                 </View>
                             </MapView.Callout>

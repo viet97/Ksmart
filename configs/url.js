@@ -179,12 +179,13 @@ export default class URlConfig {
 
         return data.urlserver + '/AppLayDiaChiTuToaDo.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&idnhanvien=' + idnhanvien + '&kinhdo=' + kinhdo + '&vido=' + vido;
     }
-    static getChartLink(monthYear) {
+
+    static getChartLink(dateF, dateT) {
         let data = URlConfig.OBJLOGIN;
         // var url =
         //     'http://jav.ksmart.vn/AppBieuDoDoanhThu.aspx?token=' +
         //     '6e22b116f5111220741848ccd290e9e9bd8757498aeff45f479463cec823a1dc&idquanly=47&macongty=LACHONG&thang=06-2017'
-        return data.urlserver + '/AppBieuDoDoanhThu.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&macongty=' + data.idct + '&thang=' + monthYear;
+        return data.urlserver + '/AppBieuDoDoanhThu.aspx?token=' + md5.hex_md5(Date.now()) + '&idquanly=' + data.id + '&macongty=' + data.idct + '&tungay=' + dateF + '&denngay=' + dateT;
     }
 
     static getReportList(from, to, page, keyword) {

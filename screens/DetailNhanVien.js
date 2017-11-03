@@ -24,7 +24,6 @@ import ultils from "../configs/ultils";
 import {Header} from 'react-navigation'
 import MapView from 'react-native-maps';
 import Communications from "react-native-communications";
-
 import {GiftedAvatar} from 'react-native-gifted-chat'
 const MIN_HEIGHT = Header.HEIGHT;
 const MAX_HEIGHT = 250;
@@ -52,7 +51,6 @@ export default class DetailNhanVien extends React.Component {
         console.log(this.state.data);
         if (!url || !ultils.checkURL(url))  
                 return (
-
                     <GiftedAvatar
                         user={
                             {

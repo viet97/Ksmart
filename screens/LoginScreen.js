@@ -195,7 +195,7 @@ export default class LoginScreen extends React.Component {
                         justifyContent: 'center'
                     }}>
                         <Text style={{alignSelf: 'center'}}>
-                            Phiên bản 1.0.5
+                            Phiên bản 1.0.8
                         </Text>
 
                         <View style={{justifyContent: 'center', flexDirection: 'row',}}>
