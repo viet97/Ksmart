@@ -46,7 +46,7 @@ export default class ChartScreen extends React.Component {
             refreshing: false,
             isEmpty: true,
             data: [],
-            date: today,
+            datefrom: today,
             dateto: today,
             arr: [],
             month: now.getMonth() + 1,
@@ -67,7 +67,7 @@ export default class ChartScreen extends React.Component {
 
     refreshData() {
         this.setState({dataRender: null})
-        let url = URlConfig.getChartLink(this.state.date, this.state.dateto);
+        let url = URlConfig.getChartLink(this.state.datefrom, this.state.dateto);
         this.setState({progressVisible: true})
         fetch(url)
             .then((response) => (response.json()))
@@ -109,7 +109,7 @@ export default class ChartScreen extends React.Component {
 
     getDataChart() {
 
-        var url = URlConfig.getChartLink(this.state.date, this.state.dateto);
+        var url = URlConfig.getChartLink(this.state.datefrom, this.state.dateto);
         console.log(url)
         this.setState({progressVisible: true})
         fetch(url)
@@ -264,9 +264,9 @@ export default class ChartScreen extends React.Component {
         let b = this.state.keyChart;
         let title = '';
         if (b.localeCompare(a)) {
-            title = 'Biểu đồ sản lượng tháng ' + this.state.month + ' năm ' + this.state.year
+            title = 'Biểu đồ sản lượng từ ' + this.state.datefrom + ' đến ' + this.state.dateto
         } else {
-            title = 'Biểu đồ doanh thu tháng ' + this.state.month + ' năm ' + this.state.year
+            title = 'Biểu đồ doanh thu  từ ' + this.state.datefrom + ' đến ' + this.state.dateto
         }
         return (<Text style={{margin: 8, textAlign: 'center', backgroundColor: 'transparent'}}>{title}</Text>)
     }
@@ -345,7 +345,7 @@ export default class ChartScreen extends React.Component {
                             <Text style={{backgroundColor: 'transparent'}}>Từ</Text>
                             <DatePicker
                                 style={{marginLeft: 8}}
-                                date={this.state.date}
+                                date={this.state.datefrom}
                                 mode="date"
                                 placeholder="select date"
                                 format="DD-MM-YYYY"
@@ -353,7 +353,7 @@ export default class ChartScreen extends React.Component {
                                 confirmBtnText="Xác nhận"
                                 cancelBtnText="Huỷ bỏ"
                                 onDateChange={(date) => {
-                                    this.setState({date: date}, function () {
+                                    this.setState({datefrom: date}, function () {
                                         this.getDataChart()
                                     })
                                 }}
@@ -369,7 +369,7 @@ export default class ChartScreen extends React.Component {
                                 confirmBtnText="Xác nhận"
                                 cancelBtnText="Huỷ bỏ"
                                 onDateChange={(date) => {
-                                    this.setState({dateto: date}, function () {
+                                    this.setState({dateto: date}, () => {
                                         this.getDataChart()
                                     })
                                 }}
@@ -428,6 +428,8 @@ export default class ChartScreen extends React.Component {
 
 
     }
+
+    Ư
 
     render1() {
         let options = {
