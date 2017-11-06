@@ -4,7 +4,7 @@
 
 import React, {Component} from 'react';
 import {
-    View, Dimensions, Text, Picker, StyleSheet, TouchableOpacity, Image, Platform, FlatList
+    View, Dimensions, Text, Picker, StyleSheet, TouchableOpacity, Image, Platform, FlatList, ActivityIndicator
 } from "react-native";
 import Icon1 from 'react-native-vector-icons/Ionicons'
 import Bar from "react-native-pathjs-charts/src/Bar";
@@ -43,7 +43,7 @@ export default class RevenuePerPersonnelScreen extends React.Component {
             tongdoanhthu: '0.00',
             date: today,
             dateto: today,
-            isEmpty: true,
+            isEmpty: false,
             data: [],
             arr: [],
             keyChart: 'TongTien',
@@ -61,7 +61,7 @@ export default class RevenuePerPersonnelScreen extends React.Component {
     }
 
     refreshData() {
-        this.setState({dataRender: null});
+        this.setState({dataRender: null, isEmpty: false});
         fetch(URlConfig.getRevenuePerson(this.state.date, this.state.dateto))
             .then((response) => (response.json()))
             .then((responseJson) => {
@@ -78,7 +78,7 @@ export default class RevenuePerPersonnelScreen extends React.Component {
     }
 
     getDataChart() {
-        console.log(URlConfig.getRevenuePerson(this.state.date, this.state.dateto))
+        this.setState({dataRender: null, isEmpty: false});
         fetch(URlConfig.getRevenuePerson(this.state.date, this.state.dateto))
             .then((response) => (response.json()))
             .then((responseJson) => {
@@ -143,6 +143,16 @@ export default class RevenuePerPersonnelScreen extends React.Component {
     getChartorFlatListorNull(options) {
         console.log(this.state.numberTypePick)
         if (!this.state.isEmpty) {
+            if (!this.state.dataRender) {
+                return (
+                    <View style={{flex: 9}}>
+                        <ActivityIndicator
+                            animating={true}
+                            style={styles.indicator}
+                            size="large"/>
+                    </View>
+                )
+            }
             if (this.state.numberTypePick === 0)
                 return (
                         <FlatList

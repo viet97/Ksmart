@@ -4,7 +4,7 @@
 
 import React, {Component} from 'react';
 import {
-    View, Dimensions, Text, Picker, StyleSheet, TouchableOpacity, Image, Platform, FlatList
+    View, Dimensions, Text, Picker, StyleSheet, TouchableOpacity, Image, Platform, FlatList, ActivityIndicator
 } from "react-native";
 import Icon1 from 'react-native-vector-icons/Ionicons'
 import Bar from "react-native-pathjs-charts/src/Bar";
@@ -44,7 +44,7 @@ export default class ChartScreen extends React.Component {
         this.state = {
             tongdoanhthu: '0.00',
             refreshing: false,
-            isEmpty: true,
+            isEmpty: false,
             data: [],
             datefrom: today,
             dateto: today,
@@ -66,7 +66,7 @@ export default class ChartScreen extends React.Component {
     }
 
     refreshData() {
-        this.setState({dataRender: null})
+        this.setState({dataRender: null, isEmpty: false})
         let url = URlConfig.getChartLink(this.state.datefrom, this.state.dateto);
         this.setState({progressVisible: true})
         fetch(url)
@@ -111,7 +111,7 @@ export default class ChartScreen extends React.Component {
 
         var url = URlConfig.getChartLink(this.state.datefrom, this.state.dateto);
         console.log(url)
-        this.setState({progressVisible: true})
+        this.setState({progressVisible: true, dataRender: null, isEmpty: false})
         fetch(url)
             .then((response) => (response.json()))
             .then((responseJson) => {
@@ -221,7 +221,16 @@ export default class ChartScreen extends React.Component {
     getChartorFlatListorNull(options) {
 
         if (!this.state.isEmpty) {
-            if (this.state.numberTypePick === 0)
+            if (!this.state.dataRender) {
+                return (
+                    <View style={{flex: 9}}>
+                        <ActivityIndicator
+                            animating={true}
+                            style={styles.indicator}
+                            size="large"/>
+                    </View>
+                )
+            } else if (this.state.numberTypePick === 0)
                 return (
                     <View style={{flex: 9}}>
                         <FlatList
@@ -238,11 +247,12 @@ export default class ChartScreen extends React.Component {
                     </View>
                 )
             else return (
-                <View style={{padding: 16}}>
-                    <Bar data={this.state.data} options={options} accessorKey={this.state.keyChart}/>
-                    {this.getTitleChart()}
-                </View>
-            )
+                    <View style={{padding: 16}}>
+                        <Bar data={this.state.data} options={options} accessorKey={this.state.keyChart}/>
+                        {this.getTitleChart()}
+                    </View>
+                )
+
 
             return (
                 <View>
@@ -416,9 +426,6 @@ export default class ChartScreen extends React.Component {
 
 
     }
-
-    Ư
-
     render1() {
         let options = {
             width: 250,

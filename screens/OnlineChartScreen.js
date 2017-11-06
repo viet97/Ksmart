@@ -4,7 +4,7 @@
 
 import React, {Component} from 'react';
 import {
-    View, Dimensions, Text, Picker, StyleSheet, TouchableOpacity, Image, Platform, FlatList
+    View, Dimensions, Text, Picker, StyleSheet, TouchableOpacity, Image, Platform, FlatList, ActivityIndicator
 } from "react-native";
 import Icon1 from 'react-native-vector-icons/Ionicons'
 import Bar from "react-native-pathjs-charts/src/Bar";
@@ -43,7 +43,7 @@ export default class OnlineChartScreen extends React.Component {
         this.state = {
             refreshing: false,
             date: today,
-            isEmpty: true,
+            isEmpty: false,
             data: [],
             arr: [],
             keyChart: 'sonhanvien',
@@ -56,9 +56,7 @@ export default class OnlineChartScreen extends React.Component {
     }
 
     refreshData() {
-        this.setState({dataRender: null})
-
-
+        this.setState({dataRender: null, isEmpty: false})
         fetch(URlConfig.getOnlineChartLink(this.state.date))
             .then((response) => (response.json()))
             .then((responseJson) => {
@@ -75,6 +73,7 @@ export default class OnlineChartScreen extends React.Component {
 
 
     getDataChart() {
+        this.setState({dataRender: null, isEmpty: false})
         fetch(URlConfig.getOnlineChartLink(this.state.date))
             .then((response) => (response.json()))
             .then((responseJson) => {
@@ -179,6 +178,16 @@ export default class OnlineChartScreen extends React.Component {
 
     getChartorFlatListorNull(options) {
         if (!this.state.isEmpty) {
+            if (!this.state.dataRender) {
+                return (
+                    <View style={{flex: 9}}>
+                        <ActivityIndicator
+                            animating={true}
+                            style={styles.indicator}
+                            size="large"/>
+                    </View>
+                )
+            }
             if (this.state.numberTypePick === 0)
                 return (
                     <View style={{flex: 9}}>
