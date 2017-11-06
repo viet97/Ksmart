@@ -18,6 +18,7 @@ import ChooseTypeItem from "../components/ChooseTypeItem";
 import URlConfig from "../configs/url";
 import LinearGradient from "react-native-linear-gradient";
 import HeaderCustom from "../components/Header";
+import {NavigationActions} from "react-navigation";
 
 let {width, height} = Dimensions.get('window')
 export default class ChooseTypeNew extends Component {
@@ -57,7 +58,20 @@ export default class ChooseTypeNew extends Component {
                     renderItem={({item}) =>
                         <ChooseTypeItem
                             data={item}
-                            goToDetail={() => navigate('NewFeed', {status: item.trangthai})}
+                            goToDetail={() => {
+                                navigate('NewFeed', {status: item.trangthai})
+                                const resetAction = NavigationActions.reset({
+                                    index: 3,
+                                    actions: [
+                                        NavigationActions.navigate({routeName: 'Login'}),
+                                        NavigationActions.navigate({routeName: 'Home'}),
+                                        NavigationActions.navigate({routeName: 'ChooseTypeNewFeed'}),
+                                        NavigationActions.navigate({routeName: 'NewFeed'}),
+                                    ]
+                                });
+
+                                this.props.navigation.dispatch(resetAction);
+                            }}
                         />
                     }
                 />
