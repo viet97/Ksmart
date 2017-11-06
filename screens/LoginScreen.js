@@ -194,7 +194,7 @@ export default class LoginScreen extends React.Component {
                         flexDirection: 'column',
                         justifyContent: 'center'
                     }}>
-                        <Text style={{alignSelf: 'center'}}>
+                        <Text style={{color: 'gray', backgroundColor: 'transparent', alignSelf: 'center'}}>
                             Phiên bản 1.0.8
                         </Text>
 

@@ -126,8 +126,6 @@ export default class ChartScreen extends React.Component {
 
                     for (var item of res) {
                         var arr = []
-
-
                         var date = item['thoigian'].split('/')[0];
                         item['name'] = date
 
@@ -240,11 +238,11 @@ export default class ChartScreen extends React.Component {
                     </View>
                 )
             else return (
-                    <View style={{padding: 16}}>
-                        <Bar data={this.state.data} options={options} accessorKey={this.state.keyChart}/>
-                        {this.getTitleChart()}
-                    </View>
-                )
+                <View style={{padding: 16}}>
+                    <Bar data={this.state.data} options={options} accessorKey={this.state.keyChart}/>
+                    {this.getTitleChart()}
+                </View>
+            )
 
             return (
                 <View>
