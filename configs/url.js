@@ -4,7 +4,6 @@
  */
 import {Platform} from 'react-native'
 import md5 from "react-native-md5";
-import Toast from "react-native-simple-toast";
 
 export default class URlConfig {
     static getRouterApp(idct) {
