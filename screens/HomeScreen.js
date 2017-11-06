@@ -2,7 +2,6 @@ import {Icon} from 'react-native-elements';
 import React from 'react';
 import Drawer from 'react-native-drawer';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
-import * as Animatable from 'react-native-animatable';
 import {
     BackAndroid,
     AppRegistry,
@@ -121,7 +120,8 @@ export default class HomeScreen extends React.Component {
             <FlatList
                 scrollEnabled={true}
                 numColumns={1}
-                contentContainerStyle={{flex: 1, backgroundColor: '#3d94d8'}}
+                style={{flex: 1}}
+                contentContainerStyle={{backgroundColor: '#3d94d8'}}
                 keyboardDismissMode="on-drag"
                 data={menuSwiper}
                 keyExtractor={(item) => item.screenName}
@@ -129,6 +129,7 @@ export default class HomeScreen extends React.Component {
                     <TouchableOpacity
                         activeOpacity={0.7}
                         style={{
+                            height: height / 18,
                             backgroundColor: 'transparent',
                             flexDirection: 'row', marginLeft: 24, marginTop: 16
                         }}
@@ -146,7 +147,8 @@ export default class HomeScreen extends React.Component {
 
                             } else navigate(item.screenName)
                         }}>
-                        <Icon containerStyle={{width: 24, height: 24}} color={"white"} name={item.iconName}
+                        <Icon containerStyle={{width: 24, height: 24, alignSelf: 'center'}} color={"white"}
+                              name={item.iconName}
                               type={"font-awesome"} size={24}/>
                         <Text numberOfLines={1} style={{
                             fontSize: 16,
@@ -156,8 +158,12 @@ export default class HomeScreen extends React.Component {
                         }}>{item.title}</Text>
                         {
                             function () {
+                                console.log('RENDERRRRRRRRRRRRRRRRRRRRRRR')
                                 if (item.screenName === 'Message') {
-                                    return <Badge style={{marginLeft: 4}}>{URlConfig.OBJLOGIN.messageUnread}</Badge>
+                                    return <Badge style={{
+                                        marginLeft: 4,
+                                        alignSelf: 'center'
+                                    }}>{URlConfig.OBJLOGIN.messageUnread}</Badge>
                                 }
                             }()
                         }
