@@ -50,6 +50,7 @@ export default class MapListScreen extends Component {
     }
 
     componentDidMount() {
+        console.log(URlConfig.getAllNhanVien())
         fetch(URlConfig.getAllNhanVien())
             .then((response) => (response.json()))
             .then((responseJson) => {
@@ -201,6 +202,7 @@ export default class MapListScreen extends Component {
                                                 } else {
                                                     let markers = [];
                                                     for (let item of responseJson.dsNhanVien) {
+                                                        if (item.dangtructuyen === 1) markers[0] = item
                                                         if (item.dangtructuyen === this.state.status) {
                                                             markers.push(item)
                                                         }
