@@ -399,24 +399,13 @@ export default class ChartScreen extends React.Component {
                             <View style={{
                                 backgroundColor: 'transparent',
                                 justifyContent: 'center',
+                                alignItems: 'center', marginLeft: 8,
                                 flex: 1
                             }}>
-                                <View style={{
-                                    backgroundColor: 'transparent',
-                                    flexDirection: 'row',
-                                    justifyContent: 'center',
-                                    flex: 1
-                                }}>
-                                    <Text
-                                        style={{color: 'black', alignSelf: 'center', marginLeft: 8, flex: 1}}>
-                                        Tổng: </Text>
-                                    <Text style={{
-                                        color: 'black',
-                                        alignSelf: 'center',
-                                        marginRight: 8,
-                                        flex: 3
-                                    }}> {ultils.getMoney(this.state.tongdoanhthu)}</Text>
-                                </View>
+                                <Text style={{
+                                    color: 'black',
+                                    textAlign: 'center',
+                                }}>Tổng: {ultils.getMoney(this.state.tongdoanhthu)}</Text>
                             </View>
                         </View>
                         {this.getChartorFlatListorNull(options)}
