@@ -59,17 +59,18 @@ export default class ChooseTypeNew extends Component {
                         <ChooseTypeItem
                             data={item}
                             goToDetail={() => {
-                                navigate('NewFeed', {status: item.trangthai})
                                 const resetAction = NavigationActions.reset({
                                     index: 3,
                                     actions: [
                                         NavigationActions.navigate({routeName: 'Login'}),
                                         NavigationActions.navigate({routeName: 'Home'}),
                                         NavigationActions.navigate({routeName: 'ChooseTypeNewFeed'}),
-                                        NavigationActions.navigate({routeName: 'NewFeed'}),
+                                        NavigationActions.navigate({
+                                            routeName: 'NewFeed',
+                                            params: {status: item.trangthai}
+                                        }),
                                     ]
                                 });
-
                                 this.props.navigation.dispatch(resetAction);
                             }}
                         />
