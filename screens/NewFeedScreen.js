@@ -232,7 +232,12 @@ export default class NewFeedScreen extends React.Component {
                     title={"Hoạt động"}
                     rightChildren={
                         <TouchableOpacity style={{alignSelf: 'center', padding: 8}}
-                                          onPress={() => navigate('ChooseTypeNewFeed')}
+                                          onPress={() => {
+                                              {
+                                                  navigate('ChooseTypeNewFeed');
+
+                                              }
+                                          }}
                         >
                             <Text style={{
                                 textAlign: 'center',

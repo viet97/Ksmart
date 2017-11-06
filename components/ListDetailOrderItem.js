@@ -12,19 +12,11 @@ import {
     TextInput,
     TouchableWithoutFeedback
 } from 'react-native';
-import Toast from 'react-native-simple-toast';
-import Image from 'react-native-image-progress';
-import Icon from 'react-native-vector-icons/Entypo'
-import Icon1 from 'react-native-vector-icons/MaterialIcons'
-import Icon2 from 'react-native-vector-icons/Ionicons'
-import DatePicker from "react-native-datepicker";
 import Color from '../configs/color'
-import URlConfig from "../configs/url";
-import Search from "react-native-search-box";
-import CheckBox from 'react-native-checkbox'
 import {SegmentedControls} from 'react-native-radio-buttons'
 import ultil from "../configs/ultils";
 import {shadowProps} from "../configs/shadow";
+import {BANBUON, BANKHAC, BANLE} from "../configs/type";
 
 let {height, width} = Dimensions.get('window');
 
@@ -35,22 +27,21 @@ export default class CustomerPlantComponent extends Component {
         let item = this.props.item
         this.state = {
             height: 0,
-            sellType: "Bán buôn",
-            giatien: item.giabuon
+            indexSellType: this.props.item.hinhthucban,
+            giatien: item.giaban
         }
     }
 
-    setSelectedOption(sellType) {
+    setSelectedOption(sellType, index) {
         let item = this.props.item
         let loai = ''
         console.log('12312321')
-        if (sellType === "Bán buôn") loai = 'giabuon'
-        if (sellType === "Bán lẻ") loai = 'giale'
-        if (sellType === "Khác") loai = 'giakhac'
-        console.log(loai)
+        if (index === BANBUON) loai = 'giabuon'
+        if (index === BANLE) loai = 'giale'
+        if (index === BANKHAC) loai = 'giakhac'
         console.log(item[loai])
         this.setState({
-            sellType,
+            indexSellType: index,
             giatien: item[loai]
         });
     }
@@ -66,8 +57,8 @@ export default class CustomerPlantComponent extends Component {
     render() {
         let item = this.props.item
         const options = [
-            "Bán buôn",
             "Bán lẻ",
+            "Bán buôn",
             "Khác"
         ];
 
@@ -127,8 +118,8 @@ export default class CustomerPlantComponent extends Component {
                         optionContainerStyle={{flex: 1}}
                         allowFontScaling={false} // default: true
                         options={options}
-                        onSelection={(value) => this.setSelectedOption(value)}
-                        selectedOption={this.state.sellType}
+                        onSelection={(value, index) => this.setSelectedOption(value, index)}
+                        selectedIndex={this.state.indexSellType}
                     />
                 </View>
                 <View style={{
