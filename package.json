@@ -36,6 +36,7 @@
     "react-native-image-progress": "^1.0.1",
     "react-native-linear-gradient": "^2.3.0",
     "react-native-list-view-select": "^1.0.4",
+    "react-native-loading-spinner-overlay": "^0.5.2",
     "react-native-maps": "^0.15.3",
     "react-native-md5": "^1.0.0",
     "react-native-modal-dropdown": "^0.4.4",

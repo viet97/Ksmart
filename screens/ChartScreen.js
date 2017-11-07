@@ -19,6 +19,7 @@ import ModalDropdownCustom from "../components/ModalDropdownCustom";
 import {ProgressDialog} from 'react-native-simple-dialogs'
 import LinearGradient from "react-native-linear-gradient";
 import HeaderCustom from "../components/Header";
+import Spinner from "react-native-loading-spinner-overlay";
 
 let {height, width} = Dimensions.get('window');
 export default class ChartScreen extends React.Component {
@@ -223,11 +224,8 @@ export default class ChartScreen extends React.Component {
         if (!this.state.isEmpty) {
             if (!this.state.dataRender) {
                 return (
-                    <View style={{flex: 9}}>
-                        <ActivityIndicator
-                            animating={true}
-                            style={styles.indicator}
-                            size="large"/>
+                    <View style={{flex: 1, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center'}}>
+                        <ActivityIndicator size={'large'} color={'black'} animating={true}/>
                     </View>
                 )
             } else if (this.state.numberTypePick === 0)
@@ -247,7 +245,7 @@ export default class ChartScreen extends React.Component {
                     </View>
                 )
             else return (
-                    <View style={{padding: 16}}>
+                    <View style={{marginLeft: 16}}>
                         <Bar data={this.state.data} options={options} accessorKey={this.state.keyChart}/>
                         {this.getTitleChart()}
                     </View>
@@ -426,6 +424,7 @@ export default class ChartScreen extends React.Component {
 
 
     }
+
     render1() {
         let options = {
             width: 250,
@@ -488,7 +487,8 @@ const
             flex: 1,
             alignItems: 'center',
             justifyContent: 'center',
-            height: 80
+            height: 80,
+            color: 'black'
         },
         titleStyle: {
             paddingTop: Platform.OS === 'ios' ? 16 : 0,

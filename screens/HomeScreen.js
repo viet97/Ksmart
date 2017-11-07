@@ -188,7 +188,7 @@ export default class HomeScreen extends React.Component {
                         activeOpacity={0.7}
                         style={{
                             backgroundColor: 'transparent',
-                            margin: width / 40
+                            margin: width / 40,
                         }}
                         onPress={() => {
                             navigate(item.screenName)
@@ -373,7 +373,7 @@ const styles = StyleSheet.create({
     touchable: {
         flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 8, flex: 1
     }
-})
+});
 
 BackHandler.addEventListener('hardwareBackPress', function () {
     backcount++

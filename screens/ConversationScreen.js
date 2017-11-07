@@ -15,7 +15,7 @@ import {dateOfWeek} from "../configs/data";
 import URlConfig from "../configs/url";
 import LinearGradient from "react-native-linear-gradient";
 import {Header} from 'react-navigation'
-import {quanLyToNhanVien} from "../configs/type";
+import {nhanVienToQuanLy, quanLyToNhanVien} from "../configs/type";
 import HeaderCustom from "../components/Header";
 
 let LAST_ID
@@ -110,7 +110,7 @@ export default class ConversationScreen extends React.Component {
     }
 
     getConvestation() {
-        LAST_ID = 0
+        LAST_ID = 0;
         ALL_LOADED = false;
         const {navigate} = this.props.navigation
         this.setState({convestationList: null})
@@ -181,7 +181,7 @@ export default class ConversationScreen extends React.Component {
 
                         if (item.DANHSACH[0]) {
                             item['lastmsg'] = item.NoiDung;
-                            item['isSeen'] = item['DANHSACH'][0].NgayXem !== '0001-01-01T00:00:00';
+                            item['isSeen'] = item['DANHSACH'][0].NgayXem !== '0001-01-01T00:00:00' && item['DANHSACH'][0].NgayXem !== '1900-01-01T00:00:00';
                             let lastUser = {};
                             if (item['DANHSACH'][0].AnhDaiDien)
                                 lastUser['avatar'] = URlConfig.BASE_URL_APP + item['DANHSACH'][0].AnhDaiDien;
@@ -192,7 +192,7 @@ export default class ConversationScreen extends React.Component {
                             item['lastUser'] = lastUser;
 
                         }
-                        LAST_ID = LAST_ID + 3
+                        LAST_ID = LAST_ID + 3;
                         convestationList.push(item);
                     }
                     this.setState({convestationList: convestationList});
@@ -259,7 +259,8 @@ export default class ConversationScreen extends React.Component {
                             flex: 1,
                         }}
                         onPress={() => {
-                            item['isSeen'] = true;
+                            if (item.DANHSACH[0].Loai === nhanVienToQuanLy)
+                                item['isSeen'] = true;
                             this.forceUpdate();
                             navigate('DetailMessage', {
                                 data: item.DANHSACH,
@@ -291,13 +292,51 @@ export default class ConversationScreen extends React.Component {
                                 flexDirection: 'row',
                                 marginTop: 4
                             }}>
-                                <Text numberOfLines={1}
-                                      style={{
-                                          fontSize: 16, width: '73%',
-                                          fontWeight: item.isSeen || item.DANHSACH[0].Loai === quanLyToNhanVien ? '100' : 'bold'
-                                      }}>{item.lastmsg}</Text>
-                                <GiftedAvatar user={item.lastUser} textStyle={{fontSize: 8}}
-                                              avatarStyle={{width: 15, height: 15, borderRadius: 7.5,}}/>
+                                <View style={{flexDirection: 'row'}}>
+                                    {(() => {
+                                        if (item.DANHSACH[0].Loai === nhanVienToQuanLy) {
+                                            return (
+                                                <Icon size={16} name={'ios-share-alt'} type={'ionicon'}
+                                                      containerStyle={{marginRight: 4}}/>
+                                            )
+                                        }
+                                        return (
+                                            <Icon size={16} name={'check'} containerStyle={{marginRight: 4}}/>
+                                        )
+                                    })()}
+
+                                    <Text numberOfLines={1}
+                                          style={{
+                                              fontSize: 16, width: '73%',
+                                              fontWeight: item.isSeen || item.DANHSACH[0].Loai === quanLyToNhanVien ? '100' : 'bold'
+                                          }}>{item.lastmsg}</Text>
+                                </View>
+                                {(() => {
+                                    console.log('item', item);
+                                    if ((item.DANHSACH[0].Loai === 0 && item.isSeen) || item.DANHSACH[0].Loai === 1)
+                                        return (
+                                            <GiftedAvatar user={item.lastUser} textStyle={{fontSize: 8}}
+                                                          avatarStyle={{
+                                                              width: 15,
+                                                              height: 15,
+                                                              borderRadius: 7.5,
+                                                              alignSelf: 'flex-end'
+                                                          }}/>
+                                        )
+                                    return (
+                                        <View style={{
+                                            backgroundColor: 'blue',
+                                            width: 14,
+                                            height: 14,
+                                            borderRadius: 7,
+                                            justifyContent: 'center',
+                                            alignItems: 'center'
+                                        }}>
+                                            <Icon size={14} name={'check'} color={'white'}/>
+                                        </View>
+                                    )
+                                })()}
+
                             </View>
                         </View>
                     </TouchableOpacity>

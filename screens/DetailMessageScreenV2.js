@@ -68,7 +68,7 @@ export default class DetailMessageScreenV2 extends React.Component {
         }
         if (listMsg[0].Loai === quanLyToNhanVien) {
             bottomMessage = "Đã gửi lúc " + Utils.getDate(listMsg[0].NgayGui)
-            if (listMsg[0].NgayXem !== '1900-01-01T00:00:00') {
+            if (listMsg[0].NgayXem !== '1900-01-01T00:00:00' && listMsg[0].NgayXem !== '0001-01-01T00:00:00') {
                 bottomMessage = "Đã xem lúc " + Utils.getDate(listMsg[0].NgayXem);
             }
         } else {
@@ -88,14 +88,17 @@ export default class DetailMessageScreenV2 extends React.Component {
 
     componentDidMount() {
         const {params} = this.props.navigation.state;
-        fetch(URlConfig.getLinkReadMessage(params.data[0].ID_TINNHAN))
-            .then((response) => (response.json()))
-            .then((responseJson) => {
-                    console.log('doc tin nhan ok')
-                }
-            ).catch((e) => {
-            Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + String(e));
-        })
+        console.log('a', params.data);
+        if (params.data[0].Loai === nhanVienToQuanLy) {
+            fetch(URlConfig.getLinkReadMessage(params.data[0].ID_TINNHAN))
+                .then((response) => (response.json()))
+                .then((responseJson) => {
+                        console.log('doc tin nhan ok')
+                    }
+                ).catch((e) => {
+                Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + String(e));
+            });
+        }
     }
 
     onSend(messages = []) {

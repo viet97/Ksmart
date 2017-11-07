@@ -127,12 +127,12 @@ export default class DetailTravel extends React.Component {
         const {navigate} = this.props.navigation
         var strVaoDiem = '';
         var strRaDiem = '';
-        if (this.state.data.ThoiGianVaoDiemThucTe === '1900-01-01T00:00:00') {
+        if (this.state.data.ThoiGianVaoDiemThucTe === '1900-01-01T00:00:00' || this.state.data.ThoiGianVaoDiemThucTe === '0001-01-01T00:00:00') {
             strVaoDiem = "Chưa vào điểm!"
         } else {
             strVaoDiem = 'Vào điểm lúc: ' + Utils.changeDateFormat(this.state.data.ThoiGianVaoDiemThucTe)
         }
-        if (this.state.data.ThoiGianRaDiemThucTe === '1900-01-01T00:00:00') {
+        if (this.state.data.ThoiGianRaDiemThucTe === '1900-01-01T00:00:00' || this.state.data.ThoiGianRaDiemThucTe === '0001-01-01T00:00:00') {
             strRaDiem = "Chưa ra điểm!"
         } else {
             strRaDiem = 'Ra điểm lúc: ' + Utils.changeDateFormat(this.state.data.ThoiGianRaDiemThucTe);
