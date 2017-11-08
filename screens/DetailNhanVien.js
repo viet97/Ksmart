@@ -25,6 +25,7 @@ import {Header} from 'react-navigation'
 import MapView from 'react-native-maps';
 import Communications from "react-native-communications";
 import {GiftedAvatar} from 'react-native-gifted-chat'
+
 const MIN_HEIGHT = Header.HEIGHT;
 const MAX_HEIGHT = 250;
 let {width, height} = Dimensions.get('window');
@@ -34,7 +35,7 @@ export default class DetailNhanVien extends React.Component {
     });
 
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
             data: [],
             region: {
@@ -42,7 +43,8 @@ export default class DetailNhanVien extends React.Component {
                 longitude: 0,
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421,
-            }
+            },
+            address: ''
         }
         this.getImage.bind(this);
     }
@@ -50,23 +52,23 @@ export default class DetailNhanVien extends React.Component {
     getImage(url) {
         console.log(this.state.data);
         if (!url || !ultils.isImageUrl(url))
-                return (
-                    <GiftedAvatar
-                        user={
-                            {
-                                _id: 1,
-                                name: this.state.data.tennhanvien
-                            }
+            return (
+                <GiftedAvatar
+                    user={
+                        {
+                            _id: 1,
+                            name: this.state.data.tennhanvien
                         }
-                        avatarStyle={{alignSelf: 'center', width: 100, height: 100, borderRadius: 50}}/>
-                )
-            else
-                return (
-                    <Image
-                        source={{uri: url}}
-                        indicator={ProgressBar.Pie}
-                        style={{alignSelf: 'center', width: 100, height: 100, borderRadius: 50}}/>
-                );
+                    }
+                    avatarStyle={{alignSelf: 'center', width: 100, height: 100, borderRadius: 50}}/>
+            );
+        else
+            return (
+                <Image
+                    source={{uri: url}}
+                    indicator={ProgressBar.Pie}
+                    style={{alignSelf: 'center', width: 100, height: 100, borderRadius: 50}}/>
+            );
     }
 
     isOnline(dangtructuyen) {
@@ -166,39 +168,41 @@ export default class DetailNhanVien extends React.Component {
                         <View style={styles.section}>
                             <View style={styles.viewCover}>
                                 <Text style={styles.text1}>Tên đăng nhập</Text>
-                                <Text style={styles.text2}>{data.tendangnhap}</Text>
+                                <Text style={styles.text2}>{data.tendangnhap || 'Không khả dụng'}</Text>
                             </View>
                             <View style={styles.viewCover}>
                                 <Text style={styles.text1}>Tên đầy đủ</Text>
-                                <Text style={styles.text2}>{data.tennhanvien}</Text>
+                                <Text style={styles.text2}>{data.tennhanvien || 'Không khả dụng'}</Text>
                             </View>
                             <View style={styles.viewCover}>
                                 <Text style={styles.text1}>Địa chỉ</Text>
-                                <Text style={styles.text2}>{data.DiaChi}</Text>
+                                <Text
+                                    style={styles.text2}>{this.state.address || 'Không khả dụng'}</Text>
                             </View>
                             <View style={styles.viewCover}>
                                 <Text style={styles.text1}>Nhóm/Phòng:</Text>
-                                <Text style={styles.text2}>{data.phongban}</Text>
+                                <Text style={styles.text2}>{data.phongban || 'Không khả dụng'}</Text>
                             </View>
                             <View style={styles.viewCover}>
                                 <Text style={styles.text1}>Tình trạng pin</Text>
-                                <Text style={styles.text2}>{data.tinhtrangpin}</Text>
+                                <Text style={styles.text2}>{data.tinhtrangpin || 'Không khả dụng'}</Text>
                             </View>
                             <View style={styles.viewCover}>
                                 <Text style={styles.text1}>Cập nhật lần cuối:</Text>
-                                <Text style={styles.text2}>{data.thoigianguitoadocuoi}</Text>
+                                <Text style={styles.text2}>{data.thoigianguitoadocuoi || 'Không khả dụng'}</Text>
                             </View>
                             <View style={styles.viewCover}>
                                 <Text style={styles.text1}>Thời gian gửi tọa độ cuối:</Text>
-                                <Text style={styles.text2}>{data.thoigianguitoadocuoi}</Text>
+                                <Text style={styles.text2}>{data.thoigianguitoadocuoi || 'Không khả dụng'}</Text>
                             </View>
                             <View style={styles.viewCover}>
                                 <Text style={styles.text1}>Quê quán:</Text>
-                                <Text style={styles.text2}>{data.QueQuan}</Text>
+                                <Text style={styles.text2}>{data.QueQuan || 'Không khả dụng'}</Text>
                             </View>
                             <View style={styles.viewCover}>
                                 <Text style={styles.text1}>Ngày sinh:</Text>
-                                <Text style={styles.text2}>{ultils.getDate(data.NgaySinh)}</Text>
+                                <Text
+                                    style={styles.text2}>{data.NgaySinh !== '1900-01-01T00:00:00' ? ultils.getDate(data.NgaySinh) : 'Không khả dụng'}</Text>
                             </View>
                             <View style={styles.viewCover}>
                                 <Text style={styles.text1}>Email</Text>
@@ -208,7 +212,7 @@ export default class DetailNhanVien extends React.Component {
                                     marginRight: 8,
                                     justifyContent: 'space-between'
                                 }}>
-                                    <Text style={styles.text2}>{data.Email || ''}</Text>
+                                    <Text style={styles.text2}>{data.Email || "Không có"}</Text>
                                     <TouchableOpacity
                                         onPress={() => {
                                             if (data.Email)
@@ -227,7 +231,7 @@ export default class DetailNhanVien extends React.Component {
                                     marginRight: 8,
                                     justifyContent: 'space-between'
                                 }}>
-                                    <Text style={styles.text2}>{sdt}</Text>
+                                    <Text style={styles.text2}>{sdt || "Không có"}</Text>
                                     <TouchableOpacity onPress={() => {
                                         if (sdt) Communications.phonecall(sdt, true)
                                     }}>
@@ -259,9 +263,9 @@ export default class DetailNhanVien extends React.Component {
         fetch(URlConfig.getLinkDetailNhanVien(params.idNhanVien))
             .then((response) => (response.json()))
             .then((responseJson) => {
-                console.log(responseJson)
+                console.log(responseJson);
                 if (responseJson.status) {
-                    console.log(responseJson.data)
+                    console.log(responseJson.data);
                     this.setState(
                         {
                             data: responseJson.data,
@@ -274,6 +278,18 @@ export default class DetailNhanVien extends React.Component {
                         }
                     );
                     console.log('data', responseJson.data);
+                    if (responseJson.data.kinhdo) {
+                        fetch(URlConfig.getLocation(responseJson.data.kinhdo, responseJson.data.vido, responseJson.data.idnhanvien))
+                            .then((response) => (response.json()))
+                            .then((responseJson) => {
+                                console.log(responseJson)
+                                if (responseJson.status) {
+                                    this.setState({address: responseJson.data || ''});
+                                } else {
+                                    Toast.show(responseJson.msg)
+                                }
+                            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại!'));
+                    }
                 }
                 else {
                     Toast.show("Có lỗi xảy ra, vui lòng liên hệ Admin!");

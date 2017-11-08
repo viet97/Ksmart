@@ -283,7 +283,8 @@ export default class ListNhanVienScreen extends React.Component {
                             callback={() => navigate('Map', {
                                 kinhdo: item.KinhDo,
                                 vido: item.ViDo,
-                                title: 'Địa điểm Nhân Viên'
+                                title: 'Địa điểm Nhân Viên',
+                                data: item
                             })}
                         />
                     }

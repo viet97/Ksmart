@@ -325,7 +325,7 @@ export default class ConversationScreen extends React.Component {
                                         )
                                     return (
                                         <View style={{
-                                            backgroundColor: 'blue',
+                                            backgroundColor: '#52cc6f',
                                             width: 14,
                                             height: 14,
                                             borderRadius: 7,

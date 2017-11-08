@@ -111,8 +111,7 @@ export default class ListNhanVienItem extends React.Component {
                         this.setState({height: height})
                     }}
                     style={{
-                        backgroundColor: '#f7f7f7',
-                        fontSize: 20, ...shadowProps,
+                        backgroundColor: '#f7f7f7', ...shadowProps,
                     }}>
                     <Text style={{textAlign: 'right', fontSize: 12, backgroundColor: 'transparent', marginTop: 4}}>
                         Cập nhật
@@ -137,7 +136,7 @@ export default class ListNhanVienItem extends React.Component {
                         <TouchableOpacity onPress={() => {
                             this.props.callback()
                         }}
-                                          style={{alignSelf: 'center'}}
+                                          style={{alignSelf: 'center', padding: 8}}
                         >
                             <Icon2 style={{backgroundColor: 'transparent'}} size={24} color='#2d92dc'
                                    name="location"/>

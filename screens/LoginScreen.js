@@ -120,6 +120,7 @@ export default class LoginScreen extends React.Component {
                             value={this.state.idct}
                             style={styles.textInput}
                             placeholder={'Mã công ty'}
+
                             secureTextEntry={false}
                             onChangeText={(text) => this.setState({idct: text})}
                             onSubmitEditing={(event) => {
