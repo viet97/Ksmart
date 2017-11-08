@@ -373,7 +373,7 @@ const styles = StyleSheet.create({
     },
     section: {
         flex: 1,
-        padding: 20,
+        padding: 16,
         borderBottomWidth: 1,
         borderBottomColor: '#cccccc',
         backgroundColor: 'white',

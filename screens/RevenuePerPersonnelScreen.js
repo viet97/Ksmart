@@ -324,13 +324,13 @@ export default class RevenuePerPersonnelScreen extends React.Component {
                             }}>
                                 <Text
                                     style={{color: 'black', alignSelf: 'center', marginLeft: 8, flex: 2}}>
-                                    Đơn hàng: </Text>
+                                    ĐH: </Text>
                                 <Text style={{
                                     color: 'black',
                                     alignSelf: 'center',
                                     marginRight: 8,
                                     flex: 3
-                                }}> {ultils.getMoney(this.state.tongdonhang)}</Text>
+                                }}>{this.state.tongdonhang}</Text>
                             </View>
                             <View style={{
                                 backgroundColor: 'transparent',
@@ -340,13 +340,13 @@ export default class RevenuePerPersonnelScreen extends React.Component {
                             }}>
                                 <Text
                                     style={{color: 'black', alignSelf: 'center', marginLeft: 8, flex: 2}}>
-                                    Doanh thu: </Text>
+                                    DT: </Text>
                                 <Text style={{
                                     color: 'black',
                                     alignSelf: 'center',
                                     marginRight: 8,
                                     flex: 3
-                                }}> {ultils.getMoney(this.state.tongdoanhthu)}</Text>
+                                }}>{ultils.getMoney(this.state.tongdoanhthu)}</Text>
                             </View>
 
                         </View>
