@@ -17,6 +17,7 @@ import ModalDropdownCustom from "../components/ModalDropdownCustom";
 import LinearGradient from "react-native-linear-gradient";
 import HeaderCustom from "../components/Header";
 import ultils from "../configs/ultils";
+import {Icon} from "react-native-elements";
 
 export default class RevenuePerPersonnelScreen extends React.Component {
     static navigationOptions = {
@@ -246,9 +247,10 @@ export default class RevenuePerPersonnelScreen extends React.Component {
                     title={this.getTitle()}
                     leftClick={() => this.props.navigation.goBack()}
                     rightChildren={
-                        <TouchableOpacity style={{alignSelf: 'center'}} onPress={() => {
-                            this.showDialog();
+                        <TouchableOpacity style={{alignSelf: 'center', paddingRight: 4}} onPress={() => {
+                            //TODO: show dialog hiển thị tổng đơn hàng, doanh thu ở đây, k đè text nữa vì lỗi ở ios
                         }}>
+                            <Icon name={'info'} size={24} type={'feather'} color={'white'}/>
                         </TouchableOpacity>
                     }
                 />
