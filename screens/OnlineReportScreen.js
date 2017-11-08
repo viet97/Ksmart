@@ -26,7 +26,7 @@ import HeaderCustom from "../components/Header";
 
 var {height, width} = Dimensions.get('window');
 const timer = require('react-native-timer');
-
+const moment = require('moment')
 export default class ReportScreen extends Component {
     static navigationOptions = {
         header: null,
@@ -46,13 +46,13 @@ export default class ReportScreen extends Component {
             numberPickType: 0,
             time: 0,
             data: [],
-            onlineReportStatus: arr
+            onlineReportStatus: arr,
+            lastUpdate: ''
         }
     }
 
     refresh() {
-
-        this.setState({data: ''}, function () {
+        this.setState({data: ''}, () => {
             this.getOnlineReportListFromServer()
         })
     }
@@ -63,7 +63,10 @@ export default class ReportScreen extends Component {
             .then((responseJson) => {
                 console.log(responseJson);
                     if (responseJson.status)
-                        this.setState({data: responseJson})
+                        this.setState({
+                            data: responseJson,
+                            lastUpdate: moment().format('DD/MM/YYYY HH:mm:ss')
+                        })
                 }
             ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
     }
@@ -77,8 +80,8 @@ export default class ReportScreen extends Component {
         timer.clearInterval(this)
         timer.setInterval(this, "123", () => this.getOnlineReportListFromServer(), 30000);
     }
-    render() {
 
+    render() {
         let onlineReportStatusItem = this.state.onlineReportStatus.map((s, i) => {
             return <Picker.Item key={i} value={i} label={s}/>
         });
@@ -199,29 +202,34 @@ export default class ReportScreen extends Component {
                             itemStyle={{color: 'black', height: 88}}
                             selectedValue={this.state.numberPickType}
                             onValueChange={(value) => {
-                                this.setState({numberPickType: value}, function () {
+                                this.setState({numberPickType: value}, () => {
                                         switch (value) {
                                             case 0 :
                                                 timer.clearInterval(this);
                                                 break;
                                             case 1 :
                                                 timer.clearInterval(this);
+                                                this.getOnlineReportListFromServer();
                                                 timer.setInterval(this, "123", () => this.refresh(), 10000);
                                                 break;
                                             case 2 :
                                                 timer.clearInterval(this);
+                                                this.getOnlineReportListFromServer();
                                                 timer.setInterval(this, "123", () => this.refresh(), 30000);
                                                 break;
                                             case 3 :
                                                 timer.clearInterval(this);
+                                                this.getOnlineReportListFromServer();
                                                 timer.setInterval(this, "123", () => this.refresh(), 60000);
                                                 break;
                                             case 4 :
                                                 timer.clearInterval(this);
+                                                this.getOnlineReportListFromServer();
                                                 timer.setInterval(this, "123", () => this.refresh(), 180000);
                                                 break;
                                             case 5 :
                                                 timer.clearInterval(this);
+                                                this.getOnlineReportListFromServer();
                                                 timer.setInterval(this, "123", () => this.refresh(), 300000);
                                                 break;
                                         }
@@ -231,8 +239,12 @@ export default class ReportScreen extends Component {
                         {onlineReportStatusItem}
                     </Picker>
                 </View>
+                <View
+                    style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                    <Text
+                        style={{fontSize: 15}}>{this.state.lastUpdate ? `Cập nhật lần cuối lúc: ${this.state.lastUpdate}` : 'Chưa cập nhật'}</Text>
+                </View>
             </View>
-
         )
     }
 
