@@ -23,6 +23,7 @@ import Toast from 'react-native-simple-toast';
 import LinearGradient from "react-native-linear-gradient";
 import Utils from "../configs/ultils";
 import HeaderCustom from "../components/Header";
+import {getData, setData, data} from "../configs/OnlineReportData";
 
 var {height, width} = Dimensions.get('window');
 const timer = require('react-native-timer');
@@ -43,6 +44,7 @@ export default class ReportScreen extends Component {
         arr.push('5 phút');
 
         this.state = {
+            refreshing: false,
             numberPickType: 0,
             time: 0,
             data: [],
@@ -58,17 +60,20 @@ export default class ReportScreen extends Component {
     }
 
     getOnlineReportListFromServer() {
+        this.setState({data: null})
         fetch(URlConfig.getLinkOnlinePerson())
             .then((response) => (response.json()))
             .then((responseJson) => {
-                console.log(responseJson);
-                    if (responseJson.status)
+                    console.log(responseJson);
+                    if (responseJson.status) {
+                        setData(responseJson)
                         this.setState({
-                            data: responseJson,
+                            data: getData(),
                             lastUpdate: moment().format('DD/MM/YYYY HH:mm:ss')
-                        })
+                        }, () => console.log(this.state.data))
+                    }
                 }
-            ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+            ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e))
     }
 
     componentWillUnmount() {
@@ -79,6 +84,57 @@ export default class ReportScreen extends Component {
         this.getOnlineReportListFromServer()
         timer.clearInterval(this)
         timer.setInterval(this, "123", () => this.getOnlineReportListFromServer(), 30000);
+    }
+
+    flatListorIndicator() {
+        console.log(this.state.data)
+        const {navigate} = this.props.navigation
+        if (!this.state.data) {
+            return (
+
+                <ActivityIndicator
+                    animating={true}
+                    style={styles.indicator}
+                    size="large"/>
+            )
+        }
+        return (
+            <FlatList
+                onRefresh={() => this.getOnlineReportListFromServer()}
+                refreshing={this.state.refreshing}
+                numColumns={2}
+                keyboardDismissMode="on-drag"
+                ref="listview"
+                extraData={this.state.data}
+                data={this.state.data}
+                renderItem={({item}) =>
+                    <View
+                        style={{width: width / 2 - 32, height: width / 2 - 32, margin: 16, flex: 1}}>
+                        <View style={{
+                            flex: 1,
+                            backgroundColor: '#0088C2',
+                            justifyContent: 'center',
+                            borderTopLeftRadius: 5,
+                            borderTopRightRadius: 5
+                        }}>
+                            <Text style={{textAlign: 'center', color: 'white'}}>{item.title}</Text>
+                        </View>
+                        <View style={{
+                            flex: 3,
+                            backgroundColor: '#009CDE',
+                            justifyContent: 'center',
+                            borderBottomLeftRadius: 5,
+                            borderBottomRightRadius: 5
+                        }}>
+                            <Text style={{
+                                textAlign: 'center',
+                                color: 'white',
+                                fontSize: 20
+                            }}>{item.content}</Text>
+                        </View>
+                    </View>
+                }
+            />)
     }
 
     render() {
@@ -92,110 +148,8 @@ export default class ReportScreen extends Component {
                     leftClick={() => this.props.navigation.goBack()}
                 />
                 <View style={{flex: 9}}>
-                    <View style={styles.view1}>
-                        <View
-                            style={{width: width / 2 - 32, height: width / 2 - 32, margin: 16, flex: 1}}>
-                            <View style={{
-                                flex: 1,
-                                backgroundColor: '#0088C2',
-                                justifyContent: 'center',
-                                borderTopLeftRadius: 5,
-                                borderTopRightRadius: 5
-                            }}>
-                                <Text style={{textAlign: 'center', color: 'white'}}>Nhân viên online</Text>
-                            </View>
-                            <View style={{
-                                flex: 3,
-                                backgroundColor: '#009CDE',
-                                justifyContent: 'center',
-                                borderBottomLeftRadius: 5,
-                                borderBottomRightRadius: 5
-                            }}>
-                                <Text style={{
-                                    textAlign: 'center',
-                                    color: 'white',
-                                    fontSize: 20
-                                }}>{this.state.data.nhanvienonline}</Text>
-                            </View>
-                        </View>
-                        <View
-                            style={{width: width / 2 - 32, height: width / 2 - 32, margin: 16, flex: 1}}>
-                            <View style={{
-                                flex: 1,
-                                backgroundColor: '#0088C2',
-                                justifyContent: 'center',
-                                borderTopLeftRadius: 5,
-                                borderTopRightRadius: 5
-                            }}>
-                                <Text style={{textAlign: 'center', color: 'white'}}>Doanh thu trong ngày</Text>
-                            </View>
-                            <View style={{
-                                flex: 3,
-                                backgroundColor: '#009CDE',
-                                justifyContent: 'center',
-                                borderBottomLeftRadius: 5,
-                                borderBottomRightRadius: 5
-                            }}>
-                                <Text style={{
-                                    textAlign: 'center',
-                                    color: 'white',
-                                    fontSize: 20
-                                }}>{Utils.getMoney(this.state.data.tongdoanhthu)}</Text>
-                            </View>
-                        </View>
-                    </View>
-                    <View style={styles.view1}>
-                        <View
-                            style={{width: width / 2 - 32, height: width / 2 - 32, margin: 16, flex: 1}}>
-                            <View style={{
-                                flex: 1,
-                                backgroundColor: '#0088C2',
-                                justifyContent: 'center',
-                                borderTopLeftRadius: 5,
-                                borderTopRightRadius: 5
-                            }}>
-                                <Text style={{textAlign: 'center', color: 'white'}}>Đơn hàng trong ngày</Text>
-                            </View>
-                            <View style={{
-                                flex: 3,
-                                backgroundColor: '#009CDE',
-                                justifyContent: 'center',
-                                borderBottomLeftRadius: 5,
-                                borderBottomRightRadius: 5
-                            }}>
-                                <Text style={{
-                                    textAlign: 'center',
-                                    color: 'white',
-                                    fontSize: 20
-                                }}>{this.state.data.tongdonhang}</Text>
-                            </View>
-                        </View>
-                        <View
-                            style={{width: width / 2 - 32, height: width / 2 - 32, margin: 16, flex: 1}}>
-                            <View style={{
-                                flex: 1,
-                                backgroundColor: '#0088C2',
-                                justifyContent: 'center',
-                                borderTopLeftRadius: 5,
-                                borderTopRightRadius: 5
-                            }}>
-                                <Text style={{textAlign: 'center', color: 'white'}}>Check-in trong ngày</Text>
-                            </View>
-                            <View style={{
-                                flex: 3,
-                                backgroundColor: '#009CDE',
-                                justifyContent: 'center',
-                                borderBottomLeftRadius: 5,
-                                borderBottomRightRadius: 5
-                            }}>
-                                <Text style={{
-                                    textAlign: 'center',
-                                    color: 'white',
-                                    fontSize: 20
-                                }}>{this.state.data.tongluotcheckin}</Text>
-                            </View>
-                        </View>
-                    </View>
+
+                    {this.flatListorIndicator()}
                     <Text style={{marginLeft: 16, backgroundColor: 'transparent'}}>Cài đặt thời gian cập nhập tin
                         tức: </Text>
                     <Picker style={{height: 44, width: width / 2, marginLeft: 16, alignSelf: 'center'}}
