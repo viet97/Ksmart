@@ -387,9 +387,9 @@ export default class ListNhanVienScreen extends React.Component {
                 >
 
                     <View style={{
-                        paddingTop: 40,
+                        paddingTop: 20,
                         flexDirection: 'column',
-                        paddingBottom: 80,
+                        paddingBottom: 60,
                         justifyContent: 'center',
                         alignItems: 'center',
                         backgroundColor: 'transparent',
