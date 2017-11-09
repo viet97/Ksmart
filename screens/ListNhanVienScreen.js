@@ -31,7 +31,7 @@ import HeaderCustom from "../components/Header";
 
 let {height, width} = Dimensions.get('window');
 const timer = require('react-native-timer');
-
+let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 let Page = 1
 let SEARCH_STRING = '';
 let ALL_LOADED = false;
@@ -56,7 +56,7 @@ export default class ListNhanVienScreen extends React.Component {
             refreshing: false,
             dataFull: [],
             dataSearch: [],
-            dataRender: null,
+            dataRender: ds,
             onEndReach: true,
             waiting: false,
             numberPickStatus: 0,
@@ -135,20 +135,19 @@ export default class ListNhanVienScreen extends React.Component {
         Page = 1;
         ALL_LOADED = false;
         this.setState({isEndList: false, dataRender: null});
-        console.log(URlConfig.getListNhanVienLink(Page, id_nhom, SEARCH_STRING, params.status));
         fetch(URlConfig.getListNhanVienLink(Page, id_nhom, SEARCH_STRING, params.status))
             .then((response) => response.json())
             .then((responseJson) => {
                 if (responseJson.status) {
                     this.setState({
                         dataFull: responseJson.dsNhanVien,
-                        isEndList: responseJson.endlist
+                        isEndList: responseJson.endlist,
+                        dataRender: ds.cloneWithRows(responseJson.dsNhanVien)
                     }, function () {
                         if (this.state.isEndList) {
                             ALL_LOADED = true
                             this.forceUpdate()
                         }
-                        this.setState({dataRender: this.state.dataFull})
                     });
                 } else {
                     ALL_LOADED = true
@@ -161,9 +160,6 @@ export default class ListNhanVienScreen extends React.Component {
     loadMoreDataFromSv() {
         console.log('LOAD MORE!!!!!!!!')
         const {params} = this.props.navigation.state
-        if (!this.state.onEndReach) {
-            this.setState({onEndReach: true})
-
             if (!this.state.isEndList) {
                 Page = Page + 1
                 fetch(URlConfig.getListNhanVienLink(Page, id_nhom, SEARCH_STRING, params.status))
@@ -174,14 +170,13 @@ export default class ListNhanVienScreen extends React.Component {
                             dataFull = dataFull.concat(responseJson.dsNhanVien)
                             this.setState({
                                 dataFull: dataFull,
-                                isEndList: responseJson.endlist
+                                isEndList: responseJson.endlist,
+                                dataRender: ds.cloneWithRows(dataFull)
                             }, function () {
                                 if (this.state.isEndList) {
                                     ALL_LOADED = true
                                     this.forceUpdate()
                                 }
-
-                                this.setState({dataRender: this.state.dataFull})
                             });
                         } else {
                             ALL_LOADED = true
@@ -189,7 +184,6 @@ export default class ListNhanVienScreen extends React.Component {
                         }
                     })
                     .catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'));
-            }
         }
     }
 
@@ -233,6 +227,7 @@ export default class ListNhanVienScreen extends React.Component {
     }
 
     flatListorIndicator() {
+
         const {navigate} = this.props.navigation
         if (!this.state.dataRender) {
             return (
@@ -257,26 +252,22 @@ export default class ListNhanVienScreen extends React.Component {
             )
         return (
             <View style={{flex: 9}}>
-
-                <FlatList
-                    keyboardDismissMode="on-drag"
-                    ListFooterComponent={this.renderFooter}
+                <ListView
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={() => this.refreshData()}
+                        />
+                    }
+                    renderFooter={this.renderFooter}
                     ref="listview"
                     onEndReachedThreshold={0.2}
                     onEndReached={() => {
                         this.loadMoreDataFromSv()
                     }}
-                    refreshing={this.state.refreshing}
-                    onRefresh={() => {
-                        this.refreshData()
-                    }}
-                    onMomentumScrollBegin={() => {
-                        this.setState({onEndReach: false})
-                    }}
+                    dataSource={this.state.dataRender}
+                    renderRow={(item) =>
 
-                    extraData={this.state.dataRender}
-                    data={this.state.dataRender}
-                    renderItem={({item}) =>
                         <ListNhanVienItem
                             data={item}
                             goToDetailNhanVien={() => navigate('DetailNhanVien', {idNhanVien: item.idnhanvien})}

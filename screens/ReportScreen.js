@@ -12,34 +12,20 @@ import {
     TouchableHightLight,
     ActivityIndicator,
     Platform,
+    ListView, RefreshControl
 } from "react-native";
 import URlConfig from "../configs/url";
 import Color from '../configs/color'
-import Icon3 from 'react-native-vector-icons/FontAwesome'
-import Icon1 from 'react-native-vector-icons/Ionicons'
-import Icon from 'react-native-vector-icons/MaterialIcons'
-import Icon2 from 'react-native-vector-icons/Entypo'
-import Image from 'react-native-image-progress';
-import ProgressBar from 'react-native-progress/Bar';
-import DialogManager, {ScaleAnimation, DialogContent} from 'react-native-dialog-component';
-import {DialogComponent, SlideAnimation} from 'react-native-dialog-component';
-import Dialog from '../components/DialogOrder'
-import orderListData from '../dbcontext/orderListData'
-import AtoZListView from 'react-native-atoz-listview';
 import Search from 'react-native-search-box';
 import Toast from 'react-native-simple-toast';
-import ultils from "../configs/ultils";
 import Communications from 'react-native-communications';
 import DoanhThuReportItem from "../components/DoanhThuReportItem";
 import TopDoanhThuItem from "../components/TopDoanhThuItem";
 import KhongCoDoanhThuItem from "../components/KhongCoDoanhThuItem";
-import ModalDropdownCustom from "../components/ModalDropdownCustom";
-import PTRView from 'react-native-pull-to-refresh'
-import LinearGradient from "react-native-linear-gradient";
 import HeaderCustom from "../components/Header";
 
 const timer = require('react-native-timer');
-
+let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 let SEARCH_STRING = '';
 let {width, height} = Dimensions.get('window');
 let ALL_LOADED = false
@@ -59,7 +45,7 @@ export default class ReportScreen extends Component {
             dateTo: params.dateTo,
             refreshing: false,
             waiting: false,
-            dataRender: null,
+            dataRender: ds,
             dataFull: [],
             isSearchExist: false
         }
@@ -124,6 +110,7 @@ export default class ReportScreen extends Component {
         this.setState({isEndList: false, dataRender: null})
         PAGE = 1;
         let url = this.getTypeLinkOfReport();
+        console.log(url)
         fetch(url)
             .then((response) => (response.json()))
             .then((responseJson) => {
@@ -132,7 +119,7 @@ export default class ReportScreen extends Component {
                         this.setState({
                             dataFull: responseJson.data,
                             isEndList: responseJson.endlist,
-                            dataRender: responseJson.data
+                            dataRender: ds.cloneWithRows(responseJson.data)
                         }, function () {
                             if (this.state.isEndList) {
                                 ALL_LOADED = true
@@ -147,7 +134,8 @@ export default class ReportScreen extends Component {
                         if (responseJson.data === null) {
                             data = []
                         } else data = responseJson.data
-                        this.setState({dataFull: data, dataRender: data, isEndList: true})
+                        this.setState({dataFull: data, dataRender: ds.cloneWithRows(data), isEndList: true})
+
                     }
                 }
                 }
@@ -155,9 +143,6 @@ export default class ReportScreen extends Component {
     }
 
     loadMoreDataFromSv() {
-        if (!this.state.onEndReach) {
-            this.setState({onEndReach: true})
-
             if (!this.state.isEndList) {
                 PAGE = PAGE + 1
                 let url = this.getTypeLinkOfReport()
@@ -169,7 +154,7 @@ export default class ReportScreen extends Component {
                         this.setState({
                             dataFull: arr,
                             isEndList: responseJson.endlist,
-                            dataRender: arr
+                            dataRender: ds.cloneWithRows(arr)
                         }, function () {
                             if (this.state.isEndList) {
                                 ALL_LOADED = true
@@ -179,7 +164,6 @@ export default class ReportScreen extends Component {
                     })
                     .catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
             }
-        }
     }
 
     refreshData() {
@@ -254,6 +238,7 @@ export default class ReportScreen extends Component {
     };
 
     flatListorIndicator() {
+        console.log(this.state.dataRender, 'DATARENDER')
         const {params} = this.props.navigation.state
         if (!this.state.dataRender) {
             return (
@@ -263,7 +248,7 @@ export default class ReportScreen extends Component {
                         style={styles.indicator}
                         size="large"/>
                 </View>)
-        } else if (this.state.dataRender.length === 0)
+        } else if (this.state.dataFull.length === 0 && this.state.isEndList)
             return (
                 <View style={{flex: 9}}>
                     <Text style={{
@@ -278,24 +263,21 @@ export default class ReportScreen extends Component {
 
         return (
             <View style={{flex: 9}}>
-                <FlatList
-                    keyboardDismissMode="on-drag"
-                    ListFooterComponent={this.renderFooter}
-                    ref={(listV) => {
-                        this.listV = listV
-                    }}
+                <ListView
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={() => this.refreshData()}
+                        />
+                    }
+                    renderFooter={this.renderFooter}
+                    ref="listview"
                     onEndReachedThreshold={0.2}
                     onEndReached={() => {
                         this.loadMoreDataFromSv()
                     }}
-                    onMomentumScrollBegin={() => {
-                        this.setState({onEndReach: false})
-                    }}
-                    refreshing={this.state.refreshing}
-                    onRefresh={() => this.refreshData()}
-                    extraData={this.state.dataRender}
-                    data={this.state.dataRender}
-                    renderItem={({item}) => {
+                    dataSource={this.state.dataRender}
+                    renderRow={(item) => {
                         switch (params.status) {
                             case 0:
                                 return this.renderDoanhThuSanLuong(item)

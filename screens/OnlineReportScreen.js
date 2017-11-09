@@ -77,7 +77,7 @@ export default class ReportScreen extends Component {
                                     this.state.fadeAnim,
                                     {
                                         toValue: 1,
-                                        duration: 500,
+                                        duration: 1000,
                                     }
                                 ).start()
                         )

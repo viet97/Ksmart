@@ -7,27 +7,19 @@ import {
     Dimensions,
     FlatList,
     Platform,
-    Picker
+    Picker, RefreshControl
 } from 'react-native';
 import Image from 'react-native-image-progress';
 import ProgressBar from 'react-native-progress/Bar';
-import Icon from 'react-native-vector-icons/MaterialIcons'
-import Icon1 from 'react-native-vector-icons/Ionicons'
 import Search from 'react-native-search-box';
 import React from 'react';
-import Color from '../configs/color'
-import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import URlConfig from "../configs/url";
 import Toast from 'react-native-simple-toast'
-import DatePicker from 'react-native-datepicker'
 import TravelItem from "../components/TravelItem";
-import ModalDropdownCustom from "../components/ModalDropdownCustom";
-import {shadowProps} from "../configs/shadow";
-import LinearGradient from "react-native-linear-gradient";
 import HeaderCustom from "../components/Header";
 
 const timer = require('react-native-timer');
-
+let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 let SEARCH_STRING = '';
 let {width, height} = Dimensions.get('window');
 let ALL_LOADED = false
@@ -52,7 +44,7 @@ export default class TravelScreen extends React.Component {
                         this.setState({
                             dataFull: responseJson.data,
                             isEndList: responseJson.endlist,
-                            dataRender: responseJson.data
+                            dataRender: ds.cloneWithRows(responseJson.data)
                         }, function () {
                             if (this.state.isEndList) {
                                 ALL_LOADED = true;
@@ -74,7 +66,7 @@ export default class TravelScreen extends React.Component {
             travelStatus: [],
             refreshing: false,
             dataFull: [],
-            dataRender: null,
+            dataRender: ds,
             onEndReach: true,
             URL: ''
         })
@@ -136,8 +128,6 @@ export default class TravelScreen extends React.Component {
 
     loadMoreDataFromSv() {
         const {params} = this.props.navigation.state;
-        if (!this.state.onEndReach) {
-            this.setState({onEndReach: true})
 
             if (!this.state.isEndList) {
                 PAGE = PAGE + 1;
@@ -150,7 +140,7 @@ export default class TravelScreen extends React.Component {
                         this.setState({
                             dataFull: arr,
                             isEndList: responseJson.endlist,
-                            dataRender: arr
+                            dataRender: ds.cloneWithRows(arr)
                         }, function () {
                             if (this.state.isEndList) {
                                 ALL_LOADED = true
@@ -161,7 +151,6 @@ export default class TravelScreen extends React.Component {
                     .catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
             }
         }
-    }
 
     refreshData() {
         this.getDataFromSv()
@@ -201,23 +190,22 @@ export default class TravelScreen extends React.Component {
 
         return (
             <View style={{flex: 9}}>
-
-                <FlatList
-                    keyboardDismissMode="on-drag"
-                    ListFooterComponent={this.renderFooter}
+                <ListView
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={() => this.refreshData()}
+                        />
+                    }
+                    renderFooter={this.renderFooter}
                     ref="listview"
-                    refreshing={this.state.refreshing}
-                    onRefresh={() => this.refreshData()}
                     onEndReachedThreshold={0.2}
                     onEndReached={() => {
                         this.loadMoreDataFromSv()
                     }}
-                    onMomentumScrollBegin={() => {
-                        this.setState({onEndReach: false})
-                    }}
-                    extraData={this.state.dataRender}
-                    data={this.state.dataRender}
-                    renderItem={({item}) =>
+                    dataSource={this.state.dataRender}
+                    renderRow={(item) =>
+
                         <TravelItem
                             refreshData={() => this.refreshData()}
                             data={item}
@@ -237,6 +225,7 @@ export default class TravelScreen extends React.Component {
                         />
                     }
                 />
+
             </View>)
     }
 
