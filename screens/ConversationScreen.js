@@ -9,7 +9,6 @@ import {Icon} from 'react-native-elements'
 import React from 'react';
 import {GiftedAvatar} from 'react-native-gifted-chat'
 import Toast from 'react-native-simple-toast'
-import {LinesLoader} from 'react-native-indicator';
 
 const moment = require('moment');
 import {dateOfWeek} from "../configs/data";
@@ -57,7 +56,7 @@ export default class ConversationScreen extends React.Component {
                     marginTop: 4
                 }}
             >
-                <LinesLoader color={'green'}/>
+                <ActivityIndicator style={styles.indicator}/>
             </View>
         );
     };

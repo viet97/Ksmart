@@ -12,7 +12,7 @@ import {
     TouchableHightLight,
     ActivityIndicator,
     Platform,
-
+    Animated
 } from "react-native";
 import URlConfig from "../configs/url";
 import Color from '../configs/color'
@@ -44,6 +44,7 @@ export default class ReportScreen extends Component {
         arr.push('5 phút');
 
         this.state = {
+            fadeAnim: new Animated.Value(0),
             refreshing: false,
             numberPickType: 0,
             time: 0,
@@ -60,7 +61,8 @@ export default class ReportScreen extends Component {
     }
 
     getOnlineReportListFromServer() {
-        this.setState({data: null})
+
+        this.setState({data: null, fadeAnim: new Animated.Value(0)})
         fetch(URlConfig.getLinkOnlinePerson())
             .then((response) => (response.json()))
             .then((responseJson) => {
@@ -70,7 +72,15 @@ export default class ReportScreen extends Component {
                         this.setState({
                             data: getData(),
                             lastUpdate: moment().format('DD/MM/YYYY HH:mm:ss')
-                        }, () => console.log(this.state.data))
+                            }, () =>
+                                Animated.timing(
+                                    this.state.fadeAnim,
+                                    {
+                                        toValue: 1,
+                                        duration: 500,
+                                    }
+                                ).start()
+                        )
                     }
                 }
             ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e))
@@ -87,6 +97,8 @@ export default class ReportScreen extends Component {
     }
 
     flatListorIndicator() {
+        const opacity = this.state.fadeAnim;
+
         console.log(this.state.data)
         const {navigate} = this.props.navigation
         if (!this.state.data) {
@@ -108,8 +120,8 @@ export default class ReportScreen extends Component {
                 extraData={this.state.data}
                 data={this.state.data}
                 renderItem={({item}) =>
-                    <View
-                        style={{width: width / 2 - 32, height: width / 2 - 32, margin: 16, flex: 1}}>
+                    <Animated.View
+                        style={{width: width / 2 - 32, height: width / 2 - 32, margin: 16, flex: 1, opacity}}>
                         <View style={{
                             flex: 1,
                             backgroundColor: '#0088C2',
@@ -132,7 +144,7 @@ export default class ReportScreen extends Component {
                                 fontSize: 20
                             }}>{item.content}</Text>
                         </View>
-                    </View>
+                    </Animated.View>
                 }
             />)
     }
