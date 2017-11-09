@@ -8,13 +8,6 @@ import {
     Image,
     ScrollView
 } from 'react-native';
-import MapView from 'react-native-maps';
-import {Icon} from 'react-native-elements'
-import Color from '../configs/color'
-import Toast from "react-native-simple-toast";
-import {PagerTabIndicator, IndicatorViewPager, PagerTitleIndicator, PagerDotIndicator} from 'rn-viewpager';
-import URlConfig from "../configs/url";
-import LinearGradient from "react-native-linear-gradient";
 import HeaderCustom from "../components/Header";
 import ultils from "../configs/ultils";
 

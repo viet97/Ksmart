@@ -102,12 +102,12 @@ export default class ReportScreen extends Component {
             case 1:
                 console.log('1')
                 url = URlConfig.getLinkTopDoanhThu(params.dateFrom, params.dateTo, 1)
-                this.setState({title: '10 nhân viên doanh thu cao nhất'})
+                this.setState({title: 'Nhân viên doanh thu cao nhất'})
                 break
             case 2:
                 console.log('2')
                 url = URlConfig.getLinkTopDoanhThu(params.dateFrom, params.dateTo, 2)
-                this.setState({title: '10 nhân viên doanh thu thấp nhất'})
+                this.setState({title: 'Nhân viên doanh thu thấp nhất'})
                 break
             case 3:
                 console.log('3')

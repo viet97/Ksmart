@@ -92,18 +92,6 @@ export default class ChooseTypeNew extends Component {
             </View>
         )
     }
-
-    ondateChange(from, to) {
-        this.setState({dataRender: null})
-        var dFrom = String(from);
-        var dTo = String(to);
-        dFrom.replace('/', '-');
-        dTo.replace('/', '-');
-        this.setState({dateFrom: dFrom, dateTo: dTo}, function () {
-            //keo lai data tư sv xuống
-        })
-    }
-
     getDataFromSv() {
         this.setState({data: null})
         fetch(URlConfig.getLinkSoNewFeed())
