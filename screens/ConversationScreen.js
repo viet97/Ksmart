@@ -56,7 +56,7 @@ export default class ConversationScreen extends React.Component {
                     marginTop: 4
                 }}
             >
-                <ActivityIndicator style={styles.indicator}/>
+                <ActivityIndicator style={styles.indicator} color={'green'}/>
             </View>
         );
     };

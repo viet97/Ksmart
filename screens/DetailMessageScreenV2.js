@@ -199,7 +199,7 @@ export default class DetailMessageScreenV2 extends React.Component {
         console.log(this.state.messages);
         const {params} = this.props.navigation.state;
         return (
-            <View style={{flex: 1}}>
+            <View style={{flex: 1, backgroundColor: 'white'}}>
                 <HeaderCustom title={params.title} leftClick={() => this.props.navigation.goBack()}/>
                 {this.chatListOrIndicator()}
             </View>
