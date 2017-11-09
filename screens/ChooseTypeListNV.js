@@ -100,7 +100,6 @@ export default class ChooseTypeListNV extends Component {
                         <ChooseTypeItem
                             data={item}
                             goToDetail={() => navigate('ListNhanVien', {status: item.trangthai})}
-
                         />
                     }
                 />
@@ -109,7 +108,7 @@ export default class ChooseTypeListNV extends Component {
     }
 
     getDataFromSv() {
-        this.setState({data: null})
+        this.setState({data: null});
         console.log(URlConfig.getLinkSoNhanVien(), '3333')
         fetch(URlConfig.getLinkSoNhanVien())
             .then((response) => (response.json()))
@@ -118,17 +117,14 @@ export default class ChooseTypeListNV extends Component {
                     console.log(responseJson.danhsach)
                     this.setState({data: responseJson.danhsach})
                 }
-            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e))
     }
 
-    goback = () => {
-
-    }
-
-    componentWillUnMount() {
+    componentWillUnmount() {
+        console.log(this.state.selectedTab)
         BackHandler.removeEventListener('hardwareBackPress', () => {
             if (this.state.selectedTab === 'ListNhanVien') {
-                console.log(this.state.selectedTab)
+
                 return false
             } else {
                 this.setState({selectedTab: 'ListNhanVien'})

@@ -4,7 +4,7 @@
 
 import React, {Component} from 'react';
 import {
-    View, Dimensions, Text, Picker, StyleSheet, TouchableOpacity, Image, Platform, FlatList
+    View, Dimensions, Text, Picker, StyleSheet, TouchableOpacity, Image, Platform, FlatList, ActivityIndicator
 } from "react-native";
 import Icon1 from 'react-native-vector-icons/Ionicons'
 import Bar from "react-native-pathjs-charts/src/Bar";
@@ -45,7 +45,7 @@ export default class TravelChartScreen extends React.Component {
             refreshing: false,
             dateFrom: today,
             dateTo: today,
-            isEmpty: true,
+            isEmpty: false,
             data: [],
             arr: [],
             keyChart: 'TongKhachHangViengTham',
@@ -62,7 +62,7 @@ export default class TravelChartScreen extends React.Component {
     }
 
     refreshData() {
-        this.setState({dataRender: null})
+        this.setState({dataRender: null, isEmpty: false})
 
         fetch(URlConfig.getTravelChartLink(this.state.dateFrom, this.state.dateTo))
             .then((response) => (response.json()))
@@ -75,6 +75,7 @@ export default class TravelChartScreen extends React.Component {
     }
 
     getDataChart() {
+        this.setState({dataRender: null, isEmpty: false})
         fetch(URlConfig.getTravelChartLink(this.state.dateFrom, this.state.dateTo))
             .then((response) => (response.json()))
             .then((responseJson) => {
@@ -110,7 +111,7 @@ export default class TravelChartScreen extends React.Component {
                     }
                     else this.setState({isEmpty: true})
                     console.log('dt', dt)
-                }
+                } else this.setState({isEmpty: true})
                 }
             ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
     }
@@ -164,6 +165,17 @@ export default class TravelChartScreen extends React.Component {
     getChartorFlatListorNull(options) {
 
         if (!this.state.isEmpty) {
+
+            if (!this.state.dataRender) {
+                return (
+                    <View style={{flex: 9}}>
+                        <ActivityIndicator
+                            animating={true}
+                            style={styles.indicator}
+                            size="large"/>
+                    </View>
+                )
+            }
             if (this.state.numberTypePick === 0)
                 return (
                     <View style={{flex: 9}}>
@@ -261,7 +273,7 @@ export default class TravelChartScreen extends React.Component {
             return <Picker.Item key={i} value={i} label={s + ''}/>
         });
         return (
-            <View style={{flex: 1,backgroundColor:'white'}}>
+            <View style={{flex: 1, backgroundColor: 'white'}}>
 
                 <HeaderCustom
 

@@ -120,6 +120,7 @@ export default class LoginScreen extends React.Component {
                             value={this.state.idct}
                             style={styles.textInput}
                             placeholder={'Mã công ty'}
+
                             secureTextEntry={false}
                             onChangeText={(text) => this.setState({idct: text})}
                             onSubmitEditing={(event) => {
@@ -194,8 +195,8 @@ export default class LoginScreen extends React.Component {
                         flexDirection: 'column',
                         justifyContent: 'center'
                     }}>
-                        <Text style={{alignSelf: 'center'}}>
-                            Phiên bản 1.0.5
+                        <Text style={{color: 'gray', backgroundColor: 'transparent', alignSelf: 'center'}}>
+                            Phiên bản 1.0.8
                         </Text>
 
                         <View style={{justifyContent: 'center', flexDirection: 'row',}}>

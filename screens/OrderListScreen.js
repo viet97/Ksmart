@@ -10,26 +10,19 @@ import {
     FlatList,
     TouchableHightLight,
     ActivityIndicator,
-    Platform
+    Platform,
+    ListView, RefreshControl
 } from "react-native";
 import URlConfig from "../configs/url";
-import Color from '../configs/color'
-import Icon1 from 'react-native-vector-icons/Ionicons'
-import Icon2 from 'react-native-vector-icons/Entypo'
-import Image from 'react-native-image-progress';
-import DialogManager, {ScaleAnimation, DialogContent} from 'react-native-dialog-component';
 import DialogOrder from '../components/DialogOrder'
 import Search from 'react-native-search-box';
-import ultils from "../configs/ultils";
 import Toast from 'react-native-simple-toast'
 import OrderListItem from "../components/OrderListItem";
-import PTRView from 'react-native-pull-to-refresh'
 import {ConfirmDialog} from 'react-native-simple-dialogs';
-import LinearGradient from "react-native-linear-gradient";
 import HeaderCustom from "../components/Header";
 
 const timer = require('react-native-timer');
-
+let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 let {height, width} = Dimensions.get('window');
 let NUMBER_ITEM_PER_PAGE = 10;
 let Page = 1;
@@ -73,7 +66,7 @@ export default class OrderListScreen extends Component {
                 dateFrom: today,
                 dateTo: today
             },
-            dataRender: null,
+            dataRender: ds,
             orderListDataFull: [],
             orderListDataFilt: []
         }
@@ -97,7 +90,7 @@ export default class OrderListScreen extends Component {
                     this.setState({
                         orderListDataFull: responseJson.data,
                         isEndList: responseJson.endlist,
-                        dataRender: responseJson.data,
+                        dataRender: ds.cloneWithRows(responseJson.data),
                     });
                 } else {
                     ALL_LOADED = true
@@ -114,8 +107,6 @@ export default class OrderListScreen extends Component {
 
     loadMoreDataFromSv() {
         const {params} = this.props.navigation.state
-        if (!this.state.onEndReach) {
-            this.setState({onEndReach: true})
 
             if (!this.state.isEndList) {
                 Page = Page + 1;
@@ -132,7 +123,7 @@ export default class OrderListScreen extends Component {
                             this.setState({
                                 orderListDataFull: dataFull,
                                 isEndList: responseJson.endlist,
-                                dataRender: dataFull
+                                dataRender: ds.cloneWithRows(dataFull)
                             });
                         } else {
                             ALL_LOADED = true
@@ -141,7 +132,6 @@ export default class OrderListScreen extends Component {
                     })
                     .catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'));
             }
-        }
     }
 
 
@@ -220,31 +210,28 @@ export default class OrderListScreen extends Component {
 
         return (
             <View style={{flex: 9}}>
-                <FlatList
-                    keyboardDismissMode="on-drag"
-                    ListFooterComponent={this.renderFooter}
-                    ref={(listV) => {
-                        this.listV = listV
-                    }}
+                <ListView
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={() => this.refreshData()}
+                        />
+                    }
+                    renderFooter={this.renderFooter}
+                    ref="listview"
                     onEndReachedThreshold={0.2}
                     onEndReached={() => {
                         this.loadMoreDataFromSv()
                     }}
-                    onMomentumScrollBegin={() => {
-
-                        this.setState({onEndReach: false})
-                    }}
-                    refreshing={this.state.refreshing}
-                    onRefresh={() => this.refreshData()}
-                    extraData={this.state.dataRender}
-                    data={this.state.dataRender}
-                    renderItem={({item}) =>
+                    dataSource={this.state.dataRender}
+                    renderRow={(item) =>
                         <OrderListItem
                             data={item}
                             goToDetail={() => navigate('DetailOrder', {id: item.iddonhang})}
                         />
                     }
                 />
+
             </View>)
     }
 

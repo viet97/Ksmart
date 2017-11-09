@@ -12,7 +12,7 @@ import {
     TouchableHightLight,
     ActivityIndicator,
     Platform,
-
+    Animated
 } from "react-native";
 import URlConfig from "../configs/url";
 import Color from '../configs/color'
@@ -23,10 +23,11 @@ import Toast from 'react-native-simple-toast';
 import LinearGradient from "react-native-linear-gradient";
 import Utils from "../configs/ultils";
 import HeaderCustom from "../components/Header";
+import {getData, setData, data} from "../configs/OnlineReportData";
 
 var {height, width} = Dimensions.get('window');
 const timer = require('react-native-timer');
-
+const moment = require('moment')
 export default class ReportScreen extends Component {
     static navigationOptions = {
         header: null,
@@ -43,29 +44,46 @@ export default class ReportScreen extends Component {
         arr.push('5 phút');
 
         this.state = {
+            fadeAnim: new Animated.Value(0),
+            refreshing: false,
             numberPickType: 0,
             time: 0,
             data: [],
-            onlineReportStatus: arr
+            onlineReportStatus: arr,
+            lastUpdate: ''
         }
     }
 
     refresh() {
-
-        this.setState({data: ''}, function () {
+        this.setState({data: ''}, () => {
             this.getOnlineReportListFromServer()
         })
     }
 
     getOnlineReportListFromServer() {
+
+        this.setState({data: null, fadeAnim: new Animated.Value(0)})
         fetch(URlConfig.getLinkOnlinePerson())
             .then((response) => (response.json()))
             .then((responseJson) => {
-                console.log(responseJson);
-                    if (responseJson.status)
-                        this.setState({data: responseJson})
+                    console.log(responseJson);
+                    if (responseJson.status) {
+                        setData(responseJson)
+                        this.setState({
+                            data: getData(),
+                            lastUpdate: moment().format('DD/MM/YYYY HH:mm:ss')
+                            }, () =>
+                                Animated.timing(
+                                    this.state.fadeAnim,
+                                    {
+                                        toValue: 1,
+                                        duration: 1000,
+                                    }
+                                ).start()
+                        )
+                    }
                 }
-            ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+            ).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e))
     }
 
     componentWillUnmount() {
@@ -77,8 +95,61 @@ export default class ReportScreen extends Component {
         timer.clearInterval(this)
         timer.setInterval(this, "123", () => this.getOnlineReportListFromServer(), 30000);
     }
-    render() {
 
+    flatListorIndicator() {
+        const opacity = this.state.fadeAnim;
+
+        console.log(this.state.data)
+        const {navigate} = this.props.navigation
+        if (!this.state.data) {
+            return (
+
+                <ActivityIndicator
+                    animating={true}
+                    style={styles.indicator}
+                    size="large"/>
+            )
+        }
+        return (
+            <FlatList
+                onRefresh={() => this.getOnlineReportListFromServer()}
+                refreshing={this.state.refreshing}
+                numColumns={2}
+                keyboardDismissMode="on-drag"
+                ref="listview"
+                extraData={this.state.data}
+                data={this.state.data}
+                renderItem={({item}) =>
+                    <Animated.View
+                        style={{width: width / 2 - 32, height: width / 2 - 32, margin: 16, flex: 1, opacity}}>
+                        <View style={{
+                            flex: 1,
+                            backgroundColor: '#0088C2',
+                            justifyContent: 'center',
+                            borderTopLeftRadius: 5,
+                            borderTopRightRadius: 5
+                        }}>
+                            <Text style={{textAlign: 'center', color: 'white'}}>{item.title}</Text>
+                        </View>
+                        <View style={{
+                            flex: 3,
+                            backgroundColor: '#009CDE',
+                            justifyContent: 'center',
+                            borderBottomLeftRadius: 5,
+                            borderBottomRightRadius: 5
+                        }}>
+                            <Text style={{
+                                textAlign: 'center',
+                                color: 'white',
+                                fontSize: 20
+                            }}>{item.content}</Text>
+                        </View>
+                    </Animated.View>
+                }
+            />)
+    }
+
+    render() {
         let onlineReportStatusItem = this.state.onlineReportStatus.map((s, i) => {
             return <Picker.Item key={i} value={i} label={s}/>
         });
@@ -89,139 +160,42 @@ export default class ReportScreen extends Component {
                     leftClick={() => this.props.navigation.goBack()}
                 />
                 <View style={{flex: 9}}>
-                    <View style={styles.view1}>
-                        <View
-                            style={{width: width / 2 - 32, height: width / 2 - 32, margin: 16, flex: 1}}>
-                            <View style={{
-                                flex: 1,
-                                backgroundColor: '#0088C2',
-                                justifyContent: 'center',
-                                borderTopLeftRadius: 5,
-                                borderTopRightRadius: 5
-                            }}>
-                                <Text style={{textAlign: 'center', color: 'white'}}>Nhân viên online</Text>
-                            </View>
-                            <View style={{
-                                flex: 3,
-                                backgroundColor: '#009CDE',
-                                justifyContent: 'center',
-                                borderBottomLeftRadius: 5,
-                                borderBottomRightRadius: 5
-                            }}>
-                                <Text style={{
-                                    textAlign: 'center',
-                                    color: 'white',
-                                    fontSize: 20
-                                }}>{this.state.data.nhanvienonline}</Text>
-                            </View>
-                        </View>
-                        <View
-                            style={{width: width / 2 - 32, height: width / 2 - 32, margin: 16, flex: 1}}>
-                            <View style={{
-                                flex: 1,
-                                backgroundColor: '#0088C2',
-                                justifyContent: 'center',
-                                borderTopLeftRadius: 5,
-                                borderTopRightRadius: 5
-                            }}>
-                                <Text style={{textAlign: 'center', color: 'white'}}>Doanh thu trong ngày</Text>
-                            </View>
-                            <View style={{
-                                flex: 3,
-                                backgroundColor: '#009CDE',
-                                justifyContent: 'center',
-                                borderBottomLeftRadius: 5,
-                                borderBottomRightRadius: 5
-                            }}>
-                                <Text style={{
-                                    textAlign: 'center',
-                                    color: 'white',
-                                    fontSize: 20
-                                }}>{Utils.getMoney(this.state.data.tongdoanhthu)}</Text>
-                            </View>
-                        </View>
-                    </View>
-                    <View style={styles.view1}>
-                        <View
-                            style={{width: width / 2 - 32, height: width / 2 - 32, margin: 16, flex: 1}}>
-                            <View style={{
-                                flex: 1,
-                                backgroundColor: '#0088C2',
-                                justifyContent: 'center',
-                                borderTopLeftRadius: 5,
-                                borderTopRightRadius: 5
-                            }}>
-                                <Text style={{textAlign: 'center', color: 'white'}}>Đơn hàng trong ngày</Text>
-                            </View>
-                            <View style={{
-                                flex: 3,
-                                backgroundColor: '#009CDE',
-                                justifyContent: 'center',
-                                borderBottomLeftRadius: 5,
-                                borderBottomRightRadius: 5
-                            }}>
-                                <Text style={{
-                                    textAlign: 'center',
-                                    color: 'white',
-                                    fontSize: 20
-                                }}>{this.state.data.tongdonhang}</Text>
-                            </View>
-                        </View>
-                        <View
-                            style={{width: width / 2 - 32, height: width / 2 - 32, margin: 16, flex: 1}}>
-                            <View style={{
-                                flex: 1,
-                                backgroundColor: '#0088C2',
-                                justifyContent: 'center',
-                                borderTopLeftRadius: 5,
-                                borderTopRightRadius: 5
-                            }}>
-                                <Text style={{textAlign: 'center', color: 'white'}}>Check-in trong ngày</Text>
-                            </View>
-                            <View style={{
-                                flex: 3,
-                                backgroundColor: '#009CDE',
-                                justifyContent: 'center',
-                                borderBottomLeftRadius: 5,
-                                borderBottomRightRadius: 5
-                            }}>
-                                <Text style={{
-                                    textAlign: 'center',
-                                    color: 'white',
-                                    fontSize: 20
-                                }}>{this.state.data.tongluotcheckin}</Text>
-                            </View>
-                        </View>
-                    </View>
+
+                    {this.flatListorIndicator()}
                     <Text style={{marginLeft: 16, backgroundColor: 'transparent'}}>Cài đặt thời gian cập nhập tin
                         tức: </Text>
                     <Picker style={{height: 44, width: width / 2, marginLeft: 16, alignSelf: 'center'}}
                             itemStyle={{color: 'black', height: 88}}
                             selectedValue={this.state.numberPickType}
                             onValueChange={(value) => {
-                                this.setState({numberPickType: value}, function () {
+                                this.setState({numberPickType: value}, () => {
                                         switch (value) {
                                             case 0 :
                                                 timer.clearInterval(this);
                                                 break;
                                             case 1 :
                                                 timer.clearInterval(this);
+                                                this.getOnlineReportListFromServer();
                                                 timer.setInterval(this, "123", () => this.refresh(), 10000);
                                                 break;
                                             case 2 :
                                                 timer.clearInterval(this);
+                                                this.getOnlineReportListFromServer();
                                                 timer.setInterval(this, "123", () => this.refresh(), 30000);
                                                 break;
                                             case 3 :
                                                 timer.clearInterval(this);
+                                                this.getOnlineReportListFromServer();
                                                 timer.setInterval(this, "123", () => this.refresh(), 60000);
                                                 break;
                                             case 4 :
                                                 timer.clearInterval(this);
+                                                this.getOnlineReportListFromServer();
                                                 timer.setInterval(this, "123", () => this.refresh(), 180000);
                                                 break;
                                             case 5 :
                                                 timer.clearInterval(this);
+                                                this.getOnlineReportListFromServer();
                                                 timer.setInterval(this, "123", () => this.refresh(), 300000);
                                                 break;
                                         }
@@ -231,8 +205,12 @@ export default class ReportScreen extends Component {
                         {onlineReportStatusItem}
                     </Picker>
                 </View>
+                <View
+                    style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                    <Text
+                        style={{fontSize: 15}}>{this.state.lastUpdate ? `Cập nhật lần cuối lúc: ${this.state.lastUpdate}` : 'Chưa cập nhật'}</Text>
+                </View>
             </View>
-
         )
     }
 

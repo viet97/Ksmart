@@ -25,7 +25,6 @@ const default_location={
     longitudeDelta: 0.0421 * 100,
 }
 let INDEX;
-let func;
 export default class MapListScreen extends Component {
     constructor(props) {
         super(props);
@@ -51,8 +50,7 @@ export default class MapListScreen extends Component {
     }
 
     componentDidMount() {
-
-        func = this.props.backToHome()
+        console.log(URlConfig.getAllNhanVien())
         fetch(URlConfig.getAllNhanVien())
             .then((response) => (response.json()))
             .then((responseJson) => {
@@ -204,19 +202,21 @@ export default class MapListScreen extends Component {
                                                 } else {
                                                     let markers = [];
                                                     for (let item of responseJson.dsNhanVien) {
+                                                        if (item.dangtructuyen === 1) markers[0] = item
                                                         if (item.dangtructuyen === this.state.status) {
                                                             markers.push(item)
                                                         }
                                                     }
                                                     this.setState({markers}, function () {
-                                                        this.setState({
-                                                            region: {
-                                                                latitude: this.state.markers[0].ViDo,
-                                                                longitude: this.state.markers[0].KinhDo,
-                                                                latitudeDelta: this.state.region.latitudeDelta,
-                                                                longitudeDelta: this.state.region.longitudeDelta,
-                                                            }
-                                                        });
+                                                        if (markers.length !== 0)
+                                                            this.setState({
+                                                                region: {
+                                                                    latitude: this.state.markers[0].ViDo,
+                                                                    longitude: this.state.markers[0].KinhDo,
+                                                                    latitudeDelta: this.state.region.latitudeDelta,
+                                                                    longitudeDelta: this.state.region.longitudeDelta,
+                                                                }
+                                                            });
 
                                                     })
                                                 }

@@ -10,7 +10,7 @@ import {
     ActivityIndicator,
     Platform,
     Picker, TouchableHighlight,
-    Image
+    Image, Animated
 } from 'react-native';
 import React from 'react';
 import Color from '../configs/color'
@@ -20,11 +20,24 @@ let {width, height} = Dimensions.get('window');
 export default class ChooseTypeItem extends React.Component {
     constructor(props) {
         super(props)
+        this.state = {
+            fadeAnim: new Animated.Value(0),
+        }
+    }
+
+    componentDidMount() {
+        Animated.timing(
+            this.state.fadeAnim,
+            {
+                toValue: 1,
+                duration: 1000,
+            }
+        ).start();
     }
     render() {
-
+        const opacity = this.state.fadeAnim;
         return (
-            <View style={{flex: 1}}>
+            <Animated.View style={{flex: 1, opacity}}>
                 <TouchableOpacity
                     onPress={() => this.props.goToDetail()}
                     style={{width: width / 2 - 32, height: width / 2 - 32, margin: 16}}>
@@ -52,7 +65,7 @@ export default class ChooseTypeItem extends React.Component {
                             }}>{this.props.data.tenloai === 'Doanh thu sản lượng' ? Utils.getMoney(this.props.data.tongso) : this.props.data.tongso}</Text>
                     </View>
                 </TouchableOpacity>
-            </View>
+            </Animated.View>
 
         )
     }

@@ -43,7 +43,7 @@ const menus = [
         iconName: 'comments-o',
         screenName: 'Message',
         title: 'TIN NHẮN'
-    },
+    }
 
 ];
 const menuSwiper = [

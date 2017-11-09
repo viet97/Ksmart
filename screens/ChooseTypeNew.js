@@ -18,6 +18,7 @@ import ChooseTypeItem from "../components/ChooseTypeItem";
 import URlConfig from "../configs/url";
 import LinearGradient from "react-native-linear-gradient";
 import HeaderCustom from "../components/Header";
+import {NavigationActions} from "react-navigation";
 
 let {width, height} = Dimensions.get('window')
 export default class ChooseTypeNew extends Component {
@@ -57,7 +58,21 @@ export default class ChooseTypeNew extends Component {
                     renderItem={({item}) =>
                         <ChooseTypeItem
                             data={item}
-                            goToDetail={() => navigate('NewFeed', {status: item.trangthai})}
+                            goToDetail={() => {
+                                const resetAction = NavigationActions.reset({
+                                    index: 3,
+                                    actions: [
+                                        NavigationActions.navigate({routeName: 'Login'}),
+                                        NavigationActions.navigate({routeName: 'Home'}),
+                                        NavigationActions.navigate({routeName: 'ChooseTypeNewFeed'}),
+                                        NavigationActions.navigate({
+                                            routeName: 'NewFeed',
+                                            params: {status: item.trangthai}
+                                        }),
+                                    ]
+                                });
+                                this.props.navigation.dispatch(resetAction);
+                            }}
                         />
                     }
                 />
@@ -77,18 +92,6 @@ export default class ChooseTypeNew extends Component {
             </View>
         )
     }
-
-    ondateChange(from, to) {
-        this.setState({dataRender: null})
-        var dFrom = String(from);
-        var dTo = String(to);
-        dFrom.replace('/', '-');
-        dTo.replace('/', '-');
-        this.setState({dateFrom: dFrom, dateTo: dTo}, function () {
-            //keo lai data tư sv xuống
-        })
-    }
-
     getDataFromSv() {
         this.setState({data: null})
         fetch(URlConfig.getLinkSoNewFeed())

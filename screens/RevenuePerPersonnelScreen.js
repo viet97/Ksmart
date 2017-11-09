@@ -4,7 +4,7 @@
 
 import React, {Component} from 'react';
 import {
-    View, Dimensions, Text, Picker, StyleSheet, TouchableOpacity, Image, Platform, FlatList
+    View, Dimensions, Text, Picker, StyleSheet, TouchableOpacity, Image, Platform, FlatList, ActivityIndicator
 } from "react-native";
 import Icon1 from 'react-native-vector-icons/Ionicons'
 import Bar from "react-native-pathjs-charts/src/Bar";
@@ -16,6 +16,8 @@ import DoanhThuTheoNVItem from "../components/DoanhThuTheoNVItem";
 import ModalDropdownCustom from "../components/ModalDropdownCustom";
 import LinearGradient from "react-native-linear-gradient";
 import HeaderCustom from "../components/Header";
+import ultils from "../configs/ultils";
+import {Icon} from "react-native-elements";
 
 export default class RevenuePerPersonnelScreen extends React.Component {
     static navigationOptions = {
@@ -38,9 +40,11 @@ export default class RevenuePerPersonnelScreen extends React.Component {
         today = dd + '-' + mm + '-' + yyyy;
         var now = new Date();
         this.state = {
+            tongdonhang: '0',
+            tongdoanhthu: '0.00',
             date: today,
             dateto: today,
-            isEmpty: true,
+            isEmpty: false,
             data: [],
             arr: [],
             keyChart: 'TongTien',
@@ -58,22 +62,36 @@ export default class RevenuePerPersonnelScreen extends React.Component {
     }
 
     refreshData() {
-        this.setState({dataRender: null});
+        this.setState({dataRender: null, isEmpty: false});
         fetch(URlConfig.getRevenuePerson(this.state.date, this.state.dateto))
             .then((response) => (response.json()))
             .then((responseJson) => {
                 if (responseJson.data !== null) {
-                    this.setState({dataRender: responseJson.data})
-                }
+                    this.setState({
+                        dataRender: responseJson.data,
+                        tongdoanhthu: responseJson.tongdoanhthu,
+                        tongdonhang: responseJson.tongdonhang
+                    }, function () {
+                        console.log(this.state.tongdoanhthu, 'tong doanh thuuuuuuuu')
+                    })
+                } else this.setState({tongdonhang: '0', tongdoanhthu: '0.00', dataRender: null, isEmpty: true})
             }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
     }
 
     getDataChart() {
+        this.setState({dataRender: null, isEmpty: false});
         fetch(URlConfig.getRevenuePerson(this.state.date, this.state.dateto))
             .then((response) => (response.json()))
             .then((responseJson) => {
                 if (responseJson.data !== null) {
-                    this.setState({dataRender: responseJson.data})
+                    console.log(responseJson, 'tong doanh thuuuuuuuu')
+                    this.setState({
+                        tongdonhang: responseJson.tongdonhang,
+                        dataRender: responseJson.data,
+                        tongdoanhthu: responseJson.tongdoanhthu
+                    }, function () {
+
+                    })
                     console.log(responseJson.data)
                     let res = responseJson.data;
                     let dt = []
@@ -102,8 +120,7 @@ export default class RevenuePerPersonnelScreen extends React.Component {
                         })
                     }
                     else this.setState({isEmpty: true})
-                }
-
+                } else this.setState({tongdonhang: '0', tongdoanhthu: '0.00', dataRender: null, isEmpty: true})
                 }
             )
     }
@@ -127,9 +144,18 @@ export default class RevenuePerPersonnelScreen extends React.Component {
     getChartorFlatListorNull(options) {
         console.log(this.state.numberTypePick)
         if (!this.state.isEmpty) {
-            if (this.state.numberTypePick === 0)
+            if (!this.state.dataRender) {
                 return (
                     <View style={{flex: 9}}>
+                        <ActivityIndicator
+                            animating={true}
+                            style={styles.indicator}
+                            size="large"/>
+                    </View>
+                )
+            }
+            if (this.state.numberTypePick === 0)
+                return (
                         <FlatList
                             keyboardDismissMode="on-drag"
                             ref="listview"
@@ -141,7 +167,6 @@ export default class RevenuePerPersonnelScreen extends React.Component {
                                 return this.renderItem(item)
                             }}
                         />
-                    </View>
                 )
             else
                 return (
@@ -222,14 +247,15 @@ export default class RevenuePerPersonnelScreen extends React.Component {
                     title={this.getTitle()}
                     leftClick={() => this.props.navigation.goBack()}
                     rightChildren={
-                        <TouchableOpacity style={{alignSelf: 'center'}} onPress={() => {
-                            this.showDialog();
+                        <TouchableOpacity style={{alignSelf: 'center', paddingRight: 4}} onPress={() => {
+                            //TODO: show dialog hiển thị tổng đơn hàng, doanh thu ở đây, k đè text nữa vì lỗi ở ios
                         }}>
+                            <Icon name={'info'} size={24} type={'feather'} color={'white'}/>
                         </TouchableOpacity>
                     }
                 />
                 <View style={{flexDirection: 'column', flex: 9}}>
-                    <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: 60}}>
+                    <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
                         <Text style={{backgroundColor: 'transparent'}}>Từ</Text>
                         <DatePicker
                             style={{marginLeft: 8}}
@@ -263,15 +289,69 @@ export default class RevenuePerPersonnelScreen extends React.Component {
                             }}
                         />
                     </View>
-                    <View style={{backgroundColor: 'transparent', flexDirection: 'row', justifyContent: 'center'}}>
-                        <Text style={{color: 'black', alignSelf: 'center', marginRight: 4}}>Dạng hiển thị</Text>
-                        <ModalDropdownCustom
-                            data={this.state.type}
-                            defaultValue={this.state.type[0]}
-                            onSelect={(idx, value) => {
-                                this.setState({numberTypePick: idx})
-                            }}
-                        />
+                    <View style={{
+                        backgroundColor: 'transparent',
+                        flexDirection: 'row',
+                        marginLeft: 8,
+                        justifyContent: 'center'
+                    }}>
+                        <View style={{
+                            paddingBottom: 10,
+                            paddingTop: 10,
+                            backgroundColor: 'transparent',
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            flex: 1
+                        }}>
+                            <Text style={{color: 'black', alignSelf: 'center', marginRight: 4}}>Dạng hiển thị</Text>
+                            <ModalDropdownCustom
+                                width={width / 4}
+                                data={this.state.type}
+                                defaultValue={this.state.type[0]}
+                                onSelect={(idx, value) => {
+                                    this.setState({numberTypePick: idx})
+                                }}
+                            />
+                        </View>
+                        <View style={{
+                            backgroundColor: 'transparent',
+                            justifyContent: 'center',
+                            flex: 1
+                        }}>
+                            <View style={{
+                                backgroundColor: 'transparent',
+                                flexDirection: 'row',
+                                justifyContent: 'center',
+                                flex: 1
+                            }}>
+                                <Text
+                                    style={{color: 'black', alignSelf: 'center', marginLeft: 8, flex: 2}}>
+                                    ĐH: </Text>
+                                <Text style={{
+                                    color: 'black',
+                                    alignSelf: 'center',
+                                    marginRight: 8,
+                                    flex: 3
+                                }}>{this.state.tongdonhang}</Text>
+                            </View>
+                            <View style={{
+                                backgroundColor: 'transparent',
+                                flexDirection: 'row',
+                                justifyContent: 'center',
+                                flex: 1
+                            }}>
+                                <Text
+                                    style={{color: 'black', alignSelf: 'center', marginLeft: 8, flex: 2}}>
+                                    DT: </Text>
+                                <Text style={{
+                                    color: 'black',
+                                    alignSelf: 'center',
+                                    marginRight: 8,
+                                    flex: 3
+                                }}>{ultils.getMoney(this.state.tongdoanhthu)}</Text>
+                            </View>
+
+                        </View>
                     </View>
                     {this.getChartorFlatListorNull(options)}
                 </View>

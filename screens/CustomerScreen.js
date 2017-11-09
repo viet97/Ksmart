@@ -34,6 +34,7 @@ let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 let ALL_LOADED = false
 let SEARCH_STRING = '';
 let PAGE = 0;
+let ID;
 let {height, width} = Dimensions.get('window');
 export default class CustomerScreen extends Component {
     static navigationOptions = {
@@ -71,13 +72,13 @@ export default class CustomerScreen extends Component {
         );
     };
 
-    getDataFromSv() {
+    getDataFromSv(id) {
+
         PAGE = 0;
         this.setState({dataRender: null})
         ALL_LOADED = false;
-        const {params} = this.props.navigation.state;
-        console.log('url', URlConfig.getCustomerLink(PAGE, SEARCH_STRING, params.id))
-        fetch(URlConfig.getCustomerLink(PAGE, SEARCH_STRING, params.id))
+        console.log('url', URlConfig.getCustomerLink(PAGE, SEARCH_STRING, id))
+        fetch(URlConfig.getCustomerLink(PAGE, SEARCH_STRING, id))
             .then((response) => (response.json()))
             .then((responseJson) => {
                 this.setState({customerCount: responseJson.tongsoitem})
@@ -87,28 +88,34 @@ export default class CustomerScreen extends Component {
                         ALL_LOADED = true
                         this.forceUpdate()
                     }
-                    this.setState({
-                        dataFull: responseJson.data,
-                        dataRender: ds.cloneWithRows(responseJson.data)
-                    })
+                    if (responseJson.data)
+                        this.setState({
+                            dataFull: responseJson.data,
+                            dataRender: ds.cloneWithRows(responseJson.data)
+                        })
+                    else
+                        this.setState({
+                            dataFull: [],
+                            dataRender: null
+                        })
+
 
                 } else {
-                    this.setState({dataRender: []})
+                    this.setState({dataFull: [], dataRender: ds.cloneWithRows([])})
                     ALL_LOADED = true
                     this.forceUpdate()
                 }
             }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại ' + e))
     }
 
-    refreshData() {
-        this.getDataFromSv()
+    refreshData(id) {
+        this.getDataFromSv(id)
     }
 
 
-    loadMoreData() {
-        const {params} = this.props.navigation.state
+    loadMoreData(id) {
             console.log("LOADMORE")
-            fetch(URlConfig.getCustomerLink(PAGE, SEARCH_STRING, params.id))
+        fetch(URlConfig.getCustomerLink(PAGE, SEARCH_STRING, id))
                 .then((response) => (response.json()))
                 .then((responseJson) => {
                     console.log(responseJson)
@@ -160,14 +167,14 @@ export default class CustomerScreen extends Component {
                     refreshControl={
                         <RefreshControl
                             refreshing={this.state.refreshing}
-                            onRefresh={() => this.refreshData()}
+                            onRefresh={() => this.refreshData(ID)}
                         />
                     }
                     renderFooter={this.renderFooter}
                     ref="listview"
                     onEndReachedThreshold={0.2}
                     onEndReached={() => {
-                        this.loadMoreData()
+                        this.loadMoreData(ID)
                     }}
                     dataSource={this.state.dataRender}
                     renderRow={(item) =>
@@ -190,6 +197,7 @@ export default class CustomerScreen extends Component {
     }
 
     onChangeText(text) {
+        const {params} = this.props.navigation.state;
         this.setState({isSearching: true})
         console.log("onChangeText")
         return new Promise((resolve, reject) => {
@@ -198,7 +206,7 @@ export default class CustomerScreen extends Component {
             var keyword = text.toLowerCase()
             SEARCH_STRING = keyword
             timer.clearTimeout(this)
-            timer.setTimeout(this, "123", () => this.getDataFromSv(), 500);
+            timer.setTimeout(this, "123", () => this.getDataFromSv(params.id), 500);
         });
     }
 
@@ -255,11 +263,17 @@ export default class CustomerScreen extends Component {
                             data={getListCustomer()}
                             renderItem={({item}) =>
 
-                                <View style={{flexDirection: 'row', marginTop: 16}}>
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        ID = item.id
+                                        this.getDataFromSv(item.id)
+                                        this.setState({dialogVisible: false})
+                                    }}
+                                    style={{flexDirection: 'row', marginTop: 16}}>
                                     <View
                                         style={{width: 30, height: 30, borderRadius: 15, backgroundColor: item.color}}/>
                                     <Text style={{alignSelf: 'center', marginLeft: 8}}>{item.name}</Text>
-                                </View>
+                                </TouchableOpacity>
                             }
                         />
                     </View>
@@ -281,21 +295,24 @@ export default class CustomerScreen extends Component {
     }
 
     onCancel() {
+        const {params} = this.props.navigation.state;
         return new Promise((resolve, reject) => {
             resolve();
             console.log("onCancle")
             console.log("onCancle")
             if (SEARCH_STRING.length !== 0) {
                 SEARCH_STRING = ''
-                this.getDataFromSv()
+                this.getDataFromSv(params.id)
             }
         });
     }
 
     componentDidMount() {
+        const {params} = this.props.navigation.state;
+        ID = params.id
         PAGE = 0
         SEARCH_STRING = ''
-        this.getDataFromSv()
+        this.getDataFromSv(params.id)
     }
 }
 const styles = StyleSheet.create({

@@ -101,7 +101,7 @@ export default class EditTravelScreen extends React.Component {
                                 let date1 = moment(this.state.dateCome, 'DD-MM-YYYY HH:mm:ss').toDate();
                                 let date2 = moment(this.state.dateOut, 'DD-MM-YYYY HH:mm:ss').toDate();
                                 let now = new Date();
-                                if (this.state.dateComeReal !== '1900-01-01T00:00:00') {
+                                if (this.state.dateComeReal !== '1900-01-01T00:00:00' && this.state.dateComeReal !== '0001-01-01T00:00:00') {
                                     Toast.show('Kế hoạch đã vào điểm, bạn không thể chỉnh sửa')
                                 } else if (date1.getTime() - date2.getTime() >= 0 || date1.getTime() - now.getTime() < 0) {
                                     Toast.show("Thời gian vào điểm phải trước ra điểm và sau thời điểm hiện tại , vui lòng thử lại!")
@@ -162,7 +162,7 @@ export default class EditTravelScreen extends React.Component {
                                 let date1 = moment(this.state.dateCome, 'DD-MM-YYYY HH:mm:ss').toDate();
                                 let date2 = moment(this.state.dateOut, 'DD-MM-YYYY HH:mm:ss').toDate();
                                 let now = new Date();
-                                if (this.state.dateComeReal !== '1900-01-01T00:00:00') {
+                                if (this.state.dateComeReal !== '1900-01-01T00:00:00' && this.state.dateComeReal !== '0001-01-01T00:00:00') {
                                     Toast.show('Kế hoạch đã vào điểm, bạn không thể chỉnh sửa')
                                 } else if (date1.getTime() - date2.getTime() >= 0 || date1.getTime() - now.getTime() < 0) {
                                     Toast.show("Thời gian vào điểm phải trước ra điểm và sau thời điểm hiện tại , vui lòng thử lại!")
