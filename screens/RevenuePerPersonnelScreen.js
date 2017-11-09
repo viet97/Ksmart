@@ -18,6 +18,7 @@ import LinearGradient from "react-native-linear-gradient";
 import HeaderCustom from "../components/Header";
 import ultils from "../configs/ultils";
 import {Icon} from "react-native-elements";
+import {ConfirmDialog} from 'react-native-simple-dialogs';
 
 export default class RevenuePerPersonnelScreen extends React.Component {
     static navigationOptions = {
@@ -40,6 +41,7 @@ export default class RevenuePerPersonnelScreen extends React.Component {
         today = dd + '-' + mm + '-' + yyyy;
         var now = new Date();
         this.state = {
+            dialogVisible: false,
             tongdonhang: '0',
             tongdoanhthu: '0.00',
             date: today,
@@ -156,17 +158,17 @@ export default class RevenuePerPersonnelScreen extends React.Component {
             }
             if (this.state.numberTypePick === 0)
                 return (
-                        <FlatList
-                            keyboardDismissMode="on-drag"
-                            ref="listview"
-                            refreshing={this.state.refreshing}
-                            onRefresh={() => this.refreshData()}
-                            extraData={this.state.dataRender}
-                            data={this.state.dataRender}
-                            renderItem={({item}) => {
-                                return this.renderItem(item)
-                            }}
-                        />
+                    <FlatList
+                        keyboardDismissMode="on-drag"
+                        ref="listview"
+                        refreshing={this.state.refreshing}
+                        onRefresh={() => this.refreshData()}
+                        extraData={this.state.dataRender}
+                        data={this.state.dataRender}
+                        renderItem={({item}) => {
+                            return this.renderItem(item)
+                        }}
+                    />
                 )
             else
                 return (
@@ -248,7 +250,7 @@ export default class RevenuePerPersonnelScreen extends React.Component {
                     leftClick={() => this.props.navigation.goBack()}
                     rightChildren={
                         <TouchableOpacity style={{alignSelf: 'center', paddingRight: 4}} onPress={() => {
-                            //TODO: show dialog hiển thị tổng đơn hàng, doanh thu ở đây, k đè text nữa vì lỗi ở ios
+                            this.setState({dialogVisible: true})
                         }}>
                             <Icon name={'info'} size={24} type={'feather'} color={'white'}/>
                         </TouchableOpacity>
@@ -355,6 +357,26 @@ export default class RevenuePerPersonnelScreen extends React.Component {
                     </View>
                     {this.getChartorFlatListorNull(options)}
                 </View>
+                <ConfirmDialog
+                    visible={this.state.dialogVisible}
+                    onTouchOutside={() => this.setState({dialogVisible: false})}
+                    positiveButton={{
+                        title: "Xác nhận",
+                        onPress: () => this.setState({dialogVisible: false})
+                    }}>
+                    <View style={{
+                        flexDirection: 'column',
+                        backgroundColor: 'transparent',
+                    }}>
+                        <Text
+                            style={{color: 'black', fontSize: 16}}>
+                            Số đơn hàng: {this.state.tongdonhang} </Text>
+                        <Text
+                            style={{color: 'black', fontSize: 16}}>
+                            Doanh thu: {ultils.getMoney(this.state.tongdoanhthu)} </Text>
+                    </View>
+                </ConfirmDialog>
+
             </View>
         )
 
