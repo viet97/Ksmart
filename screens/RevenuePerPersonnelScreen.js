@@ -4,7 +4,17 @@
 
 import React, {Component} from 'react';
 import {
-    View, Dimensions, Text, Picker, StyleSheet, TouchableOpacity, Image, Platform, FlatList, ActivityIndicator
+    View,
+    Dimensions,
+    Text,
+    Picker,
+    StyleSheet,
+    TouchableOpacity,
+    Image,
+    Platform,
+    FlatList,
+    ActivityIndicator,
+    ScrollView
 } from "react-native";
 import Icon1 from 'react-native-vector-icons/Ionicons'
 import Bar from "react-native-pathjs-charts/src/Bar";
@@ -151,7 +161,7 @@ export default class RevenuePerPersonnelScreen extends React.Component {
                     <View style={{flex: 9}}>
                         <ActivityIndicator
                             animating={true}
-                            style={styles.indicator}
+                            style={styles.indicator} color={"green"}
                             size="large"/>
                     </View>
                 )
@@ -193,7 +203,7 @@ export default class RevenuePerPersonnelScreen extends React.Component {
     render() {
         var {height, width} = Dimensions.get('window');
         let options = {
-            width: width - 40,
+            width: width - 60,
             height: 300,
             margin: {
                 top: 20,
@@ -256,7 +266,7 @@ export default class RevenuePerPersonnelScreen extends React.Component {
                         </TouchableOpacity>
                     }
                 />
-                <View style={{flexDirection: 'column', flex: 9}}>
+                <ScrollView style={{flexDirection: 'column', flex: 9}}>
                     <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
                         <Text style={{backgroundColor: 'transparent'}}>Từ</Text>
                         <DatePicker
@@ -356,7 +366,7 @@ export default class RevenuePerPersonnelScreen extends React.Component {
                         </View>
                     </View>
                     {this.getChartorFlatListorNull(options)}
-                </View>
+                </ScrollView>
                 <ConfirmDialog
                     visible={this.state.dialogVisible}
                     onTouchOutside={() => this.setState({dialogVisible: false})}

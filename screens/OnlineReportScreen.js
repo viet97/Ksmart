@@ -106,7 +106,7 @@ export default class ReportScreen extends Component {
 
                 <ActivityIndicator
                     animating={true}
-                    style={styles.indicator}
+                    style={styles.indicator} color={"green"}
                     size="large"/>
             )
         }

@@ -184,6 +184,7 @@ export default class OnlineChartScreen extends React.Component {
                         <ActivityIndicator
                             animating={true}
                             style={styles.indicator}
+                            color={"green"}
                             size="large"/>
                     </View>
                 )
@@ -238,7 +239,7 @@ export default class OnlineChartScreen extends React.Component {
         });
         var {height, width} = Dimensions.get('window');
         let options = {
-            width: width - 40,
+            width: width - 60,
             height: 300,
             margin: {
                 top: 20,

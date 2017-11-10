@@ -126,6 +126,9 @@ export default class ReportScreen extends Component {
                                 this.forceUpdate()
                             }
                         })
+                    } else {
+                        Toast.show('' + responseJson.msg)
+                        this.setState({isEndList: true, dataFull: [], dataRender: []})
                     }
                 } else {
                     if (!responseJson.status) {
@@ -232,7 +235,7 @@ export default class ReportScreen extends Component {
                     borderColor: "green"
                 }}
             >
-                <ActivityIndicator animating={true} size="large"/>
+                <ActivityIndicator animating={true} color={"green"} size="large"/>
             </View>
         );
     };
@@ -246,6 +249,7 @@ export default class ReportScreen extends Component {
                     <ActivityIndicator
                         animating={true}
                         style={styles.indicator}
+                        color={"green"}
                         size="large"/>
                 </View>)
         } else if (this.state.dataFull.length === 0 && this.state.isEndList)
