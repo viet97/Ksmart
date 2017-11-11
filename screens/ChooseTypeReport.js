@@ -70,7 +70,7 @@ export default class ChooseTypeReport extends Component {
             return (
                 <View style={{flex: 9}}>
                     <ActivityIndicator
-                        animating={true}
+                        animating={true} color={"green"}
                         style={styles.indicator}
                         size="large"/>
                 </View>)

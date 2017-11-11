@@ -55,7 +55,7 @@ export default class ChooseTypeTravel extends Component {
                 <View style={{flex: 9}}>
                     <ActivityIndicator
                         animating={true}
-                        style={styles.indicator}
+                        style={styles.indicator} color={"green"}
                         size="large"/>
                 </View>)
         }

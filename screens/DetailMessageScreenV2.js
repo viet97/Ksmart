@@ -142,7 +142,7 @@ export default class DetailMessageScreenV2 extends React.Component {
             return (
                 <ActivityIndicator
                     animating={true}
-                    style={styles.indicator}
+                    style={styles.indicator} color={"green"}
                     size="large"/>
 
             )

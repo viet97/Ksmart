@@ -222,7 +222,7 @@ export default class ChartScreen extends React.Component {
             if (!this.state.dataRender) {
                 return (
                     <View style={{flex: 1, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center'}}>
-                        <ActivityIndicator size={'large'} color={'black'} animating={true}/>
+                        <ActivityIndicator size={'large'} color={'green'} animating={true}/>
                     </View>
                 )
             } else if (this.state.numberTypePick === 0)
@@ -241,15 +241,12 @@ export default class ChartScreen extends React.Component {
                         />
                     </View>
                 )
-            else {
-                console.log(this.state.data)
-                return (
+            else return (
                     <View style={{marginLeft: 16}}>
                         <Bar data={this.state.data} options={options} accessorKey={this.state.keyChart}/>
                         {this.getTitleChart()}
                     </View>
                 )
-            }
 
 
             return (
@@ -289,12 +286,12 @@ export default class ChartScreen extends React.Component {
     render() {
         let {height, width} = Dimensions.get('window');
         let options = {
-            width: width - 100,
+            width: width - 60,
             height: 300,
             margin: {
                 top: 20,
                 left: 25,
-                bottom: 50,
+                bottom: 20,
                 right: 20
             },
             color: '#2980B9',

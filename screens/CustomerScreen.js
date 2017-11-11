@@ -67,7 +67,7 @@ export default class CustomerScreen extends Component {
                     borderColor: "green"
                 }}
             >
-                <ActivityIndicator animating={true} size="large"/>
+                <ActivityIndicator animating={true} color={"green"} size="large"/>
             </View>
         );
     };
@@ -144,7 +144,7 @@ export default class CustomerScreen extends Component {
                 <View style={{flex: 9}}>
                     <ActivityIndicator
                         animating={true}
-                        style={styles.indicator}
+                        style={styles.indicator} color={"green"}
                         size="large"/>
                 </View>)
         } else if (this.state.dataFull.length === 0)

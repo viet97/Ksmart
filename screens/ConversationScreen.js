@@ -219,7 +219,7 @@ export default class ConversationScreen extends React.Component {
             return (
                 <ActivityIndicator
                     animating={true}
-                    style={styles.indicator}
+                    style={styles.indicator} color={"green"}
                     size="large"/>
 
             )

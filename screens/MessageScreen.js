@@ -134,7 +134,7 @@ export default class OrderListScreen extends Component {
                     borderColor: "green"
                 }}
             >
-                <ActivityIndicator animating={true} size="large"/>
+                <ActivityIndicator animating={true} color={"green"} size="large"/>
             </View>
         );
     };
@@ -186,6 +186,7 @@ export default class OrderListScreen extends Component {
                     <ActivityIndicator
                         animating={true}
                         style={styles.indicator}
+                        color={"green"}
                         size="large"/>
                 </View>)
         } else if (this.state.dataRender.length === 0)

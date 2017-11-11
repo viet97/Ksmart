@@ -4,7 +4,17 @@
 
 import React, {Component} from 'react';
 import {
-    View, Dimensions, Text, Picker, StyleSheet, TouchableOpacity, Image, Platform, FlatList, ActivityIndicator
+    View,
+    Dimensions,
+    Text,
+    Picker,
+    StyleSheet,
+    TouchableOpacity,
+    Image,
+    Platform,
+    FlatList,
+    ActivityIndicator,
+    ScrollView
 } from "react-native";
 import Icon1 from 'react-native-vector-icons/Ionicons'
 import Bar from "react-native-pathjs-charts/src/Bar";
@@ -76,6 +86,7 @@ export default class TravelChartScreen extends React.Component {
 
     getDataChart() {
         this.setState({dataRender: null, isEmpty: false})
+        console.log(URlConfig.getTravelChartLink(this.state.dateFrom, this.state.dateTo))
         fetch(URlConfig.getTravelChartLink(this.state.dateFrom, this.state.dateTo))
             .then((response) => (response.json()))
             .then((responseJson) => {
@@ -121,7 +132,8 @@ export default class TravelChartScreen extends React.Component {
             <View style={{
                 marginTop: 4, marginBottom: 4, marginLeft: 8, marginRight: 8,
                 borderTopColor: '#227878'
-            }}><Image source={require('../images/bg1.png')}
+            }}>
+                <Image source={require('../images/bg1.png')}
                       style={{
                           width: width - 8,
                           height: height / 8.5
@@ -134,9 +146,10 @@ export default class TravelChartScreen extends React.Component {
                     marginRight: 8,
                     marginBottom: 4
                 }}>
-                    <View style={{flexDirection: 'row'}}>
+                    <View style={{flexDirection: 'row', flex: 1}}>
                         <Text style={{alignSelf: 'center', backgroundColor: 'transparent'}}>Tên nhân viên: </Text>
                         <Text style={{
+                            flex: 1,
                             marginLeft: 8,
                             backgroundColor: 'transparent'
                         }}>{item.tennhanvien}</Text>
@@ -171,7 +184,7 @@ export default class TravelChartScreen extends React.Component {
                     <View style={{flex: 9}}>
                         <ActivityIndicator
                             animating={true}
-                            style={styles.indicator}
+                            style={styles.indicator} color={"green"}
                             size="large"/>
                     </View>
                 )
@@ -195,10 +208,10 @@ export default class TravelChartScreen extends React.Component {
                 )
             else
                 return (
-                    <View>
+                    <ScrollView>
                         <Bar data={this.state.data} options={options} accessorKey={this.state.keyChart}/>
                         {this.getTitleChart()}
-                    </View>
+                    </ScrollView>
                 )
         } else return (
             <Text style={{alignSelf: 'center', textAlign: 'center', fontSize: 20, backgroundColor: 'transparent'}}>Không
@@ -216,15 +229,15 @@ export default class TravelChartScreen extends React.Component {
 
     getTitleChart() {
         var b = this.state.keyChart
-        title = 'Biểu đồ tần suất nhân viên viếng thăm từ ngày ' + this.state.dateFrom + ' đến ngày ' + this.state.dateTo
+        let title = 'Biểu đồ tần suất nhân viên viếng thăm từ ngày ' + this.state.dateFrom + ' đến ngày ' + this.state.dateTo
         return (<Text
-            style={{margin: 8, textAlign: 'center', backgroundColor: 'transparent', color: 'white'}}>{title}</Text>)
+            style={{margin: 8, textAlign: 'center', backgroundColor: 'transparent', color: 'black'}}>{title}</Text>)
     }
 
     render() {
         var {height, width} = Dimensions.get('window');
         let options = {
-            width: width - 40,
+            width: width - 60,
             height: 300,
             margin: {
                 top: 20,
@@ -344,9 +357,8 @@ export default class TravelChartScreen extends React.Component {
         var dTo = String(to);
         dFrom.replace('/', '-');
         dTo.replace('/', '-');
-        this.setState({dateFrom: dFrom})
-        this.setState({dateTo: dTo})
-        this.getDataChart(from, to)
+        this.setState({dateFrom: dFrom, dateTo: dTo}, () => this.getDataChart())
+
 
     }
 

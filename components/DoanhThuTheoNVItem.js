@@ -41,7 +41,7 @@ export default class DoanhThuTheoNVItem extends React.Component {
                            height: this.state.height,
                            flexWrap: 'wrap',
                            position: 'absolute',
-                           width: width - 8
+                           width: width - 16
 
                        }}/>
 
@@ -53,9 +53,10 @@ export default class DoanhThuTheoNVItem extends React.Component {
                     marginRight: 8,
                     marginBottom: 4
                 }}>
-                    <View style={{flexDirection: 'row'}}>
+                    <View style={{flexDirection: 'row', flex: 1}}>
                         <Text style={{alignSelf: 'center', backgroundColor: 'transparent'}}>Nhân viên: </Text>
                         <Text style={{
+                            flex: 1,
                             marginLeft: 8,
                             fontSize: 16,
                             fontWeight: 'bold',
