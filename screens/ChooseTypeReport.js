@@ -52,6 +52,7 @@ export default class ChooseTypeReport extends Component {
 
     getDataFromSv() {
         this.setState({data: null})
+        console.log(URlConfig.getLinkSoReport(this.state.dateFrom, this.state.dateTo))
         fetch(URlConfig.getLinkSoReport(this.state.dateFrom, this.state.dateTo))
             .then((response) => (response.json()))
             .then((responseJson) => {

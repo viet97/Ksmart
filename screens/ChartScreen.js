@@ -6,20 +6,17 @@ import React, {Component} from 'react';
 import {
     View, Dimensions, Text, Picker, StyleSheet, TouchableOpacity, Image, Platform, FlatList, ActivityIndicator
 } from "react-native";
-import Icon1 from 'react-native-vector-icons/Ionicons'
 import Bar from "react-native-pathjs-charts/src/Bar";
-import Radar from "react-native-pathjs-charts/src/Radar";
 import StockLine from "react-native-pathjs-charts/src/StockLine";
 import DatePicker from "react-native-datepicker";
 import URlConfig from "../configs/url";
-import Color from "../configs/color";
 import Toast from 'react-native-simple-toast'
 import ultils from "../configs/ultils";
 import ModalDropdownCustom from "../components/ModalDropdownCustom";
-import {ProgressDialog} from 'react-native-simple-dialogs'
-import LinearGradient from "react-native-linear-gradient";
-import HeaderCustom from "../components/Header";
-import Spinner from "react-native-loading-spinner-overlay";
+
+import HeaderCustom from "../components/Header"
+
+const moment = require('moment')
 
 let {height, width} = Dimensions.get('window');
 export default class ChartScreen extends React.Component {
@@ -91,9 +88,9 @@ export default class ChartScreen extends React.Component {
         let data = arr
         for (let i = 0; i < data.length; i++) {
             for (let j = 0; j < data.length - 1; j++) {
-                let time1 = data[j].thoigian.split("/")
-                let time2 = data[j + 1].thoigian.split("/")
-                if (time1[0] > time2[0]) {
+                let time1 = moment(data[j].thoigian, 'DD-MM-YYYY HH:mm:ss').toDate()
+                let time2 = moment(data[j + 1].thoigian, 'DD-MM-YYYY HH:mm:ss').toDate()
+                if (time1.getTime() > time2.getTime()) {
                     let temp = data[j]
                     data[j] = data[j + 1]
                     data[j + 1] = temp
@@ -117,11 +114,7 @@ export default class ChartScreen extends React.Component {
             .then((response) => (response.json()))
             .then((responseJson) => {
                 if (responseJson.data !== null) {
-                    this.setState({
-                        tongdoanhthu: responseJson.tongdoanhthu,
-                        dataRender: this.sortData(responseJson.data)
-                    })
-
+                    this.setState({tongdoanhthu: responseJson.tongdoanhthu,})
                     var res = responseJson.data;
                     var dt = []
 
@@ -145,13 +138,17 @@ export default class ChartScreen extends React.Component {
                     }
                     if (dem > 0) {
                         this.setState({
+                            dataRender: this.sortData(responseJson.data),
                             data: dt,
                             arr: res,
                             isEmpty: false,
                             progressVisible: false
                         })
                     }
-                    else this.setState({isEmpty: true, progressVisible: false})
+                    else this.setState({
+                        isEmpty: true, progressVisible: false,
+                        dataRender: this.sortData(responseJson.data), tongdoanhthu: responseJson.tongdoanhthu,
+                    })
                 } else this.setState({tongdoanhthu: '0.00', dataRender: null, isEmpty: true})
                 }
             ).catch((e) => {
@@ -244,12 +241,15 @@ export default class ChartScreen extends React.Component {
                         />
                     </View>
                 )
-            else return (
+            else {
+                console.log(this.state.data)
+                return (
                     <View style={{marginLeft: 16}}>
                         <Bar data={this.state.data} options={options} accessorKey={this.state.keyChart}/>
                         {this.getTitleChart()}
                     </View>
                 )
+            }
 
 
             return (
@@ -289,7 +289,7 @@ export default class ChartScreen extends React.Component {
     render() {
         let {height, width} = Dimensions.get('window');
         let options = {
-            width: width - 40,
+            width: width - 100,
             height: 300,
             margin: {
                 top: 20,
@@ -346,7 +346,6 @@ export default class ChartScreen extends React.Component {
                     }/>
 
                 <View style={{flexDirection: 'column', flex: 9}}>
-                    <View style={{flexDirection: 'column', flex: 9}}>
                         <View
                             style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: 60}}>
                             <Text style={{backgroundColor: 'transparent'}}>Từ</Text>
@@ -417,7 +416,6 @@ export default class ChartScreen extends React.Component {
                             </View>
                         </View>
                         {this.getChartorFlatListorNull(options)}
-                    </View>
                 </View>
             </View>
         )

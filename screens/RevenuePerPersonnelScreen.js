@@ -81,6 +81,7 @@ export default class RevenuePerPersonnelScreen extends React.Component {
     }
 
     getDataChart() {
+        console.log(URlConfig.getRevenuePerson(this.state.date, this.state.dateto))
         this.setState({dataRender: null, isEmpty: false});
         fetch(URlConfig.getRevenuePerson(this.state.date, this.state.dateto))
             .then((response) => (response.json()))
@@ -89,7 +90,7 @@ export default class RevenuePerPersonnelScreen extends React.Component {
                     console.log(responseJson, 'tong doanh thuuuuuuuu')
                     this.setState({
                         tongdonhang: responseJson.tongdonhang,
-                        dataRender: responseJson.data,
+
                         tongdoanhthu: responseJson.tongdoanhthu
                     }, function () {
 
@@ -118,10 +119,11 @@ export default class RevenuePerPersonnelScreen extends React.Component {
                         this.setState({
                             data: dt,
                             arr: res,
+                            dataRender: responseJson.data,
                             isEmpty: false
                         })
                     }
-                    else this.setState({isEmpty: true})
+                    else this.setState({isEmpty: true, dataRender: responseJson.data,})
                 } else this.setState({tongdonhang: '0', tongdoanhthu: '0.00', dataRender: null, isEmpty: true})
                 }
             )

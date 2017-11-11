@@ -11,18 +11,9 @@ import {
     ActivityIndicator,
     Platform
 } from 'react-native';
-import MapListScreen from "./MapListScreen";
-import Image from 'react-native-image-progress';
-import Icon from 'react-native-vector-icons/Entypo'
-import Icon1 from 'react-native-vector-icons/MaterialIcons'
-import Icon2 from 'react-native-vector-icons/Ionicons'
-import Icon3 from 'react-native-vector-icons/MaterialCommunityIcons'
-import TabNavigator from 'react-native-tab-navigator';
-import Color from '../configs/color'
 import DatePicker from 'react-native-datepicker'
 import ChooseTypeItem from "../components/ChooseTypeItem";
 import URlConfig from "../configs/url";
-import LinearGradient from "react-native-linear-gradient";
 import HeaderCustom from "../components/Header";
 
 let {width, height} = Dimensions.get('window')
@@ -207,6 +198,7 @@ export default class ChooseTypeTravel extends Component {
 
     getDataFromSv() {
         this.setState({data: null})
+        console.log(URlConfig.getLinkSoKeHoach(this.state.dateFrom, this.state.dateTo))
         fetch(URlConfig.getLinkSoKeHoach(this.state.dateFrom, this.state.dateTo))
             .then((response) => (response.json()))
             .then((responseJson) => {

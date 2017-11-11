@@ -80,7 +80,6 @@ export default class TravelChartScreen extends React.Component {
             .then((response) => (response.json()))
             .then((responseJson) => {
                 if (responseJson.data !== null) {
-                    this.setState({dataRender: responseJson.data})
                     console.log(responseJson.data)
                     var res = responseJson.data;
                     var dt = []
@@ -104,12 +103,13 @@ export default class TravelChartScreen extends React.Component {
                     }
                     if (dem > 0) {
                         this.setState({
+                            dataRender: responseJson.data,
                             data: dt,
                             arr: res,
                             isEmpty: false
                         })
                     }
-                    else this.setState({isEmpty: true})
+                    else this.setState({isEmpty: true, dataRender: responseJson.data})
                     console.log('dt', dt)
                 } else this.setState({isEmpty: true})
                 }
