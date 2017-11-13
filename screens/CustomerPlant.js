@@ -109,7 +109,7 @@ export default class CustomerPlant extends Component {
         PAGE = PAGE + NUMBER_ROW_RENDER_PER_PAGE
 
             this.setState({onEndReach: true})
-            fetch(URlConfig.getCustomerLink(PAGE, SEARCH_STRING))
+        fetch(URlConfig.getCustomerLink(PAGE, SEARCH_STRING, -1, this.state.idNhanvien))
                 .then((response) => (response.json()))
                 .then((responseJson) => {
 
@@ -214,10 +214,11 @@ export default class CustomerPlant extends Component {
     }
 
     getDataFromSv() {
+        console.log(URlConfig.getCustomerLink(PAGE, SEARCH_STRING, -1, this.state.idNhanvien))
         ALL_LOADED = false
         this.setState({dataRender: null})
         PAGE = 0;
-        fetch(URlConfig.getCustomerLink(PAGE, SEARCH_STRING, -1))
+        fetch(URlConfig.getCustomerLink(PAGE, SEARCH_STRING, -1, this.state.idNhanvien))
             .then((response) => (response.json()))
             .then((responseJson) => {
                 if (responseJson.endlist) {
@@ -352,7 +353,7 @@ export default class CustomerPlant extends Component {
                             this.refs.modal.close()
                         }}
                         callback={(id, tennhanvien) => {
-                            this.setState({idNhanvien: id, namePerson: tennhanvien})
+                            this.setState({idNhanvien: id, namePerson: tennhanvien}, () => this.getDataFromSv())
                             if (this.state.dataChoose.length !== 0) {
                                 for (let i = 0; i < this.state.dataChoose.length; i++) {
                                     this.state.dataChoose[i].idnhanvien = id

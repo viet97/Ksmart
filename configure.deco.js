@@ -21,41 +21,41 @@ const packagerPort = Deco.setting.packagerPort
  * command is triggered from within the Deco application or when run from shell as a 'deco-tool' command
  *
  * Available commands:
- * 	run-packager (!)
- * 		description: Run packager for project
- * 		return:
- * 			resolve({child: ChildProcess})
+ *    run-packager (!)
+ *        description: Run packager for project
+ *        return:
+ *            resolve({child: ChildProcess})
  *
  *  list-ios-sim
- *  	description: Find list of available iOS simulators
- *  	return:
- *  		resolve({payload: [{name:String}]})
+ *    description: Find list of available iOS simulators
+ *    return:
+ *        resolve({payload: [{name:String}]})
  *      reject({payload: [String]})
  *
- * 	sim-ios
- * 		description: Launch an iOS simulator and load the .app binary
+ *    sim-ios
+ *        description: Launch an iOS simulator and load the .app binary
  *
- * 	reload-ios-app
- * 		description: Hard reload the current iOS application in the simulator
+ *    reload-ios-app
+ *        description: Hard reload the current iOS application in the simulator
  *
- * 	build-ios (!)
- * 		description: Build the iOS application
- * 		return:
- * 			resolve({child: ChildProcess})
+ *    build-ios (!)
+ *        description: Build the iOS application
+ *        return:
+ *            resolve({child: ChildProcess})
  *
- * 	list-android-sim
- * 		description: Find list of available Android emulators
- *  	return:
- *  		resolve({payload: [{name:String}]})
+ *    list-android-sim
+ *        description: Find list of available Android emulators
+ *    return:
+ *        resolve({payload: [{name:String}]})
  *      reject({payload: [String]})
  *
- * 	reload-android-app
- * 		description: Hard reload the current Android application in the emulator
+ *    reload-android-app
+ *        description: Hard reload the current Android application in the emulator
  *
- * 	sim-android (!)
- * 		description: Build app and launch the Android emulator from available list
- * 		return:
- * 			resolve({child: ChildProcess})
+ *    sim-android (!)
+ *        description: Build app and launch the Android emulator from available list
+ *        return:
+ *            resolve({child: ChildProcess})
  *
  * (!) Be careful to return any async children processes spawned
  *

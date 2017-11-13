@@ -57,6 +57,8 @@ export default class LoginScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            iconPasswordName: 'eye',
+            showPassword: false,
             checkOfCheckBox: true,
             idct: '',
             username: '',
@@ -147,18 +149,33 @@ export default class LoginScreen extends React.Component {
 
                     </View>
                     <View style={styles.viewborder}>
-                        <Icon name="security" size={24} color="#2F3A51"/>
+                        <Icon name="security" size={16} color="#2F3A51"/>
                         <TextInput
                             ref="ipRePass"
                             underlineColorAndroid="transparent"
                             value={this.state.password}
-                            style={styles.textInput}
+                            style={styles.textInputForPassword}
                             returnKeyType={"done"}
                             placeholder={'Mật khẩu'}
-                            secureTextEntry={true}
+                            secureTextEntry={!this.state.showPassword}
                             onChangeText={(text) => this.setState({password: text})}
                         />
+                        <TouchableOpacity
+                            style={{alignSelf: 'center', padding: 4}}
+                            onPress={() => {
+                                if (this.state.showPassword === true) this.setState({iconPasswordName: 'eye'})
+                                else this.setState({iconPasswordName: 'eye-slash'})
+                                this.setState({showPassword: !this.state.showPassword})
+                            }}
+                        >
+                            <Icon
 
+                                name={this.state.iconPasswordName}
+                                size={24}
+                                type='font-awesome'
+                                color={'black'}
+                            />
+                        </TouchableOpacity>
                     </View>
                     <View
                         style={{flexDirection: 'column', alignSelf: 'center', marginTop: 16, alignItems: 'center'}}>
@@ -369,6 +386,14 @@ const styles = StyleSheet.create({
         marginLeft: 8,
         paddingHorizontal: 8,
         width: width - width * 0.1 - 80,
+    },
+    textInputForPassword: {
+        color: '#2c3e50',
+        fontSize: 16,
+        height: 38,
+        marginLeft: 8,
+        paddingHorizontal: 8,
+        width: width - width * 0.1 - 140,
     },
     inputLayout: {
         marginTop: 16,
