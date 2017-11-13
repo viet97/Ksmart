@@ -16,14 +16,10 @@ import {
 } from "react-native";
 import URlConfig from "../configs/url";
 import Color from '../configs/color'
-import Icon1 from 'react-native-vector-icons/Ionicons'
-import Icon3 from 'react-native-vector-icons/MaterialCommunityIcons'
-import Image from 'react-native-image-progress';
 import Toast from 'react-native-simple-toast';
-import LinearGradient from "react-native-linear-gradient";
-import Utils from "../configs/ultils";
 import HeaderCustom from "../components/Header";
 import {getData, setData, data} from "../configs/OnlineReportData";
+import ChooseTypeItem from "../components/ChooseTypeItem";
 
 var {height, width} = Dimensions.get('window');
 const timer = require('react-native-timer');
@@ -61,7 +57,6 @@ export default class ReportScreen extends Component {
     }
 
     getOnlineReportListFromServer() {
-
         this.setState({data: null, fadeAnim: new Animated.Value(0)})
         fetch(URlConfig.getLinkOnlinePerson())
             .then((response) => (response.json()))
@@ -93,7 +88,6 @@ export default class ReportScreen extends Component {
     componentDidMount() {
         this.getOnlineReportListFromServer()
         timer.clearInterval(this)
-        timer.setInterval(this, "123", () => this.getOnlineReportListFromServer(), 30000);
     }
 
     flatListorIndicator() {
@@ -120,35 +114,38 @@ export default class ReportScreen extends Component {
                 extraData={this.state.data}
                 data={this.state.data}
                 renderItem={({item}) =>
-                    <Animated.View
-                        style={{width: width / 2 - 32, height: width / 2 - 32, margin: 16, flex: 1, opacity}}>
-                        <View style={{
-                            flex: 1,
-                            backgroundColor: '#0088C2',
-                            justifyContent: 'center',
-                            borderTopLeftRadius: 5,
-                            borderTopRightRadius: 5
-                        }}>
-                            <Text style={{textAlign: 'center', color: 'white'}}>{item.title}</Text>
-                        </View>
-                        <View style={{
-                            flex: 3,
-                            backgroundColor: '#009CDE',
-                            justifyContent: 'center',
-                            borderBottomLeftRadius: 5,
-                            borderBottomRightRadius: 5
-                        }}>
-                            <Text style={{
-                                textAlign: 'center',
-                                color: 'white',
-                                fontSize: 20
-                            }}>{item.content}</Text>
-                        </View>
-                    </Animated.View>
+                    <ChooseTypeItem
+                        data={item}
+                        goToDetail={() => {
+                            this.goToDetail(item)
+                        }}
+                    />
                 }
             />)
     }
 
+    goToDetail(item) {
+        const {navigate} = this.props.navigation
+        switch (item.ScreenName) {
+            case 'ListNhanVien':
+                navigate(item.ScreenName, {status: item.status})
+                break;
+            case 'Report':
+                navigate(item.ScreenName, {status: item.trangthai, dateFrom: item.dateFrom, dateTo: item.dateTo})
+                break;
+            case 'Order':
+                navigate(item.ScreenName, {
+                    tentrangthai: item.tentrangthai,
+                    status: item.trangthai,
+                    dateFrom: item.dateFrom,
+                    dateTo: item.dateTo
+                })
+                break;
+            case 'NewFeed':
+                navigate(item.ScreenName, {status: item.status, goFromOnlineReport: true})
+                break;
+        }
+    }
     render() {
         let onlineReportStatusItem = this.state.onlineReportStatus.map((s, i) => {
             return <Picker.Item key={i} value={i} label={s}/>

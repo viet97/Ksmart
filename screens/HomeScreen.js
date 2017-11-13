@@ -145,7 +145,11 @@ export default class HomeScreen extends React.Component {
                                     {cancelable: false}
                                 )
 
-                            } else navigate(item.screenName)
+                            } else if (item.screenName === 'NewFeed') navigate(item.screenName, {
+                                goFromOnlineReport: false,
+                                status: 0
+                            })
+                            else navigate(item.screenName)
                         }}>
                         <Icon containerStyle={{width: 24, height: 24, alignSelf: 'center'}} color={"white"}
                               name={item.iconName}
@@ -191,7 +195,9 @@ export default class HomeScreen extends React.Component {
                             margin: width / 40,
                         }}
                         onPress={() => {
-                            navigate(item.screenName)
+                            if (item.screenName === 'NewFeed') {
+                                navigate(item.screenName, {goFromOnlineReport: false, status: 0})
+                            } else navigate(item.screenName)
                         }}>
                         <View style={{
                             backgroundColor: '#3cbdef', borderRadius: 10, width: width / 4,

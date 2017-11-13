@@ -29,7 +29,6 @@ export default class NewFeedItem extends React.Component {
             time: 'abcd'
         }
         this.item = this.props.data;
-        console.log(this.item);
         this.getImage.bind(this);
     }
 

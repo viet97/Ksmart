@@ -85,20 +85,16 @@ export default class NewFeedScreen extends React.Component {
     }
 
     loadMoreDataFromSv() {
-        console.log('load more data')
         const {params} = this.props.navigation.state
         let status = 0
         if (params !== undefined)
             status = params.status
-        console.log(this.state.onEndReach)
                 PAGE = PAGE + 1
                 let url = URlConfig.getNewFeedLink(PAGE, SEARCH_STRING, status)
-                console.log(url)
                 fetch(url)
                     .then((response) => (response.json()))
                     .then((responseJson) => {
                             if (responseJson.status) {
-                                console.log(responseJson.data)
                                 let arr = this.state.dataFull
                                 arr = arr.concat(responseJson.data)
                                 this.setState({
@@ -143,7 +139,6 @@ export default class NewFeedScreen extends React.Component {
     };
 
     flatListorIndicator() {
-        console.log(this.state.dataRender, this.state.dataFull)
         if (!this.state.dataRender) {
             return (
                 <View style={{flex: 9}}>
@@ -214,7 +209,6 @@ export default class NewFeedScreen extends React.Component {
     onCancel() {
         return new Promise((resolve, reject) => {
             resolve();
-            console.log("onCancle");
             if (SEARCH_STRING.length !== 0) {
                 SEARCH_STRING = '';
                 this.getDataFromSv()
@@ -222,30 +216,43 @@ export default class NewFeedScreen extends React.Component {
         });
     }
 
+    rightChildren() {
+        const {navigate} = this.props.navigation
+        const {params} = this.props.navigation.state
+        console.log(params.goFromOnlineReport)
+        if (!params.goFromOnlineReport)
+            return (
+                <TouchableOpacity style={{alignSelf: 'center', padding: 8}}
+                                  onPress={() => {
+                                      {
+                                          navigate('ChooseTypeNewFeed');
+                                      }
+                                  }}
+                >
+                    <Text style={{
+                        textAlign: 'center',
+                        color: 'white',
+                        alignSelf: 'center',
+                        backgroundColor: 'transparent'
+                    }}>Chi tiết</Text>
+                </TouchableOpacity>
+            )
+    }
+
     render() {
         const {navigate} = this.props.navigation
+        const {params} = this.props.navigation.state
         return (
             <View style={{flex: 1, backgroundColor: 'white'}}>
 
                 <HeaderCustom
                     leftClick={() => this.props.navigation.goBack()}
-                    title={"Hoạt động"}
+                    title={function () {
+                        if (params.goFromOnlineReport) return "Danh sách Check-in";
+                        return "Hoạt động"
+                    }()}
                     rightChildren={
-                        <TouchableOpacity style={{alignSelf: 'center', padding: 8}}
-                                          onPress={() => {
-                                              {
-                                                  navigate('ChooseTypeNewFeed');
-
-                                              }
-                                          }}
-                        >
-                            <Text style={{
-                                textAlign: 'center',
-                                color: 'white',
-                                alignSelf: 'center',
-                                backgroundColor: 'transparent'
-                            }}>Chi tiết</Text>
-                        </TouchableOpacity>
+                        this.rightChildren()
                     }
                 />
                 <View style={{width: width, marginTop: 16, marginBottom: 16}}>
@@ -276,17 +283,13 @@ export default class NewFeedScreen extends React.Component {
     _getDetail() {
         const item = this.state.itemSelect;
         if (item === undefined) {
-            console.log('item', item)
             return;
         }
-
-        console.log('item', item)
         switch (item.loai) {
             case 1:
                 //đăng nhập:
-                console.log('dang nhap click')
                 return (
-                    <View style={{
+                    <ScrollView style={{
                         flex: 1,
                         paddingBottom: 64,
                         paddingTop: 64,
@@ -302,12 +305,12 @@ export default class NewFeedScreen extends React.Component {
                         }}>{item.tennhanvien}</Text>
                         <Text>Đã đăng nhập: {item.thoigian_hienthi}</Text>
                         <Text>Địa chỉ: {item.diachi}</Text>
-                    </View>
+                    </ScrollView>
                 )
             case 2:
                 return (
 
-                    <View style={{
+                    <ScrollView style={{
                         flex: 1,
                         paddingBottom: 64,
                         paddingTop: 64,
@@ -323,11 +326,11 @@ export default class NewFeedScreen extends React.Component {
                         }}>{item.tennhanvien}</Text>
                         <Text>Đã đăng xuất: {item.thoigian_hienthi}</Text>
                         <Text>Địa chỉ: {item.diachi}</Text>
-                    </View>
+                    </ScrollView>
                 )
             case 3:
                 return (
-                    <View style={{paddingBottom: 120, paddingTop: 64, marginLeft: 16}}>
+                    <ScrollView style={{paddingBottom: 120, paddingTop: 64, marginLeft: 16}}>
                         <Text style={{
                             color: colors[3],
                             fontSize: 18,
@@ -338,11 +341,11 @@ export default class NewFeedScreen extends React.Component {
                         <Text>Địa chỉ: {item.diachi}</Text>
                         <Text>Vào điểm: {item.thoigian_hienthi}</Text>
 
-                    </View>
+                    </ScrollView>
                 )
             case 4:
                 return (
-                    <View style={{flex: 1, paddingBottom: 120, paddingTop: 64, marginLeft: 16}}>
+                    <ScrollView style={{flex: 1, paddingBottom: 120, paddingTop: 64, marginLeft: 16}}>
                         <Text style={{
                             color: colors[4],
                             fontSize: 18,
@@ -353,11 +356,11 @@ export default class NewFeedScreen extends React.Component {
                         <Text>Địa chỉ: {item.diachi}</Text>
                         <Text>Ra điểm: {item.thoigian_hienthi}</Text>
 
-                    </View>
+                    </ScrollView>
                 )
             case 5:
                 return (
-                    <View style={{flex: 1, paddingBottom: 120, paddingTop: 64, marginLeft: 16}}>
+                    <ScrollView style={{flex: 1, paddingBottom: 120, paddingTop: 64, marginLeft: 16}}>
                         <Text style={{
                             color: colors[5],
                             fontSize: 18,
@@ -369,11 +372,11 @@ export default class NewFeedScreen extends React.Component {
                         <Text>Chụp ảnh: {item.thoigian_hienthi}</Text>
                         <Text>Số lượng ảnh: {item.soluonganh}</Text>
 
-                    </View>
+                    </ScrollView>
                 )
             case 6:
                 return (
-                    <View style={{flex: 1, paddingBottom: 120, paddingTop: 64, marginLeft: 16}}>
+                    <ScrollView style={{flex: 1, paddingBottom: 120, paddingTop: 64, marginLeft: 16}}>
                         <Text style={{
                             color: colors[6],
                             fontSize: 18,
@@ -384,7 +387,7 @@ export default class NewFeedScreen extends React.Component {
                         <Text>Địa chỉ: {item.diachi}</Text>
                         <Text>Lập đơn hàng: {item.thoigian_hienthi}</Text>
                         <Text>Tổng tiền: {item.TongTien}</Text>
-                    </View>
+                    </ScrollView>
                 )
         }
     }
