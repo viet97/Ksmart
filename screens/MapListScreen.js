@@ -223,7 +223,7 @@ export default class MapListScreen extends Component {
                                             } else {
                                                 Toast.show(responseJson.msg)
                                             }
-                                        }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e));
+                                        }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'));
 
 
                                 })

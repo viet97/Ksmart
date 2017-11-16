@@ -8,10 +8,6 @@ import {
     FlatList,
     Platform, Image
 } from 'react-native';
-import Search from 'react-native-search-box';
-import ProgressBar from 'react-native-progress/Bar';
-import Icon from 'react-native-vector-icons/MaterialIcons'
-import Icon1 from 'react-native-vector-icons/Ionicons'
 import React from 'react';
 import {shadowProps} from "../configs/shadow";
 import 'moment/locale/vi';
@@ -66,7 +62,7 @@ export default class NewFeedItem extends React.Component {
                 paddingBottom: 8
             }} activeOpaity={1}>
                 {this.getImage(this.item.anhdaidien)}
-                <View style={{marginLeft: 16, justifyContent: 'center', alignItems: 'flex-start'}}>
+                <View style={{marginLeft: 8, justifyContent: 'center', alignItems: 'flex-start'}}>
                     <Text style={{
                         color: '#2d92dc',
                         fontSize: 20,
@@ -86,7 +82,7 @@ export default class NewFeedItem extends React.Component {
                 </View>
                 <View style={{
                     position: 'absolute',
-                    right: 10,
+                    right: 4,
                     bottom: 8,
                     flexDirection: 'row',
                     alignItems: 'center',

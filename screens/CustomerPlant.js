@@ -240,7 +240,7 @@ export default class CustomerPlant extends Component {
                     ALL_LOADED = true
                     this.forceUpdate()
                 }
-            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e))
+            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
 
     }
 
@@ -440,7 +440,7 @@ export default class CustomerPlant extends Component {
                     }
                 }).catch((e) => {
                 this.setState({dialogVisible: false});
-                Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e)
+                Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại')
             })
     }
 

@@ -117,7 +117,7 @@ export default class ChooseTypeListNV extends Component {
                     console.log(responseJson.danhsach)
                     this.setState({data: responseJson.danhsach})
                 }
-            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e))
+            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
     }
 
     componentWillUnmount() {

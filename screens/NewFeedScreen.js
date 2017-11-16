@@ -20,6 +20,7 @@ import {ConfirmDialog} from 'react-native-simple-dialogs';
 import {colors} from "../configs/color";
 import LinearGradient from "react-native-linear-gradient";
 import HeaderCustom from "../components/Header";
+import ultils from "../configs/ultils";
 
 let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 let SEARCH_STRING = '';
@@ -81,7 +82,7 @@ export default class NewFeedScreen extends React.Component {
                     ALL_LOADED = true;
                     this.forceUpdate()
                 }
-            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e))
+            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
     }
 
     loadMoreDataFromSv() {
@@ -89,28 +90,28 @@ export default class NewFeedScreen extends React.Component {
         let status = 0
         if (params !== undefined)
             status = params.status
-                PAGE = PAGE + 1
-                let url = URlConfig.getNewFeedLink(PAGE, SEARCH_STRING, status)
-                fetch(url)
-                    .then((response) => (response.json()))
-                    .then((responseJson) => {
-                            if (responseJson.status) {
-                                let arr = this.state.dataFull
-                                arr = arr.concat(responseJson.data)
-                                this.setState({
-                                    dataFull: arr,
-                                    isEndList: responseJson.endlist,
-                                    dataRender: ds.cloneWithRows(arr)
-                                }, function () {
-                                    if (this.state.isEndList) {
-                                        ALL_LOADED = true;
-                                        this.forceUpdate()
-                                    }
-                                })
+        PAGE = PAGE + 1
+        let url = URlConfig.getNewFeedLink(PAGE, SEARCH_STRING, status)
+        fetch(url)
+            .then((response) => (response.json()))
+            .then((responseJson) => {
+                    if (responseJson.status) {
+                        let arr = this.state.dataFull
+                        arr = arr.concat(responseJson.data)
+                        this.setState({
+                            dataFull: arr,
+                            isEndList: responseJson.endlist,
+                            dataRender: ds.cloneWithRows(arr)
+                        }, function () {
+                            if (this.state.isEndList) {
+                                ALL_LOADED = true;
+                                this.forceUpdate()
                             }
-                        }
-                    )
-                    .catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
+                        })
+                    }
+                }
+            )
+            .catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
 
     }
 
@@ -291,20 +292,19 @@ export default class NewFeedScreen extends React.Component {
                 return (
                     <ScrollView style={{
                         flex: 1,
-                        paddingBottom: 64,
-                        paddingTop: 64,
-                        justifyContent: 'center',
-                        alignItems: 'center',
+                        paddingBottom: 108,
+                        paddingTop: 24,
                         marginLeft: 16
                     }}>
-                        <Text style={{
-                            color: colors[1],
-                            fontSize: 18,
-                            alignSelf: 'center',
-                            marginBottom: 12
-                        }}>{item.tennhanvien}</Text>
-                        <Text>Đã đăng nhập: {item.thoigian_hienthi}</Text>
-                        <Text>Địa chỉ: {item.diachi}</Text>
+                        <View style={{flex: 1, paddingBottom: 64, alignSelf: 'center'}}>
+                            <Text style={{
+                                color: colors[1],
+                                fontSize: 18,
+                                marginBottom: 12
+                            }}>{item.tennhanvien}</Text>
+                            <Text>Đã đăng nhập: {item.thoigian_hienthi}</Text>
+                            <Text>Địa chỉ: {item.diachi}</Text>
+                        </View>
                     </ScrollView>
                 )
             case 2:
@@ -312,81 +312,101 @@ export default class NewFeedScreen extends React.Component {
 
                     <ScrollView style={{
                         flex: 1,
-                        paddingBottom: 64,
-                        paddingTop: 64,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        marginLeft: 16
+                        paddingBottom: 108,
+                        paddingTop: 24,
                     }}>
-                        <Text style={{
-                            color: colors[2],
-                            fontSize: 18,
-                            alignSelf: 'center',
-                            marginBottom: 12
-                        }}>{item.tennhanvien}</Text>
-                        <Text>Đã đăng xuất: {item.thoigian_hienthi}</Text>
-                        <Text>Địa chỉ: {item.diachi}</Text>
+                        <View style={{flex: 1, paddingBottom: 64, alignSelf: 'center'}}>
+                            <Text style={{
+                                color: colors[2],
+                                fontSize: 18,
+                                alignSelf: 'center',
+                                marginBottom: 12
+                            }}>{item.tennhanvien}</Text>
+                            <Text>Đã đăng xuất: {item.thoigian_hienthi}</Text>
+                            <Text>Địa chỉ: {item.diachi}</Text>
+                        </View>
                     </ScrollView>
                 )
             case 3:
                 return (
-                    <ScrollView style={{paddingBottom: 120, paddingTop: 64, marginLeft: 16}}>
-                        <Text style={{
-                            color: colors[3],
-                            fontSize: 18,
-                            alignSelf: 'center',
-                            marginBottom: 12
-                        }}>{item.tennhanvien}</Text>
-                        <Text>Khách hàng: {item.tenkhachhang}</Text>
-                        <Text>Địa chỉ: {item.diachi}</Text>
-                        <Text>Vào điểm: {item.thoigian_hienthi}</Text>
-
+                    <ScrollView style={{
+                        flex: 1,
+                        paddingBottom: 108,
+                        paddingTop: 24,
+                    }}>
+                        <View style={{flex: 1, paddingBottom: 64, alignSelf: 'center'}}>
+                            <Text style={{
+                                color: colors[3],
+                                fontSize: 18,
+                                alignSelf: 'center',
+                                marginBottom: 12
+                            }}>{item.tennhanvien}</Text>
+                            <Text>Khách hàng: {item.tenkhachhang}</Text>
+                            <Text>Địa chỉ: {item.diachi}</Text>
+                            <Text>Vào điểm: {item.thoigian_hienthi}</Text>
+                        </View>
                     </ScrollView>
                 )
             case 4:
                 return (
-                    <ScrollView style={{flex: 1, paddingBottom: 120, paddingTop: 64, marginLeft: 16}}>
-                        <Text style={{
-                            color: colors[4],
-                            fontSize: 18,
-                            alignSelf: 'center',
-                            marginBottom: 12
-                        }}>{item.tennhanvien}</Text>
-                        <Text>Khách hàng: {item.tenkhachhang}</Text>
-                        <Text>Địa chỉ: {item.diachi}</Text>
-                        <Text>Ra điểm: {item.thoigian_hienthi}</Text>
-
+                    <ScrollView style={{
+                        flex: 1,
+                        paddingBottom: 108,
+                        paddingTop: 24,
+                    }}>
+                        <View style={{flex: 1, paddingBottom: 64, alignSelf: 'center',}}>
+                            <Text style={{
+                                color: colors[4],
+                                fontSize: 18,
+                                alignSelf: 'center',
+                                marginBottom: 12
+                            }}>{item.tennhanvien}</Text>
+                            <Text>Khách hàng: {item.tenkhachhang}</Text>
+                            <Text>Địa chỉ: {item.diachi}</Text>
+                            <Text>Ra điểm: {item.thoigian_hienthi}</Text>
+                        </View>
                     </ScrollView>
                 )
             case 5:
                 return (
-                    <ScrollView style={{flex: 1, paddingBottom: 120, paddingTop: 64, marginLeft: 16}}>
-                        <Text style={{
-                            color: colors[5],
-                            fontSize: 18,
-                            alignSelf: 'center',
-                            marginBottom: 12
-                        }}>{item.tennhanvien}</Text>
-                        <Text>Khách hàng: {item.tenkhachhang || "<trống>"}</Text>
-                        <Text>Địa chỉ: {item.diachi}</Text>
-                        <Text>Chụp ảnh: {item.thoigian_hienthi}</Text>
-                        <Text>Số lượng ảnh: {item.soluonganh}</Text>
-
+                    <ScrollView style={{
+                        flex: 1,
+                        paddingBottom: 108,
+                        paddingTop: 24,
+                    }}>
+                        <View style={{flex: 1, paddingBottom: 64, alignSelf: 'center'}}>
+                            <Text style={{
+                                color: colors[5],
+                                fontSize: 18,
+                                alignSelf: 'center',
+                                marginBottom: 12
+                            }}>{item.tennhanvien}</Text>
+                            <Text>Khách hàng: {item.tenkhachhang || "<trống>"}</Text>
+                            <Text>Địa chỉ: {item.diachi}</Text>
+                            <Text>Chụp ảnh: {item.thoigian_hienthi}</Text>
+                            <Text>Số lượng ảnh: {item.soluonganh}</Text>
+                        </View>
                     </ScrollView>
                 )
             case 6:
                 return (
-                    <ScrollView style={{flex: 1, paddingBottom: 120, paddingTop: 64, marginLeft: 16}}>
-                        <Text style={{
-                            color: colors[6],
-                            fontSize: 18,
-                            alignSelf: 'center',
-                            marginBottom: 12
-                        }}>{item.tennhanvien}</Text>
-                        <Text>Khách hàng: {item.tenkhachhang || "<trống>"}</Text>
-                        <Text>Địa chỉ: {item.diachi}</Text>
-                        <Text>Lập đơn hàng: {item.thoigian_hienthi}</Text>
-                        <Text>Tổng tiền: {item.TongTien}</Text>
+                    <ScrollView style={{
+                        flex: 1,
+                        paddingBottom: 108,
+                        paddingTop: 24,
+                    }}>
+                        <View style={{flex: 1, paddingBottom: 64, alignSelf: 'center'}}>
+                            <Text style={{
+                                color: colors[6],
+                                fontSize: 18,
+                                alignSelf: 'center',
+                                marginBottom: 12
+                            }}>{item.tennhanvien}</Text>
+                            <Text>Khách hàng: {item.tenkhachhang || "<trống>"}</Text>
+                            <Text>Địa chỉ: {item.diachi}</Text>
+                            <Text>Lập đơn hàng: {item.thoigian_hienthi}</Text>
+                            <Text>Tổng tiền: {ultils.getMoney(item.TongTien)}</Text>
+                        </View>
                     </ScrollView>
                 )
         }

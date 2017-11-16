@@ -173,7 +173,7 @@ export default class ChooseTypeOrder extends Component {
                     arr[3].tongso = ultils.getMoney(arr[3].tongso)
                     this.setState({data: arr})
                 }
-            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại' + e))
+            }).catch((e) => Toast.show('Đường truyền có vấn đề, vui lòng kiểm tra lại'))
 
     }
 
