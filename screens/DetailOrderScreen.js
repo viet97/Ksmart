@@ -34,6 +34,7 @@ export default class DetailOrderScreen extends React.Component {
 
     componentDidMount() {
         const {params} = this.props.navigation.state
+        console.log(URlConfig.getLinkDetailOrder(params.id))
         fetch(URlConfig.getLinkDetailOrder(params.id))
             .then((response) => (response.json()))
             .then((responseJson) => {
@@ -76,6 +77,10 @@ export default class DetailOrderScreen extends React.Component {
                         {this.getElement('Mã đơn hàng', this.state.data.mathamchieu)}
                         {this.getElement('Tên khách hàng', this.state.data.tenkhachhang)}
                         {this.getElement('Tổng tiền', ultil.getMoney(this.state.data.tongtien, 2))}
+                        {this.getElement('Thời gian tạo', ultil.getDate(this.state.data.thoigiantao))}
+                        {this.getElement('Trạng thái thanh toán', URlConfig.OBJLOGIN.tttt[this.state.data.trangthaithanhtoan])}
+                        {this.getElement('Trạng thái giao hàng', URlConfig.OBJLOGIN.ttgh[this.state.data.trangthaigiaohang])}
+                        {this.getElement('Trạng thái đơn hàng', URlConfig.OBJLOGIN.ttdh[this.state.data.trangthaidonhang])}
                         {this.getElement('Thời gian tạo', ultil.getDate(this.state.data.thoigiantao))}
                         {this.getElement('Chiết khấu phần trăm', ultil.getMoney(this.state.data.chietkhauphantram, 2))}
                         {this.getElement('Chiết khấu tiền', ultil.getMoney(this.state.data.chietkhautien, 2))}

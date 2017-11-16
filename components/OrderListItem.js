@@ -34,8 +34,8 @@ export default class OrderListItem extends Component {
     }
 
     getGiaoHangHoacThanhToan(rowData) {
-        var colorGH;
-        var colorTT;
+        let colorGH;
+        let colorTT;
         switch (rowData.trangthaithanhtoan) {
             case 1:
                 colorTT = 'red'
@@ -97,7 +97,9 @@ export default class OrderListItem extends Component {
                 }}>
                     <Icon2 style={{alignSelf: 'center', marginRight: 8}} size={12} color={'white'}
                            name="controller-record"/>
-                    <Text style={{
+                    <Text
+                        numberOfLines={1}
+                        style={{
                         fontSize: 15,
                         fontWeight: "bold",
                         backgroundColor: 'transparent',
