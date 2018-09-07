@@ -1,22 +1,11 @@
-import React, {Component, PropTypes} from 'react'
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import DatePicker from 'react-native-datepicker'
 import {
     Text, View, StyleSheet, TouchableOpacity, Dimensions, Button, Picker, ScrollView,
     TextInput, TouchableHighlight
 } from "react-native";
-import URlConfig from "../configs/url";
-import Color from '../configs/color'
-import Icon1 from 'react-native-vector-icons/Ionicons'
-import Icon from 'react-native-vector-icons/MaterialIcons'
-import Image from 'react-native-image-progress';
-import ProgressBar from 'react-native-progress/Bar';
-import DialogManager, {ScaleAnimation, DialogContent} from 'react-native-dialog-component';
-import {DialogComponent, SlideAnimation} from 'react-native-dialog-component';
-import {TextInputLayout} from "rn-textinputlayout";
-import orderListData from '../dbcontext/orderListData'
-import DataTemp from "./DataTemp";
 import ModalDropdown from "react-native-modal-dropdown";
-import Toast from "react-native-simple-toast";
 
 let width;
 export default class ModalDropdownCustom extends Component {
@@ -139,4 +128,4 @@ const styles = StyleSheet.create({
         height: 1,
         backgroundColor: 'cornflowerblue',
     }
-})
+});

@@ -1,4 +1,4 @@
-import {Icon} from 'react-native-elements';
+import {Icon, Badge} from 'react-native-elements';
 import React from 'react';
 import Drawer from 'react-native-drawer';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
@@ -15,17 +15,14 @@ import {
     ScrollView,
     Alert, Animated
 } from 'react-native';
-import Badge from 'react-native-smart-badge'
-import {NavigationActions} from "react-navigation";
+import {NavigationActions, StackActions} from "react-navigation";
 import Toast from 'react-native-simple-toast';
 import URlConfig from "../configs/url";
 import {onChangeMessage} from "../networks/Network";
 import menus, {menuSwiper} from "../configs/menus";
-import LinearGradient from 'react-native-linear-gradient';
 import {getPrefData} from "../sharePref/SharePref";
 import {COMPANY_KEY, PASSWORD_KEY, USERNAME_KEY} from "../configs/type";
 import HeaderCustom from "../components/Header";
-import {Header} from 'react-navigation'
 
 var {height} = Dimensions.get('window');
 var func;
@@ -160,10 +157,8 @@ export default class HomeScreen extends React.Component {
                             function () {
                                 console.log('RENDERRRRRRRRRRRRRRRRRRRRRRR')
                                 if (item.screenName === 'Message') {
-                                    return <Badge style={{
-                                        marginLeft: 4,
-                                        alignSelf: 'center'
-                                    }}>{URlConfig.OBJLOGIN.messageUnread}</Badge>
+                                    return <Badge value={URlConfig.OBJLOGIN.messageUnread}
+                                                  textStyle={{color: 'orange'}}/>
                                 }
                             }()
                         }
@@ -270,16 +265,9 @@ export default class HomeScreen extends React.Component {
         if (URlConfig.OBJLOGIN.messageUnread > 0) {
             console.log('vao day rrrrr');
             return (
-                <Badge textStyle={{
-                    color: '#fff', fontSize: size
-                }}
-                       style={{
-                           position: 'absolute',
-                           top: 0,
-                           right: 12
-                       }}>
-                    {URlConfig.OBJLOGIN.messageUnread}
-                </Badge>)
+                <Badge
+                    value={URlConfig.OBJLOGIN.messageUnread}
+                    textStyle={{color: 'orange'}}/>)
         } else {
             console.log('vao else')
         }
@@ -288,17 +276,13 @@ export default class HomeScreen extends React.Component {
     }
 
     logout() {
-        const {navigate} = this.props.navigation;
-
+        const resetAction = StackActions.reset({
+            index: 0,
+            actions: [NavigationActions.navigate({routeName: 'Login'})],
+        });
         this.props
             .navigation
-            .dispatch(NavigationActions.reset(
-                {
-                    index: 0,
-                    actions: [
-                        NavigationActions.navigate({routeName: 'Login'})
-                    ]
-                }));
+            .dispatch(resetAction);
     }
 
 

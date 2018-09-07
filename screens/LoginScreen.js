@@ -11,7 +11,7 @@ import {
 import Toast from 'react-native-root-toast';
 import URlConfig from "../configs/url";
 import * as Animatable from 'react-native-animatable';
-import {NavigationActions} from "react-navigation";
+import {NavigationActions, StackActions} from "react-navigation";
 import {ProgressDialog} from 'react-native-simple-dialogs';
 import {CheckBox} from 'react-native-elements'
 import Communications from 'react-native-communications';
@@ -89,15 +89,18 @@ export default class LoginScreen extends React.Component {
             <View
                 style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white',}}>
 
-
-                <Image source={require('../design/bg_logo.png')}
-                       style={{
-                           flex: 6,
-                           resizeMode: 'stretch',
-                           width: width,
-                           justifyContent: 'center',
-                           alignItems: 'center'
-                       }}>
+                <View style={{
+                    height: '40%',
+                    width: '100%',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                    <Image source={require('../design/bg_logo.png')}
+                           style={{
+                               position: 'absolute',
+                               resizeMode: 'stretch',
+                               height: '100%'
+                           }}/>
                     <Image source={require('../design/logo_ks.png')}
                            style={{width: width / 2.5, height: width / 2.5, resizeMode: 'stretch'}}/>
                     <Text style={{
@@ -107,9 +110,8 @@ export default class LoginScreen extends React.Component {
                         backgroundColor: 'transparent',
                         marginTop: 16
                     }}>KSMART MANAGER</Text>
-                </Image>
-
-                <View style={{alignSelf: 'center', width: windowWidth, flex: 7}}>
+                </View>
+                <View style={{alignSelf: 'center', width: '100%', height: "60%"}}>
                     <View style={styles.viewborder}>
                         <Icon name="account-balance" size={24} color="#2F3A51"/>
                         <TextInput
@@ -267,17 +269,14 @@ export default class LoginScreen extends React.Component {
                             savePrefData(PASSWORD_KEY);
                         }
                         this.handlDataLogin(responseJson)
-                        const {navigate} = this.props.navigation;
+                        const resetAction = StackActions.reset({
+                            index: 0,
+                            actions: [NavigationActions.navigate({routeName: 'Home'})],
+                        });
                         this.setState({progressVisible: false});
                         this.props
                             .navigation
-                            .dispatch(NavigationActions.reset(
-                                {
-                                    index: 0,
-                                    actions: [
-                                        NavigationActions.navigate({routeName: 'Home'})
-                                    ]
-                                }));
+                            .dispatch(resetAction);
 
                     }
                 })

@@ -4,17 +4,7 @@ import {
     Text, View, StyleSheet, TouchableOpacity, Dimensions, Button, Picker, ScrollView,
     TextInput, ActivityIndicator
 } from "react-native";
-import URlConfig from "../configs/url";
-import Color from '../configs/color'
-import Icon1 from 'react-native-vector-icons/Ionicons'
-import Icon from 'react-native-vector-icons/MaterialIcons'
-import Image from 'react-native-image-progress';
-import ProgressBar from 'react-native-progress/Bar';
 import DialogManager, {ScaleAnimation, DialogContent} from 'react-native-dialog-component';
-import {DialogComponent, SlideAnimation} from 'react-native-dialog-component';
-import {TextInputLayout} from "rn-textinputlayout";
-import orderListData from '../dbcontext/orderListData'
-import DataTemp from "./DataTemp";
 
 
 export default class LoginDialog extends React.Component {

@@ -6,30 +6,12 @@ import {
     StyleSheet,
     TouchableOpacity,
     Dimensions,
-    Button,
-    Picker,
-    FlatList,
-    TouchableHightLight,
-    ActivityIndicator,
-    Platform,
 } from "react-native";
-import URlConfig from "../configs/url";
-import Color from '../configs/color'
-import Icon3 from 'react-native-vector-icons/FontAwesome'
 import Icon1 from 'react-native-vector-icons/Ionicons'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import Icon2 from 'react-native-vector-icons/Entypo'
-import Image from 'react-native-image-progress';
-import ProgressBar from 'react-native-progress/Bar';
-import DialogManager, {ScaleAnimation, DialogContent} from 'react-native-dialog-component';
-import {DialogComponent, SlideAnimation} from 'react-native-dialog-component';
-import Dialog from './DialogOrder'
-import orderListData from '../dbcontext/orderListData'
-import AtoZListView from 'react-native-atoz-listview';
-import Search from 'react-native-search-box';
-import Toast from 'react-native-simple-toast';
+
 import ultils from "../configs/ultils";
-import Communications from 'react-native-communications';
 import {shadowProps} from "../configs/shadow";
 
 let {width, height} = Dimensions.get('window');
@@ -43,7 +25,7 @@ export default class DoanhThuReportItem extends React.Component {
     }
 
     render() {
-        let item = this.props.data
+        let item = this.props.data;
         return (
 
             <TouchableOpacity

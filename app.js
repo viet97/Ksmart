@@ -1,17 +1,7 @@
 import React, {Component} from 'react';
-import {
-    AppRegistry,
-    StyleSheet,
-    Text,
-    View,
-    Platform,
-    TouchableOpacity,
-    Image,
-    Dimensions
-} from 'react-native';
 import SplashScreen from './screens/SplashScreen.js'
 import NewFeedScreen from './screens/NewFeedScreen'
-import {StackNavigator} from 'react-navigation';
+import {createStackNavigator} from 'react-navigation';
 import HomeScreen from "./screens/HomeScreen";
 import MenuScreen from "./screens/MenuScreen";
 import LoginScreen from "./screens/LoginScreen";
@@ -22,7 +12,6 @@ import ChooseTypeChart from "./screens/ChooseTypeChart";
 import OnlineChartScreen from "./screens/OnlineChartScreen";
 import ListNhanVienScreen from "./screens/ListNhanVienScreen";
 import DetailNhanVien from "./screens/DetailNhanVien";
-import DetailMessageScreen from "./screens/DetailMessageScreen";
 import DetailCustomer from "./screens/DetailCustomer";
 import DetailTravel from "./screens/DetailTravel";
 import SendMessageScreen from "./screens/SendMessageScreen";
@@ -32,7 +21,6 @@ import ChooseTypeListNV from "./screens/ChooseTypeListNV";
 import ReportScreen from "./screens/ReportScreen";
 import CustomerScreen from "./screens/CustomerScreen";
 import DetailOrderScreen from "./screens/DetailOrderScreen";
-import MessageScreen from "./screens/MessageScreen";
 import ChooseTypeNew from "./screens/ChooseTypeNew";
 import ChooseTypeCustomer from "./screens/ChooseTypeCustomer";
 import ChooseTypeTravel from "./screens/ChooseTypeTravel";
@@ -47,7 +35,7 @@ import DetailBaoCaoDoanhThuSanLuong from "./screens/DetailBaoCaoDoanhThuSanLuong
 import DetailMessageScreenV2 from "./screens/DetailMessageScreenV2";
 import ConversationScreen from "./screens/ConversationScreen";
 
-const Ksmart = StackNavigator({
+export default createStackNavigator({
     Splash: {screen: SplashScreen},
     NewFeed: {screen: NewFeedScreen},
     DetailOrder: {screen: DetailOrderScreen},
@@ -85,4 +73,3 @@ const Ksmart = StackNavigator({
     DetailBaoCaoDoanhThuSanLuong: {screen: DetailBaoCaoDoanhThuSanLuong}
     }
 );
-AppRegistry.registerComponent('Ksmart', () => Ksmart);

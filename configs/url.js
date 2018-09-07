@@ -4,7 +4,7 @@
  */
 import {Platform} from 'react-native'
 import md5 from "react-native-md5";
-
+import DeviceInfo from 'react-native-device-info';
 export default class URlConfig {
     static getRouterApp(idct) {
         let url = 'http://sv.ksmart.vn/AppRouterServer.aspx?token=6e22b116f5111220741848ccd290e9e98402c589dd551c5d9e0c31dd0024537f&idct=';
@@ -19,7 +19,6 @@ export default class URlConfig {
     static OBJLOGIN = null;
 
     static getLoginRouter(username, password, idct) {
-        let DeviceInfo = require('react-native-device-info');
         let os = Platform.OS === 'ios' ? 1 : 2;
         return URlConfig.BASE_URL_APP + '/AppDangNhapQT_v2.aspx?token=' + md5.hex_md5(Date.now()) + '&trangthaigps=1&congty='
 

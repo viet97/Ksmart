@@ -10,7 +10,6 @@ import {
     Button, ListView, Image, StyleSheet, StatusBar,
     TouchableOpacity, Platform
 } from 'react-native';
-import Color from '../configs/color'
 import PropTypes from 'prop-types';
 import {Icon} from 'react-native-elements'
 

@@ -5,7 +5,7 @@ import {
     View, Dimensions,
     Button, ListView, Image, StyleSheet, StatusBar
 } from 'react-native';
-import {NavigationActions} from "react-navigation";
+import {StackActions, NavigationActions} from "react-navigation";
 import orderListData from '../dbcontext/orderListData'
 
 export default class SplashScreen extends React.Component {
@@ -22,46 +22,49 @@ export default class SplashScreen extends React.Component {
 
     render() {
         return (
+            <View style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center'
+            }}>
                 <Image source={require('../images/flyhight.png')}
                        style={{
                            flex: 1,
                            opacity: 0.6,
                            resizeMode: 'stretch',
-                           width: '100%',
-                           justifyContent: 'center',
-                           alignItems: 'center'
-                       }}>
-                    <Image source={require('../images/logoksmart.png')}
-                           style={{
-                               alignSelf: 'center',
-                               position: 'absolute',
-                               width: Dimensions.get('window').width / 3,
-                               height: Dimensions.get('window').width / 3
-                           }}/>
-                </Image>
+                           width: '100%'
+                       }}/>
+                <Image source={require('../images/logoksmart.png')}
+                       style={{
+                           alignSelf: 'center',
+                           position: 'absolute',
+                           width: Dimensions.get('window').width / 3,
+                           height: Dimensions.get('window').width / 3
+                       }}/>
+            </View>
 
         );
     }
 
     componentDidMount() {
         console.disableYellowBox = true;
-                var today = new Date();
-                var dd = today.getDate();
-                var mm = today.getMonth() + 1; //January is 0!
-                var yyyy = today.getFullYear();
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1; //January is 0!
+        var yyyy = today.getFullYear();
 
-                if (dd < 10) {
-                    dd = '0' + dd
-                }
+        if (dd < 10) {
+            dd = '0' + dd
+        }
 
-                if (mm < 10) {
-                    mm = '0' + mm
-                }
+        if (mm < 10) {
+            mm = '0' + mm
+        }
 
-                today = dd + '/' + mm + '/' + yyyy;
+        today = dd + '/' + mm + '/' + yyyy;
 
-        orderListData.dTo=today
-        orderListData.dFrom=today
+        orderListData.dTo = today
+        orderListData.dFrom = today
         const timer = require('react-native-timer');
         timer.setTimeout(
             this, 'hideMsg', this._onDone.bind(this), 1000
@@ -69,17 +72,11 @@ export default class SplashScreen extends React.Component {
     }
 
     _onDone() {
-        const {navigate} = this.props.navigation;
-
-        this.props
-            .navigation
-            .dispatch(NavigationActions.reset(
-                {
-                    index: 0,
-                    actions: [
-                        NavigationActions.navigate({routeName: 'Login'})
-                    ]
-                }));
+        const resetAction = StackActions.reset({
+            index: 0,
+            actions: [NavigationActions.navigate({routeName: 'Login'})],
+        });
+        this.props.navigation.dispatch(resetAction);
     }
 
 }
