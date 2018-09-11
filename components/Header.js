@@ -25,13 +25,15 @@ export default class HeaderCustom extends React.Component {
                                           style={{
                                               alignSelf: 'center',
                                               backgroundColor: 'transparent',
+                                              paddingLeft: 8,
+                                              paddingTop: 4,
+                                              paddingEnd: 8,
+                                              paddingBottom: 0
                                           }}>
                             <Icon
                                 style={{
                                     alignSelf: 'center',
                                     backgroundColor: 'transparent',
-                                    paddingTop: 4,
-                                    paddingHorizontal: 8,
                                 }}
                                 size={35}
                                 color={this.props.iconColor} name={this.props.iconName} type={this.props.iconType}
